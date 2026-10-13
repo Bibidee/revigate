@@ -23,5 +23,15 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: npm ci
       - run: uv sync --frozen
+      - name: Prepare the pinned GenVM Direct Mode runtime
+        run: |
+          mkdir -p "$HOME/.cache/gltest-direct"
+          tarball="$HOME/.cache/gltest-direct/genvm-universal-v0.3.0-rc7.tar.xz"
+          if [[ ! -f "$tarball" ]]; then
+            curl --fail --location --retry 3 \
+              https://github.com/genlayerlabs/genvm/releases/download/v0.3.0-rc7/genvm-runners-all.tar.xz \
+              --output "$tarball"
+          fi
+          echo "e218a1854214681560351051f76fe2b878545cf3409455ef372d57014a88ca67  $tarball" | sha256sum --check
       - run: npm run preflight
       - run: npm audit --omit=dev --audit-level=high
