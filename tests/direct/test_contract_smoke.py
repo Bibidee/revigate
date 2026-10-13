@@ -1,7 +1,7 @@
 """Smoke tests that load the production source in GenLayer Direct Mode."""
 
 def test_contract_loads_and_reports_studionet_config(direct_deploy):
-    contract = direct_deploy("contracts/revigate.py")
+    contract = direct_deploy("contracts/revigate.py", sdk_version="v0.2.16")
 
     config = contract.get_config()
     assert config["chain_id"] == 61999

@@ -14,7 +14,7 @@ AMOUNT = 101
 
 def make_contract(direct_deploy, direct_vm):
     direct_vm.warp(NOW)
-    contract = direct_deploy("contracts/revigate.py")
+    contract = direct_deploy("contracts/revigate.py", sdk_version="v0.2.16")
     contract.programs[1] = {
         "owner": PUBLISHER,
         "repo": "bibidee/rulebook",
