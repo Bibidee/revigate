@@ -11,20 +11,22 @@ This report records work completed in the local workspace and evidence that exis
 - Added a pinned local GenLayer CLI wrapper. The repository-local CLI reports version `0.39.1`; its configured target is Studionet chain `61999` at `https://studio.genlayer.com/api`.
 - Implemented the candidate single contract in `contracts/revigate.py`, the SDK-backed browser integration, and UI actions for publisher and participant workflows. The UI intentionally disables contract actions until a verified address is configured; it does not expose credit withdrawal.
 - Added CI workflow configuration in `.github/workflows/ci.yml`.
-- Local `npm run preflight` passed on 2026-10-13: network guard, TypeScript, ESLint, 5 Node tests, 8 Python accounting tests, 18 GenLayer Direct Mode tests, and a static Next.js production build.
-- Production dependency audit passed with zero production dependency vulnerabilities.
+- Local `npm run preflight` passed on 2026-10-13: network guard, TypeScript, ESLint, 5 Node tests, 8 Python accounting tests, 18 GenLayer Direct Mode tests, and a static Next.js production build. The Direct Mode runtime is pinned to GenVM `v0.2.16`, matching the compatible runner bundle.
+- The source is committed and pushed to `Bibidee/revigate` on `main`. GitHub Actions run [#3](https://github.com/Bibidee/revigate/actions/runs/38436496897) passed, including clean `npm ci`, Python sync, preflight, and production-only dependency audit.
+- The Vercel project `the-revigate` is linked to GitHub. Production deployment is Ready at [the-revigate.vercel.app](https://the-revigate.vercel.app); an unauthenticated HTTP check returned 200 and confirmed the page says the contract is not deployed.
+- The production dependency audit passed with zero production dependency vulnerabilities. The development dependency audit still reports advisories.
 
 ## Not completed / release blockers
 
-- **No contract compilation by the GenLayer CLI, Studionet deployment, contract address, wallet signature, transaction, or finalized receipt exists.** Direct Mode executes against its local test environment; it is not a deployed-chain test.
+- **No contract compilation/deployment through the GenLayer CLI, Studionet contract address, wallet signature, transaction, or finalized receipt exists.** Direct Mode executes against its local test environment; it is not a deployed-chain test.
 - An unlocked local account was observed for the configured CLI, but no transaction was signed or sent. Its presence does not establish adequate deployment funds or any live proof.
 - Payable error behavior and recovery, outgoing GEN delivery, recipient balance receipt, and reliable recovery from unknown/failed delivery have not been proved on Studionet. Do not use the candidate contract to custody funds until these pass.
 - No two-wallet live lifecycle has been run. The SDK integration has not been exercised with a browser wallet against an actual deployed contract.
 - Only 18 Direct Mode test cases exist. The full 52-scenario matrix in `TEST_MATRIX.md`, including the adversarial revision-provenance and consensus cases, has not been completed. T48 has partial pagination coverage, not the full boundary suite.
 - No independent production security audit has been completed.
 - The full development dependency audit still reports advisories in the ESLint/Next development dependency tree, including braces with no patched release available at audit time. The production-only audit is clear. Do not force a downgrade to an older Next configuration to silence this finding.
-- GitHub repository setup, push, branch protection, and a GitHub Actions run are still pending. A local workflow file is not evidence of a CI run.
-- Vercel project creation, `the-revigate.vercel.app` assignment, and deployment are still pending.
+- GitHub branch protection is not configured. The local GitHub CLI credential is invalid, and the connected GitHub API exposes no branch-protection write operation in this session.
+- The Vercel deployment is a static blueprint only. No contract address is configured, and no wallet actions are available on the live site.
 
 ## Release decision
 

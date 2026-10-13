@@ -4,7 +4,7 @@ Revigate is a backendless GenLayer application for versioned program rules and p
 
 ## Release status
 
-**NOT COMPLETE.** The local implementation now has a reproducible install, SDK-backed browser reads and writes, Direct Mode coverage, and a static frontend build. The contract has not been compiled and deployed to Studionet. The frontend has no verified contract address, so action controls remain locked. No wallet signature, transaction, contract address, or live two-wallet lifecycle has been produced.
+**NOT COMPLETE.** The Revigate blueprint is published at [the-revigate.vercel.app](https://the-revigate.vercel.app); it explicitly states that the contract is not deployed and no live programs exist. The contract has not been compiled/deployed to Studionet, and the frontend has no verified address, so contract actions remain locked. No wallet signature, contract transaction, address, or live two-wallet lifecycle has been produced.
 
 Outgoing GEN delivery and failure recovery remain a release-blocking custody question. The contract records an outgoing transfer as `UNKNOWN_DELIVERY`; the frontend deliberately does not expose withdrawal. A passing local test cannot prove recipient receipt on Studionet. Do not use this candidate to hold user funds.
 
@@ -39,4 +39,4 @@ npm run cli -- network info
 
 ## Deployment gates
 
-The deployment target is the user-specified GitHub repository `Bibidee/revigate` and Vercel hostname `the-revigate.vercel.app`. Deployment authorization was given, but release is still blocked until source compilation, adversarial review, payable failure behavior, external transfer evidence/recovery, and live two-wallet tests pass. Read [the current evidence and open gates](docs/IMPLEMENTATION_STATUS.md) before attempting a deployment.
+The source is pushed to [GitHub](https://github.com/Bibidee/revigate), and CI has completed a green run. Vercel is connected to the repository and the public blueprint is live at [the-revigate.vercel.app](https://the-revigate.vercel.app). **The contract is not deployed.** Contract release remains blocked until compiler/source checks, the full adversarial matrix, independent audit, payable failure behavior, external transfer evidence/recovery, and live two-wallet tests pass. Read [the current evidence and open gates](docs/IMPLEMENTATION_STATUS.md) before any contract deployment.
