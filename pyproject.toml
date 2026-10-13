@@ -1,0 +1,16 @@
+[project]
+name = "revigate"
+version = "1.0.0"
+description = "Direct Mode and reference-model tests for Revigate Intelligent Contracts"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "genlayer-test==0.29.2",
+  "pytest==8.4.2",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/direct"]
+addopts = "-ra"

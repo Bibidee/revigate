@@ -1,0 +1,20 @@
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const [spec, ...args] = process.argv.slice(2);
+if (!spec?.includes(":")) throw new Error("Usage: local-tool.mjs package:binary [args...]");
+const [packageName, binName] = spec.split(":", 2);
+const manifestPath = resolve(root, "node_modules", ...packageName.split("/"), "package.json");
+if (!existsSync(manifestPath)) throw new Error(`Repository-local ${packageName} is not installed; refusing global fallback.`);
+const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+const project = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
+const expected = project.dependencies?.[packageName] ?? project.devDependencies?.[packageName];
+if (expected && manifest.version !== expected) throw new Error(`${packageName} ${manifest.version} is installed; pinned version ${expected} is required.`);
+const binary = typeof manifest.bin === "string" ? manifest.bin : manifest.bin?.[binName];
+if (!binary) throw new Error(`${packageName} package does not expose the local ${binName} binary.`);
+const child = spawnSync(process.execPath, [resolve(dirname(manifestPath), binary), ...args], { cwd: root, stdio: "inherit" });
+if (child.error) throw child.error;
+process.exit(child.status ?? 1);

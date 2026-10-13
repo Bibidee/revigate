@@ -1,0 +1,6 @@
+{
+  "protocol": "revigate-v1",
+  "publisher_wallet": "0x1111111111111111111111111111111111111111",
+  "rulebook_path": "rules/program.md",
+  "network_chain_id": 61999
+}

@@ -1,0 +1,16 @@
+node_modules/
+.venv/
+.uv-cache/
+.next/
+out/
+coverage/
+artifacts/
+.pytest_cache/
+*.tsbuildinfo
+*.py[cod]
+__pycache__/
+.env*
+!.env.example
+.vercel/
+*.log
+.DS_Store

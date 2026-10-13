@@ -1,0 +1,98 @@
+REVISIONGATE V1 — FULL CODEX BUILD, ADVERSARIAL AUDIT, LIVE STUDIONET PROOF AND RELEASE MANDATE
+
+You are the principal GenLayer Intelligent Contract engineer, adversarial security auditor, funds-custody engineer, full-stack Next.js engineer and release engineer responsible for delivering REVISIONGATE V1 from the attached design handoff.
+
+IMPORTANT: THIS ZIP IS AN AUTHORITATIVE DESIGN HANDOFF, NOT IMPLEMENTED APPLICATION SOURCE. Unlike the earlier Patchbound handoff, YOU MUST CREATE THE FULL WORKING REPOSITORY from these specifications. Do not claim preexisting contract/frontend code that does not exist.
+
+PRIMARY TASK
+Read every file in this archive, especially START_HERE.md, PRODUCT_SPEC.md, the entire docs directory and fixtures. Implement RevisionGate fully, test and harden it, deploy final production-source Intelligent Contract to GenLayer Studionet with authorized wallet access, deploy a working backendless frontend, execute actual two-wallet money lifecycles, independently re-audit, and return complete evidence. Stop only for a genuine human-only credential/signature/approval or a verified hard release blocker. Continue with safe parts even if deployment approval is missing; report exactly what remains. Do not give a plan in place of execution. Do not mark success without receipts.
+
+IMPORTANT USER APPROVAL
+The user commissioned this handoff and will explicitly authorize implementation/deployment separately. Treat the user's actual invocation of this prompt in Codex as authorization to implement code; it is NOT blanket approval to spend money, reveal keys, deploy to paid infrastructure, push to private repositories or execute wallet signatures without permission where required by the connected environment. Ask for the narrowly necessary authorization for external side effects and do all safe work independently first.
+
+LOCKED PRODUCT
+- Rulebook epoch/acknowledgment continuity + protected participant-specific GEN entitlement escrow.
+- Wallet A (publisher) registers a verified public GitHub Markdown rulebook, creates specific offers and funds exact escrow. Wallet B (participant) acknowledges exact frozen version and accepts a funded offer.
+- GenLayer validators independently fetch authenticated before/after immutable rulebook versions and decide substantive MATERIAL/NONMATERIAL/INCONCLUSIVE. They do NOT decide task completion, payment amount or recipient.
+- MATERIAL advances program epoch and can activate the originally frozen B-optional early exit. Old onchain acknowledgment becomes stale for new program rules, but the original accepted escrow amount, maturity claim and payout address NEVER change. NONMATERIAL updates reviewed SHA without epoch change. INCONCLUSIVE does not advance version or epoch.
+- A cannot cancel after B accepts. B can receive 100% at maturity regardless of changes/outages; unaccepted offers refund A under deterministic conditions. B voluntary early exit uses exact fixed floor(escrow*exit_bps/10000) with remainder to A; mutually signed exact closure optional as specified. No unilateral admin/issuer override.
+- Originality is mandatory. DO NOT clone Crossbench disputes/stakes, Vowmark commitment bonds, Accordant deliverable/milestone judgments, Patchbound PR/patch logic, or any of their UI structures/code.
+
+ABSOLUTE NETWORK AND TOOLCHAIN
+- Network: GenLayer Studionet ONLY.
+- Chain ID 61999. RPC https://studio.genlayer.com/api . Explorer https://explorer-studio.genlayer.com .
+- Never use 61997, Studio-dev, different network or mock an actual production proof.
+- `genlayer` CLI **EXACTLY 0.39.1 repository-local**, locked in package and lockfile. Do not use a global binary, newer CLI or RC; verify local command runtime output. If incompatible with required Studionet deployment, REPORT A BLOCKER rather than silently violating pin.
+- Next.js App Router + TypeScript + injected EIP-1193 (MetaMask/Rabby-like) + real compatible `genlayer-js` adapter, browser direct reads/writes. Confirm exact SDK API against installed dependency; snippets in docs may refer to later APIs.
+- NO APPLICATION BACKEND: no Supabase, Firebase, Express, Cloudflare Workers, Railway app API, server DB, background cron/queue, hosted AI, operator signer, privilege admin, authoritative API routes, authoritative Server Actions or hidden adjudication control. Vercel only hosts static/frontend assets.
+
+ARCHITECTURE
+- Preferred V1: one GenLayer Intelligent Contract. Program/revision + escrow live in logically separated data/state modules. Do not force two unless real custody tests prove needed. If split into Registry+Vault, document exact reason, onchain caller authentication, asynchronous child transfer/recovery behavior, safety invariants and new live proofs.
+- Implement exact canonical records, financial ledger, replay keys, wallet-role indexes, bounded pages and public views in docs/CONTRACT_API_AND_DATA.md.
+- Immutable agreement terms and digest; two-phase nonpayable offer creation then separate payable exact amount funding, followed by B acceptance. Need real payable-failure accounting hardening, not just pre-validation in a failing payable method.
+- Program creation is separately verifiable before offers can be issued; GitHub owner/repo + fixed rulebook/manifest path + full SHA, signed commit provider verification and publisher wallet nomination manifest.
+- Publisher's onchain revision request must be a FINALIZED deterministic call BEFORE any nondeterministic assessment; anyone may run assessment or permissionless deterministic timeout. Outer failed consensus does not preserve state changes made inside failed assessment. Do not rely on attempt counters only incremented within failing tx.
+- Publisher-controlled submission is not automatic branch monitoring. UI says latest *reviewed* commit, not 'GitHub HEAD is current'.
+- Accepted B escrow maturity release and unaccepted A refunds must remain available even during provider outage or pending review. Mutually proposed closure cannot block B's matured claim.
+
+GENLAYER JUDGMENT
+- Validators independently retrieve both complete exact source versions, check signed GitHub commit/repo, fixed path, same-repo ancestry, wallet nomination for original authority and bounded clause format. No arbitrary remote URLs from a user or fetched content.
+- Treat public Markdown, comments and fetched JSON text as untrusted evidence, never protocol commands. Prevent prompt injection.
+- Programmatically identify changed clauses, ask GenLayer LLM to judge substantive materiality; implement strict typed output validation. Validator must independently rerun evidence and semantic judgment; compare consensus-critical MATERIAL/NONMATERIAL/INCONCLUSIVE classification and source bindings. NEVER merely validate leader output schema, never accept MATERIAL vs NONMATERIAL as equivalent, never make explanations byte-equal if that destabilizes consensus.
+- Return typed INCONCLUSIVE when objectively appropriate and consensus succeeds; distinguish from network protocol UNDETERMINED/ERROR. Missing/429/unsigned/oversized evidence must NOT be declared NONMATERIAL.
+- No storage mutation or money transfer inside nondeterministic leader/validator function.
+
+PAYMENTS AND SECURITY
+- Audit GenLayer finalized external value transfer behavior (read official docs). Distinguish locked, claimable, withdrawn/emitted, unknown delivery and objectively verified recipient balance. A recipient pressing 'confirm' is NOT proof of onchain credit.
+- Prove preservation/conservation of every amount, no duplicate allocations, unauthorized withdrawal, wrong-sender funding, unsafely rejected payable calls, partial rounding, replay, cancellation-after-acceptance, stale versions, closure/maturity races, external message failure handling.
+- Debit before send and never blindly resend an unknown-delivery message; verify by independent balance/child receipt whenever supported. If failed outgoing external transfers cannot be safely detected/recovered, state this honestly and mark escrow release NOT COMPLETE pending resolution. Do not 'fix' by fabricating a confirmation status.
+- In particular, test live how a payable GenLayer tx failing execution affects actual contract value. A rejected payable funding call must not trap unaccounted GEN. Use sender-refundable credit strategy if demonstrably safe on this runtime; otherwise redesign or declare blocker.
+- No admin, no override, no user-controlled payout destination or AI-chosen amount after frozen offer acceptance.
+
+FRONTEND
+- Implement `/`, `/publish`, `/program/[programId]`, `/program/[programId]/revision/[reviewId]`, `/agreements`, `/agreement/[offerId]`, `/my-rules`, `/activity`, `/about`.
+- Original editorial reading-room / protected agreement certificate design: premium blue, ivory, legible clause compare, mobile-first, no copy of earlier projects.
+- Publisher Studio: initial verified program setup, create/fund named offer, submit review, precise network wallet information.
+- Participant: view accepted rules/digest, acknowledge/accept, historical vs current rules badge, frozen rights, early exit, maturity full claim, credits and actual transfer status.
+- Handle wallet connect/disconnect, accountsChanged, chainChanged, wrong network, MetaMask/Rabby EIP-1193 signing, missing provider, signature rejection, fee/value separation and local transaction hash reconciliation.
+- Transaction UI must show: signed -> submitted -> consensus/ACCEPTED provisional -> FINALIZED + successful execution -> LATEST_FINAL onchain state -> separate external delivery confirmation where verifiable. Never confuse Tx `UNDETERMINED` and app `INCONCLUSIVE`, never conflate finalized receipt with recipient paid.
+- On refresh, read canonical onchain state; local storage is hash cache only. Protect against async races on account switch, large pagination, stale deployments.
+- Accessible keyboard/mobile responsive layouts, real empty/loading/error states and real clickable actions, no inert demo buttons.
+
+MANDATORY IMPLEMENTATION SEQUENCE
+PHASE 0 — Read the entire handoff, identify trust boundaries and document a real technical feasibility proof plan. Do not redesign product or reduce guarantees to make tests easier.
+PHASE 1 — Create a clean repository: package.json/local genlayer@0.39.1, Next App Router source, Python IC source, lockfiles, .gitignore, env examples without secrets, docs and tests. Do not leave empty stubs presented as completed features.
+PHASE 2 — Implement deterministic contract records, indexing, wallet authorization, exact terms digest, program proposal, offers, funding and escrow before model calls. Run economic invariants and invalid payable tests.
+PHASE 3 — Implement GitHub source verification, strict bounded rulebook parser, deterministic request and independently reproduced GenLayer semantic consensus. Live-check GitHub signed commits and actual GenVM retrieval; do not trust canned mocks for release proof.
+PHASE 4 — Implement deterministic maturity, unaccepted refund, protected early material exit, optional mutual closure, credits/withdrawals, true finality and recovery. If any escrow unsafe, stop release and document why while retaining safe progress.
+PHASE 5 — Build complete design-specific frontend and transaction rail against contract API, no app backend. All pages functional, no fake states.
+PHASE 6 — Adversarial audit and code fixes. Implement the complete docs/TEST_MATRIX.md scenario coverage across Direct Mode, simulator, negative cases, property tests, UI tests, browser tests, mutation checks. Record exact tests RUN, counts and failure cases. Run `npm ci`, version check, `npm run network:check`, typecheck, lint, test, build, Direct Mode and security audit; do not describe unrun tests as passing.
+PHASE 7 — Controlled Studionet deployment ONLY after code frozen, using explicit authorized wallet. Record exact final address, hash, `FINALIZED` execution success, source SHA256, final Git commit, deployed source readback where supported. Contract changes after deploy require fresh deployment and full re-verification.
+PHASE 8 — Run REAL two-wallet lifecycle, not mocked data: verified initial program + funded accepted offer; typo-only nonmaterial revision; material duration change; B early exit exactly split; separate B maturity payout; unaccepted A refund; uncertain evidence; failed consensus request expiry; wrong-wallet tests; actual ordinary EOA receipt verification; exact escrow conservation readback. If a live action requires human signature, only block that action and give exact required values; do not invent transactions or balances.
+PHASE 9 — Deploy genuine frontend to Vercel using final contract; browser-test real production desktop/mobile, wallet connect/change, routes, revisions, funding, accepted vs finalized status, activity recovery, payout evidence and console logs. Link all real results.
+PHASE 10 — Repeat hostile audit against production, source-to-deployment, CI, wallet and transfer failure paths. Fix identified source defects, redeploy if source changes and re-run proof. Push authorized GitHub repository; final clean tree and green protected-branch CI. Never commit secrets.
+
+RELEASE-BLOCKING DECISIONS
+- If G1–G9 in docs/DECISIONS_AND_GATES.md cannot be substantiated, disclose exact missing guarantee. No silent CLI upgrades/network substitutions, no unsupported assumption that a deposit was refunded after a failed payable call, no one-click recipient confirmation passed off as actual transfer delivery.
+- NEVER loosen wallet permissions, source authenticity, economic entitlement, timeout recovery or GenLayer necessity for convenience.
+- One vs two contracts: choose with observed proof and document rationale, not arbitrary count.
+- All externally observed claims must identify actual evidence, timestamp, source SHA and which network was used. No promises of 'zero mistakes'.
+
+FINAL REPORT REQUIRED HEADINGS
+1. Final Product and Distinct Originality
+2. Exact Architecture, Contract Count and Why
+3. GenLayer Judgment (evidence, validator independence, materiality)
+4. Escrow Model and Exact Conservation Audit
+5. Network and Pinned Toolchain
+6. Repository URL, Branch, Final Commit, Clean Tree, CI
+7. Contracts, Deployment Address, Tx/Explorer, Source Hash and Attestation
+8. Test Matrix: Actual Commands, Counts, Negative Controls, Failures
+9. Live Two-Wallet Lifecycles: Actual Hashes, Offer IDs, GEN Transfers and Beneficiary Receipts
+10. Frontend: Real Vercel URL, Routes, Actual Browser/Desktop/Mobile Tests
+11. Network Contamination: Entire Repository 61997/Studio-dev Detection
+12. Hardening, Prompt-Injection, Adversarial Findings and Fixes
+13. Outstanding Platform Limitations and Unverified Claims
+14. Exactly Specified Human-Only Actions (if any)
+15. FINAL STATUS: COMPLETE / COMPLETE WITH MANUAL ACTION / NOT COMPLETE
+
+Do not use COMPLETE unless the final deployed project, all high-risk economic paths, live tests and independent verification genuinely justify it. Build a real product, not a persuasive report.

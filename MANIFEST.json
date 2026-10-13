@@ -1,0 +1,137 @@
+{
+  "package": "REVIGATE_V1_CODEX_HANDOFF",
+  "created_date": "2026-10-13",
+  "kind": "implementation-grade design handoff; no completed production source",
+  "files": [
+    {
+      "path": "CODEX_BUILD_PROMPT.txt",
+      "bytes": 15028,
+      "sha256": "b629c227f3f2705378de6620d6d4f881bd195ba849a1d06dd32c35da81413505"
+    },
+    {
+      "path": "PRODUCT_SPEC.md",
+      "bytes": 5822,
+      "sha256": "e850688cc01607b6642170e65b2e5d4b57f5d5759cf27002263ed324a29bfabf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3684,
+      "sha256": "732d7915ceedfddcb8c7a1a94433af03496e6b56e97ee86cb65316137f0e01a3"
+    },
+    {
+      "path": "START_HERE.md",
+      "bytes": 4221,
+      "sha256": "8f5e8fcb6fc993a1c71a79faefc3d4e6c7eeeacb1e48e9b7207fafbfc2c32409"
+    },
+    {
+      "path": "docs/ACCEPTANCE_EXAMPLES.md",
+      "bytes": 2858,
+      "sha256": "4f1ac9e750d1e576ab853fcf8b8857656586dd096c16b5193a3d03b6858e5c7a"
+    },
+    {
+      "path": "docs/BUILD_BLUEPRINT.md",
+      "bytes": 5833,
+      "sha256": "76e5e695cebcf24be232a6608de0a58345e1756201897d1ee15de13cab500502"
+    },
+    {
+      "path": "docs/CONSENSUS_AND_JUDGMENT.md",
+      "bytes": 5122,
+      "sha256": "e60a1b5ebd1a7729772ec14cc33b1eff94b0f754a3a7a66c7f49b31946d95055"
+    },
+    {
+      "path": "docs/CONTRACT_API_AND_DATA.md",
+      "bytes": 11098,
+      "sha256": "02600a752ff6c3b5d717ece1599693ae3c43790f50d4e1f0752f69694f69fdc0"
+    },
+    {
+      "path": "docs/DECISIONS_AND_GATES.md",
+      "bytes": 5045,
+      "sha256": "c7d891ae7e439e59449f9aefde6b3c9259d4c230642d8c1be25b580e1f365237"
+    },
+    {
+      "path": "docs/ESCROW_AND_ACCOUNTING.md",
+      "bytes": 6030,
+      "sha256": "39712c4492b6d77ad63d7dcc052d02cde60d36a1b642ff082d91708a9b48196f"
+    },
+    {
+      "path": "docs/FAILURE_AND_FINALITY.md",
+      "bytes": 4945,
+      "sha256": "9f23a7fe86dca8d9665d93b912b5b7f742eafd3011b483e47bc35b16a55f4d85"
+    },
+    {
+      "path": "docs/FRONTEND_UX.md",
+      "bytes": 5922,
+      "sha256": "62aac6fd4decc4a85211f1e0f813109bcca2c3b9c51c88454f2b2bdbe079c05d"
+    },
+    {
+      "path": "docs/LIVE_PROOF_PLAN.md",
+      "bytes": 4894,
+      "sha256": "96fa0f99990538faf97817b50afce8fd5f69b363e2dea0a141c26dd8ab3436b8"
+    },
+    {
+      "path": "docs/ORIGINALITY_AND_REFERENCES.md",
+      "bytes": 3136,
+      "sha256": "f13ddb0cbaf4be58e54a8aef9187682da1f654bf5bb0ff73b0fb1c14942f2a30"
+    },
+    {
+      "path": "docs/RELEASE_CHECKLIST.md",
+      "bytes": 3239,
+      "sha256": "d3b498f6b74136100d302157ec6d7b37a9d42a97483dee626b8f6485d8b705bb"
+    },
+    {
+      "path": "docs/RISK_REGISTER.md",
+      "bytes": 3409,
+      "sha256": "07e1948df83f44ded15d93d011301aa01130e54a5b30678e9c1f45d2f59bdff9"
+    },
+    {
+      "path": "docs/RULEBOOK_PROVENANCE.md",
+      "bytes": 5590,
+      "sha256": "490fdb05627ef07e44b9d3f5efda5420442193136beb3c81ae87862335cbb26c"
+    },
+    {
+      "path": "docs/SECURITY_AND_ADVERSARIAL.md",
+      "bytes": 5113,
+      "sha256": "c89a4da73ba17ce7fab78125fe261996c0db7816ddfd50492e0d1c69df5bf510"
+    },
+    {
+      "path": "docs/STATE_MACHINES.md",
+      "bytes": 6735,
+      "sha256": "3b770229ac040567ac8049e7bacb6919b9c1286ac4dd41256866b454f4add23d"
+    },
+    {
+      "path": "docs/TEST_MATRIX.md",
+      "bytes": 6465,
+      "sha256": "afe10df731228e39a0724181a44f0c5b5640ced3eacb4e042f8a3b7d7f411557"
+    },
+    {
+      "path": "fixtures/EXPECTED_RESULTS.md",
+      "bytes": 1543,
+      "sha256": "b369d6b03fa5831a9cbdfdf03f64e17d4d3f6803c70984786fef6c9122ec17cb"
+    },
+    {
+      "path": "fixtures/publisher_manifest.example.json",
+      "bytes": 172,
+      "sha256": "8862995fc13f21221c2a4ca50c2dfdfc4c6e21683ce9f59c88700fad017dceff"
+    },
+    {
+      "path": "fixtures/rulebook_v1.md",
+      "bytes": 986,
+      "sha256": "60070cbe6e68b44cffed8f18dd034956b028ffeac1679b9949374d5740a9ef40"
+    },
+    {
+      "path": "fixtures/rulebook_v1_typo.md",
+      "bytes": 1092,
+      "sha256": "08189efc8dba3433557019f1398991d255c86db5bb5aa991879413995f7c5367"
+    },
+    {
+      "path": "fixtures/rulebook_v2_ambiguous.md",
+      "bytes": 1019,
+      "sha256": "307ec3c6ea64e79908e0f4891e0a8cc6771d8f0dfb8ab6fe347cf91a6e0fcc86"
+    },
+    {
+      "path": "fixtures/rulebook_v2_material.md",
+      "bytes": 986,
+      "sha256": "15141ee4352e51b08b4c401d9225c1f5252e6745821f41fce2aee924e9ef683a"
+    }
+  ]
+}

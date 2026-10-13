@@ -1,0 +1,43 @@
+{
+  "name": "revigate",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/local-tool.mjs next:next dev",
+    "build": "node scripts/local-tool.mjs next:next build",
+    "start": "node scripts/local-tool.mjs next:next start",
+    "lint": "node scripts/local-tool.mjs eslint:eslint .",
+    "typecheck": "node scripts/local-tool.mjs typescript:tsc --noEmit",
+    "test:js": "node --test tests/economics.test.mjs",
+    "test:python": "uv --cache-dir .uv-cache run --frozen python -m unittest discover -s tests -v",
+    "test:direct": "uv --cache-dir .uv-cache run --frozen pytest tests/direct -q",
+    "test": "npm run test:js && npm run test:python && npm run test:direct",
+    "network:check": "node scripts/network-check.mjs",
+    "cli": "node scripts/local-cli.mjs",
+    "preflight": "npm run network:check && npm run typecheck && npm run lint && npm run test && npm run build"
+  },
+  "dependencies": {
+    "genlayer-js": "1.1.8",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.3.1",
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.7",
+    "eslint": "9.30.1",
+    "eslint-config-next": "16.4.0",
+    "genlayer": "0.39.1",
+    "typescript": "5.8.3"
+  },
+  "overrides": {
+    "@vitest/mocker": "4.1.11",
+    "tinypool": "2.1.2",
+    "vitest": "4.1.11"
+  }
+}
