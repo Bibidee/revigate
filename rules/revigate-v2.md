@@ -2,7 +2,7 @@
 
 
 ## R-01: Eligibility
-Participants generally qualify after sufficient participation, subject to exceptional circumstances.
+Participants qualify only after 60 consecutive days of participation.
 
 
 ## R-02: Benefit
@@ -17,4 +17,4 @@ Eligibility is demonstrated by a dated public enrollment record.
 A participant may request a manual review within seven days of a decision.
 
 
-<!-- Editorial marker: baseline reviewed; nonmaterial fixture note. -->
+<!-- Editorial marker: material fixture revision. -->
