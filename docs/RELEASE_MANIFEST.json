@@ -15,15 +15,15 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate_registry.py",
-  "source_commit_sha": "4971823c43d1b552215475573e81e1da89a979c7",
-  "active_contract_git_blob": "fd246b3766bdb4be78819f116513435f56d73a66",
-  "active_contract_sha256": "169F2569CC7374B94A7CD0059D002A87480B8E62D60F18BCE42A22E0CD50F2EF",
+  "source_commit_sha": "46b749669c532bf85b3491d2ea6dd4bcee987422",
+  "active_contract_git_blob": "3e094b1b359cc7d451a209db79a2456cbc17bd",
+  "active_contract_sha256": "EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56",
   "candidate_source": {
     "commit_sha": "46b749669c532bf85b3491d2ea6dd4bcee987422",
     "contract_git_blob": "3e094b1b359cc7d451a209db79a2456cbc17bd",
     "contract_sha256": "EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56",
-    "deployment_status": "DIAGNOSTIC_PROBE_DEPLOYED_AND_ATTESTED",
-    "hosted_diagnostic_status": "FINALIZED_MAJORITY_DISAGREE_HTTP_200_OBSERVED",
+    "deployment_status": "DEPLOYED_AND_ATTESTED",
+    "hosted_diagnostic_status": "REQUIRED_LIFECYCLE_COMPLETE",
     "hosted_403_cause": "UNKNOWN"
   },
   "github_access_diagnostic": {
@@ -46,8 +46,8 @@
   "custody": "NONE",
   "deployment": {
     "environment": "STUDIONET_TEST_ONLY",
-    "address": "0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F",
-    "transaction": "0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97",
+    "address": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
+    "transaction": "0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2",
     "receipt": "FINALIZED_MAJORITY_AGREE",
     "leader_execution": "SUCCESS",
     "value_credited": false,
@@ -85,11 +85,11 @@
   "signed_fixture_ambiguous": "14401f20f2d3eeeac537746966646809e5c01b8c",
   "hosted_lifecycle": {
     "program_id": 1,
-    "registration_transaction": "0xc4069ee95a663fb183e801b6c31912a0737573cf11380b2b9187a5f7d9db6e52",
-    "baseline_verification_transaction": "0xb2ef13b3191e01b884f7a59cc6ffa6a86520da83fe24ecdcf976bfa0365cccd9",
+    "registration_transaction": "0xc48d0fffa186b9c35ec1e7181b2902feb7a1f9b48019d4795609f5cab255fe09",
+    "baseline_verification_transaction": "0xad3ee46ca318d710c1a957d4f47a51c4c464d00f0cbb2025f980eaede6f86db8",
     "baseline_status": "VERIFIED_EPOCH_1",
-    "publisher_acknowledgment_transaction": "0x96d42b7cbc90339dda4f0c16752139450b30fbbe1cbe89d12b49b296c46a46b0",
-    "nonmaterial": {
+    "publisher_acknowledgment_transaction": null,
+    "historical_prior_deployment_nonmaterial": {
       "request_transaction": "0xb33c3f63d957b00ac2a90883d6dec2898234287347745f72ad87afc73e3b2ffa",
       "assessment_transaction": "0xfb6cb52f1145c564ef2b3feae7a728cdccc8f970118987b2c8041e9628ebd624",
       "outcome": "NONMATERIAL",
@@ -100,34 +100,33 @@
       "readback_material_event_count": 0
     },
     "material": {
-      "request_transaction": "0xe87dfeb08031474f41c442c116c196788571740e633e253540f5d529d95cdfe2",
-      "assessment_transaction": "0xbc87505c4131907777fd7ea3a9c8d38fa762bbdbcbabf09984cfa4159a31bf0b",
-      "actual_outcome": "INCONCLUSIVE",
-      "base_source_reason": "commit request failed with HTTP status 403",
-      "candidate_source_reason": "commit request failed with HTTP status 403"
+      "request_transaction": "0x1deee7091023f61e2797fe526cae9521e5ef8a7d34fff07826cab49fd2f45f52",
+      "assessment_transaction": "0xeae537a1354d3335cb9c721eb6225edd4ffe71a52e7629d75b819a4c6756df1f",
+      "actual_outcome": "MATERIAL",
+      "base_source_status": "VERIFIED",
+      "candidate_source_status": "VERIFIED",
+      "readback_epoch": 2
     },
     "ambiguous": {
-      "initial_request_transaction": "0x5b32091c5e36b98acb0ad193ebf53dde25c69a2bad25fc3dc4e3216cb53c8552",
-      "initial_request_result": "ERROR_NO_REVIEW_CREATED",
-      "initial_request_cause": "300-second publisher cooldown had not elapsed",
-      "request_transaction": "0xb85625fdb851b9bb1c4708bdb9ee34581e21bc59e3ed8f8d19419f48d1b82d5a",
-      "review_id": 3,
-      "assessment_transaction": "0x6829dae057666682f4775dd0bfd001e0b95017380c9ce6ae0d8abdbe1654bcc9",
-      "actual_outcome": "INCONCLUSIVE",
-      "base_source_reason": "commit request failed with HTTP status 403",
-      "candidate_source_reason": "commit request failed with HTTP status 403",
-      "semantic_ambiguity_assessed": false
+      "request_transaction": "0x79c27d3aed9bdd7bfeb6073764b91d5fe3108744083bb930a77369b559493a12",
+      "review_id": 2,
+      "assessment_transaction": "0x37bff50bff4456cb062fda7a210d6a4f3a8ac8d37d9585d4f08c4b78f37ab866",
+      "actual_outcome": "MATERIAL",
+      "base_source_status": "VERIFIED",
+      "candidate_source_status": "VERIFIED",
+      "semantic_ambiguity_assessed": true,
+      "validator_votes": ["AGREE", "AGREE", "AGREE", "IDLE", "IDLE"]
     },
     "final_program_state": {
       "status": "VERIFIED",
-      "active_sha": "7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10",
-      "document_digest": "55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4",
-      "epoch": 1,
+      "active_sha": "14401f20f2d3eeeac537746966646809e5c01b8c",
+      "document_digest": "3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631",
+      "epoch": 3,
       "pending_review": 0,
-      "material_event_count": 0
+      "material_event_count": 2
     },
     "value_credited": false,
-    "verdict": "PARTIAL_SOURCE_AUTHENTICATION_FAILURE"
+    "verdict": "REQUIRED_HOSTED_LIFECYCLE_COMPLETE"
   },
   "real_browser_wallet_tests": {
     "status": "NOT_VERIFIED",

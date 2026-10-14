@@ -6,7 +6,13 @@ Recorded 2026-10-14 for source correction commit `46b749669c532bf85b3491d2ea6dd4
 
 Revigate is a single non-custodial GenLayer Registry. Escrow, offers, deposits, credits, refunds, payouts, withdrawals, and Vault messaging are absent from the active contracts and frontend. The Registry authenticates GitHub rulebook commits, records participant acknowledgments, assesses revisions, and tracks material epochs and bounded history.
 
-## Existing Studionet deployment
+## Current corrected-source Studionet deployment
+
+Corrected Registry source commit `46b749669c532bf85b3491d2ea6dd4bcee987422` is deployed at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. Deployment transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2` finalized `MAJORITY_AGREE` with successful execution and zero value. Deployed source readback exactly matches local SHA-256 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56` and Git blob `3e094b1b359cc7d451a209db79a2456cbc17bd`. Canonical config is chain 61999, Registry version 2, protocol `revigate-registry-v1`, custody `NONE`.
+
+The signed baseline verified successfully. The signed 14-to-60-day revision produced `MATERIAL` and advanced the program to epoch 2. After the required cooldown, the intentionally ambiguous revision also produced the actual hosted result `MATERIAL`; three validators agreed and two became idle after quorum. Canonical review 2 records verified base and candidate sources and rationale that the new vague eligibility language changed criteria and discretion. Final program state is `VERIFIED`, active SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, epoch 3, material-event count 2, and no pending review.
+
+## Historical earlier deployment
 
 Registry V2 source commit `4971823c43d1b552215475573e81e1da89a979c7` is deployed at `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F` on Studionet 61999. Deployment transaction `0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97` finalized with zero value. The deployed source SHA-256 is `169F2569CC7374B94A7CD0059D002A87480B8E62D60F18BCE42A22E0CD50F2EF`.
 
@@ -46,4 +52,4 @@ The checked repository CI workflow does not require an external security review.
 
 ## Release decision
 
-**NOT RELEASED.** Production writes remain locked. No user funds were accepted; no merge or production promotion occurred. The corrected Registry source still needs exact-source Studionet deployment and attestation, live signed MATERIAL and ambiguous assessments with canonical readbacks, fresh GitHub Actions, and real browser/wallet testing. The diagnostic probe ran and observed HTTP 200, but the historical 403 cause remains unknown. The existing Registry deployment is evidence for its older source only.
+**NOT RELEASED.** Production writes remain locked. No user funds were accepted; no merge or production promotion occurred. Exact-source deployment and the required hosted MATERIAL and ambiguous lifecycles are complete. Remaining release work is fresh GitHub Actions for the evidence commit, real browser and wallet-extension testing, and independent security review. The historical HTTP 403 cause remains unknown because it did not recur.

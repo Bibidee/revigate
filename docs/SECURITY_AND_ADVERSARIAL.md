@@ -29,8 +29,8 @@ The rulebook is quoted to the model as untrusted evidence. Model output is type 
 - Semantic materiality remains a judgment result and may disagree or remain undetermined.
 - Repository changes are invisible until the publisher submits a signed candidate.
 - Nonpayable entry points and zero value application writes do not prevent unsolicited native value at the network level.
-- Source correction `46b7496` is locally tested but not deployed; the hosted semantic MATERIAL and ambiguous outcomes remain unverified. The deployed `4971823` source is older. Local browser and wallet mocks pass, while real browser and extension behavior remains unverified. Actions run 17 passed on prior evidence commit `f2987c9`; fresh CI for `46b7496` remains pending. No external review has been obtained.
+- Corrected source `46b7496` is deployed and byte-for-byte attested. Its hosted signed MATERIAL and ambiguous fixtures both produced actual `MATERIAL` outcomes, with canonical state at epoch 3. The ambiguous wording was treated as materially changing eligibility criteria and discretion; this is a model-governed judgment, not a universal semantic guarantee. Local browser and wallet mocks pass, while real browser and extension behavior remains unverified. Fresh CI for the final evidence commit and external review remain pending.
 
 ## Current verdict
 
-NOT RELEASED. Local engineering gates pass, but source authentication and required live lifecycle gates remain open.
+NOT RELEASED. Source authentication and the required live lifecycle now pass. Real browser and wallet-extension verification, fresh CI for the evidence commit, and independent security review remain open; production writes stay locked.

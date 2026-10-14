@@ -32,4 +32,18 @@ The hosted lifecycle therefore confirms baseline authentication, acknowledgment,
 
 ## Current source correction boundary
 
-The hosted lifecycle above was executed against Registry source commit `4971823`. The later correction at source commit `46b749669c532bf85b3491d2ea6dd4bcee987422` has not been deployed. Its source changes and local tests do not revise the recorded hosted outcomes and do not establish that the GitHub HTTP 403 cause has been fixed. A fresh hosted lifecycle must use a deployment attested to the exact corrected source before any semantic result is reported.
+The hosted lifecycle above was executed against Registry source commit `4971823`. At the time of that historical run, correction `46b749669c532bf85b3491d2ea6dd4bcee987422` had not been deployed. The corrected-source lifecycle below now supersedes that former release blocker while preserving the earlier outcomes as historical evidence.
+
+## Corrected-source hosted lifecycle
+
+The required fresh lifecycle was completed against source-attested Registry `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. All writes carried zero value.
+
+| Step | Transaction | Actual result / canonical state |
+|---|---|---|
+| Deploy corrected source | `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2` | `FINALIZED`, `MAJORITY_AGREE`, execution `SUCCESS`; deployed source exactly matched SHA-256 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`. |
+| Register baseline | `0xc48d0fffa186b9c35ec1e7181b2902feb7a1f9b48019d4795609f5cab255fe09` | Program 1 created. |
+| Verify baseline | `0xad3ee46ca318d710c1a957d4f47a51c4c464d00f0cbb2025f980eaede6f86db8` | `VERIFIED`, epoch 1, active SHA `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`, digest `ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170`. |
+| MATERIAL candidate `376e447…` | Request `0x1deee7091023f61e2797fe526cae9521e5ef8a7d34fff07826cab49fd2f45f52`; assessment `0xeae537a1354d3335cb9c721eb6225edd4ffe71a52e7629d75b819a4c6756df1f` | Actual `MATERIAL`; both sources `VERIFIED`; epoch advanced to 2. |
+| Ambiguous candidate `14401f2…` | Request `0x79c27d3aed9bdd7bfeb6073764b91d5fe3108744083bb930a77369b559493a12`; review 2 assessment `0x37bff50bff4456cb062fda7a210d6a4f3a8ac8d37d9585d4f08c4b78f37ab866` | Actual `MATERIAL`; three validator votes `AGREE`, two `IDLE` after quorum. Canonical rationale: vague “sufficient participation” plus discretion changed eligibility criteria. |
+
+Final canonical program state is `VERIFIED`, active SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, epoch 3, material-event count 2, `pending_review=0`, and `provider_retry_at=0`. The actual ambiguous outcome was recorded as returned; no expected outcome was substituted.

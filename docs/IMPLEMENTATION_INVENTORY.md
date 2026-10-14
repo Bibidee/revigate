@@ -17,7 +17,7 @@ The frontend reads canonical programs, reviews, material event pages, and acknow
 - `MATERIAL`, `NONMATERIAL`, and `INCONCLUSIVE` remain separate outcomes. Only a successful decision consumes a candidate; only `MATERIAL` advances the epoch.
 - Program, review, material-event, and acknowledgment reads are bounded to 50 records.
 - Source correction `46b7496` persists authenticated baseline and candidate snapshots. It avoids repeating verified baseline reads and reuses a candidate only when its complete source identity, signature metadata, tree/blob proofs, digest, and ancestry binding match.
-- Provider failures are classified and include sanitized, bounded diagnostics. Retry timing respects GitHub `Retry-After` and reset headers with capped exponential backoff. This source correction has passed local Direct Mode checks but has not been deployed or verified on Studionet.
+- Provider failures are classified and include sanitized, bounded diagnostics. Retry timing respects GitHub `Retry-After` and reset headers with capped exponential backoff. This source correction passed local Direct Mode checks and is source-attested on Studionet at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`.
 
 ## Automated evidence
 
@@ -33,7 +33,7 @@ The two-URL diagnostic probe at `evidence/github-access-diagnostic/github_api_pr
 
 Probe transaction `0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228` finalized `MAJORITY_DISAGREE`. Its leader and successful validator executions received HTTP 200 from both fixed GitHub endpoints, with 42 of 60 core requests remaining. The earlier 403 did not recur, but its historical cause remains unknown. The probe disagreed because it truncated the successful commit response before JSON parsing and consequently compared an empty `sha` against the expected SHA. No keystore password is recorded here.
 
-The current source correction differs from deployed commit `4971823`; the prior deployment address and attestation do not attest the correction. No new Registry deployment or current-source hosted lifecycle has occurred.
+The corrected source is deployed at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`, transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2`. Exact source readback matched SHA-256 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`. Its fresh signed lifecycle verified the baseline, classified the 14-to-60-day change as `MATERIAL`, and classified the ambiguous eligibility change as `MATERIAL`. Final canonical state is epoch 3, two material events, and no pending review.
 
 ## Browser, preview, and review
 
@@ -43,4 +43,4 @@ This repository's checked CI workflow does not require an independent security r
 
 ## Release decision
 
-**NOT RELEASED.** Production writes remain locked. No user funds were accepted, and no merge or production promotion occurred. The current Registry source needs a Studionet deployment and exact source attestation, followed by semantic `MATERIAL` and ambiguous assessments with canonical readbacks. The diagnostic probe observed HTTP 200 but did not determine the historical 403 cause. Fresh Actions for the corrected source and real browser/wallet checks are also outstanding.
+**NOT RELEASED.** Production writes remain locked. No user funds were accepted, and no merge or production promotion occurred. Current-source deployment, attestation, and required semantic assessments are complete. Fresh Actions for this evidence commit, real browser/wallet checks, and independent security review remain outstanding. The historical 403 cause remains unknown.

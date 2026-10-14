@@ -358,9 +358,9 @@ The current local Registry source correction is commit
 `3e094b1b359cc7d451a209db79a2456cbc17bd` and SHA-256
 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
 It stores authenticated source snapshots, classifies GitHub provider errors,
-and applies bounded retry timing based on response headers. Local preflight
-passed on this source; it has not been deployed to Studionet. The address and
-deployment transaction above attest only source commit `4971823`.
+and applies bounded retry timing based on response headers. This paragraph
+records the historical state before the corrected deployment documented below;
+the address and deployment transaction above attest only source commit `4971823`.
 
 A disposable, zero-value GitHub diagnostic contract at
 `evidence/github-access-diagnostic/github_api_probe.py` was deployed at
@@ -393,6 +393,23 @@ not attest corrected Registry source `46b7496`. The hosted baseline and
 NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
 ambiguous fixtures, remain valid only for the earlier deployed Registry.
 
+## 2026-10-14 corrected Registry deployment and lifecycle
+
+The corrected Registry source at commit `46b749669c532bf85b3491d2ea6dd4bcee987422` was deployed with the repository-local CLI to `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. Deployment transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2` finalized `MAJORITY_AGREE` with execution `SUCCESS` and `value_credited=false`. Source readback exactly matched local SHA-256 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56` and Git blob `3e094b1b359cc7d451a209db79a2456cbc17bd`. `get_config` returned chain 61999, contract version 2, protocol `revigate-registry-v1`, custody `NONE`.
+
+| Action | Transaction | Final result |
+|---|---|---|
+| Register signed baseline | `0xc48d0fffa186b9c35ec1e7181b2902feb7a1f9b48019d4795609f5cab255fe09` | Program 1, finalized successfully, zero value. |
+| Verify baseline | `0xad3ee46ca318d710c1a957d4f47a51c4c464d00f0cbb2025f980eaede6f86db8` | `VERIFIED`, epoch 1, baseline SHA `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`. |
+| Request material revision | `0x1deee7091023f61e2797fe526cae9521e5ef8a7d34fff07826cab49fd2f45f52` | Review 1 created. |
+| Assess material revision | `0xeae537a1354d3335cb9c721eb6225edd4ffe71a52e7629d75b819a4c6756df1f` | Actual `MATERIAL`; canonical review sources `VERIFIED`; active SHA advanced to `376e447065b8a7efd1d26a60c6c9ac476bd1e567`, epoch 2. |
+| Request ambiguous revision after cooldown | `0x79c27d3aed9bdd7bfeb6073764b91d5fe3108744083bb930a77369b559493a12` | Review 2 created and finalized successfully. |
+| Assess ambiguous revision | `0x37bff50bff4456cb062fda7a210d6a4f3a8ac8d37d9585d4f08c4b78f37ab866` | Actual `MATERIAL`, `MAJORITY_AGREE`; three validators agreed and two were idle after quorum. Both sources were `VERIFIED`. |
+
+Canonical review 2 records candidate digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, proof digest `5c8e51d5b8d47f5b57de572bb1643769df42be42965b2504dee1e8d545f559aa`, changed clause `R-01`, and rationale that replacing the 60-day rule with vague sufficient participation plus discretion changed eligibility criteria. Final `get_program(1)` returned `VERIFIED`, active SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, epoch 3, material-event count 2, `pending_review=0`, and `provider_retry_at=0`.
+
+This current lifecycle supersedes the older deployment's HTTP 403 outcomes for release-gate verification. It does not prove the cause of those historical 403 responses. Production writes remain locked, no funds were accepted, and no merge or production promotion occurred.
+
 ### Release boundaries
 
 This is a zero-value Studionet test deployment, not a production deployment. No user funds were accepted, production writes remain locked, and no merge or production promotion occurred. These transactions show actual baseline verification, acknowledgment, and one NONMATERIAL transition. They do not demonstrate a hosted MATERIAL result, a semantic ambiguous-language result, validator disagreement, or prompt-injection handling. The full outcome ledger is in [the T01–T52 matrix](TEST_MATRIX.md); the verdict remains **NOT RELEASED**.
@@ -404,9 +421,9 @@ The current local Registry source correction is commit
 `3e094b1b359cc7d451a209db79a2456cbc17bd` and SHA-256
 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
 It stores authenticated source snapshots, classifies GitHub provider errors,
-and applies bounded retry timing based on response headers. Local preflight
-passed on this source; it has not been deployed to Studionet. The address and
-deployment transaction above attest only source commit `4971823`.
+and applies bounded retry timing based on response headers. This duplicate
+historical record predates the corrected deployment documented below; the
+address and deployment transaction above attest only source commit `4971823`.
 
 A disposable, zero-value GitHub diagnostic contract at
 `evidence/github-access-diagnostic/github_api_probe.py` was deployed at
