@@ -153,6 +153,7 @@
     "browser_route_checks": "PASS_FOR_ROOT_PUBLISH_MY_RULES_ACTIVITY_ABOUT_PROGRAM_1_PROGRAM_3",
     "browser_program_3_readback": "PASS_ACTIVE_D35D438_EPOCH_3_WALLET_A",
     "browser_refresh_recovery": "PASS_WALLET_A_SESSION_AND_REGISTRY_STATUS",
+    "wallet_b_history_read": "PASS_EMPTY_PROGRAM_3_HISTORY_NO_WRITE",
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
     "remaining": ["extension account/network/rejection coverage", "protected preview requires Vercel authentication", "independent security review"]
   },
