@@ -23,7 +23,7 @@ Revigate does not provide financial custody or settlement. The Studionet custody
 
 ## Remaining release work
 
-- Publish genuine GitHub verified signed baseline and revision fixtures for the real publisher wallet.
+- Execute the published, GitHub verified baseline and revision fixtures on Studionet and record actual hosted validator outcomes.
 - Deploy the exact reviewed and committed Registry v2 source to Studionet without value.
 - record its finalized transaction, address, source hash and canonical `get_config` readback;
 - bind the verified address to the frontend and run wallet/browser checks;

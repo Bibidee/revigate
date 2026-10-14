@@ -37,10 +37,10 @@ Local totals: 10 JavaScript tests and 22 Direct Mode tests pass. TypeScript, lin
 | T29 | PASS | Every frontend write constructs native value zero. |
 | T30 | PASS | Stored pending transactions reject nonzero value and are chain/address scoped. |
 | T31 | PASS | Wallet account/network event races and disconnect cleanup pass fake-provider tests. |
-| T32 | BLOCKED | Genuine GitHub verified baseline fixture has not yet been published. |
-| T33 | BLOCKED | Genuine signed nonmaterial revision fixture has not yet been published. |
-| T34 | BLOCKED | Genuine signed material revision fixture has not yet been published. |
-| T35 | BLOCKED | Genuine signed ambiguous revision fixture has not yet been published. |
+| T32 | PASS | GitHub verified baseline fixture commit `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`; no hosted verification transaction yet. |
+| T33 | PASS | GitHub verified editorial fixture commit `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`; hosted NONMATERIAL result pending. |
+| T34 | PASS | GitHub verified 14-to-60-day fixture commit `376e447065b8a7efd1d26a60c6c9ac476bd1e567`; hosted MATERIAL result pending. |
+| T35 | PASS | GitHub verified ambiguous-language fixture commit `14401f20f2d3eeeac537746966646809e5c01b8c`; hosted INCONCLUSIVE result pending. |
 | T36 | BLOCKED | Hosted prompt injection and validator behavior await signed fixtures and deployment. |
 | T37 | BLOCKED | Actual hosted validator disagreement/undetermined result has not been observed. |
 | T38 | PASS | Unsafe repository paths and source identity mismatches fail closed locally. |
@@ -61,6 +61,6 @@ Local totals: 10 JavaScript tests and 22 Direct Mode tests pass. TypeScript, lin
 
 ## Current decision
 
-NOT RELEASED. T32–T37, T49, T51, fresh CI, real browser testing, and independent review remain open. T50 is intentionally not applicable because Registry V2 has no financial functionality.
+NOT RELEASED. Hosted execution of T32–T37, T49, T51, fresh CI, real browser testing, and independent review remain open. Signed source fixture creation is complete. T50 is intentionally not applicable because Registry V2 has no financial functionality.
 
 
