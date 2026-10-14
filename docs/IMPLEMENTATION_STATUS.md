@@ -47,10 +47,16 @@ Probe transaction `0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469
 
 ## Preview and review
 
-The Vercel preview is protected. The connected Vercel identity returned HTTP 403 for the `bibidees-projects` team scope and for preview access. Browser and wallet-extension checks therefore remain unverified; protection was not disabled. Vercel environment values and the live Registry binding could not be verified.
+## Live browser validation
+
+The public HTTPS frontend was exercised in Brave on Studionet 61999. The reading room, publisher, acknowledgments, activity, about, and `/program/1/` routes loaded. Wallet B `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54` signed the zero-value Program 1 epoch 3 acknowledgment in the browser (`0xb3c62284235bddd5f785f4c8c47bb9da0f4e924c0c675ec89328def5b199f140`); finality and canonical acknowledgment readback matched. The browser also read the actual hosted MATERIAL results for review 1 and review 2.
+
+The browser session's connected account was `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`. It is the publisher recorded for Program 2, whose verification remains `INCONCLUSIVE` because the signed manifest nominates `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`. The successful Program 1 publisher lifecycle is bound to `0x527d…56b5`; no browser publisher write was submitted from that account. The observer conservatively classified the acknowledgment as finalized-execution-unknown because the RPC omitted `txExecutionResultName`, although the finalized receipt and canonical readback were successful.
+
+The Vercel preview is protected. The connected Vercel identity returned HTTP 403 for the `bibidees-projects` team scope and for preview access. The protected preview and extension-specific controls therefore remain unverified; protection was not disabled. Vercel environment values and the live Registry binding could not be verified.
 
 The checked repository CI workflow does not require an external security review. No independent review has been obtained; it remains a recommended assurance step. The current work is adversarial self-audit, not independent review.
 
 ## Release decision
 
-**NOT RELEASED.** Production writes remain locked. No user funds were accepted; no merge or production promotion occurred. Exact-source deployment and the required hosted MATERIAL and ambiguous lifecycles are complete. Remaining release work is fresh GitHub Actions for the evidence commit, real browser and wallet-extension testing, and independent security review. The historical HTTP 403 cause remains unknown because it did not recur.
+**NOT RELEASED.** Production writes remain locked. No user funds were accepted; no merge or production promotion occurred. Exact-source deployment, the required hosted MATERIAL and ambiguous lifecycles, route checks, and a zero-value browser acknowledgment are complete. Remaining release work is publisher-account browser signing from the manifest wallet, wallet-extension account/network/rejection coverage, independent security review, and fresh CI for the evidence update. The historical HTTP 403 cause remains unknown because it did not recur.

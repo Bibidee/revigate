@@ -36,7 +36,7 @@ Local verification for source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`:
 | T28 | PASS | Registry configuration requires chain 61999, protocol v1, version 2, custody NONE. |
 | T29 | PASS | Every frontend write constructs native value zero. |
 | T30 | PASS | Stored pending transactions reject nonzero value and are chain/address scoped. |
-| T31 | PARTIAL | Wallet account/network event races and disconnect cleanup pass fake-provider tests; extension UI integration is unverified. |
+| T31 | PARTIAL | Live browser connected to Rabby and exposed the active account; a wallet B acknowledgment was signed. Extension account switching, network switching, and disconnect cleanup remain unverified. |
 | T32 | PASS | Hosted baseline verification on signed commit `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`; verification transaction `0xb2ef13b3191e01b884f7a59cc6ffa6a86520da83fe24ecdcf976bfa0365cccd9`, canonical state VERIFIED at epoch 1. |
 | T33 | PASS | Hosted NONMATERIAL assessment of signed commit `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`; assessment transaction `0xfb6cb52f1145c564ef2b3feae7a728cdccc8f970118987b2c8041e9628ebd624`; canonical readback updated active SHA/digest and kept epoch 1. |
 | T34 | PARTIAL | Signed material candidate `376e447065b8a7efd1d26a60c6c9ac476bd1e567` was assessed, but the actual result was INCONCLUSIVE: base and candidate GitHub commit lookups returned HTTP 403. Program state did not advance. |
@@ -48,17 +48,17 @@ Local verification for source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`:
 | T40 | PASS | Wrong repository and non-descendant revision fixtures fail closed locally. |
 | T41 | PASS | Unscoped preamble is included in the Registry clause map and semantic diff. |
 | T42 | PASS | Production build prerenders all nine active routes with the Registry-only frontend. |
-| T43 | PARTIAL | Provider absence, wallet rejection, account changes, and network changes remain explicit in fake-provider tests; live extension checks are unverified. |
-| T44 | PASS | Pending, cancelled, undetermined, execution error, unknown execution, and success remain distinct in local tests; no live wallet UI flow was completed. |
+| T43 | PARTIAL | Live route checks and a signed wallet B acknowledgment passed. Publisher-account switching to the manifest wallet, network changes, rejection, and provider-absence UI remain unverified. |
+| T44 | PARTIAL | The browser observed a finalized acknowledgment and canonical readback; the RPC omitted `txExecutionResultName`, so the UI conservatively classified it as finalized-execution-unknown. Local classification tests still cover the remaining states. |
 | T45 | PASS | Returned hashes persist; pre-hash rejection stores nothing; storage failure exposes the hash in local tests. |
 | T46 | PASS | Corrected-source hosted write/readback checks match for baseline verification and both MATERIAL decisions; final state is epoch 3, two material events, and no pending review. |
-| T47 | PARTIAL | Refresh recovery loads the same zero-value hash and refuses duplicate pending writes in local tests; browser refresh recovery is unverified. |
+| T47 | PARTIAL | Browser navigation across the live routes preserved the saved zero-value acknowledgment hash and canonical readback. Full refresh/account-switch recovery remains unverified. |
 | T48 | PASS | Program, review, material-event, and acknowledgment reads use bounded pagination. |
 | T49 | PASS | Exact corrected-source deployment verified the signed baseline, then returned actual `MATERIAL` for the 14-to-60-day fixture and actual `MATERIAL` for the ambiguous fixture. Canonical sources were verified and final state advanced to epoch 3. Historical 403 cause remains unknown. |
 | T50 | N/A | Financial payout, refund, and exit cases were retired with escrow and are outside Registry V2. |
 | T51 | PASS | Corrected Registry source `46b749669c532bf85b3491d2ea6dd4bcee987422` is deployed and exactly attested at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`, transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2`. |
-| T52 | PARTIAL | Local preflight passes for `46b7496`, and Actions run 18 passes for its evidence commit `ab4d2c2`. Vercel status is green, but the protected preview returns HTTP 403 to the connected identity; real browser/wallet-extension checks remain unverified. |
+| T52 | PARTIAL | Local preflight and hosted lifecycle evidence pass. Live public routes and wallet B acknowledgment were exercised, but the protected preview, manifest-wallet publisher signing, remaining extension flows, and independent review remain incomplete. |
 
 ## Current decision
 
-NOT RELEASED. The corrected Registry is deployed, source-attested, and has produced hosted semantic results for both required revisions. Production writes remain locked. Real browser/wallet-extension checks and independent security review remain incomplete, and fresh CI is required for this evidence commit. The historical 403 cause remains unknown. No user funds were accepted, and no merge or production promotion occurred.
+NOT RELEASED. The corrected Registry is deployed, source-attested, and has produced hosted semantic results for both required revisions. Live public routes and a zero-value wallet B acknowledgment were exercised, but manifest-wallet publisher signing, remaining wallet-extension flows, the protected preview, independent security review, and fresh CI for this evidence update remain incomplete. The historical 403 cause remains unknown. No user funds were accepted, and no merge or production promotion occurred.

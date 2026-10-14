@@ -129,9 +129,16 @@
     "verdict": "REQUIRED_HOSTED_LIFECYCLE_COMPLETE"
   },
   "real_browser_wallet_tests": {
-    "status": "NOT_VERIFIED",
-    "local_app_access": "BROWSER_TABS_TIMED_OUT",
-    "preview_lookup": "VERCEL_SCOPE_HTTP_403"
+    "status": "PARTIAL",
+    "public_routes": ["/", "/publish/", "/my-rules/", "/activity/", "/about/", "/program/1/"],
+    "wallet_b": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+    "wallet_b_acknowledgment_transaction": "0xb3c62284235bddd5f785f4c8c47bb9da0f4e924c0c675ec89328def5b199f140",
+    "wallet_b_acknowledgment_status": "FINALIZED_ZERO_VALUE_CANONICAL_READBACK_MATCHED",
+    "publisher_manifest_wallet": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "browser_connected_account": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
+    "browser_publisher_write": "NOT_SUBMITTED_ACCOUNT_DOES_NOT_MATCH_PROGRAM_1_MANIFEST",
+    "preview_lookup": "VERCEL_SCOPE_HTTP_403",
+    "remaining": ["publisher account signing", "extension account/network/rejection coverage", "protected preview"]
   },
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",

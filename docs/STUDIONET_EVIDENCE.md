@@ -414,6 +414,18 @@ This current lifecycle supersedes the older deployment's HTTP 403 outcomes for r
 
 This is a zero-value Studionet test deployment, not a production deployment. No user funds were accepted, production writes remain locked, and no merge or production promotion occurred. These transactions show actual baseline verification, acknowledgment, and one NONMATERIAL transition. They do not demonstrate a hosted MATERIAL result, a semantic ambiguous-language result, validator disagreement, or prompt-injection handling. The full outcome ledger is in [the T01–T52 matrix](TEST_MATRIX.md); the verdict remains **NOT RELEASED**.
 
+## 2026-10-14 live browser validation
+
+The public noncustodial frontend at `https://the-revigate.vercel.app` was exercised in Brave against Studionet chain 61999. The reading room, publisher, acknowledgments, activity, about, and `/program/1/` routes all loaded over HTTPS. The browser read the exact canonical Program 1 record (`VERIFIED`, epoch 3, active SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, `pending_review=0`, material-event count 2).
+
+Wallet B `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54` signed the zero-value `acknowledge_rules` action for Program 1, epoch 3. Transaction `0xb3c62284235bddd5f785f4c8c47bb9da0f4e924c0c675ec89328def5b199f140` finalized on the Registry. The transaction sender and recipient were checked, `value_credited=false`, and the canonical acknowledgment history readback showed the epoch 3 SHA and digest. The browser observer conservatively labeled the RPC response `finalized-execution-unknown` because this endpoint omitted `txExecutionResultName`; the receipt itself had `statusName=FINALIZED`, `result_name=MAJORITY_AGREE`, leader payload `true`, successful validator executions, and no retry was submitted.
+
+The browser also read canonical review 1 (`376e447065b8a7efd1d26a60c6c9ac476bd1e567`) and review 2 (`14401f20f2d3eeeac537746966646809e5c01b8c`). Both showed `base_source_status=VERIFIED`, `candidate_source_status=VERIFIED`, and actual `MATERIAL` outcomes. Review 1 recorded the 14-to-60-day eligibility change; review 2 recorded the ambiguous discretion change in `R-01`.
+
+The connected Rabby account during the publisher-page check was `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`. Program 2 is owned by that address but remains `PROPOSED`; its existing verification transaction `0xb3d5a978732741af0b0ad04b65cd6f271aca6ef46a87f48262ede91b3ed8b43b` finalized `MAJORITY_AGREE` with execution `INCONCLUSIVE` because the signed manifest nominates the different publisher `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`. No retry was submitted. The successful publisher lifecycle for Program 1 therefore remains bound to the manifest wallet `0x527d…56b5`; a browser publisher write from that account is still unverified.
+
+These browser checks used zero native value. They do not prove wallet-extension account switching, network switching, rejection handling, or independent security review. Production writes remain locked and the release verdict remains **NOT RELEASED**.
+
 ## 2026-10-14 source correction and hosted probe status
 
 The current local Registry source correction is commit
