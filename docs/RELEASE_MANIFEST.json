@@ -21,6 +21,7 @@
     "rpc": "https://studio.genlayer.com/api",
     "repository_local_cli": "0.39.1",
     "genlayer_js": "1.1.8",
+    "repository_cli_rpc_diagnosis": "No gltest.config.yaml exists. Direct Mode runner reports local simulator default http://127.0.0.1:4000/api; live deployment explicitly supplied --rpc https://studio.genlayer.com/api and GenLayerJS chain 61999. No other remote GenLayer network was used.",
     "dns_diagnosis": "Restricted process DNS access denied; approved host path resolved 172.67.210.182 and 104.21.53.84; HTTPS GET /api returned 405; read-only RPC calls succeeded. Environment/proxy restriction, not Studionet outage."
   },
   "contracts": {
@@ -153,7 +154,7 @@
     "direct_mode_tests": "93 passed",
     "typecheck": "PASS (current targeted changes)",
     "frontend_child_observer": "Live read-only parent/child query on Studionet succeeded. Exact child ID, FINALIZED status, sender, recipient and value matched. Execution-result field absent; gen_getTransactionReceipt returned Method not found, so observer result is UNKNOWN. No contract state mutation.",
-    "studionet_read_probe": "PASS: host DNS/HTTPS reachable; Registry/Vault get_config, deployed bytecode, historical parent/child and eth_getBalance read calls succeeded on chain 61999. The corrected Vault was deployed separately with custody disabled and exact source match; its initial ledger readback was all zero. No payable accounting write or full lifecycle was run.",
+    "studionet_read_probe": "PASS: host DNS/HTTPS reachable; Registry/Vault get_config, deployed bytecode, historical parent/child and eth_getBalance read calls succeeded on chain 61999. The corrected Vault was deployed separately with custody disabled and exact source match; its initial ledger readback was all zero. The pinned CLI write action hardcodes value 0n; no payable accounting write or full lifecycle was run.",
     "production_dependency_audit": "0 vulnerabilities",
     "full_dependency_audit": "0 vulnerabilities; UUID 11.1.1 transitive override; GenLayer CLI 0.39.1 unchanged",
     "full_preflight": "PASS with host permissions: network guard, typecheck, lint, 32 JavaScript tests, 8 Python tests, 93 Direct Mode tests, production build with all 10 routes prerendered; sandboxed prerender worker failed EPERM creating .next directories",

@@ -247,6 +247,15 @@ endpoint expects POST), and read-only GenLayerJS calls succeeded. This
 identifies a local sandbox DNS restriction, not a Studionet outage. No other
 GenLayer network was used.
 
+The repository has no `gltest.config.yaml`. The Direct Mode test runner logs
+its local simulator default (`http://127.0.0.1:4000/api`, `localnet`); those
+tests do not submit network transactions. The corrected Vault deployment used
+the repository-local CLI wrapper, pinned at `0.39.1`, with
+`--rpc https://studio.genlayer.com/api`. GenLayerJS identified that endpoint
+as Studionet chain `61999`. No other remote GenLayer network was configured or
+used. The pinned CLI's `write` action hardcodes `value: 0n`; it cannot submit a
+payable accounting probe.
+
 Read-only source attestation of the configured pair on chain 61999:
 
 | Contract | Address | Deployed SHA256 | Local source match | Config |
