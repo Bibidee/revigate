@@ -27,7 +27,7 @@ Locked participant GEN, refund credits, wallet authority, accurate rulebook epoc
 21. Transaction accepted then errors: UI must show execution failure and not claim success.
 22. Failed message delivery after parent finalized: track separate delivery, prevent blind duplicate sends.
 23. Multiple program/offer indexes exceed thousands: bounded pagination and state correctness after concurrent append.
-24. Off-chain screenshot claims 'paid' but recipient didn't receive: release checker compares actual verified finality/balance, not prose.
+24. Off-chain screenshot claims 'paid' but recipient didn't receive: child finality alone never means recipient credit; require a separately observed balance delta and preserve its attribution limits.
 25. User supplies address to browser local storage to steal authority: local storage never authoritative; identity derived from wallet provider and onchain.
 26. Compromised Vercel app: no backend signer/admin keys; show public contract and chain address; does not prevent user phishing, therefore audit package/dependency and transaction details.
 27. Negative exit_bps, huge uint, overflow, timestamp wrap or invalid date ordering: deterministic precise bounds, test fuzzer.

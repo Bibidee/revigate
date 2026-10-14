@@ -13,19 +13,19 @@
 
 ## Automated coverage
 
-The current Direct Mode suite covers contract loading, Registry logic, source-verification fixtures, revision assessments, Registry/Vault authentication boundaries, duplicate and stale messages, Vault lifecycle transitions, accounting, and custody guards. Current `npm run preflight` passes 19 JavaScript, 8 Python, and 93 Direct Mode tests, typecheck, lint, and the production build; see Implementation Status for live-evidence boundaries.
+The current Direct Mode suite covers contract loading, Registry logic, source-verification fixtures, revision assessments, Registry/Vault authentication boundaries, duplicate and stale messages, Vault lifecycle transitions, accounting, and custody guards. Current `npm run preflight` passes 32 JavaScript, 8 Python, and 93 Direct Mode tests, typecheck, lint, and the production build; see Implementation Status for live-evidence boundaries.
 
 Direct Mode and Python accounting tests are local simulations. They do not establish hosted GenLayer consensus, cross-contract child execution, real GitHub signature verification, wallet lifecycle behavior, or native balance recovery.
 
 ## Live evidence and boundaries
 
-- A custody-disabled Registry/Vault pair was deployed on Studionet chain 61999. The deployed Vault predates the local accounting correction; its bytecode is therefore not identical to the current local Vault source. The last verified deployed hashes and reciprocal configurations are recorded in Studionet Evidence.
+- A custody-disabled reciprocal Registry/Vault pair remains on Studionet chain 61999; its Vault predates the local accounting correction. The corrected Vault source was deployed separately to `0xcd13bfa0f323a806020790949D7454F26544daE7` with custody disabled and zero attached value. Its source hash matches the current file; its zero initial ledger readback does not exercise the formula on nonzero live liabilities. It is not reciprocally paired or app-configured.
 - The Registry stores the Vault address and the Vault stores the Registry address. The on-chain custody flag is false on both contracts. The pair's live ledgers read zero.
 - A separate live negative call by an unrelated wallet to replace the Registry's bound Vault finalized as an execution error; it did not change the binding or attach value.
 - A separate disposable Registry emitter paired to the previously source-exact Vault finalized an authorized snapshot child and changed canonical Vault state once. A duplicate was a no-op; stale nonce and spoof attempts failed without state changes; an unrelated wallet could not rebind the pair. The local Vault has since changed its ledger view and has not been redeployed. The exact-source Registry has not emitted a child from a signed, verified program, so product-path message execution remains incomplete.
 - The test-only emitter and spoof-contract source used for those messages is retained under `evidence/live-message-proof/` and can be regenerated with `scripts/prepare-live-message-probe.mjs`.
 - No GEN was sent to the current pair. No two-wallet offer lifecycle was run.
-- Earlier disposable-contract tests remain evidence of Studionet accepting value without a matching ledger entry after payable failure, direct transfer, and value attached to a nonpayable call. The one-wei EOA test showed a successful balance delta; its old `liability_shortfall=1` was a false positive because already-emitted value was included in Vault backing. A local observer now separates child-transaction status from contract state, but has not been exercised against Studionet during this run.
+- Earlier disposable-contract tests remain evidence of Studionet accepting value without a matching ledger entry after payable failure, direct transfer, and value attached to a nonpayable call. The one-wei EOA test showed a historical +1 wei balance delta; its old `liability_shortfall=1` was a false positive because already-emitted value was included in Vault backing. The current read-only observer was exercised against the pinned SDK and live Studionet. Its RPC response omitted execution result and the full receipt method returned `Method not found`, so the observer reports UNKNOWN and keeps recipient balance evidence separate.
 
 ## Release decision
 

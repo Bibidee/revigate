@@ -235,3 +235,69 @@ The transaction was accepted with value despite targeting a nonpayable method, a
 - An earlier candidate at `0x2bb820945Be33f06c0F0E66dEC3c620cDAA6f995` (tx `0x5c4c535ef7ea5d297369243ee845781546ca7e9da53b700db69f8c300c6c64ed`, source hash `F110ACF95D892DFA76E90239605C5E2E7E47C1EE79E862723BD0BFF719820206`) is superseded because its source differs from the current worktree.
 - An earlier deployment at `0x89b4B9620Ef81268CE7cE729Bb14a041a1479188` had a storage defect; no user funds were sent to it. Do not use either older address.
 - GenLayer documents that failed internal child value-transfer transactions do not automatically return the value, and Studio does not implement Ghost Contracts for external messages. This contract has no internal value-bearing child transfer path; the live external EOA success case above does not establish failed-delivery recovery. See [GenLayer value transfers](https://docs.genlayer.com/developers/intelligent-contracts/features/value-transfers) and [messages](https://docs.genlayer.com/developers/intelligent-contracts/features/messages).
+
+## 2026-10-14 read-only connectivity, source and child observer recheck
+
+The default restricted process returned DNS “Access is denied” for
+`studio.genlayer.com`; proxy environment variables were unset, Windows
+Internet Settings had proxy disabled/no PAC, and WinHTTP was direct. With the
+approved host network path, DNS resolved `172.67.210.182` and `104.21.53.84`.
+HTTPS GET `https://studio.genlayer.com/api` returned HTTP 405 (the JSON-RPC
+endpoint expects POST), and read-only GenLayerJS calls succeeded. This
+identifies a local sandbox DNS restriction, not a Studionet outage. No other
+GenLayer network was used.
+
+Read-only source attestation of the configured pair on chain 61999:
+
+| Contract | Address | Deployed SHA256 | Local source match | Config |
+|---|---|---|---|---|
+| Registry | `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE` | `6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F` | Yes | Reciprocal Vault `0xf390D8D77f21710679a72Fc11b84A5e85a318849`; custody disabled |
+| Vault | `0xf390D8D77f21710679a72Fc11b84A5e85a318849` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` | No | Reciprocal Registry `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE`; custody disabled |
+
+The local corrected Vault remains SHA256
+`C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55` and is
+not deployed. No contract write, deployment, pairing or value transfer was
+made during this read-only recheck.
+
+The live read-only observer queried parent
+`0xc27924f097aa08924a3275c59ca1c69b1cb4ceb92c45bd61fc2e0ed0c9b4a949` and
+received child ID
+`0xa3a3c2c5384c52314ef2b56b78c70b782e3bb556cef9702a0784962b8905fbee` from
+that parent. The returned child hash matched the requested ID; status was
+`FINALIZED`, sender was the disposable Vault
+`0xfDA04A975d1467580C6c16eb8cCD576fec4076Af`, recipient was the test signer
+`0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`, and value was `1 wei`. The
+response contained `result_name=NO_MAJORITY` and no execution-result field.
+The GenLayer RPC returned `Method not found` for the documented
+`gen_getTransactionReceipt` method on this endpoint. Therefore the current
+observer classification is `UNKNOWN`; it does not infer execution success or
+recipient credit. A separately recorded historical before/after EOA balance
+delta of +1 wei remains evidence for that one event only and is not returned
+or attributed by the current observer.
+
+## 2026-10-14 corrected Vault source deployment and readback
+
+Using the repository-local GenLayer CLI `0.39.1` and active test signer
+`0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`, the corrected local Vault was
+deployed to a fresh isolated Studionet address. The deployment attached zero
+GEN (`value_credited=false`) and finalized with `MAJORITY_AGREE`.
+
+| Item | Result |
+|---|---|
+| Contract | `0xcd13bfa0f323a806020790949D7454F26544daE7` |
+| Deployment transaction | [`0x314423da5145348606dd0519c5832b7f1e41affef457aabb87eebca261c35071`](https://explorer-studio.genlayer.com/tx/0x314423da5145348606dd0519c5832b7f1e41affef457aabb87eebca261c35071) |
+| Finality / consensus | `FINALIZED` / `MAJORITY_AGREE` |
+| Deployed source SHA256 | `C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55` |
+| Local source SHA256 | `C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55` |
+| Source comparison | Exact byte-for-byte match |
+| `get_config` | Chain 61999; protocol `revigate-vault-v1`; custody disabled; Registry field points to `0x5c09ffa32c1cdab36f3e1340cf94ac254eaed9be` |
+| `get_ledger` | Every field is zero, including `native_balance`, `backing_liabilities`, `liability_shortfall`, `unassigned_surplus`, and `reconciliation_delta` |
+| Pairing / application binding | Not reciprocal to the existing Registry configuration; not bound to the frontend |
+
+This deployment proves that the corrected source compiles, finalizes, and is
+readable byte-for-byte on Studionet. The zero-state ledger readback does not
+exercise the revised backing formula against nonzero liabilities. The pinned
+CLI's public `write` command has no value option and hardcodes `value: 0n`, so
+it cannot submit the one-wei payable accounting check. No payable write or
+escrow lifecycle was submitted from this corrected-source test address. The
+previously deployed reciprocal pair remains on the earlier Vault source.

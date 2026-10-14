@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { getConfiguredRegistryAddress, getConfiguredVaultAddress, verifyRevigateDeployment } from "@/lib/genlayer";
+import { requestWalletConnection, watchWallet } from "@/lib/wallet-session.mjs";
 
 type Provider = { request(args: { method: string; params?: unknown[] }): Promise<unknown>; on?(event: string, cb: (...args: unknown[]) => void): void; removeListener?(event: string, cb: (...args: unknown[]) => void): void };
 declare global { interface Window { ethereum?: Provider } }
@@ -13,17 +14,14 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   const [chain, setChain] = useState("");
   const [message, setMessage] = useState("");
   const [contractStatus, setContractStatus] = useState(() => process.env.NEXT_PUBLIC_REVIGATE_REGISTRY && process.env.NEXT_PUBLIC_REVIGATE_VAULT ? "Checking Registry/Vault pair…" : "Registry/Vault pair is not configured.");
+  const walletSession = useRef<ReturnType<typeof watchWallet> | undefined>(undefined);
   const wrongNetwork = Boolean(chain && Number.parseInt(chain, 16) !== 61999);
   useEffect(() => {
     const provider = window.ethereum;
     if (!provider) return;
-    const updateAccounts = (items: unknown) => setAccount(Array.isArray(items) && typeof items[0] === "string" ? items[0] : "");
-    const updateChain = (id: unknown) => setChain(typeof id === "string" ? id : "");
-    provider.request({ method: "eth_accounts" }).then(updateAccounts).catch(() => undefined);
-    provider.request({ method: "eth_chainId" }).then(updateChain).catch(() => undefined);
-    provider.on?.("accountsChanged", updateAccounts);
-    provider.on?.("chainChanged", updateChain);
-    return () => { provider.removeListener?.("accountsChanged", updateAccounts); provider.removeListener?.("chainChanged", updateChain); };
+    const session = watchWallet(provider, (next) => { setAccount(next.account); setChain(next.chainId); });
+    walletSession.current = session;
+    return () => { session.stop(); walletSession.current = undefined; };
   }, []);
   useEffect(() => {
     let registry;
@@ -38,15 +36,11 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
       .catch(() => setContractStatus("The configured Registry/Vault pair could not be verified."));
   }, []);
   async function connect() {
-    if (!window.ethereum) { setMessage("Install an EIP-1193 wallet such as MetaMask or Rabby to connect."); return; }
+    const provider = window.ethereum;
+    if (!provider || !walletSession.current) { setMessage("Install an EIP-1193 wallet such as MetaMask or Rabby to connect."); return; }
     try {
-      const [selected, activeChain] = await Promise.all([
-        window.ethereum.request({ method: "eth_requestAccounts" }),
-        window.ethereum.request({ method: "eth_chainId" }),
-      ]);
-      setAccount(Array.isArray(selected) && typeof selected[0] === "string" ? selected[0] : "");
-      setChain(typeof activeChain === "string" ? activeChain : "");
-      setMessage(typeof activeChain === "string" && Number.parseInt(activeChain, 16) !== 61999 ? "Switch your wallet to GenLayer Studionet (chain 61999) before signing." : "");
+      const state = await requestWalletConnection(provider, walletSession.current);
+      setMessage(state.chainId && Number.parseInt(state.chainId, 16) !== 61999 ? "Switch your wallet to GenLayer Studionet (chain 61999) before signing." : "");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Wallet connection was rejected."); }
   }
   return <>

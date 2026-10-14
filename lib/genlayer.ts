@@ -1,9 +1,12 @@
 import { createClient } from "genlayer-js";
 import { encodeAddressArguments } from "./calldata-address.mjs";
 import { studionet } from "genlayer-js/chains";
-import { ExecutionResult, TransactionStatus } from "genlayer-js/types";
 import type { Address, CalldataEncodable, GenLayerTransaction, Hash } from "genlayer-js/types";
 import { classifyOutgoingTransfer } from "./transfer-evidence.mjs";
+import { classifyTransactionFinality } from "./wallet-session.mjs";
+import { pendingStorageKey, loadPendingTransactions as readPendingTransactions,
+  savePendingTransaction as writePendingTransaction, forgetPendingTransaction as deletePendingTransaction } from "./pending-storage.mjs";
+import { makeWriteRequest } from "./write-request.mjs";
 export type { Hash } from "genlayer-js/types";
 
 export const STUDIONET_CHAIN_ID = 61999;
@@ -118,12 +121,12 @@ export async function submitRevigateWrite(options: {
     account: options.account as Address,
     provider: options.provider as never,
   });
-  const hash = await client.writeContract({
+  const hash = await client.writeContract(makeWriteRequest({
     address,
     functionName: options.functionName,
     args: encodeAddressArguments(options.functionName, options.args ?? []),
     value: options.value ?? 0n,
-  });
+  }));
   if (typeof hash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(hash)) {
     throw new Error("The wallet did not return a transaction hash.");
   }
@@ -133,6 +136,7 @@ export async function submitRevigateWrite(options: {
 export type ObservedTransaction =
   | { state: "finalized-success"; transaction: GenLayerTransaction }
   | { state: "finalized-error"; transaction: GenLayerTransaction }
+  | { state: "finalized-execution-unknown"; transaction: GenLayerTransaction }
   | { state: "undetermined"; transaction: GenLayerTransaction }
   | { state: "cancelled"; transaction: GenLayerTransaction }
   | { state: "sender-mismatch"; transaction: GenLayerTransaction }
@@ -166,14 +170,8 @@ export async function observeTransaction(
         return { state: "contract-mismatch", transaction: latest };
       }
     }
-    if (latest.statusName === TransactionStatus.UNDETERMINED) return { state: "undetermined", transaction: latest };
-    if (latest.statusName === TransactionStatus.CANCELED) return { state: "cancelled", transaction: latest };
-    if (latest.statusName === TransactionStatus.FINALIZED) {
-      return {
-        state: latest.txExecutionResultName === ExecutionResult.FINISHED_WITH_RETURN ? "finalized-success" : "finalized-error",
-        transaction: latest,
-      };
-    }
+    const finality = classifyTransactionFinality(latest);
+    if (finality !== "pending") return { state: finality, transaction: latest };
     if (index + 1 < checks) await new Promise((resolve) => setTimeout(resolve, 3_000));
   }
   return { state: "pending", transaction: latest };
@@ -188,10 +186,18 @@ export async function observeOutgoingTransfer(options: {
   const client = getReadClient();
   const parent = await client.getTransaction({ hash: options.parentHash });
   const childHashes = await client.getTriggeredTransactionIds({ hash: options.parentHash });
-  const children = await Promise.all(childHashes.map(async (hash) => ({
-    ...(await client.getTransaction({ hash })),
-    hash,
-  })));
+  if (!parent || !Array.isArray(childHashes)) {
+    const missing = classifyOutgoingTransfer({
+      parentStatus: "", parentExecution: "", parentRecipient: undefined,
+      expectedVault: options.vault, expectedRecipient: options.recipient,
+      expectedAmount: options.amount, children: [],
+    });
+    return { ...missing, parentHash: options.parentHash, childHashes: [] };
+  }
+  const children = await Promise.all(childHashes.map(async (requestedHash) => {
+    const transaction = await client.getTransaction({ hash: requestedHash });
+    return transaction ? { ...transaction, requestedHash } : { requestedHash };
+  }));
   const evidence = classifyOutgoingTransfer({
     parentStatus: String(parent.statusName ?? ""),
     parentExecution: String(parent.txExecutionResultName ?? ""),
@@ -205,9 +211,7 @@ export async function observeOutgoingTransfer(options: {
 }
 
 function pendingKey() {
-  const registry = getConfiguredRegistryAddress()?.toLowerCase() ?? "unbound";
-  const vault = getConfiguredVaultAddress()?.toLowerCase() ?? "unbound";
-  return `revigate:pending-transactions:v2:${STUDIONET_CHAIN_ID}:${registry}:${vault}`;
+  return pendingStorageKey(STUDIONET_CHAIN_ID, getConfiguredRegistryAddress(), getConfiguredVaultAddress());
 }
 export type PendingTransaction = {
   hash: Hash;
@@ -221,29 +225,16 @@ export type PendingTransaction = {
 };
 
 export function savePendingTransaction(transaction: PendingTransaction) {
-  const current = loadPendingTransactions();
-  const next = [transaction, ...current.filter((item) => item.hash !== transaction.hash)].slice(0, 20);
-  window.localStorage.setItem(pendingKey(), JSON.stringify(next));
+  writePendingTransaction(window.localStorage, pendingKey(), transaction,
+    getConfiguredRegistryAddress(), getConfiguredVaultAddress(), STUDIONET_CHAIN_ID);
 }
 
 export function loadPendingTransactions(): PendingTransaction[] {
-  try {
-    const value: unknown = JSON.parse(window.localStorage.getItem(pendingKey()) ?? "[]");
-    const configured = new Set([getConfiguredRegistryAddress()?.toLowerCase(), getConfiguredVaultAddress()?.toLowerCase()].filter(Boolean));
-    return Array.isArray(value) ? value.filter((item): item is PendingTransaction =>
-      item && typeof item.hash === "string" && /^0x[0-9a-fA-F]{64}$/.test(item.hash)
-      && typeof item.account === "string" && typeof item.method === "string" && typeof item.submittedAt === "number"
-      && (!item.contractAddress || (typeof item.contractAddress === "string" && configured.has(item.contractAddress.toLowerCase())))
-      && (!item.chainId || item.chainId === STUDIONET_CHAIN_ID)
-      && (!item.args || (Array.isArray(item.args) && item.args.every((arg: unknown) => ["string", "number", "boolean"].includes(typeof arg))))
-      && (!item.value || (typeof item.value === "string" && /^\d+$/.test(item.value)))
-    ) : [];
-  } catch {
-    return [];
-  }
+  return readPendingTransactions(window.localStorage, pendingKey(),
+    getConfiguredRegistryAddress(), getConfiguredVaultAddress(), STUDIONET_CHAIN_ID);
 }
 
 export function forgetPendingTransaction(hash: string) {
-  const next = loadPendingTransactions().filter((item) => item.hash !== hash);
-  window.localStorage.setItem(pendingKey(), JSON.stringify(next));
+  deletePendingTransaction(window.localStorage, pendingKey(), hash,
+    getConfiguredRegistryAddress(), getConfiguredVaultAddress(), STUDIONET_CHAIN_ID);
 }

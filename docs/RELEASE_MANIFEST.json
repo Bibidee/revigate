@@ -3,9 +3,9 @@
   "recorded_at": "2026-10-14",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
-  "last_verified_pushed_base_commit": "9376fbd2b25c2346d53761128a61b4dc85ed089b",
+  "last_verified_pushed_base_commit": "d89b937f78e87d32ab94f5b803a9ec3665874622",
   "candidate_implementation_commit": "8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14",
-  "candidate_changes_committed_in_this_revision": true,
+  "candidate_changes_committed_in_this_revision": false,
   "commit_signature": "candidate commit unsigned; no local signing key/configuration",
   "pull_request": {
     "number": 1,
@@ -19,7 +19,8 @@
     "chain_id": 61999,
     "rpc": "https://studio.genlayer.com/api",
     "repository_local_cli": "0.39.1",
-    "genlayer_js": "1.1.8"
+    "genlayer_js": "1.1.8",
+    "dns_diagnosis": "Restricted process DNS access denied; approved host path resolved 172.67.210.182 and 104.21.53.84; HTTPS GET /api returned 405; read-only RPC calls succeeded. Environment/proxy restriction, not Studionet outage."
   },
   "contracts": {
     "registry": {
@@ -42,7 +43,21 @@
       "source_sha256": "0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F",
       "deployed_code_matches_local_source": false,
       "local_candidate_source_sha256": "C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55",
-      "local_candidate_deployed": false
+      "local_candidate_bound_to_recorded_pair": false
+    },
+    "disposable_corrected_vault": {
+      "address": "0xcd13bfa0f323a806020790949D7454F26544daE7",
+      "deployment_transaction": "0x314423da5145348606dd0519c5832b7f1e41affef457aabb87eebca261c35071",
+      "deployment_status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "attached_value": "0",
+      "source_sha256": "C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55",
+      "deployed_code_matches_local_source": true,
+      "custody_enabled": false,
+      "reciprocally_paired": false,
+      "frontend_bound": false,
+      "zero_initial_ledger_readback": true,
+      "nonzero_accounting_formula_live_test": false
     },
     "pairing": {
       "registry_vault_config_is_reciprocal": true,
@@ -132,19 +147,19 @@
     "deployment_details": "NOT_READ: Vercel API returned 403 for bibidees-projects"
   },
   "verification": {
-    "javascript_tests": "19 passed (current targeted suite)",
+    "javascript_tests": "32 passed (current full local suite)",
     "python_tests": "8 passed",
     "direct_mode_tests": "93 passed",
     "typecheck": "PASS (current targeted changes)",
-    "frontend_child_observer": "fixture tested; live Studionet RPC schema not verified in this session; no contract state mutation",
-    "studionet_read_probe": "BLOCKED: repository-local CLI confirmed chain 61999, but get_config failed DNS resolution for studio.genlayer.com; no transaction was submitted",
+    "frontend_child_observer": "Live read-only parent/child query on Studionet succeeded. Exact child ID, FINALIZED status, sender, recipient and value matched. Execution-result field absent; gen_getTransactionReceipt returned Method not found, so observer result is UNKNOWN. No contract state mutation.",
+    "studionet_read_probe": "PASS: host DNS/HTTPS reachable; Registry/Vault get_config, deployed bytecode, historical parent/child and eth_getBalance read calls succeeded on chain 61999. The corrected Vault was deployed separately with custody disabled and exact source match; its initial ledger readback was all zero. No payable accounting write or full lifecycle was run.",
     "production_dependency_audit": "0 vulnerabilities",
     "full_dependency_audit": "0 vulnerabilities; UUID 11.1.1 transitive override; GenLayer CLI 0.39.1 unchanged",
-    "full_preflight": "PASS: network guard, typecheck, lint, 19 JavaScript tests, 8 Python tests, 93 Direct Mode tests, production build with all 10 routes prerendered",
-    "github_actions": "PASS: run 11 for candidate implementation commit 8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14; clean install, preflight, and production dependency audit passed",
+    "full_preflight": "PASS with host permissions: network guard, typecheck, lint, 32 JavaScript tests, 8 Python tests, 93 Direct Mode tests, production build with all 10 routes prerendered; sandboxed prerender worker failed EPERM creating .next directories",
+    "github_actions": "PASS: run 12 for prior branch head d89b937f78e87d32ab94f5b803a9ec3665874622; new remediation head is pending exact-head CI",
     "vercel_preview_check": "SUCCESS check for candidate commit; detailed deployment state and URL not independently read because Vercel API returned 403",
     "vercel_production": "PASS: production READY; browser checked publish route remains locked and unbound",
-    "t01_t52": "INCOMPLETE: 27 PASS, 15 PARTIAL, 2 FAIL, 2 BLOCKED, 6 NOT EXECUTED",
+    "t01_t52": "INCOMPLETE: 27 PASS, 20 PARTIAL, 2 FAIL, 2 BLOCKED, 1 NOT EXECUTED",
     "two_wallet_lifecycle": "NOT_RUN",
     "independent_security_audit": "NOT_COMPLETE",
     "github_branch_protection": "NOT_ENABLED"
@@ -153,9 +168,9 @@
     "custody": "FAIL",
     "authenticated_child_message": "PARTIAL: pre-accounting-patch Vault proof passed on disposable Registry emitter; exact-source Registry event from verified signed program not proven",
     "two_wallet_lifecycle": "NOT_RUN; blocked by unsigned source and custody gate",
-    "source_integrity": "REGISTRY_MATCHES_DEPLOYED_SOURCE; LOCAL_VAULT_CANDIDATE_NOT_DEPLOYED",
+    "source_integrity": "REGISTRY_MATCHES_DEPLOYED_SOURCE; MAIN_PAIR_VAULT_OLD_SOURCE; DISPOSABLE_CORRECTED_VAULT_EXACT_SOURCE_ZERO_LEDGER",
     "frontend_release_binding": "NOT_CONFIGURED; production writes locked",
-    "signed_publication": "NOT_COMPLETE_NO_PUBLISHER_NOMINATED_SIGNED_RULEBOOK_COMMIT",
+    "signed_publication": "NOT_COMPLETE_NO_PUBLISHER_NOMINATED_SIGNED_RULEBOOK_COMMIT; actual active test wallet 0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5; no local signing key or GitHub-verified rulebook commit",
     "github_ci": "PASS: candidate implementation commit 8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14, Actions run 11",
     "branch_protection": "NOT_ENABLED; protection endpoint returned 403 and rulesets list is empty",
     "t01_t52_matrix": "INCOMPLETE",
@@ -163,6 +178,8 @@
   },
   "evidence_files": [
     "STUDIONET_EVIDENCE.md",
+    "../scripts/attest-studionet-vault.mjs",
+    "../scripts/observe-studionet-transfer.mjs",
     "../evidence/live-message-proof/revigate_registry_probe.py",
     "../evidence/live-message-proof/revigate_spoof_probe.py",
     "TWO_CONTRACT_MIGRATION.md",

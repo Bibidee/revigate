@@ -15,7 +15,8 @@ import {
   STUDIONET_CHAIN_ID,
   verifyRevigateDeployment,
 } from "@/lib/genlayer";
-import type { Eip1193Provider, PendingTransaction } from "@/lib/genlayer";
+import type { Eip1193Provider, Hash, PendingTransaction } from "@/lib/genlayer";
+import { watchWallet, submitAndPersistHash } from "@/lib/wallet-session.mjs";
 
 const contractConfigured = Boolean(process.env.NEXT_PUBLIC_REVIGATE_REGISTRY && process.env.NEXT_PUBLIC_REVIGATE_VAULT);
 const escrowWritesEnabled = isEscrowWriteEnabled(process.env.NODE_ENV, process.env.NEXT_PUBLIC_REVIGATE_ESCROW_ENABLED);
@@ -280,27 +281,17 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
       setWalletOffers([]);
       setOutput("Wallet or network changed. Reload canonical contract records before taking another action.");
     };
-    const refreshAccount = (value: unknown) => {
-      const next = Array.isArray(value) && typeof value[0] === "string" ? value[0] : "";
-      if (next.toLowerCase() !== currentAccount.current.toLowerCase()) resetWalletBoundState();
-      currentAccount.current = next;
-      walletIdentity.current = `${currentAccount.current.toLowerCase()}|${currentChain.current.toLowerCase()}`;
-      setAccount(next);
-    };
-    const refreshChain = (value: unknown) => {
-      const next = typeof value === "string" ? value : "";
-      if (next.toLowerCase() !== currentChain.current.toLowerCase()) resetWalletBoundState();
-      currentChain.current = next;
-      walletIdentity.current = `${currentAccount.current.toLowerCase()}|${currentChain.current.toLowerCase()}`;
-      setChainId(next);
-    };
-    wallet.request({ method: "eth_accounts" }).then(refreshAccount).catch(() => refreshAccount([]));
-    wallet.request({ method: "eth_chainId" }).then(refreshChain).catch(() => refreshChain(""));
-    wallet.on?.("accountsChanged", refreshAccount);
-    wallet.on?.("chainChanged", refreshChain);
+    const session = watchWallet(wallet, (next) => {
+      if (next.account.toLowerCase() !== currentAccount.current.toLowerCase()
+          || next.chainId.toLowerCase() !== currentChain.current.toLowerCase()) resetWalletBoundState();
+      currentAccount.current = next.account;
+      currentChain.current = next.chainId;
+      walletIdentity.current = `${next.account.toLowerCase()}|${next.chainId.toLowerCase()}`;
+      setAccount(next.account);
+      setChainId(next.chainId);
+    });
     return () => {
-      wallet.removeListener?.("accountsChanged", refreshAccount);
-      wallet.removeListener?.("chainChanged", refreshChain);
+      session.stop();
     };
   }, []);
 
@@ -362,17 +353,21 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
     setBusy(true);
     setOutput(`Waiting for wallet approval: ${method}`);
     try {
-      const hash = await submitRevigateWrite({ provider, account, functionName: method, target, args, value });
       const savedArgs = args.map((arg) => typeof arg === "bigint" ? arg.toString() : arg);
-      const pendingItem: PendingTransaction = {
-        hash, account, method, submittedAt: Date.now(), args: savedArgs,
-        value: value.toString(), contractAddress, chainId: STUDIONET_CHAIN_ID,
-      };
+      const result = await submitAndPersistHash(
+        () => submitRevigateWrite({ provider, account, functionName: method, target, args, value }),
+        (hash): PendingTransaction => ({
+          hash: hash as Hash, account, method, submittedAt: Date.now(), args: savedArgs,
+          value: value.toString(), contractAddress, chainId: STUDIONET_CHAIN_ID,
+        }),
+        savePendingTransaction,
+      );
+      const pendingItem = result.pending;
+      const hash = pendingItem.hash;
       setLastTransaction(pendingItem);
-      try {
-        savePendingTransaction(pendingItem);
+      if (result.persisted) {
         setPending(loadPendingTransactions());
-      } catch {
+      } else {
         setPending((current) => [pendingItem, ...current.filter((item) => item.hash !== pendingItem.hash)].slice(0, 20));
         setOutput(`Transaction submitted, but this browser could not save the recovery pointer. Copy this hash now and check only this hash: ${hash}`);
         return;
@@ -408,7 +403,7 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
         return;
       }
       const observed = await observeTransaction(hash, 10, item.account, item.contractAddress ?? currentAddress);
-      if (observed.state === "finalized-success") {
+      if (observed.state === "finalized-success" || observed.state === "finalized-execution-unknown") {
         if (item.method === "withdraw_credit") {
           const vault = item.contractAddress ?? currentAddress;
           if (!vault) throw new Error("The withdrawal target is unavailable; keep the original hash.");
@@ -419,12 +414,22 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
             amount: readArg(item.args, 0, "withdrawal amount"),
           });
           const explanations: Record<string, string> = {
-            DELIVERY_VERIFIED_BY_FINALIZED_CHILD: "One child transaction finalized successfully with the expected Vault sender, recipient, and amount. This is an external observer result only; contract storage remains UNKNOWN_DELIVERY.",
-            DUPLICATE_DELIVERY_OBSERVED: "More than one matching successful child was found. Treat this as a possible duplicate payout and preserve every hash.",
-            CHILD_FAILED_DELIVERY_UNPROVEN: "A matching child finalized with execution failure, but that does not prove the recipient received zero or authorize a retry.",
-            UNKNOWN: "No matching finalized child was proven. Missing, delayed, or mismatched RPC data is not evidence of non-delivery.",
+            CHILD_FINALIZED_SUCCESS: "One child transaction finalized successfully with the expected sender, recipient, and amount. This proves child execution only, not recipient balance credit; contract storage remains UNKNOWN_DELIVERY.",
+            DUPLICATE_SUCCESSFUL_CHILDREN: "More than one matching successful child was found. Treat this as a possible duplicate payout and preserve every hash.",
+            CHILD_FINALIZED_FAILURE: "A matching child finalized with execution failure, but that does not prove the recipient received zero or authorize a retry.",
+            CHILD_PENDING: "A matching child exists but is not finalized. Preserve its hash and check the same transaction later.",
+            CHILD_UNDETERMINED: "The matching child outcome is undetermined. Preserve its hash; do not assume success, failure, or retry safety.",
+            CHILD_CANCELLED: "The matching child was cancelled. This does not establish a safe replay; preserve the evidence and reconcile explicitly.",
+            UNKNOWN: "No matching child identity and exact transfer were proven. Missing, delayed, or mismatched RPC data is not evidence of non-delivery.",
           };
-          report(`FINALIZED · withdrawal parent succeeded. External delivery status: ${delivery.status}. ${explanations[delivery.status]}\nParent: ${hash}\nMatching child hashes: ${delivery.matchingChildren.join(", ") || "none proven"}\nThe on-chain transfer record is not changed and no retry was submitted.`);
+          const parentExecution = observed.state === "finalized-success"
+            ? "Parent execution succeeded."
+            : "The parent finalized, but its execution result was not provided by the RPC.";
+          report(`FINALIZED · ${parentExecution} Child execution status: ${delivery.status}. ${explanations[delivery.status]}\nParent: ${hash}\nChild IDs reported by the parent: ${delivery.childHashes.join(", ") || "none returned"}\nExact sender/recipient/amount child matches: ${delivery.matchingChildren.join(", ") || "none proven"}\nRecipient balance delta has not been checked. The on-chain transfer record is not changed and no retry was submitted.`);
+          return;
+        }
+        if (observed.state === "finalized-execution-unknown") {
+          report(`FINALIZED · the RPC omitted the execution result. No success, failure, or state change is assumed. Keep this hash and do not resubmit.\n${pretty(observed.transaction)}`);
           return;
         }
         try {

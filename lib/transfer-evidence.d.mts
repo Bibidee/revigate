@@ -1,7 +1,10 @@
 export type TransferEvidenceStatus =
-  | "DELIVERY_VERIFIED_BY_FINALIZED_CHILD"
-  | "DUPLICATE_DELIVERY_OBSERVED"
-  | "CHILD_FAILED_DELIVERY_UNPROVEN"
+  | "CHILD_FINALIZED_SUCCESS"
+  | "DUPLICATE_SUCCESSFUL_CHILDREN"
+  | "CHILD_FINALIZED_FAILURE"
+  | "CHILD_PENDING"
+  | "CHILD_UNDETERMINED"
+  | "CHILD_CANCELLED"
   | "UNKNOWN";
 
 export function classifyOutgoingTransfer(input: {
@@ -21,5 +24,13 @@ export function classifyOutgoingTransfer(input: {
     txExecutionResultName?: string;
     hash?: string;
     txId?: string;
+    requestedHash?: string;
   }>;
 }): { status: TransferEvidenceStatus; matchingChildren: string[] };
+
+export function classifyRecipientBalanceDelta(input: {
+  before: bigint | string | number;
+  after: bigint | string | number;
+  expectedAmount: bigint | string | number;
+}): { status: "BALANCE_DELTA_MATCHED" | "BALANCE_DELTA_MISMATCHED"; observedDelta: string }
+  | { status: "BALANCE_DELTA_UNKNOWN" };
