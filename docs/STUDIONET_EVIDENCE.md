@@ -7,32 +7,56 @@ Recorded 2026-10-14. This is testnet evidence, not a production custody certific
 - Repository-local GenLayer CLI: `0.39.1`; GenLayerJS: `1.1.8`.
 - Network: GenLayer Studio / Studionet, chain ID `61999`, RPC `https://studio.genlayer.com/api`.
 - Active unlocked test signer: `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
-- Local Git HEAD at deployment: `5fb3a6d58e2d9c8247570ba7d885592100aa436c`; branch `codex/revigate-remediation-2026-10-14`; remediation source was uncommitted.
+- Local Git HEAD for the fresh deployments: `0c4de92062c2866612d8269078bc9ddd66fe0bd6`; branch `codex/revigate-remediation-2026-10-14`; the deployed source changes were uncommitted at deployment.
 - Contract source SHA256 immediately before deployment: `23D7BDE7F55990080B7C4AB761A3C19EFF8912AD44114B64D080604CDA6E0C58`.
 - The CLI's account view reported 298 GEN before deployment. No private key or wallet secret is recorded here.
 
-## Current two-contract pair, pairing and source attestation
+## Current source-exact pair
 
 | Item | Registry | Vault |
 |---|---|---|
-| Address | 0x4EECe12604bC7444e571999D9F92b951Fcc0F740 | 0xB2ce7E67d2A7766Bb62993aDd37636f0163fAAc5 |
-| Deployment transaction | 0xa70dae8864a58749081a3379be2cf031736d6d8580ac44756e71f679ad893558 | 0xf8fe9162f92506d643b25166183f52ae0a63b821c918d20485fa60d7b0f3792c |
-| Receipt | FINALIZED, MAJORITY_AGREE | FINALIZED, MAJORITY_AGREE; leader execution SUCCESS |
+| Address | 0x4C55E4e0ab00C8534B6d4A826620cdb506349B45 | 0xdCa7E9DF49e2773FaEFAD6B27B612BC296C74751 |
+| Deployment transaction | 0x73a64f695854b54eea242bb88921e768994bce875ce9adaf285c8ec2d14dc3ac | 0xd573670ccc439863757fb9346e836c88809857608fe31260988cd8f1566e8545 |
+| Receipt | FINALIZED | FINALIZED |
 | Attached value | 0 | 0 |
-| Local source SHA256 | 5602F7DEDA868864900D0336E3D25509DDCA6564998E0181C997A2842A4255FA | A6090229AF3F3140A83576C44FC2F13954411F89C617D9FE2283FF827D148EFD |
+| Local source SHA256 | 6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F | 53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629 |
 | Deployed bytes match local source | Yes | Yes |
 
-The read-only attestation script at scripts/attest-studionet-source.mjs fetched each contract's deployed code, hashed it, compared exact UTF-8 bytes with local source, read both configs, and verified chain 61999, reciprocal addresses, and custody_enabled=false. The final on-chain reads returned:
+Pairing transaction: `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894`. The read-only attestation script `scripts/attest-studionet-source.mjs` fetched each contract's deployed code, hashed it, compared exact UTF-8 bytes with local source, read both configs, and verified chain 61999, reciprocal addresses, and `custody_enabled=false`. The address-encoding verifier also checked the hosted schemas and performed address-typed read calls successfully. Both contracts have zero ledger liabilities and the pair has received no GEN.
 
-- Registry config: chain 61999, protocol revigate-registry-v1, Vault 0xb2ce7e67d2a7766bb62993add37636f0163faac5, custody disabled.
-- Vault config: chain 61999, protocol revigate-vault-v1, Registry 0x4eece12604bc7444e571999d9f92b951fcc0f740, custody disabled.
-- Vault ledger: liabilities 0, held 0, claimable 0, transfer pending 0, recipient delivery claims 0, unreconciled 0, native balance 0, unassigned surplus 0, shortfall 0.
+- Registry config: chain 61999, protocol `revigate-registry-v1`, Vault `0xdca7e9df49e2773faefad6b27b612bc296c74751`, custody disabled.
+- Vault config: chain 61999, protocol `revigate-vault-v1`, Registry `0x4c55e4e0ab00c8534b6d4a826620cdb506349b45`, custody disabled.
 
-The Registry was bound once to the Vault. Reciprocal on-chain configuration confirms the pair, but the bind transaction hash was not captured in the local CLI output and is not supplied here. Configuration readback alone does not prove a child message finalized in the Vault.
+The source-exact pair is a fresh deployment and is the only pair in this report with both contracts byte-for-byte equal to the local contract files. It is custody-disabled and has no financial lifecycle state. The pairing/configuration transaction does not count as proof of Registry notification child execution.
 
-An unrelated unlocked wallet attempted to call bind_vault with a replacement address. Transaction 0xa97042009c493ab8d2a84018a7d2c8fb1c755865b4ff833cb956dd043f6eb5ef finalized with MAJORITY_AGREE, leader execution ERROR, and value_credited=false. A subsequent get_config retained the original Vault address. This is a live negative for unauthorized Registry rebinding only.
+## Hosted authenticated-message and spoof proof pair
 
-The pair received no GEN and remains a disposable custody-disabled test pair. There is no successful hosted proof of authenticated Registry-to-Vault child execution, exactly-once canonical update, duplicate handling, or delayed/out-of-order behavior. A separate live helper probe intended to test contract impersonation finalized with execution ERROR and invalid_contract absent_runner_comment; no impersonation conclusion is claimed.
+To exercise an emitting method without adding test code to the release pair, a disposable Registry probe was deployed with one owner-gated test emitter added to the current Registry source. Its paired Vault is byte-for-byte the local Vault source. Both deployments and the Registry-to-Vault instructions used zero attached value; both contracts had custody disabled.
+
+| Item | Registry probe | Paired Vault |
+|---|---|---|
+| Address | 0x01170B19d49581Be9987C95937082b9ec06Ca046 | 0x11C7e9FD387CE608e7dEDE87Bd44685e1021a66E |
+| Deployment transaction | 0xee85895e2e2e2d935239be032f896a3f371eedafab50bf120d1d81b941503888 | 0x1daedb049e047c21c7458a51acb590c6caeaabcb0e809f00e2c9c5decc671079 |
+| Source SHA256 | BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC | 53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629 |
+
+The probe pair bind transaction was `0xfd42163092420265524d6b38258a393b0777a02a52bd7338f468277a48912688`. On-chain config returned the reciprocal addresses and custody disabled. An unrelated unlocked wallet attempted to replace the Registry's Vault address in transaction `0xa63ccb9b749d41f077697634b9539d6f6bb43b5abd2d154cc257cfc4dd5e498f`; it finalized with execution ERROR (`Only the owner may bind the Vault once`), and subsequent config remained unchanged.
+
+The actual live snapshot/message results were:
+
+| Case | Parent | Child | Result and canonical readback |
+|---|---|---|---|
+| Authorized Registry snapshot | `0xfd28fe8a7cc9ce707d86413d00c9e2ad8c2116197fd594b3cf85fce5260da385` | `0x144194ce3ab7866106c6d56644f82dda4bda37d20c65a6c68bf312ebe2224310` | Both FINALIZED; child returned `true`; Vault stored program 777, epoch 1, publisher `0x527da5f7022f14f7105e5f06cec1a8eff53556b5`, SHA `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`, document digest `bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb`. Zero value attached. |
+| Duplicate same message ID/nonce | `0xd4f0f78a95e996be0a2dda1be37985b43a9edda8dabf936ff4575ccc9b5930cb` | `0x8a18f75603a94b90fa545bd47475df4a25514b7787da78296aa55ad2c0b199f3` | Both FINALIZED; child returned `false`; stored program snapshot remained unchanged. |
+| Stale/out-of-order nonce | `0xfe15f4a9a6577d9b4afdc7616f2ee1a4826ec83cd8a117c1c8370fbd2adc0243` | `0x0ebe0cd6f534d1e801bc06e5a5eb45633b8f2909e967429471fcd44679c5dfc4` | Parent FINALIZED; child FINALIZED with execution ERROR `Registry nonce is stale or out of order`; no value attached. |
+| Different contract impersonation | `0xb45612dd0139f31326195c25314192c9a795133eb311e615108f2bd6500361d6` | `0xb426bda84e67e114cf5081b0f579a8b6210d6c7fee883d129f56cf74c00e9bfc` | Spoof contract `0x9F010AE46E332ca19e86ebe57522Ce468Dfbe17d`, source SHA `447637DAF7EED97DFCBABA90CA936DEB7C6EF9F8A00658C746421265EC3EFB2B`; child rejected with `Only the paired Registry may send this message`; program 888 remained absent. |
+
+The initial harness attempt with a numeric-only hexadecimal message ID was coerced by the CLI into an integer despite the string schema and failed with a type error. That was a harness serialization error, not evidence that the publisher address caused the failure. A corrected nonnumeric message ID produced the successful child above. Separately, the source fix now declares publisher/participant/wallet arguments as GenLayer `Address` where appropriate and the frontend encodes address arguments as `CalldataAddress`; live schema inspection and address-encoded read calls passed.
+
+This proves the authenticated child path, duplicate no-op, stale nonce rejection, spoof rejection, and unrelated-wallet bind rejection on a disposable message-test pair. It does not prove the source-exact pair emitted a message, any two-wallet financial lifecycle, or custody safety. The release pair and probe pair remain custody-disabled and have received no GEN.
+
+## Superseded earlier two-contract pair
+
+Registry `0x4EECe12604bC7444e571999D9F92b951Fcc0F740` and Vault `0xB2ce7E67d2A7766Bb62993aDd37636f0163fAAc5` were deployed earlier in this sequence (transactions `0xa70dae8864a58749081a3379be2cf031736d6d8580ac44756e71f679ad893558` and `0xf8fe9162f92506d643b25166183f52ae0a63b821c918d20485fa60d7b0f3792c`). They are superseded and are not the current source-exact pair or the hosted message-proof pair. Do not use them as final release evidence.
 
 ## Historical single-contract test deployment (superseded)
 

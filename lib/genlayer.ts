@@ -1,4 +1,5 @@
 import { createClient } from "genlayer-js";
+import { encodeAddressArguments } from "./calldata-address.mjs";
 import { studionet } from "genlayer-js/chains";
 import { ExecutionResult, TransactionStatus } from "genlayer-js/types";
 import type { Address, CalldataEncodable, GenLayerTransaction, Hash } from "genlayer-js/types";
@@ -81,7 +82,9 @@ export async function readRevigate(functionName: string, args: CalldataEncodable
   const selectedTarget = target ?? contractTargetForMethod(functionName);
   if (functionName === "get_config") return selectedTarget === "registry" ? registryConfig : vaultConfig;
   const address = selectedTarget === "registry" ? registryAddress : vaultAddress;
-  return getReadClient().readContract({ address, functionName, args, jsonSafeReturn: true });
+  return getReadClient().readContract({
+    address, functionName, args: encodeAddressArguments(functionName, args), jsonSafeReturn: true,
+  });
 }
 
 export async function submitRevigateWrite(options: {
@@ -117,7 +120,7 @@ export async function submitRevigateWrite(options: {
   const hash = await client.writeContract({
     address,
     functionName: options.functionName,
-    args: options.args ?? [],
+    args: encodeAddressArguments(options.functionName, options.args ?? []),
     value: options.value ?? 0n,
   });
   if (typeof hash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(hash)) {

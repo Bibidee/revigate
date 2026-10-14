@@ -167,20 +167,21 @@ class RevigateVault(gl.Contract):
 
     @gl.public.write
     def register_program_snapshot(self, message_id: str, nonce: u256,
-                                  program_id: u256, publisher: str, epoch: u64,
+                                  program_id: u256, publisher: Address, epoch: u64,
                                   sha: str, document_digest: str) -> bool:
         if not self._authenticate_message(message_id, nonce, program_id):
             return False
         self._require_address(publisher, "Publisher")
+        publisher_address = str(publisher).lower()
         if (epoch == 0 or not re.fullmatch(r"[0-9a-f]{40}", sha)
                 or not re.fullmatch(r"[0-9a-f]{64}", document_digest)):
             self._fail("Program snapshot is malformed")
         existing = self.programs.get(program_id)
-        if existing is not None and (existing.publisher != publisher.lower()
+        if existing is not None and (existing.publisher != publisher_address
                                      or epoch < existing.epoch):
             self._fail("Program snapshot conflicts with frozen identity")
         self.programs[program_id] = ProgramSnapshot(
-            publisher=publisher.lower(), epoch=epoch, sha=sha,
+            publisher=publisher_address, epoch=epoch, sha=sha,
             document_digest=document_digest, last_nonce=nonce,
             first_material_epoch=(existing.first_material_epoch if existing else u64(0)),
             first_material_at=(existing.first_material_at if existing else u64(0)),
@@ -235,12 +236,13 @@ class RevigateVault(gl.Contract):
         return hashlib.sha256("|".join(fields).encode("utf-8")).hexdigest()
 
     @gl.public.write
-    def register_offer(self, program_id: u256, participant: str, principal: u256,
+    def register_offer(self, program_id: u256, participant: Address, principal: u256,
                        funding_deadline: u64, acceptance_deadline: u64,
                        maturity: u64, exit_bps: u64, exit_window: u64) -> u256:
         snapshot = self.programs.get(program_id)
         sender = self._sender()
         self._require_address(participant, "Participant")
+        participant_address = str(participant).lower()
         if snapshot is None or sender != snapshot.publisher:
             self._fail("Only the authenticated publisher may register an offer")
         authoritative = _Registry(self.registry).view().get_program_for_vault(program_id)
@@ -252,7 +254,7 @@ class RevigateVault(gl.Contract):
                 or authoritative.get("document_digest") != snapshot.document_digest):
             self._fail("Vault snapshot is not the current authenticated Registry state")
         now = self._now()
-        if (participant.lower() in (sender, ZERO) or principal == 0
+        if (participant_address in (sender, ZERO) or principal == 0
                 or not now < funding_deadline < acceptance_deadline < maturity
                 or funding_deadline > now + 30 * 86400
                 or acceptance_deadline > now + 30 * 86400
@@ -261,7 +263,7 @@ class RevigateVault(gl.Contract):
                 or (exit_bps > 0 and not 3600 <= exit_window <= 2_592_000)):
             self._fail("Financial terms are invalid")
         agreement_id = self._agreement_id(
-            program_id, participant.lower(), principal, funding_deadline,
+            program_id, participant_address, principal, funding_deadline,
             acceptance_deadline, maturity, exit_bps, exit_window, snapshot)
         if self.agreement_ids.get(agreement_id, False):
             self._fail("Agreement replay")
@@ -270,7 +272,7 @@ class RevigateVault(gl.Contract):
         self.next_offer += u256(1)
         self.offers[offer_id] = Offer(
             id=offer_id, agreement_id=agreement_id, program_id=program_id,
-            publisher=sender, participant=participant.lower(), principal=principal,
+            publisher=sender, participant=participant_address, principal=principal,
             epoch=snapshot.epoch, sha=snapshot.sha,
             document_digest=snapshot.document_digest,
             funding_deadline=funding_deadline,
@@ -285,7 +287,7 @@ class RevigateVault(gl.Contract):
             closure_expires_at=u64(0), closure_proposer="",
         )
         self._append_wallet_offer(sender, offer_id)
-        self._append_wallet_offer(participant.lower(), offer_id)
+        self._append_wallet_offer(participant_address, offer_id)
         return offer_id
 
     def _append_wallet_offer(self, wallet: str, offer_id: u256):
@@ -639,11 +641,11 @@ class RevigateVault(gl.Contract):
         return {"items": items, "next_cursor": cursor if cursor > 1 else u256(0)}
 
     @gl.public.view
-    def get_wallet_offer_page(self, wallet: str, before_id: u256,
+    def get_wallet_offer_page(self, wallet: Address, before_id: u256,
                               limit: u64) -> dict:
         if limit < 1 or limit > 50:
             self._fail("Page size must be between 1 and 50")
-        normalized = wallet.lower()
+        normalized = str(wallet).lower()
         count = int(self.wallet_offer_counts.get(normalized, u256(0)))
         if before_id == 0:
             cursor = count

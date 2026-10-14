@@ -34,7 +34,7 @@ class _Vault:
 
     class Write:
         def register_program_snapshot(self, message_id: str, nonce: u256,
-                                      program_id: u256, publisher: str,
+                                      program_id: u256, publisher: Address,
                                       epoch: u64, sha: str,
                                       document_digest: str) -> None: ...
 
@@ -333,7 +333,7 @@ class RevigateRegistry(gl.Contract):
             self._fail("Registry message replay")
         self.message_ids[message_id] = True
         _Vault(self.vault).emit(on="finalized").register_program_snapshot(
-            message_id, nonce, program.id, program.publisher, program.epoch,
+            message_id, nonce, program.id, Address(program.publisher), program.epoch,
             program.active_sha, program.document_digest,
         )
         return message_id
@@ -367,7 +367,7 @@ class RevigateRegistry(gl.Contract):
                                           program.epoch, program.document_digest)
             self.message_ids[message_id] = True
             _Vault(self.vault).emit(on="finalized").register_program_snapshot(
-                message_id, nonce, program.id, program.publisher, program.epoch,
+                message_id, nonce, program.id, Address(program.publisher), program.epoch,
                 program.active_sha, program.document_digest,
             )
         else:
@@ -610,8 +610,8 @@ class RevigateRegistry(gl.Contract):
         return self._review_view(review) if review is not None else {}
 
     @gl.public.view
-    def get_acknowledgment(self, program_id: u256, wallet: str) -> dict:
-        key = str(program_id) + ":" + wallet.lower()
+    def get_acknowledgment(self, program_id: u256, wallet: Address) -> dict:
+        key = str(program_id) + ":" + str(wallet).lower()
         count = self.acknowledgment_counts.get(key, u256(0))
         if count == 0:
             return {}

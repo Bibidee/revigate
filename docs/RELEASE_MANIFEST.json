@@ -3,9 +3,9 @@
   "recorded_at": "2026-10-14",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
-  "base_commit": "5fb3a6d58e2d9c8247570ba7d885592100aa436c",
-  "worktree_state_at_contract_deployment": "remediation source was uncommitted and based on base_commit",
-  "implementation_commit": "e78cf043f9ced500aed3f58413779bce4a15145a",
+  "base_commit": "0c4de92062c2866612d8269078bc9ddd66fe0bd6",
+  "worktree_state_at_contract_deployment": "address typing and calldata encoding changes were uncommitted at source-exact deployment",
+  "implementation_commit": "PENDING_COMMIT",
   "commit_signature": "unsigned; no local signing key/configuration",
   "application_source_commit": "3ecf429a9dff768b9133dfce9a2243dfcafd6dbd",
   "application_source_commit_signature": "unsigned",
@@ -24,33 +24,37 @@
   "contracts": {
     "registry": {
       "path": "contracts/revigate_registry.py",
-      "address": "0x4EECe12604bC7444e571999D9F92b951Fcc0F740",
-      "deployment_transaction": "0xa70dae8864a58749081a3379be2cf031736d6d8580ac44756e71f679ad893558",
+      "address": "0x4C55E4e0ab00C8534B6d4A826620cdb506349B45",
+      "deployment_transaction": "0x73a64f695854b54eea242bb88921e768994bce875ce9adaf285c8ec2d14dc3ac",
       "deployment_status": "FINALIZED",
       "consensus": "MAJORITY_AGREE",
       "attached_value": "0",
-      "source_sha256": "5602F7DEDA868864900D0336E3D25509DDCA6564998E0181C997A2842A4255FA",
+      "source_sha256": "6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F",
       "deployed_code_matches_local_source": true
     },
     "vault": {
       "path": "contracts/revigate_vault.py",
-      "address": "0xB2ce7E67d2A7766Bb62993aDd37636f0163fAAc5",
-      "deployment_transaction": "0xf8fe9162f92506d643b25166183f52ae0a63b821c918d20485fa60d7b0f3792c",
+      "address": "0xdCa7E9DF49e2773FaEFAD6B27B612BC296C74751",
+      "deployment_transaction": "0xd573670ccc439863757fb9346e836c88809857608fe31260988cd8f1566e8545",
       "deployment_status": "FINALIZED",
       "consensus": "MAJORITY_AGREE",
       "attached_value": "0",
-      "source_sha256": "A6090229AF3F3140A83576C44FC2F13954411F89C617D9FE2283FF827D148EFD",
+      "source_sha256": "53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629",
       "deployed_code_matches_local_source": true
     },
     "pairing": {
       "registry_vault_config_is_reciprocal": true,
       "custody_enabled": false,
       "both_ledgers_zero": true,
-      "registry_bind_transaction": null,
-      "registry_bind_transaction_note": "Final binding is confirmed by reciprocal on-chain config reads; hash was not captured.",
-      "unauthorized_registry_rebind_transaction": "0xa97042009c493ab8d2a84018a7d2c8fb1c755865b4ff833cb956dd043f6eb5ef",
-      "unauthorized_rebind_result": "FINALIZED execution ERROR; binding unchanged",
-      "authenticated_child_message_proof": "NOT_PROVEN"
+      "registry_bind_transaction": "0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894",
+      "registry_bind_transaction_note": "Source-exact pair bind finalized; reciprocal on-chain reads confirm binding.",
+      "custody_enabled": false,
+      "authenticated_child_message_proof": "PASS_ON_DISPOSABLE_REGISTRY_HARNESS_PAIRED_WITH_EXACT_SOURCE_VAULT",
+      "message_parent": "0xfd28fe8a7cc9ce707d86413d00c9e2ad8c2116197fd594b3cf85fce5260da385",
+      "message_child": "0x144194ce3ab7866106c6d56644f82dda4bda37d20c65a6c68bf312ebe2224310",
+      "duplicate_child": "0x8a18f75603a94b90fa545bd47475df4a25514b7787da78296aa55ad2c0b199f3",
+      "stale_nonce_child": "0x0ebe0cd6f534d1e801bc06e5a5eb45633b8f2909e967429471fcd44679c5dfc4",
+      "spoof_child": "0xb426bda84e67e114cf5081b0f579a8b6210d6c7fee883d129f56cf74c00e9bfc"
     }
   },
   "custody_failure_probes": {
@@ -83,12 +87,13 @@
     "authenticated_publish_page_check": "write lock visible; no candidate pair address present in page response"
   },
   "verification": {
-    "javascript_tests": "9 passed",
+    "javascript_tests": "13 passed",
     "python_tests": "8 passed",
     "direct_mode_tests": "90 passed",
     "production_dependency_audit": "0 vulnerabilities",
-    "full_preflight": "PASS: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, production build with 10 prerendered routes",
-    "github_actions": "PASS: workflow run 6 for application_source_commit",
+    "full_dependency_audit": "0 vulnerabilities; UUID 11.1.1 transitive override; GenLayer CLI 0.39.1 unchanged",
+    "full_preflight": "PASS: network guard, typecheck, lint, 13 JavaScript tests, 8 Python tests, 90 Direct Mode tests, production build with all 10 routes prerendered",
+    "github_actions": "PENDING_PUSH",
     "vercel_preview_check": "PASS: current PR preview READY and authenticated publish page shows write lock",
     "vercel_production": "PASS: staged then promoted deployment READY; write lock checked; last-hour error log scan returned zero entries",
     "t01_t52": "INCOMPLETE",

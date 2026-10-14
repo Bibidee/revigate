@@ -4,7 +4,9 @@ Use GenLayer Studionet 61999 only, through the repository-local CLI 0.39.1 and h
 
 ## Completed limited proof (2026-10-14)
 
-Current test pair: Registry 0x4EECe12604bC7444e571999D9F92b951Fcc0F740 and Vault 0xB2ce7E67d2A7766Bb62993aDd37636f0163fAAc5. Deployment transactions are 0xa70dae8864a58749081a3379be2cf031736d6d8580ac44756e71f679ad893558 and 0xf8fe9162f92506d643b25166183f52ae0a63b821c918d20485fa60d7b0f3792c. Both finalized with zero value. The deployed Registry and Vault source bytes match their local source SHA256 values recorded in [Two-Contract Migration](TWO_CONTRACT_MIGRATION.md). Read-only configuration confirms reciprocal addresses, chain 61999, and custody disabled. The Registry bind is confirmed by state, but its transaction hash was not captured.
+Source-exact pair: Registry `0x4C55E4e0ab00C8534B6d4A826620cdb506349B45`, Vault `0xdCa7E9DF49e2773FaEFAD6B27B612BC296C74751`; deploy transactions `0x73a64f695854b54eea242bb88921e768994bce875ce9adaf285c8ec2d14dc3ac` and `0xd573670ccc439863757fb9346e836c88809857608fe31260988cd8f1566e8545`; pairing transaction `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894`. Both deployed bytecodes match the local source exactly; reciprocal config reports chain 61999 and custody disabled. Do not send GEN to this pair.
+
+A separate disposable Registry test emitter paired to the byte-identical source Vault proved an authenticated child, one canonical snapshot update, duplicate no-op, stale nonce rejection, spoof rejection, and unauthorized-wallet rebind rejection. See [Studionet evidence](STUDIONET_EVIDENCE.md) for exact transaction IDs and state readbacks. The source-exact Registry has not yet emitted the tested child itself.
 
 A prior single-contract test proved one 1-wei unknown-offer credit and one EOA withdrawal balance increase. The transfer record remains UNKNOWN_DELIVERY; this proves one success path, not general receipt or recovery. No GEN was sent to the current Registry/Vault pair. Full historic values and reads are in [Studionet evidence](STUDIONET_EVIDENCE.md).
 

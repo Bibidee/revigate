@@ -18,33 +18,35 @@ The Vault implements authenticated snapshot and material-change receivers, monot
 
 The Registry is deployed unpaired, the Vault is deployed with the Registry address, then the Registry owner binds the Vault once. The Vault checks the GenLayer message sender against its immutable Registry address. Message IDs commit to the protocol, chain, both deployments, message kind, nonce, program, epoch and source digest.
 
-## Current final test pair on Studionet
+## Current source-exact pair on Studionet
 
 Network is GenLayer Studionet, chain ID 61999, RPC https://studio.genlayer.com/api. Repository-local CLI 0.39.1 was used.
 
 | Contract | Address | Deployment transaction | Source SHA256 |
 |---|---|---|---|
-| Registry | 0x4EECe12604bC7444e571999D9F92b951Fcc0F740 | 0xa70dae8864a58749081a3379be2cf031736d6d8580ac44756e71f679ad893558 | 5602F7DEDA868864900D0336E3D25509DDCA6564998E0181C997A2842A4255FA |
-| Vault | 0xB2ce7E67d2A7766Bb62993aDd37636f0163fAAc5 | 0xf8fe9162f92506d643b25166183f52ae0a63b821c918d20485fa60d7b0f3792c | A6090229AF3F3140A83576C44FC2F13954411F89C617D9FE2283FF827D148EFD |
+| Registry | 0x4C55E4e0ab00C8534B6d4A826620cdb506349B45 | 0x73a64f695854b54eea242bb88921e768994bce875ce9adaf285c8ec2d14dc3ac | 6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F |
+| Vault | 0xdCa7E9DF49e2773FaEFAD6B27B612BC296C74751 | 0xd573670ccc439863757fb9346e836c88809857608fe31260988cd8f1566e8545 | 53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629 |
 
-Both deployment receipts finalized with MAJORITY_AGREE and no attached value. A read-only source attestation fetched the deployed code and matched each local file byte-for-byte. On-chain configuration reports chain ID 61999, protocol names revigate-registry-v1 and revigate-vault-v1, reciprocal addresses, and custody_enabled=false. Both live ledgers read zero liabilities, zero native balance, zero surplus and zero shortfall.
+Both deployment receipts finalized with no attached value. Pairing transaction: `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894`. A read-only source attestation fetched the deployed code and matched each local file byte-for-byte. On-chain configuration reports chain ID 61999, protocol names `revigate-registry-v1` and `revigate-vault-v1`, reciprocal addresses, and `custody_enabled=false`. Both contracts have zero ledger liabilities and the pair has received no GEN.
 
-The Registry's one-time bind finalized and the reciprocal config reads confirm the final pairing. The bind transaction hash was not captured in the local command output and is not asserted here. A separate unauthorized-wallet attempt to replace the Registry's Vault address finalized with MAJORITY_AGREE and execution ERROR; the live binding remained unchanged. Its transaction is 0xa97042009c493ab8d2a84018a7d2c8fb1c755865b4ff833cb956dd043f6eb5ef.
+## Address encoding correction
 
-The final Vault constructor stores the Registry as a GenLayer Address, and the Registry bind path normalizes the CLI Address representation. Registry/Vault source attestation and config reads confirm that the defect is fixed for deployment and storage. They do not prove cross-contract message execution.
+Address-bearing contract parameters now use GenLayer's `Address` type: the Registry/Vault snapshot publisher, offer participant, acknowledgment wallet, and wallet-offer-page wallet. Stored values are normalized with `str(address).lower()`. The frontend wraps address arguments with the GenLayerJS `CalldataAddress` encoder for `register_offer`, `get_acknowledgment`, and `get_wallet_offer_page`. Deployed schema checks and live address-encoded read calls passed for both deployed pairs.
 
-## Message proof still missing
+## Hosted authenticated-message proof
 
-No successful hosted proof is recorded for an authenticated Registry message reaching this Vault, a finalized child transaction, exactly-once canonical state mutation, duplicate delivery, or delayed/out-of-order handling. A live helper deployment used to probe sender impersonation finalized as execution ERROR with invalid_contract/absent_runner_comment and did not alter the final pair. Direct Mode checks cover the boundary in simulation only.
+An isolated disposable proof pair tested cross-contract messaging. Registry probe `0x01170B19d49581Be9987C95937082b9ec06Ca046` (source hash `BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC`) had one owner-gated test emitter added to the current Registry source. Vault `0x11C7e9FD387CE608e7dEDE87Bd44685e1021a66E` is byte-for-byte the source-exact Vault (hash `53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629`). The pair was bound in transaction `0xfd42163092420265524d6b38258a393b0777a02a52bd7338f468277a48912688`, with custody disabled and no GEN attached.
 
-The bind transaction's child-message result must not be inferred from reciprocal configuration. Capture the parent and child transaction receipts in a supported live harness and read back canonical Vault state before claiming message synchronization.
+The authorized snapshot parent `0xfd28fe8a7cc9ce707d86413d00c9e2ad8c2116197fd594b3cf85fce5260da385` emitted child `0x144194ce3ab7866106c6d56644f82dda4bda37d20c65a6c68bf312ebe2224310`; both finalized and child returned `true`. Vault state readback showed program 777, epoch 1, publisher `0x527da5f7022f14f7105e5f06cec1a8eff53556b5`, and the expected SHA/document digest. Repeating the same message ID and nonce produced finalized child `0x8a18f75603a94b90fa545bd47475df4a25514b7787da78296aa55ad2c0b199f3` returning `false`, with no duplicate mutation. A stale nonce emitted child `0x0ebe0cd6f534d1e801bc06e5a5eb45633b8f2909e967429471fcd44679c5dfc4`, which finalized with execution error `Registry nonce is stale or out of order`. A different contract spoof was rejected with `Only the paired Registry may send this message`, and program 888 remained absent. An unrelated wallet's attempt to rebind the probe Registry finalized with `Only the owner may bind the Vault once`; config did not change. Full transaction IDs and parent references are in [Studionet Evidence](STUDIONET_EVIDENCE.md).
+
+The source-exact pair above has not itself emitted or processed the test message. Hosted message proof used a Registry test harness, so it proves the deployed Vault authentication/replay boundary and message serialization, not full source-exact Registry notification coverage. An initial numeric-only message ID was parsed by the CLI as an integer despite its string schema; that harness failure was corrected with a nonnumeric ID and is not treated as evidence of an address defect.
 
 ## Custody and lifecycle limitations
 
-The current pair has custody disabled and has never received GEN. Do not send value to it. The prior disposable probes remain release-blocking: Studionet retained value after a payable execution error, a no-calldata transfer, and a nonpayable method call without matching ledger liabilities. One earlier one-wei withdrawal reached a controlled EOA, but the contract record remained UNKNOWN_DELIVERY; failed-transfer recovery remains unproven.
+Both the current source-exact pair and the message-test pair have custody disabled and have never received GEN. Do not send value to either. Prior disposable probes remain release-blocking: Studionet retained value after a payable execution error, a no-calldata transfer, and a nonpayable method call without matching ledger liabilities. One earlier one-wei withdrawal reached a controlled EOA, but the contract record remained `UNKNOWN_DELIVERY`; failed-transfer recovery remains unproven.
 
 No signed-source live program verification or Wallet A/B/C lifecycle has run. There is no live funding, acceptance, revision, refund, material exit, maturity payout, or recipient-balance proof for this pair. The GitHub source checks and real GenLayer semantic judgment have not been certified against a signed published commit.
 
 ## Release posture
 
-Keep the production contract address unset and contract writes locked. The live pair proves deployment, source integrity, reciprocal pairing, and a negative unauthorized Registry bind attempt. It does not clear the custody failure, message-delivery, or lifecycle gates. The project remains NOT COMPLETE.
+Keep the production contract address unset and contract writes locked. The source-exact pair proves deployment, source integrity, and reciprocal pairing. The separate disposable proof pair proves authenticated child execution, duplicate no-op, stale-nonce and spoof rejection, and unauthorized-wallet rebind rejection. Neither clears custody failure or live economic lifecycle gates. The project remains NOT COMPLETE.

@@ -7,20 +7,19 @@
 - [x] Revigate branding and Registry/Vault implementation.
 - [x] JavaScript and Python lockfiles are present.
 - [x] Repository-local GenLayer CLI 0.39.1 and Studionet 61999 were verified.
-- [x] Current preflight passed: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 routes.
-- [x] Production dependency audit: zero vulnerabilities. Two moderate UUID advisories remain in the pinned development CLI dependency chain.
+- [x] Full preflight passed: network guard, typecheck, lint, 13 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 routes.
+- [x] Full dependency audit: zero vulnerabilities after pinning transitive UUID to 11.1.1; GenLayer CLI remains pinned to 0.39.1 and Dockerode remains on 4.0.12.
 - [ ] Full contract mutation suite and fresh independent hostile audit.
 - [x] Implementation and evidence commits pushed; draft PR #1 open; GitHub Actions CI run 6 passed for application commit 3ecf429a.
 - [ ] Signed commit verified. The implementation commit is unsigned because local signing was not configured.
 
 ## Studionet pair and custody
 
-- [x] Fresh Registry and Vault deployed; both deployment receipts finalized with zero value.
-- [x] Deployed Registry and Vault bytes match their local source hashes.
-- [x] Reciprocal Registry/Vault addresses and custody_enabled=false confirmed by live reads.
-- [x] Unauthorized wallet could not replace the Registry's Vault address.
-- [ ] Capture the final bind transaction and prove the authenticated child transaction finalizes.
-- [ ] Prove child message exactly-once mutation, duplicate idempotency, and stale/out-of-order handling on hosted Studionet.
+- [x] Fresh source-exact Registry and Vault deployed; both deployment receipts finalized with zero value.
+- [x] Deployed source-exact Registry and Vault bytes match local source hashes; reciprocal addresses and custody_enabled=false confirmed by live reads.
+- [x] Fresh pair bind transaction captured: `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894`.
+- [x] On a disposable message-test pair, authenticated child finality, one canonical update, duplicate no-op, stale nonce rejection, spoof rejection, and unauthorized-wallet rebind rejection proved on Studionet.
+- [ ] Repeat child notification proof using the source-exact Registry itself; the current hosted emitter is a test harness.
 - [ ] Resolve or bound the live incoming-value failures: payable error, direct transfer, and value on nonpayable method.
 - [ ] Prove failed outgoing transfer recovery and objective receipt handling without resend or unbacked credits.
 - [ ] Run a signed-source two-wallet lifecycle and independently verify funding, payout, and refund recipient balances.
@@ -36,7 +35,7 @@
 
 ## GitHub and release decision
 
-- [x] Remediation branch pushed and a draft pull request against main created.
+- [x] Existing remediation branch and draft pull request against main are present; this turn's changes still need committing/pushing and CI.
 - [ ] Main requires pull requests, signed commits, passing CI, and prevents force pushes/deletion.
 - [x] Ready Vercel Preview for application commit 3ecf429a checked with authenticated CLI; publish page shows the write lock and does not contain the pair addresses.
 - [x] Current remediation source deployed to https://the-revigate.vercel.app as dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv; authenticated page check confirms the write lock and no pair addresses; last-hour error-log scan returned zero entries.
