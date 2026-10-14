@@ -49,9 +49,13 @@ material-event count 2, and no pending review. All lifecycle transactions had
 
 ## Browser and automated verification
 
-Brave exercised the public routes and publisher page over HTTPS. Rabby connected
-as Wallet A and signed the current request and assessment. Wallet-extension
-account switching, network switching, rejection, disconnect recovery, and the
+Brave exercised `/`, `/publish/`, `/my-rules/`, `/activity/`, `/about/`,
+`/program/1/`, and `/program/3/` over HTTPS. Program 3 rendered the exact
+Wallet A publisher, signed ambiguous revision, epoch 3 and final digest from
+the corrected Registry. Rabby connected as Wallet A and signed the current
+publisher request and assessment; a refresh preserved the active account and
+Registry verification. Wallet-extension account switching, wrong-network
+switching, rejection, disconnect recovery, Wallet B participation, and the
 protected Vercel preview remain unverified. The browser observer's conservative
 unknown execution label is not treated as a canonical failure when the finalized
 receipt and Registry readback agree.
