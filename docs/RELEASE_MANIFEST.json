@@ -7,6 +7,8 @@
   "worktree_state_at_contract_deployment": "remediation source was uncommitted and based on base_commit",
   "implementation_commit": "e78cf043f9ced500aed3f58413779bce4a15145a",
   "commit_signature": "unsigned; no local signing key/configuration",
+  "application_source_commit": "3ecf429a9dff768b9133dfce9a2243dfcafd6dbd",
+  "application_source_commit_signature": "unsigned",
   "pull_request": {
     "number": 1,
     "url": "https://github.com/Bibidee/revigate/pull/1",
@@ -62,14 +64,20 @@
   },
   "production": {
     "url": "https://the-revigate.vercel.app",
-    "deployment_id": "dpl_7gc2DA839XWKiZKH1U4mnuHzFNvk",
+    "deployment_id": "dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv",
+    "deployment_url": "https://the-revigate-arzlgagn4-bibidees-projects.vercel.app",
+    "target": "production",
+    "state": "READY",
+    "source_commit": "3ecf429a9dff768b9133dfce9a2243dfcafd6dbd",
+    "write_lock_verified": true,
+    "last_hour_error_log_entries": 0,
     "current_contract_pair_configured": false,
     "contract_writes_enabled": false,
-    "release_source_commit": null
+    "release_source_commit": "3ecf429a9dff768b9133dfce9a2243dfcafd6dbd"
   },
   "preview": {
-    "deployment_id": "dpl_BmKVBJwLfocvV984Yyx2nS7WLk6w",
-    "url": "https://the-revigate-8zabouo03-bibidees-projects.vercel.app",
+    "deployment_id": "dpl_GwXvBnYf9HfCbPUz5DzrHGfBcxWa",
+    "url": "https://the-revigate-ivsza2ul5-bibidees-projects.vercel.app",
     "state": "READY",
     "target": "preview",
     "authenticated_publish_page_check": "write lock visible; no candidate pair address present in page response"
@@ -80,8 +88,9 @@
     "direct_mode_tests": "90 passed",
     "production_dependency_audit": "0 vulnerabilities",
     "full_preflight": "PASS: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, production build with 10 prerendered routes",
-    "github_actions": "PASS: workflow run 5 for implementation_commit",
-    "vercel_preview_check": "PASS: deployment READY and authenticated publish page shows write lock",
+    "github_actions": "PASS: workflow run 6 for application_source_commit",
+    "vercel_preview_check": "PASS: current PR preview READY and authenticated publish page shows write lock",
+    "vercel_production": "PASS: staged then promoted deployment READY; write lock checked; last-hour error log scan returned zero entries",
     "t01_t52": "INCOMPLETE",
     "two_wallet_lifecycle": "NOT_RUN",
     "independent_security_audit": "NOT_COMPLETE",

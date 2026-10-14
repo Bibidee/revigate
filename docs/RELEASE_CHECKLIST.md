@@ -10,7 +10,7 @@
 - [x] Current preflight passed: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 routes.
 - [x] Production dependency audit: zero vulnerabilities. Two moderate UUID advisories remain in the pinned development CLI dependency chain.
 - [ ] Full contract mutation suite and fresh independent hostile audit.
-- [x] Implementation commit pushed; draft PR #1 open; GitHub Actions CI run 5 passed for the implementation commit.
+- [x] Implementation and evidence commits pushed; draft PR #1 open; GitHub Actions CI run 6 passed for application commit 3ecf429a.
 - [ ] Signed commit verified. The implementation commit is unsigned because local signing was not configured.
 
 ## Studionet pair and custody
@@ -38,8 +38,9 @@
 
 - [x] Remediation branch pushed and a draft pull request against main created.
 - [ ] Main requires pull requests, signed commits, passing CI, and prevents force pushes/deletion.
-- [x] Ready Vercel Preview for the remediation branch checked with authenticated CLI; publish page shows the write lock and does not contain the pair addresses.
-- [ ] Production release source and approved contract binding synchronized. Production remains on the prior safe, unbound deployment.
+- [x] Ready Vercel Preview for application commit 3ecf429a checked with authenticated CLI; publish page shows the write lock and does not contain the pair addresses.
+- [x] Current remediation source deployed to https://the-revigate.vercel.app as dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv; authenticated page check confirms the write lock and no pair addresses; last-hour error-log scan returned zero entries.
+- [ ] Approved contract binding configured in production. Keep addresses unset until custody certification.
 
 Keep the production contract address unset and all contract mutations locked until the custody, message, and lifecycle gates above are proven. A successful build, deployment, pairing read, or isolated one-wei withdrawal does not clear these gates.
 
