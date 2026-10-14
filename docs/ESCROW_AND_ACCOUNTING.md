@@ -14,10 +14,12 @@ Unknown or incomplete validator judgment: **no effect on held funds**; determini
 
 ## Funding two-phase safety
 1. A creates nonpayable offer with all parameters validated; it starts `OFFERED_UNFUNDED`.
-2. A calls exact-amount `fund_offer` to lock funds. Payable call must be specifically audited for the GenLayer failure mode documented in Vowmark: value may reach contract even when execution later errors. Preferred bounded approach is credit incoming value to sender's refundable credit **before risky user-input validation**, return a rejection marker rather than throw on ordinary bad funding conditions, then atomically move exact amount from refundable credit to offer held amount if valid. This is a hypothesis to validate live, not automatic guarantee of every kind of protocol failure.
+2. A calls exact-amount `fund_offer` to lock funds. In the current local Vault source, when custody is enabled, every nonzero value entering this supported payable method is first recorded as a refundable credit for `msg.sender`; ordinary invalid conditions return a rejection marker instead of throwing, and a valid exact payment moves that credit to the offer's held amount. Direct Mode now checks wrong amount, wrong funder, unknown offer, duplicate funding, and funding expiry. This behavior has **not** been deployed or live-tested on the current source.
 3. If funding tx is `UNDETERMINED` / errored, show **UNKNOWN FUNDING** until actual balance + ledger reconciliation proves where GEN went. Never auto-retry and never say 'refund complete' without evidence.
 4. Only when `FUNDED_UNACCEPTED` is canonically finalized may B accept.
 5. Unexpected extra GEN, repeated fund calls and wrong-funder value must never disappear into an unexplained surplus; add refundable source credit where feasible. Test unsolicited direct transfers and their behavior; do not promise recovery without proof.
+
+This ordering is a bounded mitigation for ordinary validation rejection. It does not recover protocol-level `ERROR`/`UNDETERMINED` results that roll back storage after value is credited, value sent without method calldata, or value attached to nonpayable methods. Live Studionet probes reproduced all three classes on a disposable clone; a post-credit execution error left its value without a ledger entry. Custody remains disabled until the supported runtime can guarantee atomic incoming-value accounting or a verifiable recovery path. See [Studionet evidence](STUDIONET_EVIDENCE.md) and [custody failure analysis](CUSTODY_FAILURE_ANALYSIS.md).
 
 ## Accounting invariants (must hold per write)
 - A single offer's originally funded escrow can be assigned to beneficiaries at most once.

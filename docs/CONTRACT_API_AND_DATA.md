@@ -1,4 +1,11 @@
-# Proposed Intelligent Contract API and Canonical Data Model
+# Early Intelligent Contract API Proposal (Superseded)
+
+> This is a design-stage proposal. Its single-contract recommendation and
+> proposed signatures were superseded by the implemented Registry/Vault
+> migration. For the current roles, deployed ABI, evidence boundary, and
+> custody status, see [Two-Contract Migration](TWO_CONTRACT_MIGRATION.md) and
+> [Implementation Status](IMPLEMENTATION_STATUS.md). This file is retained as
+> product-history and invariant context; do not treat it as the current ABI.
 
 Names below are target interface names; implement idiomatic GenLayer Python types (`Address`, `u256`, `u64`, `TreeMap`, bounded collections) after verifying current compiler/runtime. Do not introduce an EVM Solidity escrow contract. One GenLayer Intelligent Contract is the preferred default.
 

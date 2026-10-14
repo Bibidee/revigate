@@ -171,6 +171,73 @@ def test_enabled_candidate_exact_funding_is_accounted(direct_deploy, direct_vm):
     }
 
 
+def test_invalid_payable_funding_is_credited_before_validation_and_can_be_withdrawn(
+        direct_deploy, direct_vm):
+    vault = deploy_vault(direct_deploy, direct_vm, custody=True)
+    snapshot(vault, direct_vm)
+    offer_id = create_offer(vault, direct_vm)
+
+    direct_vm.sender = PUBLISHER
+    direct_vm.value = 100
+    assert vault.fund_offer(offer_id) == "REFUNDABLE_CREDIT_AMOUNT_MISMATCH"
+    assert vault.get_offer(offer_id)["state"] == "REGISTERED_UNFUNDED"
+    assert vault.get_wallet_credit(PUBLISHER) == 100
+
+    direct_vm.sender = ATTACKER
+    direct_vm.value = 101
+    assert vault.fund_offer(offer_id) == "REFUNDABLE_CREDIT_WRONG_FUNDER"
+    assert vault.get_wallet_credit(ATTACKER) == 101
+    assert vault.get_offer(offer_id)["state"] == "REGISTERED_UNFUNDED"
+
+    direct_vm.sender = PUBLISHER
+    direct_vm.value = 7
+    assert vault.fund_offer(999) == "REFUNDABLE_CREDIT_UNKNOWN_OFFER"
+    assert vault.get_wallet_credit(PUBLISHER) == 107
+
+    direct_vm.value = 101
+    assert vault.fund_offer(offer_id) == "FUNDED"
+    assert vault.get_wallet_credit(PUBLISHER) == 107
+    assert vault.get_offer(offer_id)["state"] == "FUNDED_UNACCEPTED"
+
+    direct_vm.value = 101
+    assert vault.fund_offer(offer_id) == "REFUNDABLE_CREDIT_OFFER_NOT_FUNDABLE"
+    assert vault.get_wallet_credit(PUBLISHER) == 208
+    ledger = vault.get_ledger()
+    assert ledger["received"] == 410
+    assert ledger["held"] == 101
+    assert ledger["claimable"] == 309
+    assert ledger["accounted_liabilities"] == ledger["received"]
+    assert ledger["reconciliation_delta"] == 0
+
+    direct_vm.value = 0
+    direct_vm._gl_call_hook = lambda vm, request: {"ok": None} if "PostMessage" in request else None
+    transfer_id = vault.withdraw_credit(100)
+    assert vault.get_wallet_credit(PUBLISHER) == 108
+    assert vault.get_transfer(transfer_id)["status"] == "UNKNOWN_DELIVERY"
+    ledger = vault.get_ledger()
+    assert ledger["claimable"] == 209
+    assert ledger["transfer_pending"] == 100
+    assert ledger["accounted_liabilities"] == ledger["received"]
+
+
+def test_expired_payable_funding_returns_credit_without_throwing(direct_deploy, direct_vm):
+    vault = deploy_vault(direct_deploy, direct_vm, custody=True)
+    snapshot(vault, direct_vm)
+    offer_id = create_offer(vault, direct_vm)
+    direct_vm.warp("2026-01-01T00:02:00Z")
+    direct_vm.sender = PUBLISHER
+    direct_vm.value = 101
+
+    assert vault.fund_offer(offer_id) == "REFUNDABLE_CREDIT_FUNDING_EXPIRED"
+    assert vault.get_wallet_credit(PUBLISHER) == 101
+    assert vault.get_offer(offer_id)["state"] == "REGISTERED_UNFUNDED"
+    ledger = vault.get_ledger()
+    assert ledger["received"] == 101
+    assert ledger["claimable"] == 101
+    assert ledger["accounted_liabilities"] == 101
+    assert ledger["reconciliation_delta"] == 0
+
+
 def create_offer(vault, direct_vm, *, principal=101, exit_bps=2000,
                  exit_window=3600, maturity=NOW + 300, offset=0):
     direct_vm.sender = PUBLISHER

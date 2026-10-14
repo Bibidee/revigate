@@ -302,16 +302,35 @@ class RevigateVault(gl.Contract):
         # Studionet may retain gl.message.value even when this method fails.
         if not self.custody_enabled:
             self._fail("Custody is disabled on this deployment")
-        offer = self.offers.get(offer_id)
         value = gl.message.value
-        if (offer is None or offer.publisher != self._sender()
-                or offer.state != "REGISTERED_UNFUNDED"
-                or self._now() > offer.funding_deadline
-                or value != offer.principal):
-            self._fail("Exact authorized funding required")
+        if value == 0:
+            return "REJECTED_ZERO_VALUE"
+
+        # Put all value received through this supported payable route into the
+        # sender's refundable credit before validating ordinary offer inputs.
+        # Invalid requests return normally so they do not roll this ledger
+        # mutation back after the runtime has already credited the value.
+        sender = self._sender()
+        self.total_received += value
+        self.total_claimable += value
+        self.credits[sender] = self.credits.get(sender, u256(0)) + value
+
+        offer = self.offers.get(offer_id)
+        if offer is None:
+            return "REFUNDABLE_CREDIT_UNKNOWN_OFFER"
+        if offer.publisher != sender:
+            return "REFUNDABLE_CREDIT_WRONG_FUNDER"
+        if offer.state != "REGISTERED_UNFUNDED":
+            return "REFUNDABLE_CREDIT_OFFER_NOT_FUNDABLE"
+        if self._now() > offer.funding_deadline:
+            return "REFUNDABLE_CREDIT_FUNDING_EXPIRED"
+        if value != offer.principal:
+            return "REFUNDABLE_CREDIT_AMOUNT_MISMATCH"
+
+        self.credits[sender] -= value
+        self.total_claimable -= value
         offer.held = value
         offer.state = "FUNDED_UNACCEPTED"
-        self.total_received += value
         self.total_held += value
         return "FUNDED"
 
@@ -693,6 +712,10 @@ class RevigateVault(gl.Contract):
                 "accounted_liabilities": liabilities,
                 "reconciled_total": reconciled,
                 "reconciliation_delta": self.total_received - reconciled}
+
+    @gl.public.view
+    def get_wallet_credit(self, wallet: Address) -> u256:
+        return self.credits.get(str(wallet).lower(), u256(0))
 
     def _recipient_claimed_delivery_total(self) -> u256:
         total = u256(0)

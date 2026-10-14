@@ -34,6 +34,7 @@ assert.equal(registrySchema.methods.get_acknowledgment.params[1][1], "address");
 assert.equal(vaultSchema.ctor.params[0][1], "address");
 assert.equal(argType(vaultSchema, "register_program_snapshot", 3), "address");
 assert.equal(argType(vaultSchema, "register_offer", 1), "address");
+assert.equal(argType(vaultSchema, "get_wallet_credit", 0), "address");
 assert.equal(argType(vaultSchema, "get_wallet_offer_page", 0), "address");
 assert.equal(Number(registryConfig.chain_id), 61999);
 assert.equal(Number(vaultConfig.chain_id), 61999);
@@ -44,7 +45,7 @@ assert.equal(vaultConfig.custody_enabled, false);
 assert.equal(deployedRegistry, localRegistry, "deployed test Registry must match its generated source");
 assert.equal(deployedVault, localVault, "deployed Vault must match the repository source");
 
-const [acknowledgment, offerPage, ledger] = await Promise.all([
+const [acknowledgment, offerPage, walletCredit, ledger] = await Promise.all([
   client.readContract({
     address: registryAddress,
     functionName: "get_acknowledgment",
@@ -55,6 +56,12 @@ const [acknowledgment, offerPage, ledger] = await Promise.all([
     address: vaultAddress,
     functionName: "get_wallet_offer_page",
     args: encodeAddressArguments("get_wallet_offer_page", [walletAddress, 0n, 20n]),
+    jsonSafeReturn: true,
+  }),
+  client.readContract({
+    address: vaultAddress,
+    functionName: "get_wallet_credit",
+    args: encodeAddressArguments("get_wallet_credit", [walletAddress]),
     jsonSafeReturn: true,
   }),
   client.readContract({
@@ -71,6 +78,7 @@ const zeroLedgerFields = [
 ];
 assert.ok(zeroLedgerFields.every((field) => BigInt(ledger[field]) === 0n),
   "the custody-disabled test Vault must have a zero ledger and native balance");
+assert.equal(BigInt(walletCredit), 0n, "the test wallet must have zero Vault credit");
 
 console.log(JSON.stringify({
   chain_id: Number(studionet.id),
@@ -83,5 +91,7 @@ console.log(JSON.stringify({
   address_encoded_reads_succeeded: true,
   acknowledgment_is_dict: acknowledgment !== null && typeof acknowledgment === "object",
   wallet_offer_page_is_dict: offerPage !== null && typeof offerPage === "object",
+  get_wallet_credit_read_succeeded: true,
+  test_wallet_credit_zero: true,
   vault_ledger_zero: true,
 }, null, 2));

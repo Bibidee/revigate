@@ -16,8 +16,10 @@ test("encodes the participant argument to register_offer as an address", () => {
 test("encodes wallet-index and acknowledgment reads as addresses", () => {
   const offerPage = encodeAddressArguments("get_wallet_offer_page", [WALLET, 0n, 20n]);
   const acknowledgment = encodeAddressArguments("get_acknowledgment", [1n, WALLET]);
+  const credit = encodeAddressArguments("get_wallet_credit", [WALLET]);
   assert.ok(offerPage[0] instanceof CalldataAddress);
   assert.ok(acknowledgment[1] instanceof CalldataAddress);
+  assert.ok(credit[0] instanceof CalldataAddress);
 });
 
 test("rejects malformed values for address-typed arguments", () => {
