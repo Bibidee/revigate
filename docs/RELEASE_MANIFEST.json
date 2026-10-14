@@ -81,9 +81,9 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38649123007,
-    "run_number": 24,
-    "commit_sha": "bb0d23e385c1d70b2e325b654dabb6f9c0d8441c",
+    "run_id": 38650041315,
+    "run_number": 32,
+    "commit_sha": "84ce9d8a000c85213d560419011d1ad540819f22",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
@@ -143,17 +143,17 @@
   },
   "real_browser_wallet_tests": {
     "status": "PARTIAL",
-    "public_routes": ["/", "/publish/", "/my-rules/", "/activity/", "/about/", "/program/1/"],
+    "public_routes": ["/", "/publish/", "/my-rules/", "/activity/", "/about/", "/program/1/", "/program/3/"],
     "wallet_b": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
     "wallet_b_acknowledgment_transaction": null,
-    "wallet_b_acknowledgment_status": "NOT_USED_IN_CLEAN_PUBLISHER_LIFECYCLE",
+    "wallet_b_acknowledgment_status": "NOT_SUBMITTED_CONNECTED_ACCOUNT_REMAINED_WALLET_A",
     "publisher_manifest_wallet": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
     "browser_connected_account": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
     "browser_publisher_write": "WALLET_A_SIGNED_ZERO_VALUE_REQUEST_AND_ASSESSMENT",
     "browser_route_checks": "PASS_FOR_ROOT_PUBLISH_MY_RULES_ACTIVITY_ABOUT_PROGRAM_1_PROGRAM_3",
     "browser_program_3_readback": "PASS_ACTIVE_D35D438_EPOCH_3_WALLET_A",
     "browser_refresh_recovery": "PASS_WALLET_A_SESSION_AND_REGISTRY_STATUS",
-    "wallet_b_history_read": "PASS_EMPTY_PROGRAM_3_HISTORY_NO_WRITE",
+    "wallet_b_history_read": "PASS_EMPTY_PROGRAM_3_HISTORY_NO_WRITE_CONNECTED_ACCOUNT_WALLET_A",
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
     "remaining": ["extension account/network/rejection coverage", "protected preview requires Vercel authentication", "independent security review"]
   },

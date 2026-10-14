@@ -1,6 +1,7 @@
 # Implementation status
 
-Recorded 2026-10-14 after the clean Wallet A lifecycle on GenLayer Studionet.
+Recorded 2026-10-14 after the clean Wallet A lifecycle and Wallet B read-only
+history check on GenLayer Studionet.
 
 ## Current architecture
 
@@ -54,16 +55,19 @@ Brave exercised `/`, `/publish/`, `/my-rules/`, `/activity/`, `/about/`,
 Wallet A publisher, signed ambiguous revision, epoch 3 and final digest from
 the corrected Registry. Rabby connected as Wallet A and signed the current
 publisher request and assessment; a refresh preserved the active account and
-Registry verification. Wallet-extension account switching, wrong-network
-switching, rejection, disconnect recovery, Wallet B participation, and the
-protected Vercel preview redirects to Vercel login and remains unverified; no
+Registry verification. The participant workbench read Program 3 history for
+Wallet B (`0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`) and returned an empty
+history without submitting a write. The connected account remained Wallet A;
+Wallet B has not signed an acknowledgment. Wallet-extension account switching,
+wrong-network switching, rejection, disconnect recovery, and the protected
+Vercel preview (which redirects to Vercel login) remain unverified; no
 credentials or bypass link were used. The browser observer's conservative
 unknown execution label is not treated as a canonical failure when the finalized
 receipt and Registry readback agree.
 
 Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 (47 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh GitHub Actions run 38647691742 for commit 9ad5751
+validator evidence. Fresh GitHub Actions run 38650041315 for commit 84ce9d8
 passed npm ci, frozen Python dependencies, preflight, production build, and the
 production dependency audit.
 

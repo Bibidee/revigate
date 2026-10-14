@@ -29,8 +29,8 @@ The rulebook is quoted to the model as untrusted evidence. Model output is type 
 - Semantic materiality remains a judgment result and may disagree or remain undetermined.
 - Repository changes are invisible until the publisher submits a signed candidate.
 - Nonpayable entry points and zero value application writes do not prevent unsolicited native value at the network level.
-- Corrected source `46b7496` is deployed and byte-for-byte attested. Its hosted signed MATERIAL and ambiguous fixtures both produced actual `MATERIAL` outcomes, with canonical state at epoch 3. The ambiguous wording was treated as materially changing eligibility criteria and discretion; this is a model-governed judgment, not a universal semantic guarantee. Local browser and wallet mocks pass, while real browser and extension behavior remains unverified. Fresh CI for the final evidence commit and external review remain pending.
+- Corrected source `46b7496` is deployed and byte-for-byte attested. Its hosted signed MATERIAL and ambiguous fixtures both produced actual `MATERIAL` outcomes, with canonical state at epoch 3. The ambiguous wording was treated as materially changing eligibility criteria and discretion; this is a model-governed judgment, not a universal semantic guarantee. Fresh CI run `38650041315` for evidence commit `84ce9d8` is green, and `main` branch protection is enabled. The live browser pass covered Wallet A and a read-only Wallet B history query; extension account/network/rejection/disconnect behavior and external review remain unverified.
 
 ## Current verdict
 
-NOT RELEASED. Source authentication and the required live lifecycle now pass. Real browser and wallet-extension verification, fresh CI for the evidence commit, and independent security review remain open; production writes stay locked.
+NOT RELEASED. Source authentication and the required hosted Registry lifecycle pass. Real wallet-extension flows, hosted prompt-injection and disagreement cases, and independent security review remain open; production writes stay locked.

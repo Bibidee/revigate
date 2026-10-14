@@ -1,6 +1,7 @@
 # Implementation inventory
 
-Recorded 2026-10-14 after the clean Wallet A lifecycle.
+Recorded 2026-10-14 after the clean Wallet A lifecycle and Wallet B read-only
+history check.
 
 ## Active product
 
@@ -62,16 +63,18 @@ zero attached value and `value_credited=false`.
 The local suite currently passes 13 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
 build evidence are recorded on the remediation branch. Fresh GitHub Actions run
-38647691742 for commit 9ad5751 passed npm ci, frozen Python dependencies,
+38650041315 for commit 84ce9d8 passed npm ci, frozen Python dependencies,
 preflight, production build, and the production dependency audit.
 
 ## Browser and review boundary
 
 Public route checks and the publisher page were exercised in Brave. Wallet A
-signed the current publisher request and assessment. Wallet-extension account
-switching, network switching, rejection, disconnect recovery, protected preview
-access, and independent security review remain open. The work performed is an
-adversarial self-audit, not an independent review.
+signed the current publisher request and assessment. The participant workbench
+read Wallet B history for Program 3 and returned no records without submitting
+a write; the connected extension account remained Wallet A. Wallet-extension
+account switching, network switching, rejection, disconnect recovery, protected
+preview access, and independent security review remain open. The work performed
+is an adversarial self-audit, not an independent review.
 
 ## Release decision
 

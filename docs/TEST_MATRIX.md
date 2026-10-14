@@ -2,7 +2,7 @@
 
 Recorded 2026-10-14 for the clean Wallet A lifecycle on corrected Registry `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
 
-Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. Fresh GitHub Actions run `38649123007` for commit `bb0d23e` passed npm ci, frozen Python dependencies, preflight, production build, and production dependency audit. A live Brave/Rabby pass exercised the public routes, Program 3 readback, Wallet A session persistence across refresh, and the non-custodial Registry banner. GitHub `main` protection is enabled with strict `verify` and `Vercel` checks and one required approval. `PARTIAL` and `BLOCKED` entries are not release passes.
+Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. Fresh GitHub Actions run `38650041315` for commit `84ce9d8` passed npm ci, frozen Python dependencies, preflight, production build, and production dependency audit. A live Brave/Rabby pass exercised the public routes, Program 3 readback, Wallet A session persistence across refresh, the non-custodial Registry banner, and a read-only empty-history query for Wallet B. GitHub `main` protection is enabled with strict `verify` and `Vercel` checks and one required approval. `PARTIAL` and `BLOCKED` entries are not release passes.
 
 | ID | Status | Evidence or boundary |
 |---|---|---|
@@ -48,16 +48,16 @@ Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 | T40 | PASS | Wrong repository and non-descendant revision fixtures fail closed locally. |
 | T41 | PASS | Unscoped preamble is included in the Registry clause map and semantic diff. |
 | T42 | PASS | Production build prerenders all nine active routes with the Registry-only frontend. |
-| T43 | PARTIAL | Live checks passed for `/`, `/publish/`, `/my-rules/`, `/activity/`, `/about/`, `/program/1/`, and `/program/3/`; Wallet A signed the current publisher request and assessment, Wallet B history was read without a write, and the session recovered after refresh. Publisher/participant account switching, wrong-network changes, rejection, disconnect recovery, and provider-absence UI remain unverified. |
+| T43 | PARTIAL | Live checks passed for `/`, `/publish/`, `/my-rules/`, `/activity/`, `/about/`, `/program/1/`, and `/program/3/`; Wallet A signed the current publisher request and assessment, and the participant workbench read Wallet B history for Program 3 with no write and no records. Publisher/participant account switching, wrong-network changes, rejection, disconnect recovery, and provider-absence UI remain unverified. |
 | T44 | PARTIAL | The browser observer conservatively classified the current Registry wrappers as pending or finalized-execution-unknown when the RPC omitted an execution-name field; canonical receipts and review/program readbacks were successful. Local classification tests cover remaining states. |
 | T45 | PASS | Returned hashes persist; pre-hash rejection stores nothing; storage failure exposes the hash in local tests. |
 | T46 | PASS | Corrected-source hosted write/readback checks match for baseline verification, NONMATERIAL, MATERIAL, and ambiguous MATERIAL decisions; final Program 3 state is epoch 3, two material events, and no pending review. |
-| T47 | PARTIAL | Browser navigation, Program 3 canonical readback, Wallet B empty-history read, and refresh recovery were exercised; account switching, wrong-network behavior, rejected connection, disconnect recovery, and pending-hash recovery remain unverified in the real extension. |
+| T47 | PARTIAL | Browser navigation, Program 3 canonical readback, Wallet B empty-history read, and refresh recovery were exercised; the extension remained connected as Wallet A. Account switching, wrong-network behavior, rejected connection, disconnect recovery, and pending-hash recovery remain unverified in the real extension. |
 | T48 | PASS | Program, review, material-event, and acknowledgment reads use bounded pagination. |
 | T49 | PASS | Exact corrected-source deployment verified the signed baseline, returned actual `NONMATERIAL` for the editorial fixture, and actual `MATERIAL` for both the 60-day and ambiguous fixtures. Canonical sources were VERIFIED and final Program 3 state advanced to epoch 3. Historical 403 cause remains unknown. |
 | T50 | N/A | Financial payout, refund, and exit cases were retired with escrow and are outside Registry V2. |
 | T51 | PASS | Corrected Registry source `46b749669c532bf85b3491d2ea6dd4bcee987422` is deployed and exactly attested at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`, transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2`. |
-| T52 | PARTIAL | Local tests, fresh CI, and the clean hosted Wallet A lifecycle pass. All public routes and Program 3 were read in Brave, and refresh recovery passed. The protected preview redirects to Vercel login and was not bypassed; remaining extension flows, Wallet B participation, and independent review remain incomplete. |
+| T52 | PARTIAL | Local tests, fresh CI run `38650041315`, and the clean hosted Wallet A lifecycle pass. All public routes and Program 3 were read in Brave, Wallet B history was queried without a write, and refresh recovery passed. The protected preview redirects to Vercel login and was not bypassed; remaining extension flows, Wallet B acknowledgment, and independent review remain incomplete. |
 
 ## Current decision
 
