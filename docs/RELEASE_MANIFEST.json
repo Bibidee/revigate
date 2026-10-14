@@ -9,6 +9,17 @@
     "draft": true,
     "merged": false
   },
+  "branch_protection": {
+    "branch": "main",
+    "enabled": true,
+    "strict_required_checks": ["verify", "Vercel"],
+    "required_approving_review_count": 1,
+    "require_last_push_approval": true,
+    "enforce_admins": true,
+    "conversation_resolution": true,
+    "force_pushes": false,
+    "deletions": false
+  },
   "network": {
     "name": "GenLayer Studionet",
     "chain_id": 61999,

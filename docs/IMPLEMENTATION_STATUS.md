@@ -69,6 +69,8 @@ production dependency audit.
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
-PR #1 remains a draft, and no merge or production promotion occurred. Independent
+PR #1 remains a draft, and no merge or production promotion occurred. GitHub
+`main` branch protection is enabled with strict `verify` and `Vercel` checks,
+one required approval, last-push approval, and admin enforcement. Independent
 security review, remaining extension-flow checks, and protected-preview access
 remain open gates.
