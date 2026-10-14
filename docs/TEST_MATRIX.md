@@ -1,8 +1,8 @@
 # Registry V2 test matrix
 
-Recorded 2026-10-14 for source correction commit `46b749669c532bf85b3491d2ea6dd4bcee987422` on branch `codex/revigate-remediation-2026-10-14`. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
+Recorded 2026-10-14 for source correction commit `46b749669c532bf85b3491d2ea6dd4bcee987422` on branch `codex/revigate-remediation-2026-10-14`. The evidence update at `ab4d2c29e2f1592eac80947d5170a08020b98f72` was verified by GitHub Actions run 18. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
 
-Local verification on this commit: 10 JavaScript tests and 34 Direct Mode tests pass; TypeScript, lint, the Studionet source guard, and the production build pass. Direct Mode uses mocked providers. GitHub Actions run 17 (ID `38606661131`) passed for the earlier evidence commit `f2987c90368c874cdedfe7fd72c12f4b7114b208`; no Actions run is recorded yet for `46b7496`. `PARTIAL` and `BLOCKED` entries are not release passes.
+Local verification for source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`: 10 JavaScript tests and 34 Direct Mode tests pass; TypeScript, lint, the Studionet source guard, and the production build pass. Direct Mode uses mocked providers. GitHub Actions run 18 (ID `38615258759`) passed on evidence commit `ab4d2c29e2f1592eac80947d5170a08020b98f72`, including `npm ci`, frozen Python dependencies, preflight, production build, and production dependency audit. `PARTIAL` and `BLOCKED` entries are not release passes.
 
 | ID | Status | Evidence or boundary |
 |---|---|---|
@@ -57,7 +57,7 @@ Local verification on this commit: 10 JavaScript tests and 34 Direct Mode tests 
 | T49 | PARTIAL | Hosted baseline verification, acknowledgment, and NONMATERIAL lifecycle passed. MATERIAL and ambiguous fixtures both returned INCONCLUSIVE due HTTP 403 source authentication; no semantic MATERIAL or ambiguous verdict was produced. |
 | T50 | N/A | Financial payout, refund, and exit cases were retired with escrow and are outside Registry V2. |
 | T51 | PARTIAL | Earlier Registry source `4971823c43d1b552215475573e81e1da89a979c7` is deployed and attested at `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F`; the current correction `46b7496` has not been deployed or attested. |
-| T52 | PARTIAL | Local preflight passes for `46b7496`. GitHub Actions run 17 passed for earlier evidence commit `f2987c9`, not the current correction. Vercel status is green, but the protected preview returns HTTP 403 to the connected identity; real browser/wallet-extension checks remain unverified. |
+| T52 | PARTIAL | Local preflight passes for `46b7496`, and Actions run 18 passes for its evidence commit `ab4d2c2`. Vercel status is green, but the protected preview returns HTTP 403 to the connected identity; real browser/wallet-extension checks remain unverified. |
 
 ## Current decision
 

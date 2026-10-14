@@ -23,7 +23,7 @@ The frontend reads canonical programs, reviews, material event pages, and acknow
 
 For source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`, local preflight passed: 10 JavaScript tests, 34 Direct Mode tests, TypeScript checking, lint, the Studionet source guard, and the production build. Direct Mode uses mocked providers and does not establish hosted validator behavior. A production dependency audit could not reach `registry.npmjs.org` because host DNS returned `ENOTFOUND`.
 
-GitHub Actions run 17 (`38606661131`) passed for evidence commit `f2987c90368c874cdedfe7fd72c12f4b7114b208`, before source correction `46b7496`. No Actions run is recorded for `46b7496` yet. CI run 16 on commit `4971823` is older still.
+GitHub Actions run 18 (`38615258759`) passed for commit `ab4d2c29e2f1592eac80947d5170a08020b98f72`, including dependency installation, frozen Python dependencies, preflight, production build, and production dependency audit. This run includes source correction `46b7496`. Run 17 passed on parent evidence commit `f2987c9`; run 16 is older still.
 
 ## Hosted boundary
 

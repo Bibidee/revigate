@@ -55,11 +55,11 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38606661131,
-    "run_number": 17,
-    "commit_sha": "f2987c90368c874cdedfe7fd72c12f4b7114b208",
+    "run_id": 38615258759,
+    "run_number": 18,
+    "commit_sha": "ab4d2c29e2f1592eac80947d5170a08020b98f72",
     "conclusion": "SUCCESS",
-    "candidate_commit_status": "NO_RUN_RECORDED_FOR_46B7496"
+    "candidate_source_status": "INCLUDED_AND_PASSED"
   },
   "vercel_status_check": "SUCCESS_PREVIEW_URL_NOT_ACCESSIBLE",
   "signed_fixture_publication": "GITHUB_VERIFIED",

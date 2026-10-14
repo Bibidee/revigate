@@ -34,7 +34,7 @@ The actual cause of the earlier HTTP 403 remains unknown. A disposable two-URL p
 - Full local `npm run preflight` passed for source commit `46b7496`: network guard, typecheck, lint, 10 JavaScript tests, 34 Direct Mode tests, and production build. Direct Mode uses mocked providers and is not hosted validator proof.
 - The Windows sandbox initially denied Next.js generated route-directory creation; the same preflight passed with scoped permission to write build output under this repository.
 - `npm audit --omit=dev --audit-level=high` could not reach `registry.npmjs.org` because host DNS returned `ENOTFOUND`; this is not an audit result.
-- GitHub Actions run 17 (`38606661131`) passed for evidence commit `f2987c90368c874cdedfe7fd72c12f4b7114b208`. It predates source correction `46b7496`; no run for the corrected source is recorded yet. Run 16 passed for the older deployment source `4971823`.
+- GitHub Actions run 18 (`38615258759`) passed for commit `ab4d2c29e2f1592eac80947d5170a08020b98f72`, including `npm ci`, frozen Python dependencies, preflight, production build, and production dependency audit. Run 17 passed for its parent evidence commit `f2987c9`; run 16 passed for the older deployment source `4971823`.
 
 ## Preview and review
 
