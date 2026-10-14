@@ -5,7 +5,7 @@ import { forgetPendingTransaction, getConfiguredRegistryAddress, loadPendingTran
   observeTransaction, readRevigate, savePendingTransaction, submitRevigateWrite,
   verifyRevigateDeployment, type Eip1193Provider, type Hash, type PendingTransaction } from "@/lib/genlayer";
 import { isDuplicatePendingWrite } from "@/lib/pending-storage.mjs";
-import { submitAndPersistHash, watchWallet } from "@/lib/wallet-session.mjs";
+import { isFinalizedForCanonical, submitAndPersistHash, watchWallet } from "@/lib/wallet-session.mjs";
 
 type RecordValue = Record<string, unknown>;
 const asInteger = (value: string, label: string) => {
@@ -100,13 +100,22 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   };
   const checkPending = async (item: PendingTransaction) => {
     const observed = await observeTransaction(item.hash, 10, item.account, item.contractAddress);
-    if (observed.state === "finalized-success") {
-      const canonical = await verifyCanonical(item);
-      forgetPendingTransaction(item.hash); setPending(loadPendingTransactions());
-      setOutput(`${item.hash}\nFINALIZED · execution succeeded · canonical state verified\n${pretty(canonical)}`);
-    } else {
-      setOutput(`${item.hash}\n${pretty(observed)}\nNo retry was submitted.`);
+    if (isFinalizedForCanonical(observed.state)) {
+      try {
+        const canonical = await verifyCanonical(item);
+        forgetPendingTransaction(item.hash); setPending(loadPendingTransactions());
+        const execution = observed.state === "finalized-success"
+          ? "execution succeeded"
+          : "execution result not exposed by the RPC";
+        setOutput(`${item.hash}\nFINALIZED · ${execution} · canonical state verified\n${pretty(canonical)}`);
+      } catch (error) {
+        if (observed.state !== "finalized-execution-unknown") throw error;
+        const detail = error instanceof Error ? error.message : "canonical readback failed";
+        setOutput(`${item.hash}\nFINALIZED · execution result not exposed by the RPC\nCanonical state not verified: ${detail}\nNo retry was submitted.`);
+      }
+      return;
     }
+    setOutput(`${item.hash}\n${pretty(observed)}\nNo retry was submitted.`);
   };
   const write = async (method: string, args: unknown[]) => {
     if (!provider || !account || !verified) throw new Error("Connect a wallet and verify the Registry before signing.");

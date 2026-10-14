@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   classifyTransactionFinality,
+  isFinalizedForCanonical,
   normalizeWalletAccount,
   normalizeWalletChainId,
   requestWalletConnection,
@@ -146,6 +147,9 @@ test("T44 finality keeps pending, undetermined, cancellation, missing execution,
   assert.equal(classifyTransactionFinality({ statusName: "FINALIZED", txExecutionResultName: "FINISHED_WITH_ERROR" }), "finalized-error");
   assert.equal(classifyTransactionFinality({ statusName: "FINALIZED" }), "finalized-execution-unknown");
   assert.equal(classifyTransactionFinality({ statusName: "FINALIZED", txExecutionResultName: "NOT_VOTED" }), "finalized-execution-unknown");
+  assert.equal(isFinalizedForCanonical("finalized-success"), true);
+  assert.equal(isFinalizedForCanonical("finalized-execution-unknown"), true);
+  assert.equal(isFinalizedForCanonical("finalized-error"), false);
 });
 
 test("T45 no pre-hash rejection is persisted; a returned hash is saved once for same-hash recovery", async () => {
