@@ -11,3 +11,5 @@ Eligibility is demonstrated by a dated public enrollment record.
 
 ## R-04: Appeals
 A participant may request a manual review within seven days of a decision.
+
+<!-- Editorial marker: baseline reviewed. -->
