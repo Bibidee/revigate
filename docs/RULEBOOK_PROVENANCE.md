@@ -35,3 +35,17 @@ GitHub HEAD is mutable. V1 does not poll branches or automatically detect unpubl
 
 ## Canonical fixtures
 See `fixtures/rulebook_v1.md`, `fixtures/rulebook_v1_typo.md`, `fixtures/rulebook_v2_material.md`, `fixtures/rulebook_v2_ambiguous.md` and `fixtures/publisher_manifest.example.json`. These are **synthetic local tests only**, not public signed GitHub publication records. Live signed commits must be created in a repository controlled by the tester and their URLs recorded as real evidence.
+
+## 2026-10-14 GitHub signing attempt
+
+A test baseline object was assembled from `fixtures/rulebook_v1.md` at
+`rules/program.md` and `.revigate/publisher.json` nominating the active test
+publisher wallet `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` on chain 61999.
+GitHub's public commit API reports the resulting object
+[`3986cbdb35e55e0cffc1457190605787680f1170`](https://github.com/Bibidee/revigate/commit/3986cbdb35e55e0cffc1457190605787680f1170)
+as `verified=false`, reason `unsigned`, with null signature and payload. The
+object was not referenced by or pushed to the remediation branch. No revision
+commits were created from it and no Registry verification call was made. The
+GitHub API commit path does not provide the user's signing key; local signing
+tools and keys are unavailable in this environment. Do not treat this object
+or any fixture as an authenticated publication.

@@ -9,9 +9,11 @@ The existing reciprocal Studionet pair remains custody-disabled; production
 remains unbound and locked.
 
 Recorded 2026-10-14. Repository: https://github.com/Bibidee/revigate. Branch:
-`codex/revigate-remediation-2026-10-14`. The verified pushed base commit is
-`d89b937f78e87d32ab94f5b803a9ec3665874622`; the changes described here are
-local and not yet pushed. Draft PR #1 remains open:
+`codex/revigate-remediation-2026-10-14`. The previous verified pushed base was
+`d89b937f78e87d32ab94f5b803a9ec3665874622`; remediation commit
+`4a22602982b902713afde101397362698e4389d5` is now pushed to that branch.
+Exact-head GitHub Actions run 13 passed; the Vercel check is green.
+Draft PR #1 remains open:
 https://github.com/Bibidee/revigate/pull/1. Do not merge.
 
 ## Completed and verified
@@ -84,11 +86,16 @@ https://github.com/Bibidee/revigate/pull/1. Do not merge.
   frontend-only. A finalized child error is not proof that the recipient got
   zero; never auto-retry an unknown transfer.
 - **No signed rulebook lifecycle.** No genuine GitHub-verified Revigate
-  rulebook commit exists yet. The active local test publisher account is
+  rulebook commit exists yet. A GitHub API-created baseline object
+  `3986cbdb35e55e0cffc1457190605787680f1170` contains the real nominated test
+  wallet manifest and fixture baseline, but the public GitHub API explicitly
+  reports `verification.verified=false`, `reason=unsigned`, with no signature
+  or payload. This unsigned commit object was not added to the branch; no
+  revision commits or live verification were run. The active local test publisher account is
   `polyglot-deployer`, address
   `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`; no local GPG signing tool/key
-  or SSH signing key is configured. Search of this repository found no
-  verified commit. Do not mark any fixture as signed or verified. No program registration/verification,
+  or SSH signing key is configured, and the GitHub commit API path produced an
+  unsigned object. Do not mark any fixture as signed or verified. No program registration/verification,
   signed baseline, actual Registry child, acknowledgment, semantic revision,
   or two-wallet economic lifecycle was performed.
 - **Release matrix/audit remain open.** Current row counts are 27 PASS,
@@ -96,13 +103,16 @@ https://github.com/Bibidee/revigate/pull/1. Do not merge.
   fake EIP-1193 provider; no browser wallet extension was exercised. The
   independent production audit and hosted validator outcomes remain open.
   There is no independent production audit.
-- **Candidate implementation commit is pushed and verified.** Commit
+- **Prior candidate implementation commit is pushed and verified.** Commit
   `8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14` passed GitHub Actions run 11,
   including clean dependency install, full preflight, and the production
   dependency audit. GitHub's Vercel check is green for the same commit, but the
   Vercel details API returned 403, so its preview URL/state was not inspected.
   No local commit-signing key/configuration is present, and
   branch protection remains unavailable to the connected GitHub API.
+- Remediation commit `4a22602982b902713afde101397362698e4389d5` is pushed to
+  the existing branch. GitHub Actions run 13 passed; the Vercel check is green.
+  PR #1 remains a draft.
 - Vercel production at https://the-revigate.vercel.app is still on its prior
   locked, unbound deployment. No production contract addresses are configured.
 

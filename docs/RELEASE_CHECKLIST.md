@@ -72,11 +72,13 @@ independent audit and branch protection remain open.
   visual route checks, and refresh in a real browser remain outstanding.
 - [ ] Production contract binding to an approved final pair; keep addresses
   unset and all writes locked.
-- [x] Existing remediation branch pushed; PR #1 is open as a draft; GitHub
-  Actions run 9 passed for commit `ba3ad9a83178bede7b27864d7d5c5cdded872694`.
-- [ ] Signed source commit. Current commit is unsigned; no local signing key or
-  configuration is available. No signed rulebook manifest/source has been
-  published or verified.
+- [x] Remediation commit `4a22602982b902713afde101397362698e4389d5` pushed to
+  the existing branch. PR #1 remains open as a draft. Exact-head GitHub Actions
+  run 13 passed; the Vercel check is green.
+- [ ] Signed source commit. GitHub API reports baseline object
+  `3986cbdb35e55e0cffc1457190605787680f1170` as `verified=false` with reason
+  `unsigned`; it was not added to the branch. No signed rulebook manifest/source
+  has been published or verified, and no local signing key/configuration exists.
 - [ ] Main branch protection and required status checks. Branch-protection API
   returned 403; repository rulesets list was empty.
 
