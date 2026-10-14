@@ -80,6 +80,17 @@ preview (which redirects to Vercel login) remain unverified; no credentials or
 bypass link were used. The observer does not infer recipient credit from
 finality and records `value_credited=false` from the canonical transaction read.
 
+The corrected local build was also opened in Brave at `127.0.0.1:3100`. Rabby
+connected as Wallet B from a non-Studionet state, the app requested and reached
+Studionet chain 61999, Program 3 read back as `VERIFIED` at epoch 3, and Wallet
+B history returned the canonical epoch-3 record. A zero-value acknowledgment
+probe produced transaction
+`0x7fd119eb65480dd7ef401dc862a751515f0613fcd4058d383b7a76d4b69d823`; the
+observed Studionet state was `ACCEPTED` with five `AGREE` votes and
+`value_credited=false` at capture. The browser kept the hash pending and did
+not resubmit it. This is observer evidence only; it is not a replacement for a
+finalized receipt.
+
 Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 (47 total). Direct Mode uses mocked providers and does not replace hosted
 validator evidence. Fresh GitHub Actions run 38652447172 for commit

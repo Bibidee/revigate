@@ -171,8 +171,13 @@
     "browser_program_3_readback": "PASS_ACTIVE_D35D438_EPOCH_3_WALLET_A",
     "browser_refresh_recovery": "PASS_WALLET_A_SESSION_AND_REGISTRY_STATUS",
     "wallet_b_history_read": "PASS_PROGRAM_3_HISTORY_INDEX_1_AFTER_FINALIZED_ACK",
+    "local_corrected_build_wallet_probe": "PASS_RABBY_WALLET_B_WRONG_NETWORK_SWITCH_AND_PROGRAM_3_HISTORY_READ",
+    "local_observer_probe_transaction": "0x7fd119eb65480dd7ef401dc862a751515f0613fcd4058d383b7a76d4b69d823",
+    "local_observer_probe_status_at_capture": "ACCEPTED_FIVE_AGREE_NOT_TERMINAL",
+    "local_observer_probe_value_credited": false,
+    "local_observer_probe_replay": "NONE",
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["fresh public deployment/browser rerun for observer hardening", "extension account/network/rejection coverage", "protected preview requires Vercel authentication", "independent security review"]
+    "remaining": ["terminal finality readback for local observer probe", "fresh public deployment/browser rerun for observer hardening", "extension rejection/disconnect coverage", "protected preview requires Vercel authentication", "independent security review"]
   },
   "observer_hardening_commit": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
   "observer_hardening_status": "BRANCH_CI_PASSED_PUBLIC_DEPLOYMENT_BROWSER_RERUN_REQUIRED",
