@@ -31,7 +31,7 @@ def mock_response(direct_vm, url: str, body, status=200):
 
 
 def mock_snapshot(direct_vm, sha: str, text: str, tree_sha: str, *, signed=True,
-                  ancestry_base: str | None = None):
+                  ancestry_base: str | None = None, candidate_status="ahead"):
     rule_bytes = text.encode("utf-8")
     manifest_bytes = json.dumps({
         "protocol": "revigate-v1", "network_chain_id": 61999,
@@ -59,9 +59,9 @@ def mock_snapshot(direct_vm, sha: str, text: str, tree_sha: str, *, signed=True,
     mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/branches/release%2Fv1", json.dumps(branch))
     mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/compare/{sha}...{BRANCH_HEAD}", json.dumps(membership))
     if ancestry_base:
-        ancestry = {"status": "ahead", "ahead_by": 1, "behind_by": 0,
+        ancestry = {"status": candidate_status, "ahead_by": 1, "behind_by": 0,
                     "base_commit": {"sha": ancestry_base},
-                    "merge_base_commit": {"sha": ancestry_base},
+                    "merge_base_commit": {"sha": ancestry_base if candidate_status == "ahead" else "d" * 40},
                     "commits": [{"sha": sha}]}
         mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/compare/{ancestry_base}...{sha}", json.dumps(ancestry))
     mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/git/trees/{tree_sha}?recursive=1", json.dumps(tree))
@@ -127,6 +127,25 @@ def test_registry_material_revision_advances_once_and_preserves_first_event(dire
     }
     with direct_vm.expect_revert("Review is not pending"):
         registry.assess_revision(review_id)
+
+
+def test_registry_inconclusive_review_preserves_each_source_authentication_failure(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    mock_snapshot(direct_vm, BASE_SHA, BASE_TEXT, "a" * 40)
+    assert registry.verify_program(program_id) == "VERIFIED"
+
+    review_id = registry.request_revision(program_id, NEXT_SHA)
+    mock_snapshot(direct_vm, BASE_SHA, BASE_TEXT, "a" * 40)
+    mock_snapshot(direct_vm, NEXT_SHA, MATERIAL_TEXT, "b" * 40,
+                  ancestry_base=BASE_SHA, candidate_status="diverged")
+
+    assert registry.assess_revision(review_id) == "INCONCLUSIVE"
+    result = registry.get_review(review_id)["result"]
+    assert result["base_source_status"] == "VERIFIED"
+    assert result["base_source_reason"] == ""
+    assert result["candidate_source_status"] == "INCONCLUSIVE"
+    assert result["candidate_source_reason"] == "candidate is not a descendant"
 
 
 def test_same_epoch_new_source_ack_is_recorded_and_exact_repeat_is_idempotent(direct_deploy, direct_vm):

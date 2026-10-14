@@ -441,7 +441,11 @@ class RevigateRegistry(gl.Contract):
                 return {"outcome": "INCONCLUSIVE", "base_sha": review.base_sha,
                         "candidate_sha": review.candidate_sha, "base_digest": "",
                         "candidate_digest": "", "changed_ids": [],
-                        "reason": "authenticated evidence unavailable"}
+                        "reason": "authenticated evidence unavailable",
+                        "base_source_status": before.get("status", "INCONCLUSIVE"),
+                        "base_source_reason": before.get("reason", ""),
+                        "candidate_source_status": after.get("status", "INCONCLUSIVE"),
+                        "candidate_source_reason": after.get("reason", "")}
             if before.get("digest") != review.base_digest:
                 return {"outcome": "INCONCLUSIVE", "base_sha": review.base_sha,
                         "candidate_sha": review.candidate_sha,
