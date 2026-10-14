@@ -8,6 +8,7 @@ trustworthy.
 import hashlib
 import json
 import re
+import pytest
 
 
 PUBLISHER = "0x" + "a" * 40
@@ -32,7 +33,8 @@ def mock_valid_snapshot(
     direct_vm, *, signed=True, membership_status="ahead", rule_text=RULE_TEXT,
     commit_sha=SHA, branch_head=BRANCH_HEAD, compare_base_sha=None,
     candidate_status="ahead", rule_response_text=None, commit_html_url=None,
-    tree_truncated=False, tree_response_body=None,
+    tree_truncated=False, tree_response_body=None, signature="test-signature",
+    payload="test-payload", verified_at="2026-01-01T00:00:00Z",
 ):
     rule_bytes = rule_text.encode("utf-8")
     manifest_bytes = json.dumps({
@@ -48,7 +50,10 @@ def mock_valid_snapshot(
         "sha": commit_sha,
         "html_url": commit_html_url or f"https://github.com/{REPO}/commit/{commit_sha}",
         "commit": {
-            "verification": {"verified": signed, "reason": "valid" if signed else "unsigned", "signature": "test-signature" if signed else None},
+            "verification": {"verified": signed, "reason": "valid" if signed else "unsigned",
+                             "signature": signature if signed else None,
+                             "payload": payload if signed else None,
+                             "verified_at": verified_at if signed else None},
             "tree": {"sha": TREE},
         },
     }
@@ -119,6 +124,24 @@ def test_T03_unverified_commit_signature_never_verifies_program(direct_deploy, d
     assert "signature" in result["reason"]
     assert contract.programs[program_id].status == "PROPOSED"
     assert contract.programs[program_id].epoch == 0
+
+
+@pytest.mark.parametrize("missing", ("signature", "payload", "verified_at"))
+def test_T03_verified_flag_without_complete_github_attestation_is_inconclusive(
+        direct_deploy, direct_vm, missing):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    mock_valid_snapshot(direct_vm, **{missing: ""})
+    result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
+    assert result["status"] == "INCONCLUSIVE"
+    assert result["reason"] == "commit signature not verified"
+
+
+def test_T03_source_paths_reject_urls_traversal_spaces_and_backslashes(direct_deploy, direct_vm):
+    contract, _ = propose(direct_deploy, direct_vm)
+    assert contract._safe_path("rules/program.md")
+    for unsafe in ("../rules.md", "rules//book.md", "rules\\book.md", "https://evil.test/x.md",
+                   "rules/book%2f.md", "rules/book name.md", "/rules/book.md"):
+        assert not contract._safe_path(unsafe)
 
 
 def test_T03_branch_membership_mismatch_never_verifies_program(direct_deploy, direct_vm):

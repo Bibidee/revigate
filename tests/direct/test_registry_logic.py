@@ -5,6 +5,7 @@ source verification, hosted validator agreement, or child-message finality.
 """
 
 import hashlib
+import datetime
 import json
 import re
 
@@ -40,7 +41,9 @@ def mock_snapshot(direct_vm, sha: str, text: str, tree_sha: str, *, signed=True,
         "sha": sha, "html_url": f"https://github.com/{REPO}/commit/{sha}",
         "commit": {
             "verification": {"verified": signed, "reason": "valid" if signed else "unsigned",
-                             "signature": "test-signature" if signed else None},
+                             "signature": "test-signature" if signed else None,
+                             "payload": "test-payload" if signed else None,
+                             "verified_at": "2026-01-01T00:00:00Z" if signed else None},
             "tree": {"sha": tree_sha},
         },
     }
@@ -117,6 +120,75 @@ def test_registry_material_revision_advances_once_and_preserves_first_event(dire
     assert state["active_sha"] == NEXT_SHA
     assert state["epoch"] == 2
     assert state["first_material_at"] == NOW
-    assert state["material_history"] == [{"epoch": 2, "at": NOW}]
+    assert state["material_event_count"] == 1
+    assert registry.get_material_event_page(program_id, 0, 50) == {
+        "items": [{"index": 1, "epoch": 2, "at": NOW}], "next_cursor": 0,
+    }
     with direct_vm.expect_revert("Review is not pending"):
         registry.assess_revision(review_id)
+
+
+def test_same_epoch_new_source_ack_is_recorded_and_exact_repeat_is_idempotent(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    program = registry.programs[program_id]
+    program.status = "VERIFIED"
+    program.epoch = 1
+    program.active_sha = BASE_SHA
+    program.document_digest = "a" * 64
+    direct_vm.sender = "0x" + "b" * 40
+    assert registry.acknowledge_rules(program_id, 1, BASE_SHA, "a" * 64)
+    assert registry.acknowledge_rules(program_id, 1, BASE_SHA, "a" * 64)
+    assert registry.acknowledgment_counts[f"{program_id}:{direct_vm.sender}"] == 1
+    program.active_sha = NEXT_SHA
+    program.document_digest = "b" * 64
+    assert registry.acknowledge_rules(program_id, 1, NEXT_SHA, "b" * 64)
+    page = registry.get_acknowledgment_page(program_id, direct_vm.sender, 0, 50)
+    assert [item["sha"] for item in page["items"]] == [NEXT_SHA, BASE_SHA]
+    assert [item["epoch"] for item in page["items"]] == [1, 1]
+
+
+def test_ack_and_material_pages_are_bounded_and_cursor_stable(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    program = registry.programs[program_id]
+    wallet = "0x" + "b" * 40
+    for index in range(1, 121):
+        registry._record_ack(program_id, wallet, index, f"{index:040x}", f"{index:064x}", index)
+        registry._append_material_event(program, index, index)
+    first = registry.get_acknowledgment_page(program_id, wallet, 0, 50)
+    second = registry.get_acknowledgment_page(program_id, wallet, first["next_cursor"], 50)
+    third = registry.get_acknowledgment_page(program_id, wallet, second["next_cursor"], 50)
+    assert [len(first["items"]), len(second["items"]), len(third["items"])] == [50, 50, 20]
+    assert first["items"][0]["index"] == 120 and third["items"][-1]["index"] == 1
+    material = registry.get_material_event_page(program_id, 0, 50)
+    assert len(material["items"]) == 50 and material["items"][0]["index"] == 120
+    with direct_vm.expect_revert("Page size must be between 1 and 50"):
+        registry.get_material_event_page(program_id, 0, 51)
+
+
+def test_review_deadline_boundary_and_bounded_retry(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    program = registry.programs[program_id]
+    program.status = "VERIFIED"
+    program.epoch = 1
+    program.active_sha = BASE_SHA
+    program.document_digest = "a" * 64
+    review_id = registry.request_revision(program_id, NEXT_SHA)
+    deadline = int(registry.reviews[review_id].deadline)
+    direct_vm.warp(datetime.datetime.fromtimestamp(deadline, datetime.timezone.utc).isoformat())
+    with direct_vm.expect_revert("Revision request is not eligible for expiry"):
+        registry.expire_revision_request(review_id)
+    direct_vm.warp(datetime.datetime.fromtimestamp(deadline + 1, datetime.timezone.utc).isoformat())
+    with direct_vm.expect_revert("Review assessment deadline has passed"):
+        registry.assess_revision(review_id)
+    assert registry.expire_revision_request(review_id)
+    for expected_attempt in (2, 3):
+        direct_vm.warp(datetime.datetime.fromtimestamp(deadline + expected_attempt * 301, datetime.timezone.utc).isoformat())
+        retry = registry.request_revision(program_id, NEXT_SHA)
+        registry.reviews[retry].status = "INCONCLUSIVE"
+        program.pending_review = 0
+    direct_vm.warp(datetime.datetime.fromtimestamp(deadline + 1300, datetime.timezone.utc).isoformat())
+    with direct_vm.expect_revert("review-attempt limit"):
+        registry.request_revision(program_id, NEXT_SHA)

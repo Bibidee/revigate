@@ -14,11 +14,22 @@ The previous Registry/Vault deployments are historical and incompatible with the
 
 Revigate does not provide financial custody or settlement. The Studionet custody failures documented in `CUSTODY_FAILURE_ANALYSIS.md` remain relevant evidence explaining why those capabilities were removed.
 
+## Verified local work — 2026-10-14
+
+- 10 JavaScript tests pass for wallet races, transaction recovery, value-zero storage, source normalization, digesting, and clause comparison.
+- 22 Direct Mode tests pass for Registry provenance and state transitions.
+- TypeScript, lint, network source guard, and production build pass.
+- DNS resolves `studio.genlayer.com`; HTTPS RPC returned chain ID `0xf22f` (61999). The earlier `ENOTFOUND`/access result was environmental.
+
 ## Remaining release work
 
-- Run the updated local checks and repair any Registry-only regressions.
-- Deploy the exact Registry v2 source to Studionet without value.
+- Publish genuine GitHub verified signed baseline and revision fixtures for the real publisher wallet.
+- Deploy the exact reviewed and committed Registry v2 source to Studionet without value.
 - record its finalized transaction, address, source hash and canonical `get_config` readback;
 - bind the verified address to the frontend and run wallet/browser checks;
-- update CI and the draft pull request; and
+- run the hosted baseline, material, nonmaterial, inconclusive, acknowledgment and retry lifecycle without GEN;
+- complete real browser extension and mobile/desktop checks;
+- update CI and open the new draft noncustodial pull request; and
 - obtain independent review of the source-authentication and materiality boundaries.
+
+This implementation has received an adversarial self audit only. It has not received independent review. It is not submission ready.

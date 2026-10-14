@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ContractUnavailable, Eyebrow, Notice } from "@/components/content";
+import { ProgramList } from "@/components/registry-browser";
 
 export default function Home() {
   return <>
@@ -21,7 +22,7 @@ export default function Home() {
       <div className="hero-stamp">A PUBLIC RECORD<br />FOR PARTICIPATION</div>
     </section>
     <section className="trust-strip"><div><strong>01</strong><span>Immutable source<br />at a signed commit</span></div><div><strong>02</strong><span>Independent semantic<br />review by GenLayer</span></div><div><strong>03</strong><span>Version-specific<br />wallet acknowledgment</span></div></section>
-    <section className="section-block"><div className="section-heading"><div><Eyebrow>THE READING ROOM</Eyebrow><h2>Latest reviewed programs</h2></div><Link href="/my-rules" className="text-link">Open acknowledgments →</Link></div><div className="empty-state"><div className="empty-symbol">—</div><h3>No live programs yet</h3><p>Program records will appear after a verified non-custodial Registry v2 deployment is configured.</p></div></section>
+    <section className="section-block"><div className="section-heading"><div><Eyebrow>THE READING ROOM</Eyebrow><h2>Latest reviewed programs</h2></div><Link href="/my-rules" className="text-link">Open acknowledgments →</Link></div><ProgramList /></section>
     <section className="explain-grid"><div><span className="step-no">I</span><h3>A rulebook gets a version.</h3><p>A publisher registers a fixed Markdown file at a signed GitHub commit. Future submissions are reviewed against that exact source.</p></div><div><span className="step-no">II</span><h3>A person acknowledges it.</h3><p>The wallet acknowledgment records the exact reviewed epoch, commit and document digest.</p></div><div><span className="step-no">III</span><h3>Changes remain visible.</h3><p>Validators classify later authenticated revisions as material, nonmaterial or inconclusive and preserve the history.</p></div></section>
     <div className="fine-print"><Notice>Revigate records wallet actions and public source versions. It does not accept funds, settle payments, establish legal identity or automate rights outside the Registry.</Notice></div>
   </>;

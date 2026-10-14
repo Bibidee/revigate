@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { ContractUnavailable, PageIntro } from "@/components/content";
 import { ContractWorkbench } from "@/components/contract-workbench";
+import { ProgramRecord } from "@/components/registry-browser";
 
 export default function ProgramPage() {
   const parts = usePathname().split("/").filter(Boolean);
@@ -10,6 +11,7 @@ export default function ProgramPage() {
   return <div className="page-wrap">
     <PageIntro eyebrow={`PROGRAM · ${programId || "UNSPECIFIED"}`} title="Reviewed publication" intro="The canonical program record contains the latest successfully reviewed commit and epoch. It does not claim to match the mutable GitHub branch head." />
     <ContractUnavailable />
+    {programId && <ProgramRecord programId={programId} />}
     <ContractWorkbench key={programId} mode="publisher" initialProgramId={programId} />
   </div>;
 }

@@ -11,10 +11,10 @@
     "start": "node scripts/local-tool.mjs next:next start",
     "lint": "node scripts/local-tool.mjs eslint:eslint .",
     "typecheck": "node scripts/local-tool.mjs typescript:tsc --noEmit",
-    "test:js": "node --test tests/wallet-session.test.mjs",
-    "test:python": "node scripts/run-python.mjs -m unittest discover -s tests -v",
+    "test:js": "node --test tests/wallet-session.test.mjs tests/pending-storage.test.mjs tests/rulebook-source.test.mjs",
+    "test:python": "node scripts/run-python.mjs -m pytest tests/direct -q",
     "test:direct": "node scripts/run-python.mjs -m pytest tests/direct -q",
-    "test": "npm run test:js && npm run test:python && npm run test:direct",
+    "test": "npm run test:js && npm run test:direct",
     "network:check": "node scripts/network-check.mjs",
     "cli": "node scripts/local-cli.mjs",
     "preflight": "npm run network:check && npm run typecheck && npm run lint && npm run test && npm run build"

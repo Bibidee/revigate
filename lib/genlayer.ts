@@ -3,6 +3,8 @@ import { studionet } from "genlayer-js/chains";
 import type { Address, CalldataEncodable, GenLayerTransaction, Hash } from "genlayer-js/types";
 import { classifyTransactionFinality } from "./wallet-session.mjs";
 import { makeWriteRequest } from "./write-request.mjs";
+import { forgetPendingTransaction as removePending, loadPendingTransactions as readPending,
+  pendingStorageKey, savePendingTransaction as storePending } from "./pending-storage.mjs";
 
 export type { Hash } from "genlayer-js/types";
 export const STUDIONET_CHAIN_ID = 61999;
@@ -13,6 +15,8 @@ export type Eip1193Provider = {
   on?(event: string, callback: (...args: unknown[]) => void): void;
   removeListener?(event: string, callback: (...args: unknown[]) => void): void;
 };
+export type PendingTransaction = { hash: Hash; account: string; method: string; args?: (string | number | boolean)[];
+  value: "0"; submittedAt: number; contractAddress: string; chainId: number };
 
 export function getConfiguredRegistryAddress(): Address | undefined {
   const value = process.env.NEXT_PUBLIC_REVIGATE_REGISTRY?.trim();
@@ -75,4 +79,15 @@ export async function observeTransaction(hash: Hash, checks = 10, expectedAccoun
     if (index + 1 < checks) await new Promise((resolve) => setTimeout(resolve, 3_000));
   }
   return { state: "pending" as const, transaction: latest };
+}
+
+function storageKey() { return pendingStorageKey(STUDIONET_CHAIN_ID, getConfiguredRegistryAddress()); }
+export function loadPendingTransactions(): PendingTransaction[] {
+  return readPending(window.localStorage, storageKey(), getConfiguredRegistryAddress(), STUDIONET_CHAIN_ID);
+}
+export function savePendingTransaction(item: PendingTransaction) {
+  storePending(window.localStorage, storageKey(), item, getConfiguredRegistryAddress(), STUDIONET_CHAIN_ID);
+}
+export function forgetPendingTransaction(hash: string) {
+  removePending(window.localStorage, storageKey(), hash, getConfiguredRegistryAddress(), STUDIONET_CHAIN_ID);
 }

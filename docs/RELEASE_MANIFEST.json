@@ -5,10 +5,22 @@
   "branch": "codex/revigate-remove-escrow-2026-10-14",
   "network": { "name": "GenLayer Studionet", "chain_id": 61999 },
   "active_contract": "contracts/revigate_registry.py",
+  "active_contract_sha256": "fb71c77e81e93caf8d411a00e7d969f5282902899dfcb714ea2dfd3da380e26c",
   "protocol": "revigate-registry-v1",
   "contract_version": 2,
   "custody": "NONE",
   "deployment": "NOT_DEPLOYED",
+  "local_verification": {
+    "javascript_tests": "10/10 PASS",
+    "direct_mode_tests": "22/22 PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "production_build": "PASS"
+  },
+  "signed_fixture_lifecycle": "NOT_VERIFIED",
+  "hosted_validator_lifecycle": "NOT_VERIFIED",
+  "real_browser_wallet_tests": "NOT_VERIFIED",
+  "independent_security_review": "NOT_OBTAINED",
   "production_writes": "LOCKED_UNTIL_VERIFIED_DEPLOYMENT",
   "historical_escrow_evidence_retained": true,
   "verdict": "NOT_RELEASED"

@@ -1,32 +1,26 @@
 # Implementation inventory
 
-## Current two-contract candidate
+## Active product
 
-- Registry implementation: contracts/revigate_registry.py
-- Vault implementation: contracts/revigate_vault.py
-- Browser integration selects a Registry and its paired Vault, reads both configurations, and rejects an unpaired or wrong-chain configuration.
-- Production and preview writes are fail-closed. Funding and withdrawals also require the Vault's on-chain custody flag, which is false on the current pair.
-- Registry source includes publisher nomination and GitHub source verification, rulebook validation, acknowledgments, revision requests, independent materiality assessment, epoch and first-material-change history, reaffirmation, expiry, and Vault snapshot/material notifications.
-- Vault source includes authenticated Registry message entry points, nonce and replay handling, offer registration, exact principal funding checks, participant acceptance and decline, cancellation and expiry, material exit, maturity allocation, mutual closure, wallet-specific credits, withdrawals, transfer records, and bounded read views.
-- Accounting separates native-balance-backed `held + claimable` from already-emitted transfers. `transfer_pending` remains an unresolved delivery obligation; recipient claims do not verify delivery or clear it. The transfer history remains in storage. Contract-side verified-delivery and proven-failure transitions are not implemented.
-- The original single-contract candidate and its historical probes remain in the repository as preserved history; the newly deployed pair is the current test candidate.
+Revigate contains one active Intelligent Contract: `contracts/revigate_registry.py`. It authenticates fixed GitHub rulebook commits, records participant acknowledgments, and classifies publisher submitted revisions. The active application contains no Vault, offer, escrow, deposit, credit, refund, payout, withdrawal, transfer, or cross contract message path.
 
-## Automated coverage
+The frontend reads canonical programs, reviews, material event pages, and wallet acknowledgment pages. It fetches rulebook text from the exact commit recorded by the Registry and verifies the normalized SHA-256 digest before rendering. Every write sends zero native value, persists the returned hash, refuses an identical pending action, waits for finality, and requires a matching canonical readback before reporting success.
 
-The current Direct Mode suite covers contract loading, Registry logic, source-verification fixtures, revision assessments, Registry/Vault authentication boundaries, duplicate and stale messages, Vault lifecycle transitions, accounting, and custody guards. Current `npm run preflight` passes 32 JavaScript, 8 Python, and 93 Direct Mode tests, typecheck, lint, and the production build; see Implementation Status for live-evidence boundaries.
+## Registry controls
 
-Direct Mode and Python accounting tests are local simulations. They do not establish hosted GenLayer consensus, cross-contract child execution, real GitHub signature verification, wallet lifecycle behavior, or native balance recovery.
+- Studionet chain identity is fixed to `61999`.
+- Repository, branch, path, full SHA, branch ancestry, commit tree, Git blob identity, GitHub signature metadata, publisher manifest, UTF-8 normalization, clause structure, and source digest are checked.
+- GitHub verification requires `verified=true`, `reason=valid`, and nonempty signature, payload, and verification timestamp fields.
+- Revision requests have one pending review, a five minute cooldown, a three attempt cap, and a one day decision deadline.
+- `MATERIAL`, `NONMATERIAL`, and `INCONCLUSIVE` remain distinct. Only successful decisions consume a candidate permanently. Only MATERIAL increments the epoch.
+- Program, review, material event, and acknowledgment reads are bounded to 50 records.
 
-## Live evidence and boundaries
+## Automated evidence
 
-- A custody-disabled reciprocal Registry/Vault pair remains on Studionet chain 61999; its Vault predates the local accounting correction. The corrected Vault source was deployed separately to `0xcd13bfa0f323a806020790949D7454F26544daE7` with custody disabled and zero attached value. Its source hash matches the current file; its zero initial ledger readback does not exercise the formula on nonzero live liabilities. It is not reciprocally paired or app-configured.
-- The Registry stores the Vault address and the Vault stores the Registry address. The on-chain custody flag is false on both contracts. The pair's live ledgers read zero.
-- A separate live negative call by an unrelated wallet to replace the Registry's bound Vault finalized as an execution error; it did not change the binding or attach value.
-- A separate disposable Registry emitter paired to the previously source-exact Vault finalized an authorized snapshot child and changed canonical Vault state once. A duplicate was a no-op; stale nonce and spoof attempts failed without state changes; an unrelated wallet could not rebind the pair. The local Vault has since changed its ledger view and has not been redeployed. The exact-source Registry has not emitted a child from a signed, verified program, so product-path message execution remains incomplete.
-- The test-only emitter and spoof-contract source used for those messages is retained under `evidence/live-message-proof/` and can be regenerated with `scripts/prepare-live-message-probe.mjs`.
-- No GEN was sent to the current pair. No two-wallet offer lifecycle was run.
-- Earlier disposable-contract tests remain evidence of Studionet accepting value without a matching ledger entry after payable failure, direct transfer, and value attached to a nonpayable call. The one-wei EOA test showed a historical +1 wei balance delta; its old `liability_shortfall=1` was a false positive because already-emitted value was included in Vault backing. The current read-only observer was exercised against the pinned SDK and live Studionet. Its RPC response omitted execution result and the full receipt method returned `Method not found`, so the observer reports UNKNOWN and keeps recipient balance evidence separate.
+As of 2026-10-14, JavaScript tests pass 10/10 and Direct Mode tests pass 22/22. TypeScript, lint, the Studionet source guard, and the production build pass. Direct Mode uses mocked GitHub and model providers and is not live validator proof.
 
-## Release decision
+## Live boundary
 
-This is an implemented two-contract candidate, not a certified escrow release. Keep custody disabled and the public frontend unbound. See Implementation Status, Two-Contract Migration, Test Matrix, Risk Register, and Studionet Evidence for exact remaining requirements.
+DNS and HTTPS connectivity to `https://studio.genlayer.com/api` are available and the RPC returned chain ID `0xf22f`. Registry V2 has not yet been deployed. Genuine GitHub verified fixture commits, hosted lifecycle results, real extension browser tests, fresh CI, and independent security review remain release gates. Production writes stay locked.
+
+Historical custody material remains in explicitly archived documents and Git history as evidence for removing custody. It is not part of the active implementation.

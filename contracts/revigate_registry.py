@@ -19,6 +19,9 @@ MAX_GITHUB_METADATA_BYTES = 1_000_000
 MAX_CLAUSES = 16
 REVIEW_WINDOW = 86400
 MATERIAL_HISTORY_LIMIT = 50
+ACK_HISTORY_LIMIT = 50
+MAX_REVISION_ATTEMPTS = 3
+REVISION_COOLDOWN = 300
 
 
 @allow_storage
@@ -81,6 +84,7 @@ class RevigateRegistry(gl.Contract):
     acknowledgment_counts: TreeMap[str, u256]
     material_events: TreeMap[str, MaterialEvent]
     revision_replays: TreeMap[str, bool]
+    revision_attempts: TreeMap[str, u256]
     next_program: u256
     next_review: u256
 
@@ -159,7 +163,7 @@ class RevigateRegistry(gl.Contract):
     @gl.public.write
     def expire_unverified_program(self, program_id: u256) -> bool:
         program = self.programs.get(program_id)
-        if program is None or program.status != "PROPOSED" or self._now() < program.proposal_deadline:
+        if program is None or program.status != "PROPOSED" or self._now() <= program.proposal_deadline:
             self._fail("Program cannot be expired")
         program.status = "EXPIRED_UNVERIFIED"
         return True
@@ -176,7 +180,9 @@ class RevigateRegistry(gl.Contract):
             self._fail("Acknowledgment does not match current authenticated rules")
         key = str(program_id) + ":" + sender
         count = self.acknowledgment_counts.get(key, u256(0))
-        if count == 0 or self.acknowledgments[key + ":" + str(count)].epoch != expected_epoch:
+        latest = self.acknowledgments.get(key + ":" + str(count)) if count > 0 else None
+        if (latest is None or latest.epoch != expected_epoch
+                or latest.sha != expected_sha.lower() or latest.digest != expected_digest):
             self._record_ack(program_id, sender, expected_epoch, expected_sha.lower(),
                              expected_digest, self._now())
         return True
@@ -201,15 +207,18 @@ class RevigateRegistry(gl.Contract):
         if (program is None or program.status != "VERIFIED"
                 or program.publisher != self._sender()):
             self._fail("Only the verified publisher may request a revision review")
-        if program.pending_review != 0 or now < program.last_request_at + 300:
+        if program.pending_review != 0 or now < program.last_request_at + REVISION_COOLDOWN:
             self._fail("A review is pending or the publisher cooldown is active")
         if (not re.fullmatch(r"[0-9a-fA-F]{40}", candidate_sha)
                 or candidate_sha.lower() == program.active_sha):
             self._fail("Candidate must be a distinct full commit SHA")
         replay_key = str(program_id) + ":" + candidate_sha.lower()
         if self.revision_replays.get(replay_key, False):
-            self._fail("This candidate commit has already been reviewed")
-        self.revision_replays[replay_key] = True
+            self._fail("This candidate commit already has a successful decision")
+        attempts = self.revision_attempts.get(replay_key, u256(0))
+        if attempts >= MAX_REVISION_ATTEMPTS:
+            self._fail("This candidate reached the review-attempt limit")
+        self.revision_attempts[replay_key] = attempts + u256(1)
         review_id = self.next_review
         self.next_review += u256(1)
         self.reviews[review_id] = Review(
@@ -228,6 +237,8 @@ class RevigateRegistry(gl.Contract):
         review = self.reviews.get(review_id)
         if review is None or review.status != "PENDING":
             self._fail("Review is not pending")
+        if self._now() > review.deadline:
+            self._fail("Review assessment deadline has passed")
         program = self.programs.get(review.program_id)
         if program is None or program.pending_review != review_id or program.active_sha != review.base_sha:
             self._fail("Review binding changed")
@@ -241,6 +252,7 @@ class RevigateRegistry(gl.Contract):
         review.result_json = json.dumps(outcome, ensure_ascii=False, sort_keys=True)
         review.decided_at = self._now()
         if classification in ("MATERIAL", "NONMATERIAL"):
+            self.revision_replays[str(review.program_id) + ":" + review.candidate_sha] = True
             program.active_sha = review.candidate_sha
             program.document_digest = outcome["candidate_digest"]
             if classification == "MATERIAL":
@@ -253,7 +265,7 @@ class RevigateRegistry(gl.Contract):
     @gl.public.write
     def expire_revision_request(self, review_id: u256) -> bool:
         review = self.reviews.get(review_id)
-        if review is None or review.status != "PENDING" or self._now() < review.deadline:
+        if review is None or review.status != "PENDING" or self._now() <= review.deadline:
             self._fail("Revision request is not eligible for expiry")
         review.status = "EXPIRED"
         review.decided_at = self._now()
@@ -281,7 +293,9 @@ class RevigateRegistry(gl.Contract):
                    for part in parts)
 
     def _safe_path(self, path: str) -> bool:
-        if not path or len(path) > 180 or path.startswith("/") or "\\" in path or ".." in path:
+        if (not isinstance(path, str) or not re.fullmatch(r"[A-Za-z0-9._/-]{1,180}", path)
+                or path.startswith("/") or path.endswith("/") or "//" in path
+                or "\\" in path or ".." in path):
             return False
         return all(part and part not in (".", "..") for part in path.split("/"))
 
@@ -303,7 +317,12 @@ class RevigateRegistry(gl.Contract):
             verification = commit.get("commit", {}).get("verification", {})
             if (verification.get("verified") is not True
                     or verification.get("reason") != "valid"
-                    or not verification.get("signature")):
+                    or not isinstance(verification.get("signature"), str)
+                    or not verification.get("signature")
+                    or not isinstance(verification.get("payload"), str)
+                    or not verification.get("payload")
+                    or not isinstance(verification.get("verified_at"), str)
+                    or not verification.get("verified_at")):
                 return {"status": "INCONCLUSIVE", "reason": "commit signature not verified"}
             branch_ref = program.branch.replace("/", "%2F")
             branch_resp = gl.nondet.web.get(
@@ -359,13 +378,18 @@ class RevigateRegistry(gl.Contract):
             manifest_resp = gl.nondet.web.get(raw_base + program.manifest_path)
             if rule_resp.status != 200 or manifest_resp.status != 200:
                 return {"status": "INCONCLUSIVE", "reason": "source or manifest unavailable"}
-            if len(rule_resp.body) > MAX_RULEBOOK_BYTES or len(manifest_resp.body) > 2048:
-                return {"status": "INCONCLUSIVE", "reason": "source content exceeds bounds"}
+            if len(rule_resp.body) > MAX_RULEBOOK_BYTES:
+                return {"status": "INCONCLUSIVE", "reason": "rulebook exceeds size bound"}
+            if len(manifest_resp.body) > 2048:
+                return {"status": "INCONCLUSIVE", "reason": "manifest exceeds size bound"}
             if hashlib.sha1(b"blob " + str(len(rule_resp.body)).encode("ascii") + b"\0" + rule_resp.body).hexdigest() != rule_blob:
-                return {"status": "INCONCLUSIVE", "reason": "rulebook bytes do not match authenticated tree"}
+                return {"status": "INCONCLUSIVE", "reason": "rulebook bytes do not match authenticated commit tree"}
             if hashlib.sha1(b"blob " + str(len(manifest_resp.body)).encode("ascii") + b"\0" + manifest_resp.body).hexdigest() != manifest_blob:
                 return {"status": "INCONCLUSIVE", "reason": "manifest bytes do not match authenticated tree"}
-            text = unicodedata.normalize("NFC", rule_resp.body.decode("utf-8").replace("\r\n", "\n"))
+            decoded = rule_resp.body.decode("utf-8")
+            if decoded.startswith("\ufeff"):
+                return {"status": "INCONCLUSIVE", "reason": "rulebook encoding is not canonical"}
+            text = unicodedata.normalize("NFC", decoded.replace("\r\n", "\n").replace("\r", "\n"))
             manifest = json.loads(manifest_resp.body.decode("utf-8"))
             if (manifest.get("protocol") != "revigate-v1"
                     or manifest.get("network_chain_id") != CHAIN_ID
@@ -375,7 +399,10 @@ class RevigateRegistry(gl.Contract):
             if require_nomination and (not isinstance(nomination, str)
                                        or nomination.lower() != program.publisher):
                 return {"status": "INCONCLUSIVE", "reason": "manifest wallet does not nominate publisher"}
-            clauses = self._clauses(text)
+            try:
+                clauses = self._clauses(text)
+            except ValueError:
+                return {"status": "INCONCLUSIVE", "reason": "rulebook structure invalid"}
             return {"status": "VERIFIED", "sha": sha.lower(),
                     "digest": hashlib.sha256(text.encode("utf-8")).hexdigest(),
                     "text": text, "clauses": clauses}
@@ -507,11 +534,6 @@ class RevigateRegistry(gl.Contract):
         return {"items": items, "next_cursor": cursor if cursor > 1 else u256(0)}
 
     def _program_view(self, program: Program) -> dict:
-        history = []
-        for index in range(1, int(program.material_event_count) + 1):
-            event = self.material_events.get(str(program.id) + ":" + str(index))
-            if event is not None:
-                history.append({"epoch": event.epoch, "at": event.at})
         return {"id": program.id, "publisher": program.publisher,
                 "repo": program.repo, "rulebook_path": program.rulebook_path,
                 "manifest_path": program.manifest_path, "branch": program.branch,
@@ -520,8 +542,45 @@ class RevigateRegistry(gl.Contract):
                 "status": program.status, "pending_review": program.pending_review,
                 "verified_at": program.verified_at,
                 "first_material_at": program.first_material_at,
-                "material_event_count": program.material_event_count,
-                "material_history": history}
+                "material_event_count": program.material_event_count}
+
+    @gl.public.view
+    def get_material_event_page(self, program_id: u256, before_index: u256,
+                                limit: u64) -> dict:
+        if limit < 1 or limit > MATERIAL_HISTORY_LIMIT:
+            self._fail("Page size must be between 1 and 50")
+        program = self.programs.get(program_id)
+        if program is None:
+            return {"items": [], "next_cursor": u256(0)}
+        cursor = program.material_event_count + u256(1)
+        if before_index > 0 and before_index <= program.material_event_count + u256(1):
+            cursor = before_index
+        items = []
+        while cursor > 1 and len(items) < limit:
+            cursor -= u256(1)
+            event = self.material_events.get(str(program_id) + ":" + str(cursor))
+            if event is not None:
+                items.append({"index": cursor, "epoch": event.epoch, "at": event.at})
+        return {"items": items, "next_cursor": cursor if cursor > 1 else u256(0)}
+
+    @gl.public.view
+    def get_acknowledgment_page(self, program_id: u256, wallet: Address,
+                                before_index: u256, limit: u64) -> dict:
+        if limit < 1 or limit > ACK_HISTORY_LIMIT:
+            self._fail("Page size must be between 1 and 50")
+        key = str(program_id) + ":" + str(wallet).lower()
+        count = self.acknowledgment_counts.get(key, u256(0))
+        cursor = count + u256(1)
+        if before_index > 0 and before_index <= count + u256(1):
+            cursor = before_index
+        items = []
+        while cursor > 1 and len(items) < limit:
+            cursor -= u256(1)
+            ack = self.acknowledgments.get(key + ":" + str(cursor))
+            if ack is not None:
+                items.append({"index": cursor, "epoch": ack.epoch, "sha": ack.sha,
+                              "digest": ack.digest, "at": ack.at})
+        return {"items": items, "next_cursor": cursor if cursor > 1 else u256(0)}
 
     @gl.public.view
     def get_program_page(self, before_id: u256, limit: u64) -> dict:
