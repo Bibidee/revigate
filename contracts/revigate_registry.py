@@ -336,11 +336,14 @@ class RevigateRegistry(gl.Contract):
         try:
             commit_resp = gl.nondet.web.get(
                 "https://api.github.com/repos/" + owner_repo + "/commits/" + sha)
-            if commit_resp.status != 200 or len(commit_resp.body) > MAX_GITHUB_METADATA_BYTES:
-                return {"status": "INCONCLUSIVE", "reason": "commit unavailable or mismatched"}
+            if commit_resp.status != 200:
+                return {"status": "INCONCLUSIVE",
+                        "reason": "commit request failed with HTTP status " + str(commit_resp.status)}
+            if len(commit_resp.body) > MAX_GITHUB_METADATA_BYTES:
+                return {"status": "INCONCLUSIVE", "reason": "commit metadata exceeds size bound"}
             commit = json.loads(commit_resp.body.decode("utf-8"))
             if commit.get("sha", "").lower() != sha.lower():
-                return {"status": "INCONCLUSIVE", "reason": "commit unavailable or mismatched"}
+                return {"status": "INCONCLUSIVE", "reason": "commit response SHA mismatch"}
             expected_commit_url = "https://github.com/" + owner_repo + "/commit/" + sha
             if commit.get("html_url", "").rstrip("/").lower() != expected_commit_url.lower():
                 return {"status": "INCONCLUSIVE", "reason": "commit repository identity mismatch"}
@@ -357,18 +360,24 @@ class RevigateRegistry(gl.Contract):
             branch_ref = program.branch.replace("/", "%2F")
             branch_resp = gl.nondet.web.get(
                 "https://api.github.com/repos/" + owner_repo + "/branches/" + branch_ref)
-            if branch_resp.status != 200 or len(branch_resp.body) > MAX_GITHUB_METADATA_BYTES:
-                return {"status": "INCONCLUSIVE", "reason": "declared branch unavailable or mismatched"}
+            if branch_resp.status != 200:
+                return {"status": "INCONCLUSIVE",
+                        "reason": "branch request failed with HTTP status " + str(branch_resp.status)}
+            if len(branch_resp.body) > MAX_GITHUB_METADATA_BYTES:
+                return {"status": "INCONCLUSIVE", "reason": "branch metadata exceeds size bound"}
             branch_data = json.loads(branch_resp.body.decode("utf-8"))
             branch_head = branch_data.get("commit", {}).get("sha", "")
             if (branch_data.get("name") != program.branch
                     or not re.fullmatch(r"[0-9a-fA-F]{40}", branch_head)):
-                return {"status": "INCONCLUSIVE", "reason": "declared branch unavailable or mismatched"}
+                return {"status": "INCONCLUSIVE", "reason": "declared branch identity or head mismatch"}
             membership_resp = gl.nondet.web.get(
                 "https://api.github.com/repos/" + owner_repo + "/compare/"
                 + sha + "..." + branch_head)
-            if membership_resp.status != 200 or len(membership_resp.body) > MAX_GITHUB_METADATA_BYTES:
-                return {"status": "INCONCLUSIVE", "reason": "commit is not a member of the declared branch"}
+            if membership_resp.status != 200:
+                return {"status": "INCONCLUSIVE",
+                        "reason": "branch membership request failed with HTTP status " + str(membership_resp.status)}
+            if len(membership_resp.body) > MAX_GITHUB_METADATA_BYTES:
+                return {"status": "INCONCLUSIVE", "reason": "branch membership metadata exceeds size bound"}
             membership = json.loads(membership_resp.body.decode("utf-8"))
             if not self._comparison_proves_ancestry(membership, sha, branch_head):
                 return {"status": "INCONCLUSIVE", "reason": "commit is not a member of the declared branch"}
@@ -376,8 +385,11 @@ class RevigateRegistry(gl.Contract):
                 compare_resp = gl.nondet.web.get(
                     "https://api.github.com/repos/" + owner_repo + "/compare/"
                     + base_sha + "..." + sha)
-                if compare_resp.status != 200 or len(compare_resp.body) > MAX_GITHUB_METADATA_BYTES:
-                    return {"status": "INCONCLUSIVE", "reason": "candidate is not a descendant"}
+                if compare_resp.status != 200:
+                    return {"status": "INCONCLUSIVE",
+                            "reason": "candidate ancestry request failed with HTTP status " + str(compare_resp.status)}
+                if len(compare_resp.body) > MAX_GITHUB_METADATA_BYTES:
+                    return {"status": "INCONCLUSIVE", "reason": "candidate ancestry metadata exceeds size bound"}
                 comparison = json.loads(compare_resp.body.decode("utf-8"))
                 if not self._comparison_proves_ancestry(comparison, base_sha, sha):
                     return {"status": "INCONCLUSIVE", "reason": "candidate is not a descendant"}
@@ -386,8 +398,11 @@ class RevigateRegistry(gl.Contract):
                 return {"status": "INCONCLUSIVE", "reason": "commit tree metadata unavailable"}
             tree_resp = gl.nondet.web.get(
                 "https://api.github.com/repos/" + owner_repo + "/git/trees/" + tree_sha + "?recursive=1")
-            if tree_resp.status != 200 or len(tree_resp.body) > MAX_GITHUB_METADATA_BYTES:
-                return {"status": "INCONCLUSIVE", "reason": "commit tree unavailable or truncated"}
+            if tree_resp.status != 200:
+                return {"status": "INCONCLUSIVE",
+                        "reason": "commit tree request failed with HTTP status " + str(tree_resp.status)}
+            if len(tree_resp.body) > MAX_GITHUB_METADATA_BYTES:
+                return {"status": "INCONCLUSIVE", "reason": "commit tree metadata exceeds size bound"}
             tree = json.loads(tree_resp.body.decode("utf-8"))
             if tree.get("truncated") is True:
                 return {"status": "INCONCLUSIVE", "reason": "commit tree unavailable or truncated"}
@@ -400,8 +415,12 @@ class RevigateRegistry(gl.Contract):
             raw_base = "https://raw.githubusercontent.com/" + owner_repo + "/" + sha + "/"
             rule_resp = gl.nondet.web.get(raw_base + program.rulebook_path)
             manifest_resp = gl.nondet.web.get(raw_base + program.manifest_path)
-            if rule_resp.status != 200 or manifest_resp.status != 200:
-                return {"status": "INCONCLUSIVE", "reason": "source or manifest unavailable"}
+            if rule_resp.status != 200:
+                return {"status": "INCONCLUSIVE",
+                        "reason": "rulebook request failed with HTTP status " + str(rule_resp.status)}
+            if manifest_resp.status != 200:
+                return {"status": "INCONCLUSIVE",
+                        "reason": "manifest request failed with HTTP status " + str(manifest_resp.status)}
             if len(rule_resp.body) > MAX_RULEBOOK_BYTES:
                 return {"status": "INCONCLUSIVE", "reason": "rulebook exceeds size bound"}
             if len(manifest_resp.body) > 2048:
@@ -430,8 +449,9 @@ class RevigateRegistry(gl.Contract):
             return {"status": "VERIFIED", "sha": sha.lower(),
                     "digest": hashlib.sha256(text.encode("utf-8")).hexdigest(),
                     "text": text, "clauses": clauses}
-        except Exception:
-            return {"status": "INCONCLUSIVE", "reason": "provider response invalid or unavailable"}
+        except Exception as error:
+            return {"status": "INCONCLUSIVE",
+                    "reason": "provider response invalid or unavailable (" + type(error).__name__ + ")"}
 
     def _independent_assessment(self, program: Program, review: Review) -> dict:
         def run_assessment():

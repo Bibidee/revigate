@@ -258,7 +258,7 @@ def test_T35_rate_limited_commit_lookup_is_inconclusive(direct_deploy, direct_vm
     result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
 
     assert result["status"] == "INCONCLUSIVE"
-    assert result["reason"] == "commit unavailable or mismatched"
+    assert result["reason"] == "commit request failed with HTTP status 429"
 
 
 def test_T35_oversized_provider_tree_response_is_rejected_before_json_parsing(direct_deploy, direct_vm):
@@ -268,7 +268,7 @@ def test_T35_oversized_provider_tree_response_is_rejected_before_json_parsing(di
     result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
 
     assert result["status"] == "INCONCLUSIVE"
-    assert result["reason"] == "commit tree unavailable or truncated"
+    assert result["reason"] == "commit tree metadata exceeds size bound"
 
 
 def test_T39_truncated_provider_tree_is_inconclusive(direct_deploy, direct_vm):
