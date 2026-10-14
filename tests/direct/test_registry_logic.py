@@ -129,6 +129,96 @@ def test_registry_material_revision_advances_once_and_preserves_first_event(dire
         registry.assess_revision(review_id)
 
 
+def test_registry_review_reuses_authenticated_active_snapshot(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    mock_snapshot(direct_vm, BASE_SHA, BASE_TEXT, "a" * 40)
+    assert registry.verify_program(program_id) == "VERIFIED"
+    assert registry.active_sources[program_id].sha == BASE_SHA
+
+    # No baseline responses are installed after verification. An assessment that
+    # fetches the baseline again will fail in Direct Mode.
+    direct_vm.clear_mocks()
+    review_id = registry.request_revision(program_id, NEXT_SHA)
+    mock_snapshot(direct_vm, NEXT_SHA, MATERIAL_TEXT, "b" * 40,
+                  ancestry_base=BASE_SHA)
+    direct_vm.mock_llm(
+        "Assess materiality of a public program-rule revision",
+        json.dumps({"outcome": "MATERIAL", "changed_ids": ["R-01"],
+                    "rationale": "Authenticated change in eligibility period"}),
+    )
+
+    assert registry.assess_revision(review_id) == "MATERIAL"
+    assert registry.get_program(program_id)["active_sha"] == NEXT_SHA
+
+
+def test_registry_retry_reuses_authenticated_candidate_snapshot(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    mock_snapshot(direct_vm, BASE_SHA, BASE_TEXT, "a" * 40)
+    assert registry.verify_program(program_id) == "VERIFIED"
+    review_id = registry.request_revision(program_id, NEXT_SHA)
+    mock_snapshot(direct_vm, NEXT_SHA, MATERIAL_TEXT, "b" * 40,
+                  ancestry_base=BASE_SHA)
+    direct_vm.mock_llm(
+        "Assess materiality of a public program-rule revision",
+        json.dumps({"outcome": "INCONCLUSIVE", "changed_ids": ["R-01"],
+                    "rationale": "First bounded semantic attempt"}),
+    )
+    assert registry.assess_revision(review_id) == "INCONCLUSIVE"
+    first_candidate = registry.retry_sources[program_id]
+    assert first_candidate.sha == NEXT_SHA
+
+    # The authenticated candidate snapshot is canonical state. The retry uses it
+    # without any provider mocks or additional GitHub requests.
+    direct_vm.warp(datetime.datetime.fromtimestamp(
+        int(registry.programs[program_id].provider_retry_at), datetime.timezone.utc).isoformat())
+    direct_vm.clear_mocks()
+    retry_id = registry.request_revision(program_id, NEXT_SHA)
+    direct_vm.mock_llm(
+        "Assess materiality of a public program-rule revision",
+        json.dumps({"outcome": "MATERIAL", "changed_ids": ["R-01"],
+                    "rationale": "The changed waiting period alters eligibility"}),
+    )
+
+    assert registry.assess_revision(retry_id) == "MATERIAL"
+    assert registry.get_program(program_id)["active_sha"] == NEXT_SHA
+    assert registry.get_program(program_id)["epoch"] == 2
+
+
+def test_registry_rejects_mismatched_active_snapshot_without_advancing(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    mock_snapshot(direct_vm, BASE_SHA, BASE_TEXT, "a" * 40)
+    assert registry.verify_program(program_id) == "VERIFIED"
+    review_id = registry.request_revision(program_id, NEXT_SHA)
+    registry.active_sources[program_id].manifest_publisher = "0x" + "d" * 40
+
+    assert registry.assess_revision(review_id) == "INCONCLUSIVE"
+    state = registry.get_program(program_id)
+    assert state["active_sha"] == BASE_SHA
+    assert state["epoch"] == 1
+    assert registry.get_review(review_id)["result"]["candidate_source_status"] == "NOT_CHECKED"
+
+
+def test_registry_provider_backoff_is_reported_and_enforced(direct_deploy, direct_vm):
+    registry = deploy_registry(direct_deploy, direct_vm)
+    program_id = propose(registry, direct_vm)
+    program = registry.programs[program_id]
+    program.status = "VERIFIED"
+    program.epoch = 1
+    program.active_sha = BASE_SHA
+    program.document_digest = "a" * 64
+    retry_at = int(registry._now()) + 600
+    program.provider_retry_at = retry_at
+
+    assert registry.get_program(program_id)["provider_retry_at"] == retry_at
+    with direct_vm.expect_revert("Provider retry is unavailable until"):
+        registry.request_revision(program_id, NEXT_SHA)
+    direct_vm.warp(datetime.datetime.fromtimestamp(retry_at, datetime.timezone.utc).isoformat())
+    assert registry.request_revision(program_id, NEXT_SHA) == 1
+
+
 def test_registry_inconclusive_review_preserves_each_source_authentication_failure(direct_deploy, direct_vm):
     registry = deploy_registry(direct_deploy, direct_vm)
     program_id = propose(registry, direct_vm)

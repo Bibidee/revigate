@@ -8,6 +8,7 @@ trustworthy.
 import hashlib
 import json
 import re
+from types import SimpleNamespace
 import pytest
 
 
@@ -258,7 +259,58 @@ def test_T35_rate_limited_commit_lookup_is_inconclusive(direct_deploy, direct_vm
     result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
 
     assert result["status"] == "INCONCLUSIVE"
-    assert result["reason"] == "commit request failed with HTTP status 429"
+    assert result["provider_failure"]["classification"] == "RATE_LIMITED"
+    assert result["provider_failure"]["http_status"] == 429
+    assert "rate limited" in result["reason"]
+
+
+def test_T35_access_denied_is_distinguished_from_rate_limit_and_kept_bounded(
+        direct_deploy, direct_vm):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    mock_response(
+        direct_vm, f"https://api.github.com/repos/{REPO}/commits/{SHA}",
+        json.dumps({"message": "Resource not accessible by integration"}), status=403,
+    )
+
+    result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
+
+    failure = result["provider_failure"]
+    assert failure["classification"] == "ACCESS_DENIED"
+    assert failure["http_status"] == 403
+    assert "Resource not accessible" in failure["reason"]
+    assert len(failure["reason"]) <= 250
+
+
+def test_T35_rate_limit_headers_set_bounded_retry_delay(direct_deploy, direct_vm):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    direct_vm.warp("2026-01-01T00:00:00Z")
+    reset_at = 1_767_226_800
+    response = SimpleNamespace(
+        status=403,
+        body=json.dumps({"message": "API rate limit exceeded for 192.0.2.4"}).encode(),
+        headers={"x-ratelimit-remaining": b"0", "x-ratelimit-reset": str(reset_at).encode(),
+                 "retry-after": b"600", "x-github-request-id": b"req-safe-123",
+                 "authorization": b"must-never-be-recorded"},
+    )
+    result = contract._provider_failure("commit", response)
+    delay = contract._provider_backoff_seconds(
+        {"provider_failure": result["provider_failure"]}, 1)
+
+    assert result["provider_failure"]["classification"] == "RATE_LIMITED"
+    assert result["provider_failure"]["retry_after_seconds"] == 600
+    assert result["provider_failure"]["rate_limit_reset"] == reset_at
+    assert result["provider_failure"]["request_id"] == "req-safe-123"
+    assert "authorization" not in result["provider_failure"]
+    assert "must-never-be-recorded" not in json.dumps(result)
+    assert delay == 1200
+
+    http_date = SimpleNamespace(
+        status=503, body=b"{}",
+        headers={"Retry-After": b"Thu, 01 Jan 2026 00:15:00 GMT"},
+    )
+    dated_failure = contract._provider_failure("commit", http_date)
+    assert dated_failure["provider_failure"]["retry_after_seconds"] == 900
+    assert contract._provider_backoff_seconds(dated_failure, 1) == 900
 
 
 def test_T35_oversized_provider_tree_response_is_rejected_before_json_parsing(direct_deploy, direct_vm):
