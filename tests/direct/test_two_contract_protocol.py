@@ -161,12 +161,17 @@ def test_enabled_candidate_exact_funding_is_accounted(direct_deploy, direct_vm):
     direct_vm.value = 101
     assert vault.fund_offer(offer_id) == "FUNDED"
     direct_vm.value = 0
+    # Direct Mode does not model the chain-layer balance credited with value.
+    # The shortfall here is therefore only the result of its zero-balance mock.
     assert vault.get_ledger() == {
         "received": 101, "held": 101, "claimable": 0,
-        "transfer_pending": 0, "recipient_claimed_delivery": 0,
+        "transfer_pending": 0, "outgoing_emitted": 0,
+        "delivery_verified": 0, "delivery_failed_proven": 0,
+        "recipient_claimed_delivery": 0,
         "native_balance": 0, "unassigned_surplus": 0,
         "liability_shortfall": 101,
-        "unreconciled": 0, "accounted_liabilities": 101,
+        "unreconciled": 0, "backing_liabilities": 101,
+        "accounted_liabilities": 101,
         "reconciled_total": 101, "reconciliation_delta": 0,
     }
 
@@ -217,7 +222,12 @@ def test_invalid_payable_funding_is_credited_before_validation_and_can_be_withdr
     ledger = vault.get_ledger()
     assert ledger["claimable"] == 209
     assert ledger["transfer_pending"] == 100
-    assert ledger["accounted_liabilities"] == ledger["received"]
+    assert ledger["outgoing_emitted"] == 100
+    assert ledger["delivery_verified"] == 0
+    assert ledger["delivery_failed_proven"] == 0
+    assert ledger["backing_liabilities"] == ledger["accounted_liabilities"] == 310
+    assert ledger["reconciled_total"] == ledger["received"] == 410
+    assert ledger["reconciliation_delta"] == 0
 
 
 def test_expired_payable_funding_returns_credit_without_throwing(direct_deploy, direct_vm):
@@ -235,6 +245,30 @@ def test_expired_payable_funding_returns_credit_without_throwing(direct_deploy, 
     assert ledger["received"] == 101
     assert ledger["claimable"] == 101
     assert ledger["accounted_liabilities"] == 101
+    assert ledger["reconciliation_delta"] == 0
+
+
+def test_emitted_transfer_is_unreconciled_but_not_vault_backing(direct_deploy, direct_vm):
+    vault = deploy_vault(direct_deploy, direct_vm, custody=True)
+    snapshot(vault, direct_vm)
+    direct_vm.sender = PUBLISHER
+    vault.credits[PUBLISHER] = 1
+    vault.total_claimable = 1
+    vault.total_received = 1
+    direct_vm._gl_call_hook = lambda vm, request: {"ok": None} if "PostMessage" in request else None
+
+    transfer_id = vault.withdraw_credit(1)
+
+    ledger = vault.get_ledger()
+    assert vault.get_transfer(transfer_id)["status"] == "UNKNOWN_DELIVERY"
+    assert ledger["native_balance"] == 0
+    assert ledger["backing_liabilities"] == ledger["accounted_liabilities"] == 0
+    assert ledger["liability_shortfall"] == 0
+    assert ledger["unassigned_surplus"] == 0
+    assert ledger["outgoing_emitted"] == ledger["transfer_pending"] == 1
+    assert ledger["unreconciled"] == ledger["transfer_pending"]
+    assert ledger["delivery_verified"] == ledger["delivery_failed_proven"] == 0
+    assert ledger["reconciled_total"] == ledger["received"] == 1
     assert ledger["reconciliation_delta"] == 0
 
 
@@ -396,12 +430,19 @@ def test_withdrawal_stays_pending_until_recipient_reconciles(direct_deploy, dire
     transfer = vault.get_transfer(transfer_id)
     assert transfer["status"] == "UNKNOWN_DELIVERY"
     assert vault.get_ledger()["transfer_pending"] == 101
+    assert vault.get_ledger()["liability_shortfall"] == 0
+    with direct_vm.expect_revert("Insufficient wallet credit"):
+        vault.withdraw_credit(101)
     with direct_vm.expect_revert("Only the recipient may reconcile an unknown transfer"):
         vault.reconcile_transfer_unknown(transfer_id, "")
     assert vault.record_transfer_delivery_claim(transfer_id, "0x" + "d" * 64) is True
     assert vault.get_transfer(transfer_id)["status"] == "RECIPIENT_ASSERTED_DELIVERED"
+    with direct_vm.expect_revert("Recipient confirmation does not match an unknown transfer"):
+        vault.record_transfer_delivery_claim(transfer_id, "0x" + "d" * 64)
     ledger = vault.get_ledger()
     assert ledger["transfer_pending"] == 101
     assert ledger["recipient_claimed_delivery"] == 101
     assert ledger["unreconciled"] == 101
+    assert ledger["delivery_verified"] == ledger["delivery_failed_proven"] == 0
+    assert ledger["outgoing_emitted"] == 101
     assert ledger["reconciliation_delta"] == 0

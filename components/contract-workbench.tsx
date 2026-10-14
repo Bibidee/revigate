@@ -8,6 +8,7 @@ import {
   contractTargetForMethod,
   loadPendingTransactions,
   observeTransaction,
+  observeOutgoingTransfer,
   readRevigate,
   savePendingTransaction,
   submitRevigateWrite,
@@ -408,6 +409,24 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
       }
       const observed = await observeTransaction(hash, 10, item.account, item.contractAddress ?? currentAddress);
       if (observed.state === "finalized-success") {
+        if (item.method === "withdraw_credit") {
+          const vault = item.contractAddress ?? currentAddress;
+          if (!vault) throw new Error("The withdrawal target is unavailable; keep the original hash.");
+          const delivery = await observeOutgoingTransfer({
+            parentHash: hash,
+            vault,
+            recipient: item.account,
+            amount: readArg(item.args, 0, "withdrawal amount"),
+          });
+          const explanations: Record<string, string> = {
+            DELIVERY_VERIFIED_BY_FINALIZED_CHILD: "One child transaction finalized successfully with the expected Vault sender, recipient, and amount. This is an external observer result only; contract storage remains UNKNOWN_DELIVERY.",
+            DUPLICATE_DELIVERY_OBSERVED: "More than one matching successful child was found. Treat this as a possible duplicate payout and preserve every hash.",
+            CHILD_FAILED_DELIVERY_UNPROVEN: "A matching child finalized with execution failure, but that does not prove the recipient received zero or authorize a retry.",
+            UNKNOWN: "No matching finalized child was proven. Missing, delayed, or mismatched RPC data is not evidence of non-delivery.",
+          };
+          report(`FINALIZED · withdrawal parent succeeded. External delivery status: ${delivery.status}. ${explanations[delivery.status]}\nParent: ${hash}\nMatching child hashes: ${delivery.matchingChildren.join(", ") || "none proven"}\nThe on-chain transfer record is not changed and no retry was submitted.`);
+          return;
+        }
         try {
           const readback = await canonicalReadback(item);
           if (readback.kind === "verified") {

@@ -1,8 +1,9 @@
 # Revigate V1 release checklist
 
-**Current verdict: NOT COMPLETE.** Studionet source and pairing evidence are
-current, but custody failure recovery, a signed two-wallet lifecycle, complete
-browser acceptance, independent audit and branch protection remain open.
+**Current verdict: NOT COMPLETE.** Studionet deployment evidence is preserved,
+but the local Vault accounting correction is not deployed. Custody failure
+recovery, a signed two-wallet lifecycle, complete browser acceptance,
+independent audit and branch protection remain open.
 
 ## Source and local verification
 
@@ -10,8 +11,10 @@ browser acceptance, independent audit and branch protection remain open.
 - [x] Lockfiles and local dependencies present; clean install previously passed.
 - [x] Repository-local GenLayer CLI `0.39.1`; production network guard restricts
   writes to Studionet chain `61999`.
-- [x] `npm run preflight`: typecheck, lint, 13 JavaScript tests, 8 Python tests,
-  92 Direct Mode tests, and build of all 10 routes passed.
+- [x] Current `npm run preflight`: network guard, TypeScript, lint, 19
+  JavaScript, 8 Python, 93 Direct Mode tests, and production build of all 10
+  routes passed.
+- [ ] GitHub Actions for the new commit are pending.
 - [x] Full `npm audit`: zero vulnerabilities with UUID `11.1.1` override;
   GenLayer CLI `0.39.1` and Dockerode `4.0.12` retained.
 - [ ] Complete T01–T52 evidence matrix. Current counts: 27 PASS, 15 PARTIAL,
@@ -20,17 +23,22 @@ browser acceptance, independent audit and branch protection remain open.
 
 ## Studionet candidates and tests
 
-- [x] Latest source-exact pair deployed and finalized on Studionet 61999:
+- [x] Latest deployed source-exact pair (before the local accounting patch)
+  deployed and finalized on Studionet 61999:
   Registry `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE`, Vault
   `0xf390D8D77f21710679a72Fc11b84A5e85a318849`.
 - [x] Exact deployed source hashes, reciprocal config, custody-disabled state,
   zero ledger, and address-encoded `get_wallet_credit` read verified.
-- [x] Fresh disposable emitter Registry paired with current-source Vault:
+- [x] Fresh disposable emitter Registry paired with the previously
+  source-exact Vault:
   authenticated child, duplicate no-op, stale nonce, spoof rejection, and
   unrelated-wallet rebind rejection finalized with expected state.
 - [x] Isolated one-wei unknown-offer payable path returned to a balanced caller
   credit; one withdrawal child finalized and recipient EOA balance increased
-  by one wei.
+  by one wei. The reported one-wei shortfall was a false positive, not missing
+  GEN, because the old calculation counted emitted value as still Vault-backed.
+- [ ] Deploy and read back the current Vault accounting source; live verification
+  was unavailable in this session.
 - [ ] Resolve failed payable execution and no-calldata value retention; a
   nonpayable-value route remains unsafe as well.
 - [ ] Recover failed outgoing transfers and reconcile delivery from objective

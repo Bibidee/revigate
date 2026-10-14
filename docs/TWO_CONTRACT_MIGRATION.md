@@ -20,9 +20,11 @@ The Registry is deployed unpaired, the Vault is deployed with the Registry addre
 
 ## Latest source-exact pair on Studionet
 
-Current branch head at deployment: `ba3ad9a83178bede7b27864d7d5c5cdded872694`.
-Both deployed source files match the repository's current contract files.
-The pair is reciprocal and custody-disabled.
+Source revision at deployment: `ba3ad9a83178bede7b27864d7d5c5cdded872694`.
+Both deployed source files matched the contract files at that revision. The
+Vault file has since received a local accounting correction; the deployed
+Vault therefore does not match the current local file. The pair remains
+reciprocal and custody-disabled.
 
 | Contract | Address | Deployment transaction | Source SHA256 |
 |---|---|---|---|
@@ -34,21 +36,24 @@ Read-only address-schema verification confirmed constructor and method address
 types, a successful address-encoded `get_wallet_credit` read, zero test-wallet
 credit, and a zero Vault ledger. No GEN was sent to this pair.
 
-## Current-source message proof and bounded payable probe
+## Pre-accounting-patch message proof and bounded payable probe
 
 A separate fresh disposable Registry emitter
 `0xB4c8ED40B96110F01ef25Ee44A9A06D0f0782D71` was paired to Vault
 `0x96e4C4c77B3B1C5BA0eBcFb5fe0B55000dc153A0`, whose deployed source matches
-the current Vault file. It proved one finalized authorized child, duplicate
+the pre-accounting-patch Vault revision above. It proved one finalized authorized child, duplicate
 no-op, stale-nonce rejection, different-contract spoof rejection and A0
 unauthorized rebind rejection. Full parent/child IDs and state readbacks are in
 [Studionet Evidence](STUDIONET_EVIDENCE.md).
 
-The current Vault source was also deployed separately with custody enabled for
-one unknown-offer 1-wei test. The ordinary rejection balanced caller credit and
+That pre-accounting-patch Vault source was also deployed separately with
+custody enabled for one unknown-offer 1-wei test. The ordinary rejection balanced caller credit and
 native balance. One withdrawal child finalized and the signer balance rose by
 1 wei, but the Vault still records `UNKNOWN_DELIVERY`, one pending liability
-and a one-wei shortfall. No resend was attempted. This probe is not a paired
+and a one-wei shortfall in the old ledger formula. That shortfall was a false
+positive: the amount was already emitted, held and claimable were zero, and the
+recipient balance rose by exactly one wei. No resend was attempted. The local
+ledger fix is not yet deployed. This probe is not a paired
 candidate, and it does not clear custody risk.
 
 ## Previous source-exact pair (superseded by the latest revision above)
@@ -76,7 +81,7 @@ The source-exact pair above has not itself emitted or processed the test message
 
 ## Custody and lifecycle limitations
 
-Both latest candidate pairs have custody disabled and have never received GEN. Do not send value to either. A separate isolated Vault with the current source and custody enabled was used for one 1-wei unknown-offer credit and one withdrawal; the recipient balance rose exactly 1 wei, but its record remains `UNKNOWN_DELIVERY` and the transfer liability stays pending. Other disposable Studionet probes retained value after a payable execution error, a no-calldata transfer, and a nonpayable method call without matching ledger liabilities. Failed-transfer recovery remains unproven.
+Both latest candidate pairs have custody disabled and have never received GEN. Do not send value to either. A separate isolated Vault with the prior source and custody enabled was used for one 1-wei unknown-offer credit and one withdrawal; the recipient balance rose exactly 1 wei, but its record remains `UNKNOWN_DELIVERY` and the transfer obligation stays pending. Its old reported shortfall was a false positive. The local ledger correction is not deployed. Other disposable Studionet probes retained value after a payable execution error, a no-calldata transfer, and a nonpayable method call without matching ledger liabilities. Failed-transfer recovery remains unproven.
 
 No signed-source live program verification or Wallet A/B/C lifecycle has run. There is no valid offer funding, acceptance, revision, refund, material exit, maturity payout, or two-party recipient-balance proof for this pair. The isolated unknown-offer test is not escrow funding. GitHub source checks and real GenLayer semantic judgment have not been certified against a signed published commit.
 

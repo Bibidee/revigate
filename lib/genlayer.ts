@@ -3,6 +3,7 @@ import { encodeAddressArguments } from "./calldata-address.mjs";
 import { studionet } from "genlayer-js/chains";
 import { ExecutionResult, TransactionStatus } from "genlayer-js/types";
 import type { Address, CalldataEncodable, GenLayerTransaction, Hash } from "genlayer-js/types";
+import { classifyOutgoingTransfer } from "./transfer-evidence.mjs";
 export type { Hash } from "genlayer-js/types";
 
 export const STUDIONET_CHAIN_ID = 61999;
@@ -176,6 +177,31 @@ export async function observeTransaction(
     if (index + 1 < checks) await new Promise((resolve) => setTimeout(resolve, 3_000));
   }
   return { state: "pending", transaction: latest };
+}
+
+export async function observeOutgoingTransfer(options: {
+  parentHash: Hash;
+  vault: string;
+  recipient: string;
+  amount: bigint;
+}) {
+  const client = getReadClient();
+  const parent = await client.getTransaction({ hash: options.parentHash });
+  const childHashes = await client.getTriggeredTransactionIds({ hash: options.parentHash });
+  const children = await Promise.all(childHashes.map(async (hash) => ({
+    ...(await client.getTransaction({ hash })),
+    hash,
+  })));
+  const evidence = classifyOutgoingTransfer({
+    parentStatus: String(parent.statusName ?? ""),
+    parentExecution: String(parent.txExecutionResultName ?? ""),
+    parentRecipient: parent.to_address ?? parent.recipient,
+    expectedVault: options.vault,
+    expectedRecipient: options.recipient,
+    expectedAmount: options.amount,
+    children,
+  });
+  return { ...evidence, parentHash: options.parentHash, childHashes };
 }
 
 function pendingKey() {

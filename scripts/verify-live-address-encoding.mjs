@@ -72,9 +72,10 @@ const [acknowledgment, offerPage, walletCredit, ledger] = await Promise.all([
   }),
 ]);
 const zeroLedgerFields = [
-  "received", "held", "claimable", "transfer_pending", "recipient_claimed_delivery",
+  "received", "held", "claimable", "transfer_pending", "outgoing_emitted",
+  "delivery_verified", "delivery_failed_proven", "recipient_claimed_delivery",
   "unreconciled", "native_balance", "unassigned_surplus", "liability_shortfall",
-  "accounted_liabilities", "reconciled_total", "reconciliation_delta",
+  "backing_liabilities", "accounted_liabilities", "reconciled_total", "reconciliation_delta",
 ];
 assert.ok(zeroLedgerFields.every((field) => BigInt(ledger[field]) === 0n),
   "the custody-disabled test Vault must have a zero ledger and native balance");

@@ -12,10 +12,12 @@ Registry `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE` and Vault
 `0x857f02cc8a12c79a2a5cd23cb92e987151f0f80ce5cbf1d8868e961ec2d34c22` and
 `0x9e68dc1b03b76388701f36d333aac730ce29de85097568d36f0f337416c3db20`; bind
 hash `0x55ff1283efcba6c28c1ddb71a2ff2567fd9df75839c458fff3b9de172e34ef4d`.
-Source hashes match current local files, config is reciprocal, custody is
-disabled and the Vault ledger is zero.
+The deployed source hashes matched the repository files at that deployment
+revision; the local Vault has since changed for the accounting correction.
+Config is reciprocal, custody is disabled and the deployed Vault ledger was
+zero.
 
-A separate disposable Registry paired with the current-source Vault finalized
+A separate disposable Registry paired with the pre-accounting-patch source-exact Vault finalized
 an authorized child snapshot, duplicate no-op, stale-nonce rejection, spoof
 rejection and A0 unauthorized rebind rejection. A separate exact-source Vault
 received one wei through unknown-offer `fund_offer`, returned a balanced caller

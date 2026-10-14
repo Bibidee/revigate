@@ -13,37 +13,56 @@ source-exact pair is:
 | Vault | `0xf390D8D77f21710679a72Fc11b84A5e85a318849` | `0x9e68dc1b03b76388701f36d333aac730ce29de85097568d36f0f337416c3db20` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` | FINALIZED |
 
 The one-time Registry bind finalized in `0x55ff1283efcba6c28c1ddb71a2ff2567fd9df75839c458fff3b9de172e34ef4d`.
-Read-only attestation confirms both deployed files match the current local
-contract sources byte-for-byte, the configs are reciprocal on chain 61999,
-`custody_enabled=false` on both, address-typed reads succeed, and the Vault
-ledger and test-wallet credit are zero. This pair received no GEN and is not a
-custody-enabled release.
+Read-only attestation at deployment confirmed both deployed files matched the
+then-current source byte-for-byte, the configs were reciprocal on chain 61999,
+`custody_enabled=false` on both, address-typed reads succeeded, and the Vault
+ledger and test-wallet credit were zero. The local Registry is unchanged, but
+the local Vault now contains a ledger-accounting correction; its current SHA256
+is `C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55`. That
+source has not been deployed, so the deployed Vault remains at
+`0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F`. This pair
+received no GEN and is not a custody-enabled release.
 
 The payable-credit change was exercised separately on an isolated disposable
 Vault, not on the pair above. Its deployment `0x4652514810edc24346f8239fe847f36a47a27ef0e786508c1aafab22b9148948`
 finalized at `0xfDA04A975d1467580C6c16eb8cCD576fec4076Af`; deployed code matched
-the current Vault source hash above. It was configured with custody enabled
-only for this one-wei test and was not paired or production-bound.
+the **pre-accounting-patch** Vault source hash
+`0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F`, not the
+current local candidate hash `C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55`.
+It was configured with custody enabled only for this one-wei test and was not
+paired or production-bound.
 
 | Test | Transaction evidence | Finalized state |
 |---|---|---|
 | `fund_offer(999999)` with exactly 1 wei | `0x4e95c0fddd092d47dafae10243c9362d0a9058a4b2f645e7dba7bd55bcdf316a` | FINALIZED, execution SUCCESS, `value_credited=true`; Vault balance 1, received 1, claimable 1, caller credit 1, held 0, surplus/shortfall 0. |
 | One `withdraw_credit(1)` | Parent `0xc27924f097aa08924a3275c59ca1c69b1cb4ceb92c45bd61fc2e0ed0c9b4a949`; child `0xa3a3c2c5384c52314ef2b56b78c70b782e3bb556cef9702a0784962b8905fbee` | Parent and child FINALIZED. The signer balance increased exactly 1 wei (`297999999999999999996` → `297999999999999999997`). Vault record remains `UNKNOWN_DELIVERY`, with transfer_pending 1, native balance 0, and liability_shortfall 1. No retry or second withdrawal was submitted. |
 
-This proves one ordinary invalid-offer payable route now creates a matching
-refundable credit, and one emitted EOA transfer delivered exactly one wei. It
+The `liability_shortfall=1` in this historical read was **not missing GEN**.
+At that point, `held=0` and `claimable=0`; the full 1 wei had already been
+emitted in a finalized child, and the recipient's balance increased by 1 wei.
+The old formula incorrectly compared the empty Vault balance against
+`held + claimable + transfer_pending`. The local candidate now compares the
+Vault balance only with `held + claimable` and reports the emitted transfer as
+an unresolved, separately tracked obligation. This accounting fix has not
+been deployed; it does not alter the historical transaction or its
+`UNKNOWN_DELIVERY` record.
+
+On the pre-accounting-patch source, one ordinary invalid-offer payable route
+created a matching refundable credit, and one emitted EOA transfer delivered
+exactly one wei. It
 does not prove rollback recovery, direct-transfer handling, nonpayable-value
 handling, failed-transfer recovery, or objective contract-side delivery
 reconciliation. The live payout intentionally remains an unresolved liability
 because `UNKNOWN_DELIVERY` cannot be cleared from an independent receipt.
 
-A fresh message-proof pair used a disposable Registry emitter and the exact
-current Vault source:
+A fresh message-proof pair used a disposable Registry emitter and the
+pre-accounting-patch Vault source (the same Vault source version used by the
+deployed custody-disabled candidate pair):
 
 | Contract | Address | Deployment transaction | Source SHA256 |
 |---|---|---|---|
 | Probe Registry | `0xB4c8ED40B96110F01ef25Ee44A9A06D0f0782D71` | `0xce789796728c5cfae7cbb73bc02058e735f4e26842e75e3f3f46f692fd6eac0d` | `BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC` |
-| Current-source Vault | `0x96e4C4c77B3B1C5BA0eBcFb5fe0B55000dc153A0` | `0xcf7348bb6559a32eb0e69190a9b960cfd15b7324c221d26019c7de45992f810a` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` |
+| Pre-accounting-patch Vault | `0x96e4C4c77B3B1C5BA0eBcFb5fe0B55000dc153A0` | `0xcf7348bb6559a32eb0e69190a9b960cfd15b7324c221d26019c7de45992f810a` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` |
 
 Both deployed sources were independently fetched and matched their local files.
 The pair bind finalized in `0x997e56c422035f4f1f6d564346b097725ba080b8463d55887608665063fe2061`;
@@ -92,11 +111,11 @@ Pairing transaction: `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1
 - Registry config: chain 61999, protocol `revigate-registry-v1`, Vault `0xdca7e9df49e2773faefad6b27b612bc296c74751`, custody disabled.
 - Vault config: chain 61999, protocol `revigate-vault-v1`, Registry `0x4c55e4e0ab00c8534b6d4a826620cdb506349b45`, custody disabled.
 
-The source-exact pair is a fresh deployment and is the only pair in this report with both contracts byte-for-byte equal to the local contract files. It is custody-disabled and has no financial lifecycle state. The pairing/configuration transaction does not count as proof of Registry notification child execution.
+At the time of deployment, this fresh pair was the only pair in the report with both contracts byte-for-byte equal to the then-current local contract files. It is custody-disabled and has no financial lifecycle state. The Vault differs from the current local file after the later accounting correction. The pairing/configuration transaction does not count as proof of Registry notification child execution.
 
 ## Earlier hosted message pair (historical; its Vault source predates the latest revision above)
 
-To exercise an emitting method without adding test code to the release pair, a disposable Registry probe was deployed with one owner-gated test emitter added to the current Registry source. Its paired Vault is byte-for-byte the local Vault source. Both deployments and the Registry-to-Vault instructions used zero attached value; both contracts had custody disabled.
+To exercise an emitting method without adding test code to the release pair, a disposable Registry probe was deployed with one owner-gated test emitter added to the then-current Registry source. Its paired Vault was byte-for-byte the Vault source before the later accounting correction. Both deployments and the Registry-to-Vault instructions used zero attached value; both contracts had custody disabled.
 
 | Item | Registry probe | Paired Vault |
 |---|---|---|

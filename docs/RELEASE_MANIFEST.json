@@ -3,8 +3,9 @@
   "recorded_at": "2026-10-14",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
-  "implementation_commit": "ba3ad9a83178bede7b27864d7d5c5cdded872694",
-  "commit_signature": "unsigned; no local signing key/configuration",
+  "last_verified_pushed_base_commit": "9376fbd2b25c2346d53761128a61b4dc85ed089b",
+  "candidate_changes_committed_in_this_revision": true,
+  "commit_signature": "candidate commit unsigned; no local signing key/configuration",
   "pull_request": {
     "number": 1,
     "url": "https://github.com/Bibidee/revigate/pull/1",
@@ -38,7 +39,9 @@
       "consensus": "MAJORITY_AGREE",
       "attached_value": "0",
       "source_sha256": "0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F",
-      "deployed_code_matches_local_source": true
+      "deployed_code_matches_local_source": false,
+      "local_candidate_source_sha256": "C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55",
+      "local_candidate_deployed": false
     },
     "pairing": {
       "registry_vault_config_is_reciprocal": true,
@@ -49,7 +52,7 @@
       "exact_source_registry_message": "NOT_PROVEN; live message used an owner-gated disposable emitter"
     }
   },
-  "current_source_message_probe": {
+  "pre_accounting_patch_message_probe": {
     "registry_address": "0xB4c8ED40B96110F01ef25Ee44A9A06D0f0782D71",
     "registry_deployment_transaction": "0xce789796728c5cfae7cbb73bc02058e735f4e26842e75e3f3f46f692fd6eac0d",
     "registry_source_sha256": "BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC",
@@ -86,6 +89,8 @@
     "contract_transfer_status": "UNKNOWN_DELIVERY",
     "post_withdrawal_transfer_pending": "1",
     "post_withdrawal_liability_shortfall": "1",
+    "shortfall_diagnosis": "FALSE_POSITIVE: held=0, claimable=0, outgoing child finalized, recipient balance increased by 1 wei; old formula incorrectly counted emitted value as Vault backing",
+    "local_formula_fix_deployed": false,
     "retry_submitted": false,
     "release_gate": "FAIL"
   },
@@ -119,13 +124,16 @@
     "current_contract_pair_configured": false
   },
   "verification": {
-    "javascript_tests": "13 passed",
+    "javascript_tests": "19 passed (current targeted suite)",
     "python_tests": "8 passed",
-    "direct_mode_tests": "92 passed",
+    "direct_mode_tests": "93 passed",
+    "typecheck": "PASS (current targeted changes)",
+    "frontend_child_observer": "fixture tested; live Studionet RPC schema not verified in this session; no contract state mutation",
+    "studionet_read_probe": "BLOCKED: repository-local CLI confirmed chain 61999, but get_config failed DNS resolution for studio.genlayer.com; no transaction was submitted",
     "production_dependency_audit": "0 vulnerabilities",
     "full_dependency_audit": "0 vulnerabilities; UUID 11.1.1 transitive override; GenLayer CLI 0.39.1 unchanged",
-    "full_preflight": "PASS: network guard, typecheck, lint, 13 JavaScript tests, 8 Python tests, 92 Direct Mode tests, production build with all 10 routes prerendered",
-    "github_actions": "PASS: run 9 for ba3ad9a83178bede7b27864d7d5c5cdded872694",
+    "full_preflight": "PASS: network guard, typecheck, lint, 19 JavaScript tests, 8 Python tests, 93 Direct Mode tests, production build with all 10 routes prerendered",
+    "github_actions": "PENDING for the candidate revision at record time; prior pushed base CI passed",
     "vercel_preview_check": "PASS: current pushed commit preview READY",
     "vercel_production": "PASS: production READY; browser checked publish route remains locked and unbound",
     "t01_t52": "INCOMPLETE: 27 PASS, 15 PARTIAL, 2 FAIL, 2 BLOCKED, 6 NOT EXECUTED",
@@ -135,12 +143,12 @@
   },
   "release_gates": {
     "custody": "FAIL",
-    "authenticated_child_message": "PARTIAL: current-source Vault proof passed on a disposable Registry emitter; exact-source Registry event from verified signed program not proven",
+    "authenticated_child_message": "PARTIAL: pre-accounting-patch Vault proof passed on disposable Registry emitter; exact-source Registry event from verified signed program not proven",
     "two_wallet_lifecycle": "NOT_RUN; blocked by unsigned source and custody gate",
-    "source_integrity": "PASS_FOR_CURRENT_DEPLOYED_CONTRACT_FILES",
+    "source_integrity": "REGISTRY_MATCHES_DEPLOYED_SOURCE; LOCAL_VAULT_CANDIDATE_NOT_DEPLOYED",
     "frontend_release_binding": "NOT_CONFIGURED; production writes locked",
-    "signed_publication": "NOT_COMPLETE_UNSIGNED",
-    "github_ci": "PASS_FOR_COMMIT_BA3AD9A",
+    "signed_publication": "NOT_COMPLETE_NO_PUBLISHER_NOMINATED_SIGNED_RULEBOOK_COMMIT",
+    "github_ci": "PRIOR_BASE_GREEN; CANDIDATE_REVISION_PENDING",
     "branch_protection": "NOT_ENABLED; protection endpoint returned 403 and rulesets list is empty",
     "t01_t52_matrix": "INCOMPLETE",
     "verdict": "NOT_COMPLETE"

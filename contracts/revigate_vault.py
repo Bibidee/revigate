@@ -122,6 +122,9 @@ class RevigateVault(gl.Contract):
     total_claimable: u256
     total_transfer_pending: u256
     total_unreconciled: u256
+    total_outgoing_emitted: u256
+    total_delivery_verified: u256
+    total_delivery_failed_proven: u256
 
     def __init__(self, registry: Address, custody_enabled: bool):
         self._require_address(registry, "Registry")
@@ -137,6 +140,9 @@ class RevigateVault(gl.Contract):
         self.total_claimable = u256(0)
         self.total_transfer_pending = u256(0)
         self.total_unreconciled = u256(0)
+        self.total_outgoing_emitted = u256(0)
+        self.total_delivery_verified = u256(0)
+        self.total_delivery_failed_proven = u256(0)
 
     def _sender(self) -> str:
         return str(gl.message.sender_address).lower()
@@ -561,6 +567,7 @@ class RevigateVault(gl.Contract):
         self.total_claimable -= value
         self.total_transfer_pending += value
         self.total_unreconciled += value
+        self.total_outgoing_emitted += value
         self.transfers[transfer_id] = Transfer(
             recipient=sender, amount=value, status="UNKNOWN_DELIVERY",
             evidence="", created_at=self._now(), reconciled_at=u64(0))
@@ -692,24 +699,30 @@ class RevigateVault(gl.Contract):
 
     @gl.public.view
     def get_ledger(self) -> dict:
-        liabilities = (self.total_held + self.total_claimable
-                       + self.total_transfer_pending)
+        # Only amounts still in the Vault need native-balance backing. An
+        # emitted transfer remains an unresolved delivery obligation, but it
+        # has already left the Vault and must not be counted as funds the
+        # Vault is required to still hold.
+        backed_liabilities = self.total_held + self.total_claimable
         native_balance = u256(self.balance)
-        unassigned_surplus = (native_balance - liabilities
-                              if native_balance > liabilities else u256(0))
-        liability_shortfall = (liabilities - native_balance
-                               if liabilities > native_balance else u256(0))
-        reconciled = (self.total_held + self.total_claimable
-                      + self.total_transfer_pending)
+        unassigned_surplus = (native_balance - backed_liabilities
+                              if native_balance > backed_liabilities else u256(0))
+        liability_shortfall = (backed_liabilities - native_balance
+                               if backed_liabilities > native_balance else u256(0))
+        reconciled = backed_liabilities + self.total_unreconciled
         return {"received": self.total_received, "held": self.total_held,
                 "claimable": self.total_claimable,
                 "transfer_pending": self.total_transfer_pending,
+                "outgoing_emitted": self.total_outgoing_emitted,
+                "delivery_verified": self.total_delivery_verified,
+                "delivery_failed_proven": self.total_delivery_failed_proven,
                 "recipient_claimed_delivery": self._recipient_claimed_delivery_total(),
                 "unreconciled": self.total_unreconciled,
                 "native_balance": native_balance,
                 "unassigned_surplus": unassigned_surplus,
                 "liability_shortfall": liability_shortfall,
-                "accounted_liabilities": liabilities,
+                "backing_liabilities": backed_liabilities,
+                "accounted_liabilities": backed_liabilities,
                 "reconciled_total": reconciled,
                 "reconciliation_delta": self.total_received - reconciled}
 
