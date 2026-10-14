@@ -48,9 +48,9 @@ def mock_snapshot(direct_vm, sha: str, text: str, tree_sha: str, *, signed=True,
         },
     }
     branch = {"name": "release/v1", "commit": {"sha": BRANCH_HEAD}}
-    membership = {"status": "ahead", "base_commit": {"sha": sha},
-                  "merge_base_commit": {"sha": sha},
-                  "head_commit": {"sha": BRANCH_HEAD}}
+    membership = {"status": "ahead", "ahead_by": 1, "behind_by": 0,
+                  "base_commit": {"sha": sha}, "merge_base_commit": {"sha": sha},
+                  "commits": [{"sha": BRANCH_HEAD}]}
     tree = {"truncated": False, "tree": [
         {"path": RULE_PATH, "sha": blob_sha(rule_bytes), "type": "blob"},
         {"path": MANIFEST_PATH, "sha": blob_sha(manifest_bytes), "type": "blob"},
@@ -59,9 +59,10 @@ def mock_snapshot(direct_vm, sha: str, text: str, tree_sha: str, *, signed=True,
     mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/branches/release%2Fv1", json.dumps(branch))
     mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/compare/{sha}...{BRANCH_HEAD}", json.dumps(membership))
     if ancestry_base:
-        ancestry = {"status": "ahead", "base_commit": {"sha": ancestry_base},
+        ancestry = {"status": "ahead", "ahead_by": 1, "behind_by": 0,
+                    "base_commit": {"sha": ancestry_base},
                     "merge_base_commit": {"sha": ancestry_base},
-                    "head_commit": {"sha": sha}}
+                    "commits": [{"sha": sha}]}
         mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/compare/{ancestry_base}...{sha}", json.dumps(ancestry))
     mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/git/trees/{tree_sha}?recursive=1", json.dumps(tree))
     mock_response(direct_vm, f"https://raw.githubusercontent.com/{REPO}/{sha}/{RULE_PATH}", rule_bytes.decode("utf-8"))

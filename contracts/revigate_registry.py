@@ -299,6 +299,36 @@ class RevigateRegistry(gl.Contract):
             return False
         return all(part and part not in (".", "..") for part in path.split("/"))
 
+    def _comparison_proves_ancestry(self, comparison: dict, base_sha: str,
+                                    head_sha: str) -> bool:
+        """Validate the documented GitHub Compare response without invented fields."""
+        base = base_sha.lower()
+        head = head_sha.lower()
+        base_commit = comparison.get("base_commit")
+        merge_base = comparison.get("merge_base_commit")
+        if (not isinstance(base_commit, dict) or not isinstance(merge_base, dict)
+                or not isinstance(base_commit.get("sha"), str)
+                or not isinstance(merge_base.get("sha"), str)
+                or base_commit["sha"].lower() != base
+                or merge_base["sha"].lower() != base):
+            return False
+        status = comparison.get("status")
+        ahead_by = comparison.get("ahead_by")
+        behind_by = comparison.get("behind_by")
+        commits = comparison.get("commits")
+        if (type(ahead_by) is not int or type(behind_by) is not int
+                or not isinstance(commits, list)):
+            return False
+        if status == "identical":
+            return head == base and ahead_by == 0 and behind_by == 0 and not commits
+        if (status != "ahead" or ahead_by < 1 or behind_by != 0
+                or ahead_by != len(commits) or not commits):
+            return False
+        latest = commits[-1]
+        return (isinstance(latest, dict)
+                and isinstance(latest.get("sha"), str)
+                and latest["sha"].lower() == head)
+
     def _fetch_source(self, program: Program, sha: str, require_nomination: bool,
                       base_sha: str) -> dict:
         """Authenticate exact GitHub commit, tree blobs and publisher nomination."""
@@ -340,10 +370,7 @@ class RevigateRegistry(gl.Contract):
             if membership_resp.status != 200 or len(membership_resp.body) > MAX_GITHUB_METADATA_BYTES:
                 return {"status": "INCONCLUSIVE", "reason": "commit is not a member of the declared branch"}
             membership = json.loads(membership_resp.body.decode("utf-8"))
-            if (membership.get("status") not in ("ahead", "identical")
-                    or membership.get("base_commit", {}).get("sha", "").lower() != sha.lower()
-                    or membership.get("merge_base_commit", {}).get("sha", "").lower() != sha.lower()
-                    or membership.get("head_commit", {}).get("sha", "").lower() != branch_head.lower()):
+            if not self._comparison_proves_ancestry(membership, sha, branch_head):
                 return {"status": "INCONCLUSIVE", "reason": "commit is not a member of the declared branch"}
             if base_sha:
                 compare_resp = gl.nondet.web.get(
@@ -352,10 +379,7 @@ class RevigateRegistry(gl.Contract):
                 if compare_resp.status != 200 or len(compare_resp.body) > MAX_GITHUB_METADATA_BYTES:
                     return {"status": "INCONCLUSIVE", "reason": "candidate is not a descendant"}
                 comparison = json.loads(compare_resp.body.decode("utf-8"))
-                if (comparison.get("status") != "ahead"
-                        or comparison.get("base_commit", {}).get("sha", "").lower() != base_sha.lower()
-                        or comparison.get("merge_base_commit", {}).get("sha", "").lower() != base_sha.lower()
-                        or comparison.get("head_commit", {}).get("sha", "").lower() != sha.lower()):
+                if not self._comparison_proves_ancestry(comparison, base_sha, sha):
                     return {"status": "INCONCLUSIVE", "reason": "candidate is not a descendant"}
             tree_sha = commit.get("commit", {}).get("tree", {}).get("sha", "")
             if not re.fullmatch(r"[0-9a-fA-F]{40}", tree_sha):

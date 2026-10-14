@@ -35,6 +35,8 @@ def mock_valid_snapshot(
     candidate_status="ahead", rule_response_text=None, commit_html_url=None,
     tree_truncated=False, tree_response_body=None, signature="test-signature",
     payload="test-payload", verified_at="2026-01-01T00:00:00Z",
+    membership_commits=None, membership_ahead_by=1, membership_behind_by=0,
+    candidate_commits=None, candidate_ahead_by=1, candidate_behind_by=0,
 ):
     rule_bytes = rule_text.encode("utf-8")
     manifest_bytes = json.dumps({
@@ -60,9 +62,11 @@ def mock_valid_snapshot(
     branch = {"name": "release/v1", "commit": {"sha": branch_head}}
     comparison = {
         "status": membership_status,
+        "ahead_by": membership_ahead_by,
+        "behind_by": membership_behind_by,
         "base_commit": {"sha": commit_sha},
         "merge_base_commit": {"sha": commit_sha},
-        "head_commit": {"sha": branch_head},
+        "commits": membership_commits if membership_commits is not None else [{"sha": branch_head}],
     }
     tree = {
         "truncated": tree_truncated,
@@ -78,9 +82,11 @@ def mock_valid_snapshot(
     if compare_base_sha:
         ancestry = {
             "status": candidate_status,
+            "ahead_by": candidate_ahead_by,
+            "behind_by": candidate_behind_by,
             "base_commit": {"sha": compare_base_sha},
             "merge_base_commit": {"sha": compare_base_sha if candidate_status == "ahead" else "d" * 40},
-            "head_commit": {"sha": commit_sha},
+            "commits": candidate_commits if candidate_commits is not None else [{"sha": commit_sha}],
         }
         mock_response(direct_vm, f"https://api.github.com/repos/{REPO}/compare/{compare_base_sha}...{commit_sha}", json.dumps(ancestry))
     mock_response(
@@ -112,6 +118,42 @@ def test_T02_signed_source_manifest_and_slash_branch_are_bound_to_exact_git_byte
     assert result["text"] == RULE_TEXT
     assert len(result["digest"]) == 64
     assert set(result["clauses"]) == {"R-01", "R-02"}
+
+
+def test_T02_documented_github_compare_commits_array_proves_branch_membership(direct_deploy, direct_vm):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    mock_valid_snapshot(direct_vm)
+
+    result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
+
+    assert result["status"] == "VERIFIED"
+    assert contract._comparison_proves_ancestry({
+        "status": "ahead", "ahead_by": 1, "behind_by": 0,
+        "base_commit": {"sha": SHA}, "merge_base_commit": {"sha": SHA},
+        "commits": [{"sha": BRANCH_HEAD}],
+    }, SHA, BRANCH_HEAD)
+
+
+def test_T02_branch_compare_must_include_the_requested_branch_head(direct_deploy, direct_vm):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    mock_valid_snapshot(direct_vm, membership_commits=[{"sha": "d" * 40}])
+
+    result = contract._fetch_source(contract.programs[program_id], SHA, True, "")
+
+    assert result["status"] == "INCONCLUSIVE"
+    assert result["reason"] == "commit is not a member of the declared branch"
+
+
+def test_T02_identical_branch_head_is_proven_without_a_commits_entry(direct_deploy, direct_vm):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    mock_valid_snapshot(
+        direct_vm, commit_sha=BRANCH_HEAD, branch_head=BRANCH_HEAD,
+        membership_status="identical", membership_commits=[], membership_ahead_by=0,
+    )
+
+    result = contract._fetch_source(contract.programs[program_id], BRANCH_HEAD, True, "")
+
+    assert result["status"] == "VERIFIED"
 
 
 def test_T03_unverified_commit_signature_never_verifies_program(direct_deploy, direct_vm):
@@ -245,6 +287,20 @@ def test_T40_revision_sibling_of_current_commit_fails_ancestry_check(direct_depl
     mock_valid_snapshot(
         direct_vm, commit_sha=candidate, branch_head="f" * 40,
         compare_base_sha=SHA, candidate_status="diverged",
+    )
+
+    result = contract._fetch_source(contract.programs[program_id], candidate, True, SHA)
+
+    assert result["status"] == "INCONCLUSIVE"
+    assert result["reason"] == "candidate is not a descendant"
+
+
+def test_T40_revision_compare_must_end_at_the_exact_candidate(direct_deploy, direct_vm):
+    contract, program_id = propose(direct_deploy, direct_vm)
+    candidate = "e" * 40
+    mock_valid_snapshot(
+        direct_vm, commit_sha=candidate, branch_head="f" * 40,
+        compare_base_sha=SHA, candidate_commits=[{"sha": "1" * 40}],
     )
 
     result = contract._fetch_source(contract.programs[program_id], candidate, True, SHA)
