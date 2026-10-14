@@ -10,7 +10,8 @@
 - [x] Current preflight passed: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 routes.
 - [x] Production dependency audit: zero vulnerabilities. Two moderate UUID advisories remain in the pinned development CLI dependency chain.
 - [ ] Full contract mutation suite and fresh independent hostile audit.
-- [ ] Changes committed, pushed, reviewed in a draft PR, CI passed, and signed status verified.
+- [x] Implementation commit pushed; draft PR #1 open; GitHub Actions CI run 5 passed for the implementation commit.
+- [ ] Signed commit verified. The implementation commit is unsigned because local signing was not configured.
 
 ## Studionet pair and custody
 
@@ -35,9 +36,10 @@
 
 ## GitHub and release decision
 
-- [ ] Remediation branch pushed and a draft pull request against main created.
+- [x] Remediation branch pushed and a draft pull request against main created.
 - [ ] Main requires pull requests, signed commits, passing CI, and prevents force pushes/deletion.
-- [ ] Final source, deployment, and Vercel release provenance synchronized.
+- [x] Ready Vercel Preview for the remediation branch checked with authenticated CLI; publish page shows the write lock and does not contain the pair addresses.
+- [ ] Production release source and approved contract binding synchronized. Production remains on the prior safe, unbound deployment.
 
 Keep the production contract address unset and all contract mutations locked until the custody, message, and lifecycle gates above are proven. A successful build, deployment, pairing read, or isolated one-wei withdrawal does not clear these gates.
 

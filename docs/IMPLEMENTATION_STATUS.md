@@ -2,7 +2,7 @@
 
 **Verdict: NOT COMPLETE.** A full two-contract candidate is implemented and freshly deployed to Studionet with custody disabled. The deployed Registry and Vault bytecode match local source exactly and their on-chain configurations are reciprocal. Custody safety, live Registry-to-Vault message execution, and the real wallet lifecycle are still unproven.
 
-Recorded 2026-10-14. Repository: https://github.com/Bibidee/revigate. Branch: codex/revigate-remediation-2026-10-14. Base commit: 5fb3a6d58e2d9c8247570ba7d885592100aa436c. Worktree remains uncommitted at this report.
+Recorded 2026-10-14. Repository: https://github.com/Bibidee/revigate. Branch: codex/revigate-remediation-2026-10-14. Base commit: 5fb3a6d58e2d9c8247570ba7d885592100aa436c. The implementation has been committed and pushed; draft PR #1 is open. The initial implementation commit e78cf043f9ced500aed3f58413779bce4a15145a is unsigned because no local signing key/configuration was available.
 
 ## Completed and verified
 
@@ -14,16 +14,17 @@ Recorded 2026-10-14. Repository: https://github.com/Bibidee/revigate. Branch: co
 - On-chain reads confirm Registry.vault equals the Vault address and Vault.registry equals the Registry address. Both report chain ID 61999 and custody_enabled=false. Both ledgers have zero balance, liabilities, surplus, and shortfall.
 - An unrelated wallet's attempt to replace the Registry's Vault address finalized with execution ERROR and did not change the live pairing. Transaction: 0xa97042009c493ab8d2a84018a7d2c8fb1c755865b4ff833cb956dd043f6eb5ef.
 - Full npm run preflight passed: Studionet-only network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 app routes. Production-only npm audit reports zero vulnerabilities.
-- Production Vercel remains safely unbound: contract address unset, contract writes locked, and page copy explains that release certification is pending. No production deployment was made from this uncommitted worktree.
+- GitHub Actions CI run 5 passed for implementation commit e78cf043f9ced500aed3f58413779bce4a15145a. The draft PR is [#1](https://github.com/Bibidee/revigate/pull/1).
+- Vercel created Ready Preview deployment dpl_BmKVBJwLfocvV984Yyx2nS7WLk6w at https://the-revigate-8zabouo03-bibidees-projects.vercel.app. Its protected publish page was read with the authenticated Vercel CLI and contains the contract-action lock copy; no current pair address is embedded. No production deployment was made.
+- Production Vercel remains safely unbound: contract address unset, contract writes locked, and the live page explains that release certification is pending.
 
 ## Critical release blockers
 
 - **Custody failure on Studionet.** Disposable one-wei probes previously showed value retained without ledger liability after a payable execution error, a no-calldata transfer, and value attached to a nonpayable call. One successful earlier EOA withdrawal increased the recipient balance by one wei, but the contract still classified delivery as UNKNOWN_DELIVERY. Failed-transfer recovery and objective receipt handling remain unresolved. Do not accept GEN into the current or previous candidates.
 - **Cross-contract message proof.** The final pair is bound and reciprocal configuration is confirmed, but there is no recorded successful child-message receipt proving that an authenticated Registry notification reached the Vault and changed canonical state exactly once. The bind transaction hash was not captured. An attempted helper probe ended in execution ERROR; Direct Mode is not hosted proof.
 - **Two-wallet lifecycle.** No signed-source live program verification or Wallet A/B/C run has completed. There has been no funding, acceptance, acknowledgment, revision, refund, material exit, maturity payout, or recipient balance proof on this pair.
-- **Signed source and publication.** The current changes are not yet committed or pushed. No PR or final-commit CI run exists. Signing configuration was not available in local Git settings; do not describe any future unsigned commit as signed.
-- **Repository protection and independent audit.** Branch protection and a fresh independent hostile audit remain outstanding. Previous GitHub admin requests returned 403; the local GitHub CLI credential was invalid.
-- **Full release matrix and browser acceptance.** T01–T52 remains incomplete. Vercel production routes were previously read-only checked on desktop/mobile, and actions were visibly locked. A local browser check of this newly configured pair was limited by a connection timeout. No wallet lifecycle browser suite has run.
+- **Signed source.** The implementation is pushed and has a draft PR, and CI passed for its initial commit. That commit is unsigned. The branch-protection API still returns 403 for the GitHub connection and the ruleset list is empty; a fresh independent hostile audit also remains outstanding.
+- **Full release matrix and browser acceptance.** T01–T52 remains incomplete. Production routes were previously read-only checked on desktop/mobile, and the protected preview publish page was checked through authenticated CLI. A local browser check of this pair was limited by a connection timeout. No wallet lifecycle browser suite has run.
 - **Development advisories.** Production audit is clear. The pinned development GenLayer CLI chain has two moderate UUID advisories through Dockerode 4; no incompatible override was introduced.
 
 ## Deployment and safety decision

@@ -4,8 +4,15 @@
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
   "base_commit": "5fb3a6d58e2d9c8247570ba7d885592100aa436c",
-  "worktree_state_at_recording": "uncommitted remediation changes present",
-  "signed_commit": null,
+  "worktree_state_at_contract_deployment": "remediation source was uncommitted and based on base_commit",
+  "implementation_commit": "e78cf043f9ced500aed3f58413779bce4a15145a",
+  "commit_signature": "unsigned; no local signing key/configuration",
+  "pull_request": {
+    "number": 1,
+    "url": "https://github.com/Bibidee/revigate/pull/1",
+    "state": "OPEN_DRAFT",
+    "base": "main"
+  },
   "network": {
     "name": "GenLayer Studionet",
     "chain_id": 61999,
@@ -60,12 +67,21 @@
     "contract_writes_enabled": false,
     "release_source_commit": null
   },
+  "preview": {
+    "deployment_id": "dpl_BmKVBJwLfocvV984Yyx2nS7WLk6w",
+    "url": "https://the-revigate-8zabouo03-bibidees-projects.vercel.app",
+    "state": "READY",
+    "target": "preview",
+    "authenticated_publish_page_check": "write lock visible; no candidate pair address present in page response"
+  },
   "verification": {
     "javascript_tests": "9 passed",
     "python_tests": "8 passed",
     "direct_mode_tests": "90 passed",
     "production_dependency_audit": "0 vulnerabilities",
     "full_preflight": "PASS: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, production build with 10 prerendered routes",
+    "github_actions": "PASS: workflow run 5 for implementation_commit",
+    "vercel_preview_check": "PASS: deployment READY and authenticated publish page shows write lock",
     "t01_t52": "INCOMPLETE",
     "two_wallet_lifecycle": "NOT_RUN",
     "independent_security_audit": "NOT_COMPLETE",
@@ -77,7 +93,9 @@
     "two_wallet_lifecycle": "NOT_RUN",
     "source_integrity": "PASS_FOR_DEPLOYED_CONTRACT_FILES",
     "frontend_release_binding": "NOT_CONFIGURED",
-    "signed_publication_and_ci": "NOT_COMPLETE",
+    "signed_publication": "NOT_COMPLETE_UNSIGNED",
+    "github_ci": "PASS_FOR_IMPLEMENTATION_COMMIT",
+    "branch_protection": "NOT_ENABLED; endpoint returned 403 and rulesets list is empty",
     "t01_t52_matrix": "INCOMPLETE",
     "verdict": "NOT_COMPLETE"
   },
