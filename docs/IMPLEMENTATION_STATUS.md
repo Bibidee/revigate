@@ -95,8 +95,8 @@ it does not prove finality, failure, cancellation, or rollback. The exact poll
 is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`. This
 is observer evidence only; it is not a replacement for a finalized receipt.
 
-Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
-(47 total). Direct Mode uses mocked providers and does not replace hosted
+Local verification currently passes 15 JavaScript tests and 34 Direct Mode tests
+(49 total). Direct Mode uses mocked providers and does not replace hosted
 validator evidence. Fresh GitHub Actions run 38652447172 for commit
 13bc812f352a6f484d8ba4d34ffb244fc65dc223 passed npm ci, frozen Python
 dependencies, preflight, production build, and the production dependency audit.

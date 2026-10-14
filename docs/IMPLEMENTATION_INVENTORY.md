@@ -67,7 +67,7 @@ at history index 1.
 
 ## Automated evidence
 
-The local suite currently passes 13 JavaScript tests and 34 Direct Mode tests.
+The local suite currently passes 15 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
 build evidence are recorded on the remediation branch. Fresh GitHub Actions run
 38652447172 for observer-hardening commit

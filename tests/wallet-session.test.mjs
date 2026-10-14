@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   classifyTransactionFinality,
+  disconnectWallet,
   isFinalizedForCanonical,
   normalizeWalletAccount,
   normalizeWalletChainId,
@@ -22,6 +23,7 @@ class FakeProvider {
     this.calls.push({ method, params });
     if (this.pending.has(method)) return this.pending.get(method)();
     if (method === "eth_requestAccounts") return Promise.resolve([accountA]);
+    if (method === "wallet_revokePermissions") { this.current.eth_accounts = []; return Promise.resolve(null); }
     if (method === "wallet_switchEthereumChain") {
       this.current.eth_chainId = params[0].chainId;
       return Promise.resolve(null);
@@ -127,6 +129,31 @@ test("T43 declined network switch remains an explicit wallet error", async () =>
   const session = watchWallet(provider, () => undefined);
   await session.ready;
   await assert.rejects(() => requestWalletConnection(provider, session), /User rejected/);
+  session.stop();
+});
+
+test("T43 disconnect revokes wallet permission and confirms the account is gone", async () => {
+  const provider = new FakeProvider();
+  provider.current.eth_accounts = [accountA];
+  const session = watchWallet(provider, () => undefined);
+  await session.ready;
+  assert.equal(session.getState().account, accountA);
+  await disconnectWallet(provider, session);
+  assert.ok(provider.calls.some(({ method, params }) => method === "wallet_revokePermissions" && params[0].eth_accounts));
+  assert.equal(session.getState().account, "");
+  session.stop();
+});
+
+test("T43 unsupported in-app disconnect remains an explicit wallet limitation", async () => {
+  const provider = new FakeProvider();
+  provider.current.eth_accounts = [accountA];
+  provider.request = ({ method }) => method === "wallet_revokePermissions"
+    ? Promise.reject(Object.assign(new Error("Unsupported"), { code: -32601 }))
+    : Promise.resolve(provider.current[method]);
+  const session = watchWallet(provider, () => undefined);
+  await session.ready;
+  await assert.rejects(() => disconnectWallet(provider, session), /does not support in-app disconnect/);
+  assert.equal(session.getState().account, accountA);
   session.stop();
 });
 

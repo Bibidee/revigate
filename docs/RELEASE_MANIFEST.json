@@ -72,7 +72,7 @@
   },
   "local_verification": {
     "source_commit_sha": "46b749669c532bf85b3491d2ea6dd4bcee987422",
-    "javascript_tests": "13/13 PASS",
+    "javascript_tests": "15/15 PASS",
     "direct_mode_tests": "34/34 PASS",
     "typecheck": "PASS",
     "lint": "PASS",
@@ -189,7 +189,7 @@
       "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
     },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["terminal finality readback for local observer probe", "fresh public deployment/browser rerun for observer hardening", "extension rejection/disconnect coverage", "protected preview requires Vercel authentication", "independent security review"]
+    "remaining": ["terminal finality readback for local observer probe", "fresh public deployment/browser rerun for observer hardening and disconnect control", "real extension rejection/disconnect coverage", "protected preview requires Vercel authentication", "independent security review"]
   },
   "observer_hardening_commit": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
   "observer_hardening_status": "BRANCH_CI_PASSED_PUBLIC_DEPLOYMENT_BROWSER_RERUN_REQUIRED",

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { getConfiguredRegistryAddress, verifyRevigateDeployment } from "@/lib/genlayer";
-import { requestWalletConnection, watchWallet } from "@/lib/wallet-session.mjs";
+import { disconnectWallet, requestWalletConnection, watchWallet } from "@/lib/wallet-session.mjs";
 
 type Provider = { request(args: { method: string; params?: unknown[] }): Promise<unknown>; on?(event: string, cb: (...args: unknown[]) => void): void; removeListener?(event: string, cb: (...args: unknown[]) => void): void };
 declare global { interface Window { ethereum?: Provider } }
@@ -40,10 +40,18 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
       setMessage(state.chainId && Number.parseInt(state.chainId, 16) !== 61999 ? "Switch your wallet to GenLayer Studionet (chain 61999) before signing." : "");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Wallet connection was rejected."); }
   }
+  async function disconnect() {
+    const provider = window.ethereum;
+    if (!provider || !walletSession.current) { setMessage("No wallet is connected to this browser."); return; }
+    try {
+      await disconnectWallet(provider, walletSession.current);
+      setMessage("Wallet disconnected from Revigate.");
+    } catch (error) { setMessage(error instanceof Error ? error.message : "The wallet could not confirm disconnect."); }
+  }
   return <>
     <header className="topbar"><Link href="/" className="brand"><span className="brand-mark">R</span><span>Revi<span className="brand-light">gate</span><small>RULES WITH A HISTORY</small></span></Link>
       <nav aria-label="Main navigation"><Link href="/">Reading room</Link><Link href="/publish">Publish</Link><Link href="/my-rules">My rules</Link><Link href="/activity">Activity</Link><Link href="/about">About</Link></nav>
-      <button className="wallet-button" onClick={connect}>{account ? `${account.slice(0, 6)}…${account.slice(-4)}` : "Connect wallet"}</button>
+      {account ? <><span className="wallet-account" aria-label={`Connected wallet ${account}`}>{account.slice(0, 6)}…{account.slice(-4)}</span><button className="wallet-button" onClick={() => void disconnect}>Disconnect</button></> : <button className="wallet-button" onClick={() => void connect}>Connect wallet</button>}
     </header>
     {wrongNetwork && <div className="network-warning">Wrong network · Connect to GenLayer Studionet · Chain 61999</div>}
     {message && <div className="toast" role="status">{message}<button aria-label="Dismiss" onClick={() => setMessage("")}>×</button></div>}
