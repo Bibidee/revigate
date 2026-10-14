@@ -56,7 +56,8 @@ the corrected Registry. Rabby connected as Wallet A and signed the current
 publisher request and assessment; a refresh preserved the active account and
 Registry verification. Wallet-extension account switching, wrong-network
 switching, rejection, disconnect recovery, Wallet B participation, and the
-protected Vercel preview remain unverified. The browser observer's conservative
+protected Vercel preview redirects to Vercel login and remains unverified; no
+credentials or bypass link were used. The browser observer's conservative
 unknown execution label is not treated as a canonical failure when the finalized
 receipt and Registry readback agree.
 
