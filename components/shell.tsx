@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { getConfiguredContractAddress, getReadClient } from "@/lib/genlayer";
+import { getConfiguredRegistryAddress, getConfiguredVaultAddress, verifyRevigateDeployment } from "@/lib/genlayer";
 
 type Provider = { request(args: { method: string; params?: unknown[] }): Promise<unknown>; on?(event: string, cb: (...args: unknown[]) => void): void; removeListener?(event: string, cb: (...args: unknown[]) => void): void };
 declare global { interface Window { ethereum?: Provider } }
@@ -12,7 +12,7 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   const [account, setAccount] = useState("");
   const [chain, setChain] = useState("");
   const [message, setMessage] = useState("");
-  const [contractStatus, setContractStatus] = useState(() => process.env.NEXT_PUBLIC_REVIGATE_CONTRACT ? "Checking contract binding…" : "No verified Studionet contract is configured.");
+  const [contractStatus, setContractStatus] = useState(() => process.env.NEXT_PUBLIC_REVIGATE_REGISTRY && process.env.NEXT_PUBLIC_REVIGATE_VAULT ? "Checking Registry/Vault pair…" : "Registry/Vault pair is not configured.");
   const wrongNetwork = Boolean(chain && Number.parseInt(chain, 16) !== 61999);
   useEffect(() => {
     const provider = window.ethereum;
@@ -26,20 +26,16 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     return () => { provider.removeListener?.("accountsChanged", updateAccounts); provider.removeListener?.("chainChanged", updateChain); };
   }, []);
   useEffect(() => {
-    let address;
-    try { address = getConfiguredContractAddress(); }
-    catch (error) { queueMicrotask(() => setContractStatus(error instanceof Error ? error.message : "Invalid contract address configuration.")); return; }
-    if (!address) return;
-    getReadClient().readContract({ address, functionName: "get_config", args: [], jsonSafeReturn: true })
-      .then((config) => {
-        const record = config as { chain_id?: number | string; protocol?: string };
-        if (Number(record.chain_id) !== 61999 || record.protocol !== "revigate-v1") {
-          setContractStatus("Configured address did not return the expected Revigate Studionet identity.");
-          return;
-        }
-        setContractStatus(`Contract verified · ${address.slice(0, 8)}…${address.slice(-6)}`);
-      })
-      .catch(() => setContractStatus("The configured Studionet contract could not be read."));
+    let registry;
+    let vault;
+    try { registry = getConfiguredRegistryAddress(); vault = getConfiguredVaultAddress(); }
+    catch (error) { queueMicrotask(() => setContractStatus(error instanceof Error ? error.message : "Invalid contract pair configuration.")); return; }
+    if (!registry || !vault) return;
+    verifyRevigateDeployment()
+      .then(({ vaultConfig }) => setContractStatus(vaultConfig.custody_enabled
+        ? "Registry/Vault identities matched · custody deployment needs release approval."
+        : "Registry/Vault identities matched · custody is disabled on this pair."))
+      .catch(() => setContractStatus("The configured Registry/Vault pair could not be verified."));
   }, []);
   async function connect() {
     if (!window.ethereum) { setMessage("Install an EIP-1193 wallet such as MetaMask or Rabby to connect."); return; }

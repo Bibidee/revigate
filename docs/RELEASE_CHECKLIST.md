@@ -1,49 +1,47 @@
-# Revigate V1 Release Checklist — Default = UNVERIFIED
+# Revigate V1 release checklist
 
-## Implemented source and architecture
-- [ ] Actual executable Next.js App Router + TypeScript frontend, not placeholder demo.
-- [ ] Production GenLayer Python Intelligent Contract and Direct Mode tests.
-- [ ] Repository-local `genlayer@0.39.1`, lockfile committed, `npm run cli -- --version` checked.
-- [ ] Actual SDK version selected, pinned and verified on stable Studionet only.
-- [ ] Zero authoritative backend routes/actions/storage/signers/central AI/privileged operator.
-- [ ] Read model supports bounded pagination and a cold browser refresh.
+**Current verdict: NOT COMPLETE.** The two-contract candidate is deployed and source-attested on Studionet 61999. Its custody gates are disabled. See [Implementation Status](IMPLEMENTATION_STATUS.md), [Two-Contract Migration](TWO_CONTRACT_MIGRATION.md), and [Studionet Evidence](STUDIONET_EVIDENCE.md).
 
-## Economic and semantic security
-- [ ] Program and publisher authority/manifest validation live-proven.
-- [ ] Immutable rulebook references, GitHub signed commit and ancestry proof live-proven.
-- [ ] Material/nonmaterial/inconclusive judgment independently reproduced by validator.
-- [ ] Original accepted offer entitlement cannot be rewritten by material change.
-- [ ] Payable failure and value conservation fully audited, with real rejected-funding test.
-- [ ] Double withdrawal, replay, unauthorized wallet, fractional split, closure/maturity race tests pass.
-- [ ] Matured payout and refund work without available GitHub/AI.
-- [ ] Outgoing external delivery successfully demonstrated and limitations explicitly recorded.
-- [ ] Revision-request failure and deterministic expiry proven, with unchanged escrow rights.
-- [ ] No high/critical unresolved economic defect.
+## Source, implementation, and local checks
 
-## Code quality and tests
-- [ ] `npm ci` pass.
-- [ ] `npm run network:check` pass.
-- [ ] `npm run typecheck` pass.
-- [ ] `npm run lint` pass.
-- [ ] `npm run test` pass, real count reported.
-- [ ] `npm run build` pass.
-- [ ] GenVM compile/lint and Direct Mode pass with production source.
-- [ ] Simulator, mutation and browser/mobile suite pass.
-- [ ] `npm audit --omit=dev --audit-level=high` pass or failures disclosed and remediated.
-- [ ] GitHub required CI green on final protected default branch.
+- [x] Revigate branding and Registry/Vault implementation.
+- [x] JavaScript and Python lockfiles are present.
+- [x] Repository-local GenLayer CLI 0.39.1 and Studionet 61999 were verified.
+- [x] Current preflight passed: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 routes.
+- [x] Production dependency audit: zero vulnerabilities. Two moderate UUID advisories remain in the pinned development CLI dependency chain.
+- [ ] Full contract mutation suite and fresh independent hostile audit.
+- [ ] Changes committed, pushed, reviewed in a draft PR, CI passed, and signed status verified.
 
-## Deployment and live acceptance
-- [ ] Contract deployment tx FINALIZED, successful execution receipt.
-- [ ] Final deployed source SHA256 matches final tracked production source (or inability disclosed).
-- [ ] Final source + proper branch + exact commit recorded.
-- [ ] Correct public Vercel contract binding, chain 61999 only.
-- [ ] Two-wallet funded/acknowledged/revision/exit/matured/refund cases live-proven.
-- [ ] Exact transfer delivery and unknown-delivery boundaries disclosed.
-- [ ] Actual production browser smoke tests on desktop/mobile passed.
-- [ ] Clean git tree, no secrets, production README/evidence synchronized.
-- [ ] GitHub repo, Vercel URL, all real hashes and proof matrix included.
+## Studionet pair and custody
 
-## Status labels
-`COMPLETE` ONLY when critical requirements including real financial delivery, final deployment, working frontend and live end-to-end proof are genuinely met.
-`COMPLETE WITH MANUAL ACTION` ONLY when functionality and safety are verified but exact user-required noncritical actions (e.g. GitHub push/production promotion) remain.
-`NOT COMPLETE` for unresolved fund safety, unverifiable key assumptions, missing production deployment or incomplete live proof. Do not use superficial `SUBMISSION READY` to paper over these gaps.
+- [x] Fresh Registry and Vault deployed; both deployment receipts finalized with zero value.
+- [x] Deployed Registry and Vault bytes match their local source hashes.
+- [x] Reciprocal Registry/Vault addresses and custody_enabled=false confirmed by live reads.
+- [x] Unauthorized wallet could not replace the Registry's Vault address.
+- [ ] Capture the final bind transaction and prove the authenticated child transaction finalizes.
+- [ ] Prove child message exactly-once mutation, duplicate idempotency, and stale/out-of-order handling on hosted Studionet.
+- [ ] Resolve or bound the live incoming-value failures: payable error, direct transfer, and value on nonpayable method.
+- [ ] Prove failed outgoing transfer recovery and objective receipt handling without resend or unbacked credits.
+- [ ] Run a signed-source two-wallet lifecycle and independently verify funding, payout, and refund recipient balances.
+- [ ] No high or critical custody risk remains.
+
+## Matrix and frontend
+
+- [ ] All T01–T52 meet their evidence requirements; see [Test Matrix](TEST_MATRIX.md).
+- [ ] Hosted validator disagreement, prompt-injection, and source-integrity adversarial cases completed.
+- [x] Existing production route checks covered nine routes on desktop and mobile; contract actions remain locked.
+- [ ] Browser wallet connect, rejection, account/network switching, pending-hash recovery, finality, and canonical readback suites completed.
+- [ ] Vercel deployment tied to reviewed release source and approved contract configuration.
+
+## GitHub and release decision
+
+- [ ] Remediation branch pushed and a draft pull request against main created.
+- [ ] Main requires pull requests, signed commits, passing CI, and prevents force pushes/deletion.
+- [ ] Final source, deployment, and Vercel release provenance synchronized.
+
+Keep the production contract address unset and all contract mutations locked until the custody, message, and lifecycle gates above are proven. A successful build, deployment, pairing read, or isolated one-wei withdrawal does not clear these gates.
+
+Status definitions:
+- COMPLETE requires every critical custody, source, lifecycle, and release requirement to be proven.
+- COMPLETE WITH MANUAL ACTION is only for a safe, verified release with a specific noncritical external action left.
+- NOT COMPLETE applies while custody, source identity, lifecycle, or another critical requirement is missing.

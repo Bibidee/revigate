@@ -1,23 +1,20 @@
-# Risk Register — Must Be Closed or Explicitly Disclosed
+# Revigate risk register
 
-| Risk | Impact | Likelihood / status | Mandatory closure evidence |
+| Risk | Severity | Evidence and mitigation | Residual release risk |
 |---|---|---|---|
-| Payable GenLayer rejection can trap value despite execution error | Critical | Platform behavior reported by referenced Vowmark, **not yet tested on Revigate** | Live invalid funding, balance and refundable-credit proof |
-| Outgoing finalized message lacks independently queryable recipient receipt | Critical | Platform/documentation limitation to be investigated | Real B/A EOA balance deltas, child message trace if supported; never use wallet click as receipt |
-| Unknown-delivery transfer resent and double pays | Critical | Preventable in contract logic | Unknown delivery state with replay rejection and no blind retries |
-| Publisher can rewrite funded benefit through program revision | Critical | Design must prevent | Economic property tests before/after material and nonmaterial revision |
-| One contract nondeterministic failure traps funds | Critical | Prevent with separation of request & assessment and unconditional matured claim | Failed consensus + deterministic expiry; matured payout during pending review |
-| GitHub commit `verified=true` misunderstood as wallet owner identity | High | Provider verification doesn't bind EVM key | Frozen publisher nomination manifest at signed commit and explicit trust limit |
-| GitHub API rate limit/outage yields false NONMATERIAL | High | Possible | Typed uncertainty, no epoch advance, live error fixture |
-| Unauthorized wallet accepts/changes split/withdraws | Critical | Preventable | Live C-wallet negative tests and Direct Mode guard tests |
-| Stale wallet reads or wrong-chain writes | High | Preventable | Account-switch/race/network tests, 61999 hardcode guard |
-| Overlap with Accordant deliverable acceptance | High (product originality) | Design drift risk | Hostile originality matrix, no task completion evaluator |
-| Branch HEAD silently changes without review | Medium (freshness) | V1 explicitly doesn't monitor | UI 'latest reviewed commit' and issuer documentation |
-| Program accepted while publisher pending revision | Medium | Product rule blocks future accept during request; malicious A can delay | 24h deterministic request expiry; refund and B maturity always available |
-| Closure proposal interferes with B's matured claim | High | Preventable | Maturity precedence race tests, closure expiry/cancel checks |
-| Actual deployed source differs from reviewed commit | Critical | Deployment verification needed | Finalized `gen_getContractCode` bytes, source hash and commit comparison where supported |
-| Signed/verified provider content lacks ancestry/path checks | High | Preventable | Wrong repo, wrong path, sibling SHA and replay negatives |
-| LLM leader tricks validators into accepting contradictory materiality | High | Preventable | Independent re-evaluation, consensus-critical exact verdict comparison |
-| Future user misreads result as legally enforceable promise | Medium | Scope/copy risk | Disclaimer: onchain financial entitlement only, not automatic off-chain legal rights |
+| Incoming GEN can become unaccounted after payable, nonpayable, or direct transfer paths | Critical | Disposable Studionet probes retained three one-wei deposits without matching ledger entries. Current pair is custody-disabled, and no GEN was sent to it. | Runtime behavior has no proven contract-only recovery. Do not enable escrow. |
+| Outgoing transfer can be paid without objective receipt proof or fail without safe recovery | Critical | One earlier controlled 1-wei EOA transfer increased the recipient balance by one wei. The contract remained UNKNOWN_DELIVERY. No resend or unbacked credit was issued. | Failed delivery, other recipients, and canonical receipt reconciliation remain unproven. |
+| Registry notification may fail between Registry and Vault | Critical | Current pair's address configuration is reciprocal and its source is attested. Direct Mode checks authentication and replay behavior. A live helper probe failed before proving successful child execution. | No hosted proof of child finality, exactly-once state change, duplicate handling, or delayed message recovery. |
+| Two-party agreement state may diverge across registration, acceptance, revision, refund, and settlement races | Critical | Vault implements immutable agreement snapshots, authenticated messages, nonces, state checks, and one-time allocation; Direct Mode covers these paths. No live financial lifecycle has run. | Hosted cross-contract races and wallet A/B/C economic invariants remain unproven. |
+| Publisher source or wallet nomination is false or stale | High | Registry implements signed GitHub source checks, commit ancestry, nominated wallet manifest, and exact blob binding. Direct Mode uses mocked provider responses. | No signed-source live verification has run against the current pair. |
+| Semantic validator outcome is unsafe or consensus differs | High | Registry contains GenLayer semantic assessment with MATERIAL, NONMATERIAL, and INCONCLUSIVE outcomes. Direct Mode covers callbacks and state transitions. | No real hosted materiality result, malicious prompt test, or independent validator disagreement evidence exists. |
+| User or attacker can replace the Registry/Vault pairing | High | Live unauthorized wallet rebind finalized with execution ERROR and the Registry retained its bound Vault. Vault's Registry reference is fixed at deployment. | A different contract has not successfully tested Registry impersonation against the hosted final Vault. |
+| Production may expose unreviewed writes or point to an unapproved contract | High | Production has no contract addresses configured; all contract writes are fail-closed and the banner states certification is pending. Read-only page checks showed locked actions. | Current worktree is not the Vercel release source; no signed-source production release or browser wallet lifecycle exists. |
+| GitHub main branch can accept unprotected changes | High | Remediation branch has not yet been pushed or reviewed; earlier admin API requests returned 403 and local GitHub CLI auth was invalid. | PR, signed commit verification, CI, branch protection, and ruleset remain outstanding. |
+| Incomplete release testing or independent review | High | 90 Direct Mode, 9 JavaScript, and 8 Python tests passed; the T01–T52 matrix remains incomplete. | Hosted lifecycle, browser wallet flows, mutation audit, and independent production audit remain open. |
+| Development CLI dependency advisories | Medium | Production-only npm audit reports zero vulnerabilities. Two moderate UUID advisories were previously identified through the pinned GenLayer CLI and Dockerode 4 chain. | Preserve compatible CLI pin; reassess when upstream supplies a compatible fix. |
+| Candidate source or deployment identity is misstated | High | A repeatable read-only attestation hashes deployed Registry/Vault bytes and compares them with local source. On-chain config confirms pair and custody false. | Whole-repository commit provenance is not established until commit, push, review, and Vercel source binding. |
 
-No risk closure may be marked passed based on an architecture document alone. Link runnable tests or finalized actual transactions with exact dates/commits. Platform limitations that prevent a critical funds-safety guarantee mean NOT COMPLETE, not 'complete with limitations'.
+## Release posture
+
+Keep custody disabled on the test pair. Keep production contract addresses unset and contract mutations locked. Do not accept deposits or describe the escrow product as certified until all critical custody, message-delivery, source, lifecycle, and independent-review gates pass.

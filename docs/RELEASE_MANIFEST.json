@@ -1,0 +1,91 @@
+{
+  "manifest_type": "candidate_not_release",
+  "recorded_at": "2026-10-14",
+  "repository": "https://github.com/Bibidee/revigate",
+  "branch": "codex/revigate-remediation-2026-10-14",
+  "base_commit": "5fb3a6d58e2d9c8247570ba7d885592100aa436c",
+  "worktree_state_at_recording": "uncommitted remediation changes present",
+  "signed_commit": null,
+  "network": {
+    "name": "GenLayer Studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api",
+    "repository_local_cli": "0.39.1"
+  },
+  "contracts": {
+    "registry": {
+      "path": "contracts/revigate_registry.py",
+      "address": "0x4EECe12604bC7444e571999D9F92b951Fcc0F740",
+      "deployment_transaction": "0xa70dae8864a58749081a3379be2cf031736d6d8580ac44756e71f679ad893558",
+      "deployment_status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "attached_value": "0",
+      "source_sha256": "5602F7DEDA868864900D0336E3D25509DDCA6564998E0181C997A2842A4255FA",
+      "deployed_code_matches_local_source": true
+    },
+    "vault": {
+      "path": "contracts/revigate_vault.py",
+      "address": "0xB2ce7E67d2A7766Bb62993aDd37636f0163fAAc5",
+      "deployment_transaction": "0xf8fe9162f92506d643b25166183f52ae0a63b821c918d20485fa60d7b0f3792c",
+      "deployment_status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "attached_value": "0",
+      "source_sha256": "A6090229AF3F3140A83576C44FC2F13954411F89C617D9FE2283FF827D148EFD",
+      "deployed_code_matches_local_source": true
+    },
+    "pairing": {
+      "registry_vault_config_is_reciprocal": true,
+      "custody_enabled": false,
+      "both_ledgers_zero": true,
+      "registry_bind_transaction": null,
+      "registry_bind_transaction_note": "Final binding is confirmed by reciprocal on-chain config reads; hash was not captured.",
+      "unauthorized_registry_rebind_transaction": "0xa97042009c493ab8d2a84018a7d2c8fb1c755865b4ff833cb956dd043f6eb5ef",
+      "unauthorized_rebind_result": "FINALIZED execution ERROR; binding unchanged",
+      "authenticated_child_message_proof": "NOT_PROVEN"
+    }
+  },
+  "custody_failure_probes": {
+    "disposable_contract_address": "0x819Ce44739a2ed252B5f45a863cA6e65f4fF7fC3",
+    "source_sha256": "C35D61AE0B8DC7F3C4E619E4AE9BBA592F92CCBF63FC95A79A490BC5322643F6",
+    "payable_error_transaction": "0x88c321ad0a8544ed8d9a4f2dae2d37b9799503e1b7639e1cd781854d9f8ebbd5",
+    "no_calldata_transaction": "0x12cef169f2863694df4f1400cec57f75011b1fe2f3f368b3386eb2b85dc7f251",
+    "nonpayable_value_transaction": "0x120c46833362ffb892c6573d419a5d813ea5a4338c96a0316c17a395b25c03d7",
+    "result": "Three wei remained in a disposable contract without matching ledger entries. This is a custody FAIL, not a recovery mechanism.",
+    "release_gate": "FAIL"
+  },
+  "production": {
+    "url": "https://the-revigate.vercel.app",
+    "deployment_id": "dpl_7gc2DA839XWKiZKH1U4mnuHzFNvk",
+    "current_contract_pair_configured": false,
+    "contract_writes_enabled": false,
+    "release_source_commit": null
+  },
+  "verification": {
+    "javascript_tests": "9 passed",
+    "python_tests": "8 passed",
+    "direct_mode_tests": "90 passed",
+    "production_dependency_audit": "0 vulnerabilities",
+    "full_preflight": "PASS: network guard, typecheck, lint, 9 JavaScript tests, 8 Python tests, 90 Direct Mode tests, production build with 10 prerendered routes",
+    "t01_t52": "INCOMPLETE",
+    "two_wallet_lifecycle": "NOT_RUN",
+    "independent_security_audit": "NOT_COMPLETE",
+    "github_branch_protection": "NOT_ENABLED"
+  },
+  "release_gates": {
+    "custody": "FAIL",
+    "authenticated_child_message": "NOT_PROVEN",
+    "two_wallet_lifecycle": "NOT_RUN",
+    "source_integrity": "PASS_FOR_DEPLOYED_CONTRACT_FILES",
+    "frontend_release_binding": "NOT_CONFIGURED",
+    "signed_publication_and_ci": "NOT_COMPLETE",
+    "t01_t52_matrix": "INCOMPLETE",
+    "verdict": "NOT_COMPLETE"
+  },
+  "evidence_files": [
+    "STUDIONET_EVIDENCE.md",
+    "TWO_CONTRACT_MIGRATION.md",
+    "TEST_MATRIX.md",
+    "IMPLEMENTATION_STATUS.md",
+    "RISK_REGISTER.md"
+  ]
+}

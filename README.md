@@ -4,13 +4,14 @@ Revigate is a backendless GenLayer application for versioned program rules and p
 
 ## Release status
 
-**NOT COMPLETE.** The Revigate blueprint is published at [the-revigate.vercel.app](https://the-revigate.vercel.app); it explicitly states that the contract is not deployed and no live programs exist. The contract has not been compiled/deployed to Studionet, and the frontend has no verified address, so contract actions remain locked. No wallet signature, contract transaction, address, or live two-wallet lifecycle has been produced.
+**NOT COMPLETE.** A separate Registry and Vault have been implemented and deployed to Studionet 61999 with custody disabled. Their deployed source bytes match the local files and each stores the other's address. The pair has not passed live child-message, custody, or two-wallet lifecycle proof. The site at [the-revigate.vercel.app](https://the-revigate.vercel.app) remains unbound with contract actions locked.
 
-Outgoing GEN delivery and failure recovery remain a release-blocking custody question. The contract records an outgoing transfer as `UNKNOWN_DELIVERY`; the frontend deliberately does not expose withdrawal. A passing local test cannot prove recipient receipt on Studionet. Do not use this candidate to hold user funds.
+Studionet probes have shown that value can remain in a contract without a ledger entry after a payable error, a no-calldata transfer, and value sent to a nonpayable method. One earlier 1-wei withdrawal reached a test EOA, but the contract record remained `UNKNOWN_DELIVERY`; that does not establish failed-transfer recovery or receipt by arbitrary contract recipients. No GEN has been sent to the current pair. Do not use any candidate to hold user funds.
 
 ## Repository layout
 
-- `contracts/revigate.py`: single-contract implementation candidate.
+- `contracts/revigate_registry.py`, `contracts/revigate_vault.py`: two-contract implementation candidate.
+- `contracts/revigate.py`: preserved single-contract candidate and historical test source.
 - `components/contract-workbench.tsx`, `lib/genlayer.ts`: browser wallet, GenLayerJS reads/writes, finality observation, and recovery by the same transaction hash.
 - `protocol/accounting.py`: reference accounting model, not production custody logic.
 - `tests/direct/`: GenLayer Direct Mode tests against the contract source.
@@ -35,8 +36,8 @@ npm run cli -- --version
 npm run cli -- network info
 ```
 
-`npm run preflight` checks the network lock, TypeScript, ESLint, Node helpers, the Python accounting model, GenLayer Direct Mode, and the static production build. It does not replace the live Studionet custody proofs, the full 52-scenario matrix, or an independent production audit.
+`npm run preflight` checks the network lock, TypeScript, ESLint, Node helpers, the Python accounting model, GenLayer Direct Mode, and the production build (the current app routes are prerendered). It does not replace the live Studionet custody proofs, the full 52-scenario matrix, browser wallet acceptance, or an independent production audit.
 
 ## Deployment gates
 
-The source is pushed to [GitHub](https://github.com/Bibidee/revigate), and CI has completed a green run. Vercel is connected to the repository and the public blueprint is live at [the-revigate.vercel.app](https://the-revigate.vercel.app). **The contract is not deployed.** Contract release remains blocked until compiler/source checks, the full adversarial matrix, independent audit, payable failure behavior, external transfer evidence/recovery, and live two-wallet tests pass. Read [the current evidence and open gates](docs/IMPLEMENTATION_STATUS.md) before any contract deployment.
+The repository is [Bibidee/revigate](https://github.com/Bibidee/revigate), and Vercel serves the public site at [the-revigate.vercel.app](https://the-revigate.vercel.app). The current pair's addresses, finalized deployment transactions, source hashes, and reciprocal configuration are recorded in [the migration report](docs/TWO_CONTRACT_MIGRATION.md) and [Studionet evidence](docs/STUDIONET_EVIDENCE.md). Contract release remains blocked until custody failure recovery, authenticated child-message proof, the full adversarial matrix, independent audit, signed source publication, branch protection, and live two-wallet tests pass. Read [the current evidence and open gates](docs/IMPLEMENTATION_STATUS.md) before any use.
