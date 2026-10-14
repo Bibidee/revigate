@@ -78,7 +78,7 @@ canonical transaction read.
 
 Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 (47 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh GitHub Actions run 38650584175 for commit 7c9ce6d
+validator evidence. Fresh GitHub Actions run 38651609914 for commit 8a79c79
 passed npm ci, frozen Python dependencies, preflight, production build, and the
 production dependency audit.
 
