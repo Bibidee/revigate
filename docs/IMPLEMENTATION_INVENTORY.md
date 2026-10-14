@@ -1,7 +1,7 @@
 # Implementation inventory
 
-Recorded 2026-10-14 after the clean Wallet A lifecycle and Wallet B read-only
-history check.
+Recorded 2026-10-15 after the clean Wallet A lifecycle and finalized Wallet B
+participant acknowledgment.
 
 ## Active product
 
@@ -58,23 +58,31 @@ digest `2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`,
 epoch 3, two material events, and no pending review. Every transaction had
 zero attached value and `value_credited=false`.
 
+Wallet B (`0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`) acknowledged the
+finalized epoch-3 version in transaction
+`0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209`.
+The direct Studionet read is `FINALIZED` with `MAJORITY_AGREE` and
+`value_credited=false`; `get_acknowledgment_page` returns the same SHA and digest
+at history index 1.
+
 ## Automated evidence
 
 The local suite currently passes 13 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
 build evidence are recorded on the remediation branch. Fresh GitHub Actions run
-38650041315 for commit 84ce9d8 passed npm ci, frozen Python dependencies,
+38650584175 for commit 7c9ce6d passed npm ci, frozen Python dependencies,
 preflight, production build, and the production dependency audit.
 
 ## Browser and review boundary
 
 Public route checks and the publisher page were exercised in Brave. Wallet A
-signed the current publisher request and assessment. The participant workbench
-read Wallet B history for Program 3 and returned no records without submitting
-a write; the connected extension account remained Wallet A. Wallet-extension
-account switching, network switching, rejection, disconnect recovery, protected
-preview access, and independent security review remain open. The work performed
-is an adversarial self-audit, not an independent review.
+signed the current publisher request and assessment. The account was switched to
+Wallet B, which submitted one zero-value acknowledgment and has a finalized
+canonical epoch-3 history record. The browser card retained a stale accepted
+snapshot, so direct RPC finality plus the canonical readback are authoritative.
+Network switching, rejection, disconnect recovery, protected preview access, and
+independent security review remain open. The work performed is an adversarial
+self-audit, not an independent review.
 
 ## Release decision
 

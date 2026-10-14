@@ -1,7 +1,7 @@
 # Implementation status
 
-Recorded 2026-10-14 after the clean Wallet A lifecycle and Wallet B read-only
-history check on GenLayer Studionet.
+Recorded 2026-10-15 after the clean Wallet A lifecycle and finalized Wallet B
+participant acknowledgment on GenLayer Studionet.
 
 ## Current architecture
 
@@ -14,7 +14,7 @@ value zero.
 ## Authoritative wallet identities
 
 - Wallet A (publisher and Rabby signer): `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`
-- Wallet B (participant identity reserved for separate tests): `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`
+- Wallet B (participant): `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`
 - Network: GenLayer Studionet, chain `61999`
 
 The previously documented `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` was an old
@@ -48,6 +48,14 @@ Final canonical Program 3 state is `VERIFIED`, active SHA `d35d438d0e45e58e3227f
 material-event count 2, and no pending review. All lifecycle transactions had
 `value_credited=false`.
 
+Wallet B acknowledged the finalized epoch-3 version with zero value in
+transaction `0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209`.
+Studionet readback reports `FINALIZED`, `MAJORITY_AGREE`, sender Wallet B,
+recipient Registry, and `value_credited=false`. The canonical acknowledgment is
+epoch 3, SHA `d35d438d0e45e58e3227f95135fa3a2abc523aed`, digest
+`2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`, history
+index 1.
+
 ## Browser and automated verification
 
 Brave exercised `/`, `/publish/`, `/my-rules/`, `/activity/`, `/about/`,
@@ -55,19 +63,22 @@ Brave exercised `/`, `/publish/`, `/my-rules/`, `/activity/`, `/about/`,
 Wallet A publisher, signed ambiguous revision, epoch 3 and final digest from
 the corrected Registry. Rabby connected as Wallet A and signed the current
 publisher request and assessment; a refresh preserved the active account and
-Registry verification. The participant workbench read Program 3 history for
-Wallet B (`0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`) and returned an empty
-history without submitting a write. The connected account remained Wallet A;
-Wallet B has not signed an acknowledgment. Wallet-extension account switching,
-wrong-network switching, rejection, disconnect recovery, and the protected
-Vercel preview (which redirects to Vercel login) remain unverified; no
-credentials or bypass link were used. The browser observer's conservative
-unknown execution label is not treated as a canonical failure when the finalized
-receipt and Registry readback agree.
+Registry verification. The account was then switched to Wallet B and the
+participant workbench submitted one zero-value acknowledgment. Studionet direct
+readback finalized transaction
+`0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209` with
+`MAJORITY_AGREE`; canonical history contains the epoch-3 record at index 1.
+The browser transaction card retained an earlier pending/accepted snapshot, so
+the direct finalized receipt and canonical acknowledgment read are the
+authoritative evidence. Wrong-network switching, rejection, disconnect recovery,
+and the protected Vercel preview (which redirects to Vercel login) remain
+unverified; no credentials or bypass link were used. The observer does not infer
+recipient credit from finality and records `value_credited=false` from the
+canonical transaction read.
 
 Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 (47 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh GitHub Actions run 38650041315 for commit 84ce9d8
+validator evidence. Fresh GitHub Actions run 38650584175 for commit 7c9ce6d
 passed npm ci, frozen Python dependencies, preflight, production build, and the
 production dependency audit.
 
