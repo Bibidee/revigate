@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const outputDir = resolve(root, "artifacts", "live-message-proof");
+const outputDir = resolve(root, "evidence", "live-message-proof");
 const outputPath = resolve(outputDir, "revigate_registry_probe.py");
 const spoofPath = resolve(outputDir, "revigate_spoof_probe.py");
 const registryPath = resolve(root, "contracts", "revigate_registry.py");

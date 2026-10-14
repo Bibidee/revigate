@@ -2,7 +2,34 @@
 
 Use GenLayer Studionet 61999 only, through the repository-local CLI 0.39.1 and https://studio.genlayer.com/api. The user has authorized unlocked-CLI deployment and lifecycle work. Do not send value to the current pair: the deployed contracts are custody-disabled test candidates and the runtime's incoming-value accounting failure remains unresolved. Do not fabricate transaction hashes, child receipts, browser results, or claimed finality.
 
-## Completed limited proof (2026-10-14)
+## Latest live work (2026-10-14)
+
+The deployed contract-source commit `ba3ad9a83178bede7b27864d7d5c5cdded872694`
+is pushed and its GitHub Actions run 9 passed. The latest source-exact
+custody-disabled pair is
+Registry `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE` and Vault
+`0xf390D8D77f21710679a72Fc11b84A5e85a318849`. Their deployment hashes are
+`0x857f02cc8a12c79a2a5cd23cb92e987151f0f80ce5cbf1d8868e961ec2d34c22` and
+`0x9e68dc1b03b76388701f36d333aac730ce29de85097568d36f0f337416c3db20`; bind
+hash `0x55ff1283efcba6c28c1ddb71a2ff2567fd9df75839c458fff3b9de172e34ef4d`.
+Source hashes match current local files, config is reciprocal, custody is
+disabled and the Vault ledger is zero.
+
+A separate disposable Registry paired with the current-source Vault finalized
+an authorized child snapshot, duplicate no-op, stale-nonce rejection, spoof
+rejection and A0 unauthorized rebind rejection. A separate exact-source Vault
+received one wei through unknown-offer `fund_offer`, returned a balanced caller
+credit, and sent one finalized withdrawal child; the signer balance rose by one
+wei. The Vault still records `UNKNOWN_DELIVERY`, and no retry was made. This
+does not prove full funding, failed-transfer recovery or a two-wallet lifecycle.
+See [Studionet Evidence](STUDIONET_EVIDENCE.md).
+
+The production site `https://the-revigate.vercel.app/publish/` was checked in a
+browser and shows no contract pair configured with all contract actions locked.
+Production remains on source commit `f73bcb5d5b999224f5343ffb371c29150e57bb92`;
+the current commit preview is READY but does not bind contract addresses.
+
+## Earlier limited proof on a prior source revision
 
 Source-exact pair: Registry `0x4C55E4e0ab00C8534B6d4A826620cdb506349B45`, Vault `0xdCa7E9DF49e2773FaEFAD6B27B612BC296C74751`; deploy transactions `0x73a64f695854b54eea242bb88921e768994bce875ce9adaf285c8ec2d14dc3ac` and `0xd573670ccc439863757fb9346e836c88809857608fe31260988cd8f1566e8545`; pairing transaction `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894`. Both deployed bytecodes match the local source exactly; reciprocal config reports chain 61999 and custody disabled. Do not send GEN to this pair.
 
@@ -16,7 +43,7 @@ A 1-wei no-calldata transfer to the same clone then finalized without GenVM exec
 
 A 1-wei call carrying value to the nonpayable `create_offer` method also finalized with execution `ERROR` and `value_credited=true`; the disposable clone retained it without a liability. This closes the live T13 attempt as a failure. The three probe transactions and all post-state reads are recorded in [Studionet evidence](STUDIONET_EVIDENCE.md).
 
-The current production deployment is dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv at https://the-revigate.vercel.app, from committed PR head 3ecf429a9dff768b9133dfce9a2243dfcafd6dbd. Vercel built and prerendered all 10 routes. Authenticated CLI verification of the protected publish page confirms the write lock and no Registry/Vault address. The deployment remains an unbound noncustodial shell; no wallet actions, account switching, transaction recovery, or canonical contract reads were exercised. The earlier production build had a nine-route desktop/mobile visual check; no browser visual suite was run on this new deployment. The last-hour error-log scan returned zero entries.
+An earlier production deployment (`dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv`, source `3ecf429a9dff768b9133dfce9a2243dfcafd6dbd`) was superseded. The current production deployment is `dpl_CPP5aU6zJyiJuwRmfLXzWx8wYriZ`, source `f73bcb5d5b999224f5343ffb371c29150e57bb92`; browser check at `/publish/` confirms no Registry/Vault address and all actions locked. The current candidate commit has a READY preview but no contract pair is bound. No production wallet lifecycle, account-switching, transaction-recovery, or canonical contract-read suite has been run.
 
 An unrelated wallet's live attempt to replace the current Registry's bound Vault finalized with execution ERROR; the binding remained unchanged. This does not prove that another contract cannot impersonate the Registry, nor that an authenticated child message successfully reaches the Vault. An attempted helper contract for those cases failed with invalid_contract/absent_runner_comment.
 

@@ -2,16 +2,81 @@
 
 Recorded 2026-10-14. This is testnet evidence, not a production custody certification.
 
-## Network, source and signer
+## Latest source revision and live proofs (commit `ba3ad9a83178bede7b27864d7d5c5cdded872694`)
+
+Repository-local GenLayer CLI `0.39.1` was used on Studionet `61999`. The latest
+source-exact pair is:
+
+| Contract | Address | Deployment transaction | Source SHA256 | Receipt |
+|---|---|---|---|---|
+| Registry | `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE` | `0x857f02cc8a12c79a2a5cd23cb92e987151f0f80ce5cbf1d8868e961ec2d34c22` | `6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F` | FINALIZED |
+| Vault | `0xf390D8D77f21710679a72Fc11b84A5e85a318849` | `0x9e68dc1b03b76388701f36d333aac730ce29de85097568d36f0f337416c3db20` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` | FINALIZED |
+
+The one-time Registry bind finalized in `0x55ff1283efcba6c28c1ddb71a2ff2567fd9df75839c458fff3b9de172e34ef4d`.
+Read-only attestation confirms both deployed files match the current local
+contract sources byte-for-byte, the configs are reciprocal on chain 61999,
+`custody_enabled=false` on both, address-typed reads succeed, and the Vault
+ledger and test-wallet credit are zero. This pair received no GEN and is not a
+custody-enabled release.
+
+The payable-credit change was exercised separately on an isolated disposable
+Vault, not on the pair above. Its deployment `0x4652514810edc24346f8239fe847f36a47a27ef0e786508c1aafab22b9148948`
+finalized at `0xfDA04A975d1467580C6c16eb8cCD576fec4076Af`; deployed code matched
+the current Vault source hash above. It was configured with custody enabled
+only for this one-wei test and was not paired or production-bound.
+
+| Test | Transaction evidence | Finalized state |
+|---|---|---|
+| `fund_offer(999999)` with exactly 1 wei | `0x4e95c0fddd092d47dafae10243c9362d0a9058a4b2f645e7dba7bd55bcdf316a` | FINALIZED, execution SUCCESS, `value_credited=true`; Vault balance 1, received 1, claimable 1, caller credit 1, held 0, surplus/shortfall 0. |
+| One `withdraw_credit(1)` | Parent `0xc27924f097aa08924a3275c59ca1c69b1cb4ceb92c45bd61fc2e0ed0c9b4a949`; child `0xa3a3c2c5384c52314ef2b56b78c70b782e3bb556cef9702a0784962b8905fbee` | Parent and child FINALIZED. The signer balance increased exactly 1 wei (`297999999999999999996` → `297999999999999999997`). Vault record remains `UNKNOWN_DELIVERY`, with transfer_pending 1, native balance 0, and liability_shortfall 1. No retry or second withdrawal was submitted. |
+
+This proves one ordinary invalid-offer payable route now creates a matching
+refundable credit, and one emitted EOA transfer delivered exactly one wei. It
+does not prove rollback recovery, direct-transfer handling, nonpayable-value
+handling, failed-transfer recovery, or objective contract-side delivery
+reconciliation. The live payout intentionally remains an unresolved liability
+because `UNKNOWN_DELIVERY` cannot be cleared from an independent receipt.
+
+A fresh message-proof pair used a disposable Registry emitter and the exact
+current Vault source:
+
+| Contract | Address | Deployment transaction | Source SHA256 |
+|---|---|---|---|
+| Probe Registry | `0xB4c8ED40B96110F01ef25Ee44A9A06D0f0782D71` | `0xce789796728c5cfae7cbb73bc02058e735f4e26842e75e3f3f46f692fd6eac0d` | `BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC` |
+| Current-source Vault | `0x96e4C4c77B3B1C5BA0eBcFb5fe0B55000dc153A0` | `0xcf7348bb6559a32eb0e69190a9b960cfd15b7324c221d26019c7de45992f810a` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` |
+
+Both deployed sources were independently fetched and matched their local files.
+The pair bind finalized in `0x997e56c422035f4f1f6d564346b097725ba080b8463d55887608665063fe2061`;
+both configs report reciprocal addresses and custody disabled.
+
+| Case | Parent | Child | Result |
+|---|---|---|---|
+| Authorized snapshot, message ID `c…c` and nonce 1 | `0x623180a95bbc76e0c985f4913c165617cda34bb9ed96a6ad6b383e151ce1aad6` | `0x1d5fb43bf224f180f6ce80066603771a4d5b3c9c750fc77ab993280c4fc0163e` | Both FINALIZED. Vault stored program 777, epoch 1, publisher `0x527da5f7022f14f7105e5f06cec1a8eff53556b5`, SHA `a…a`, digest `b…b`. No value was attached. |
+| Duplicate message ID and nonce | `0x636a84b66c0f0f7ad99e9027a6a2507e8bc964bcb7b27fa7facc82a3a94a5044` | `0x6b28de41c16b781e7d432a14fac421def3d7e294df4b8906e2c5e864fa2be249` | Both FINALIZED; child execution SUCCESS returned `false`; before/after canonical snapshot is identical. |
+| Stale nonce 1 with a new message ID | `0xcb20dd440a1382693ece715ef77d815784d8b88daef43afd8a8b54e49521f475` | `0xcf2c058788c5bf613c8a43368913866be8160e35b5a573da385556b9aa704b7c` | Both FINALIZED; child execution ERROR, `Registry nonce is stale or out of order`; program 777 remained unchanged. |
+| Different contract impersonation | `0xbe5febd4615a8f54079850efb79ab8b50574bd784a6a9758d1d8b257532f0441` | `0xfbc5db059a6b42d0369da2bdd3cb43547e5fbcf567a8d498ed4b07b1c49687ce` | Both FINALIZED; child execution ERROR, `Only the paired Registry may send this message`; program 888 remained absent. The spoof emitter source SHA is `447637DAF7EED97DFCBABA90CA936DEB7C6EF9F8A00658C746421265EC3EFB2B`. |
+| Unrelated-wallet rebind attempt (A0) | `0xeb76289545c4c716a56c24fd10569df7e7b61b0ae07e4f29e7fce54565a8127f` | — | FINALIZED with execution ERROR; Registry config was unchanged. |
+
+The exact-source Registry still has not emitted a real notification from a
+verified, signed publisher program. This harness proves the current Vault
+message boundary, serialization, replay behavior, and rejected identities;
+it is not a substitute for source verification or a financial lifecycle.
+The exact probe sources are retained in
+[`evidence/live-message-proof/`](../evidence/live-message-proof/) and are
+reproducible with `scripts/prepare-live-message-probe.mjs`. Their SHA256 values
+match the deployed probe Registry (`BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC`)
+and spoof contract (`447637DAF7EED97DFCBABA90CA936DEB7C6EF9F8A00658C746421265EC3EFB2B`).
+
+## Historical deployment snapshot (superseded source revision)
 
 - Repository-local GenLayer CLI: `0.39.1`; GenLayerJS: `1.1.8`.
 - Network: GenLayer Studio / Studionet, chain ID `61999`, RPC `https://studio.genlayer.com/api`.
 - Active unlocked test signer: `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
-- Local Git HEAD for the fresh deployments: `0c4de92062c2866612d8269078bc9ddd66fe0bd6`; branch `codex/revigate-remediation-2026-10-14`; the deployed source changes were uncommitted at deployment.
+- Local Git HEAD for that earlier deployment: `0c4de92062c2866612d8269078bc9ddd66fe0bd6`; branch `codex/revigate-remediation-2026-10-14`; its deployed source changes were uncommitted at deployment. This is not the source revision of the latest pair documented above.
 - Contract source SHA256 immediately before deployment: `23D7BDE7F55990080B7C4AB761A3C19EFF8912AD44114B64D080604CDA6E0C58`.
 - The CLI's account view reported 298 GEN before deployment. No private key or wallet secret is recorded here.
 
-## Current source-exact pair
+## Earlier source-exact pair (superseded by the latest revision above)
 
 | Item | Registry | Vault |
 |---|---|---|
@@ -29,7 +94,7 @@ Pairing transaction: `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1
 
 The source-exact pair is a fresh deployment and is the only pair in this report with both contracts byte-for-byte equal to the local contract files. It is custody-disabled and has no financial lifecycle state. The pairing/configuration transaction does not count as proof of Registry notification child execution.
 
-## Hosted authenticated-message and spoof proof pair
+## Earlier hosted message pair (historical; its Vault source predates the latest revision above)
 
 To exercise an emitting method without adding test code to the release pair, a disposable Registry probe was deployed with one owner-gated test emitter added to the current Registry source. Its paired Vault is byte-for-byte the local Vault source. Both deployments and the Registry-to-Vault instructions used zero attached value; both contracts had custody disabled.
 
@@ -147,7 +212,7 @@ The transaction was accepted with value despite targeting a nonpayable method, a
 
 - The only live successful accounting path tested was one wallet, one unknown-offer refundable credit, and its one-wei withdrawal. Three separate minimum-value probes on a disposable clone reproduced unaccounted value. No program was verified, and no signed-source two-wallet lifecycle, material revision, acceptance, refund allocation, early exit, maturity payout, or Wallet C negative case ran.
 - The payable-error, direct-value, and nonpayable-call probes above are a separate test-only clone and deliberately demonstrate three unaccounted incoming wei. They do not fix custody or certify the candidate.
-- The current source was uncommitted at deployment. This test address is not configured in production and must not hold user funds.
+- The source for this historical test address was uncommitted at deployment. The address is not configured in production and must not hold user funds.
 - An earlier candidate at `0x2bb820945Be33f06c0F0E66dEC3c620cDAA6f995` (tx `0x5c4c535ef7ea5d297369243ee845781546ca7e9da53b700db69f8c300c6c64ed`, source hash `F110ACF95D892DFA76E90239605C5E2E7E47C1EE79E862723BD0BFF719820206`) is superseded because its source differs from the current worktree.
 - An earlier deployment at `0x89b4B9620Ef81268CE7cE729Bb14a041a1479188` had a storage defect; no user funds were sent to it. Do not use either older address.
 - GenLayer documents that failed internal child value-transfer transactions do not automatically return the value, and Studio does not implement Ghost Contracts for external messages. This contract has no internal value-bearing child transfer path; the live external EOA success case above does not establish failed-delivery recovery. See [GenLayer value transfers](https://docs.genlayer.com/developers/intelligent-contracts/features/value-transfers) and [messages](https://docs.genlayer.com/developers/intelligent-contracts/features/messages).

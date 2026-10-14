@@ -4,9 +4,9 @@ Revigate is a backendless GenLayer application for versioned program rules and p
 
 ## Release status
 
-**NOT COMPLETE.** A separate Registry and Vault have been implemented and deployed to Studionet 61999 with custody disabled. Their deployed source bytes match the local files and each stores the other's address. The pair has not passed live child-message, custody, or two-wallet lifecycle proof. The site at [the-revigate.vercel.app](https://the-revigate.vercel.app) remains unbound with contract actions locked.
+**NOT COMPLETE.** A separate Registry and Vault have been implemented and deployed to Studionet 61999 with custody disabled. Their deployed source bytes match the local files and each stores the other's address. A disposable Registry emitter paired with the current-source Vault proved an authorized child update, duplicate no-op, stale nonce rejection, spoof rejection, and unauthorized rebind rejection; the exact-source Registry has not yet emitted a child from a verified signed program. The site at [the-revigate.vercel.app](https://the-revigate.vercel.app) remains unbound with contract actions locked.
 
-Studionet probes have shown that value can remain in a contract without a ledger entry after a payable error, a no-calldata transfer, and value sent to a nonpayable method. One earlier 1-wei withdrawal reached a test EOA, but the contract record remained `UNKNOWN_DELIVERY`; that does not establish failed-transfer recovery or receipt by arbitrary contract recipients. No GEN has been sent to the current pair. Do not use any candidate to hold user funds.
+Studionet probes have shown that value can remain in a contract without a ledger entry after a payable error, a no-calldata transfer, and value sent to a nonpayable method. In a separate one-wei test on the current Vault source, an unknown-offer payable call created a balanced caller credit and a withdrawal child increased the test EOA balance by one wei. The contract record remained `UNKNOWN_DELIVERY`; that does not establish failed-transfer recovery or receipt by arbitrary contract recipients. No GEN was sent to either custody-disabled candidate pair. Do not use any candidate to hold user funds.
 
 ## Repository layout
 
@@ -15,6 +15,7 @@ Studionet probes have shown that value can remain in a contract without a ledger
 - `components/contract-workbench.tsx`, `lib/genlayer.ts`: browser wallet, GenLayerJS reads/writes, finality observation, and recovery by the same transaction hash.
 - `protocol/accounting.py`: reference accounting model, not production custody logic.
 - `tests/direct/`: GenLayer Direct Mode tests against the contract source.
+- `evidence/live-message-proof/`: retained test-only Registry emitter and spoof-contract source used for the recorded hosted message proofs.
 - `docs/`: product constraints, risk register, release gates, and current evidence.
 - `.github/workflows/ci.yml`: reproducible Node/Python checks for pushes and pull requests.
 

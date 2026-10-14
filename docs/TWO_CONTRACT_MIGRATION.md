@@ -18,7 +18,40 @@ The Vault implements authenticated snapshot and material-change receivers, monot
 
 The Registry is deployed unpaired, the Vault is deployed with the Registry address, then the Registry owner binds the Vault once. The Vault checks the GenLayer message sender against its immutable Registry address. Message IDs commit to the protocol, chain, both deployments, message kind, nonce, program, epoch and source digest.
 
-## Current source-exact pair on Studionet
+## Latest source-exact pair on Studionet
+
+Current branch head at deployment: `ba3ad9a83178bede7b27864d7d5c5cdded872694`.
+Both deployed source files match the repository's current contract files.
+The pair is reciprocal and custody-disabled.
+
+| Contract | Address | Deployment transaction | Source SHA256 |
+|---|---|---|---|
+| Registry | `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE` | `0x857f02cc8a12c79a2a5cd23cb92e987151f0f80ce5cbf1d8868e961ec2d34c22` | `6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F` |
+| Vault | `0xf390D8D77f21710679a72Fc11b84A5e85a318849` | `0x9e68dc1b03b76388701f36d333aac730ce29de85097568d36f0f337416c3db20` | `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F` |
+
+The bind finalized in `0x55ff1283efcba6c28c1ddb71a2ff2567fd9df75839c458fff3b9de172e34ef4d`.
+Read-only address-schema verification confirmed constructor and method address
+types, a successful address-encoded `get_wallet_credit` read, zero test-wallet
+credit, and a zero Vault ledger. No GEN was sent to this pair.
+
+## Current-source message proof and bounded payable probe
+
+A separate fresh disposable Registry emitter
+`0xB4c8ED40B96110F01ef25Ee44A9A06D0f0782D71` was paired to Vault
+`0x96e4C4c77B3B1C5BA0eBcFb5fe0B55000dc153A0`, whose deployed source matches
+the current Vault file. It proved one finalized authorized child, duplicate
+no-op, stale-nonce rejection, different-contract spoof rejection and A0
+unauthorized rebind rejection. Full parent/child IDs and state readbacks are in
+[Studionet Evidence](STUDIONET_EVIDENCE.md).
+
+The current Vault source was also deployed separately with custody enabled for
+one unknown-offer 1-wei test. The ordinary rejection balanced caller credit and
+native balance. One withdrawal child finalized and the signer balance rose by
+1 wei, but the Vault still records `UNKNOWN_DELIVERY`, one pending liability
+and a one-wei shortfall. No resend was attempted. This probe is not a paired
+candidate, and it does not clear custody risk.
+
+## Previous source-exact pair (superseded by the latest revision above)
 
 Network is GenLayer Studionet, chain ID 61999, RPC https://studio.genlayer.com/api. Repository-local CLI 0.39.1 was used.
 
@@ -33,7 +66,7 @@ Both deployment receipts finalized with no attached value. Pairing transaction: 
 
 Address-bearing contract parameters now use GenLayer's `Address` type: the Registry/Vault snapshot publisher, offer participant, acknowledgment wallet, and wallet-offer-page wallet. Stored values are normalized with `str(address).lower()`. The frontend wraps address arguments with the GenLayerJS `CalldataAddress` encoder for `register_offer`, `get_acknowledgment`, and `get_wallet_offer_page`. Deployed schema checks and live address-encoded read calls passed for both deployed pairs.
 
-## Hosted authenticated-message proof
+## Earlier hosted authenticated-message proof
 
 An isolated disposable proof pair tested cross-contract messaging. Registry probe `0x01170B19d49581Be9987C95937082b9ec06Ca046` (source hash `BB780BC816BE98DE0A7DA8363E6A2E6737EF595816BE1C8A3227C22657C543CC`) had one owner-gated test emitter added to the current Registry source. Vault `0x11C7e9FD387CE608e7dEDE87Bd44685e1021a66E` is byte-for-byte the source-exact Vault (hash `53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629`). The pair was bound in transaction `0xfd42163092420265524d6b38258a393b0777a02a52bd7338f468277a48912688`, with custody disabled and no GEN attached.
 
@@ -43,9 +76,9 @@ The source-exact pair above has not itself emitted or processed the test message
 
 ## Custody and lifecycle limitations
 
-Both the current source-exact pair and the message-test pair have custody disabled and have never received GEN. Do not send value to either. Prior disposable probes remain release-blocking: Studionet retained value after a payable execution error, a no-calldata transfer, and a nonpayable method call without matching ledger liabilities. One earlier one-wei withdrawal reached a controlled EOA, but the contract record remained `UNKNOWN_DELIVERY`; failed-transfer recovery remains unproven.
+Both latest candidate pairs have custody disabled and have never received GEN. Do not send value to either. A separate isolated Vault with the current source and custody enabled was used for one 1-wei unknown-offer credit and one withdrawal; the recipient balance rose exactly 1 wei, but its record remains `UNKNOWN_DELIVERY` and the transfer liability stays pending. Other disposable Studionet probes retained value after a payable execution error, a no-calldata transfer, and a nonpayable method call without matching ledger liabilities. Failed-transfer recovery remains unproven.
 
-No signed-source live program verification or Wallet A/B/C lifecycle has run. There is no live funding, acceptance, revision, refund, material exit, maturity payout, or recipient-balance proof for this pair. The GitHub source checks and real GenLayer semantic judgment have not been certified against a signed published commit.
+No signed-source live program verification or Wallet A/B/C lifecycle has run. There is no valid offer funding, acceptance, revision, refund, material exit, maturity payout, or two-party recipient-balance proof for this pair. The isolated unknown-offer test is not escrow funding. GitHub source checks and real GenLayer semantic judgment have not been certified against a signed published commit.
 
 ## Release posture
 

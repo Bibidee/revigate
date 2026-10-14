@@ -1,35 +1,97 @@
 # Revigate V1 implementation status
 
-**Verdict: NOT COMPLETE.** A full two-contract candidate is implemented and freshly deployed to Studionet with custody disabled. The source-exact Registry and Vault bytecode match local source exactly and their on-chain configurations are reciprocal. A separate disposable proof pair established authenticated child execution, duplicate no-op behavior, stale nonce and spoof rejection. Custody safety and the real wallet lifecycle remain unproven.
+**Verdict: NOT COMPLETE.** The current Registry/Vault source is deployed and
+attested on Studionet 61999, and the tested message path works on a disposable
+probe pair. One ordinary invalid payable was credited safely; one one-wei EOA
+withdrawal finalized and increased the recipient balance. The transfer record
+still says `UNKNOWN_DELIVERY`, and other live routes can strand incoming value.
+Keep custody disabled and the production frontend unbound and locked.
 
-Recorded 2026-10-14. Repository: https://github.com/Bibidee/revigate. Branch: codex/revigate-remediation-2026-10-14. At source-exact contract deployment, local HEAD was 0c4de92062c2866612d8269078bc9ddd66fe0bd6 and address-typing/frontend calldata changes were uncommitted. Those verified changes are now in unsigned local commit `65aeee135c3152e3c51e11688fccdb7c384efd19`; push and current-head CI are pending. Existing draft PR #1 remains open. The current production site was previously deployed from commit 3ecf429a9dff768b9133dfce9a2243dfcafd6dbd. No local signing key/configuration was available.
+Recorded 2026-10-14. Repository: https://github.com/Bibidee/revigate. Branch:
+`codex/revigate-remediation-2026-10-14`. The deployed contract-source commit is
+`ba3ad9a83178bede7b27864d7d5c5cdded872694` (unsigned); follow-up evidence and
+documentation are being published on the same branch. PR #1 is open and draft:
+https://github.com/Bibidee/revigate/pull/1. GitHub Actions run 9 passed for that
+commit; current Vercel preview is READY. No merge was made.
 
 ## Completed and verified
 
-- Revigate branding and the Registry/Vault architecture are in place. The production site is https://the-revigate.vercel.app.
-- Repository-local GenLayer CLI 0.39.1 was used on Studionet chain 61999 at https://studio.genlayer.com/api.
-- The source-exact Registry `0x4C55E4e0ab00C8534B6d4A826620cdb506349B45` finalized in transaction `0x73a64f695854b54eea242bb88921e768994bce875ce9adaf285c8ec2d14dc3ac`; SHA256 `6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F`.
-- The source-exact Vault `0xdCa7E9DF49e2773FaEFAD6B27B612BC296C74751` finalized in transaction `0xd573670ccc439863757fb9346e836c88809857608fe31260988cd8f1566e8545`; SHA256 `53982AE6B5E0351F0987249947732EC1A186616DCDCF52ED6FA045997F7BF629`. Both deploys attached zero value.
-- Pairing transaction `0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894`; on-chain config confirms reciprocal addresses, chain 61999, and custody disabled. Read-only source attestation matched both deployed files byte-for-byte.
-- A separate probe Registry paired to the exact-source Vault proved a finalized authenticated snapshot child, duplicate child no-op, stale nonce rejection, spoof rejection, and unauthorized-wallet bind rejection. Full transaction evidence is in `docs/STUDIONET_EVIDENCE.md`.
-- Clean `npm ci` succeeded from the lockfile; GenLayer CLI remains 0.39.1. Full `npm audit` reports zero vulnerabilities after the UUID 11.1.1 override. Full `npm run preflight` passed: Studionet-only network guard, typecheck, lint, 13 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 app routes.
-- GitHub Actions CI run 6 passed for the older application commit 3ecf429a9dff768b9133dfce9a2243dfcafd6dbd. Current commit `65aeee135c3152e3c51e11688fccdb7c384efd19` is committed locally; its push/CI is pending. Existing draft PR is [#1](https://github.com/Bibidee/revigate/pull/1).
-- A Ready Preview of that application commit is dpl_GwXvBnYf9HfCbPUz5DzrHGfBcxWa. Authenticated Vercel CLI checks confirm its publish page has the contract-action lock and neither pair address.
-- Vercel Production deployment dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv now serves https://the-revigate.vercel.app from PR head 3ecf429a9dff768b9133dfce9a2243dfcafd6dbd. Its protected publish page has the lock and neither pair address; the last-hour error-log scan returned zero entries. This is an unbound noncustodial shell, not a custody-enabled release.
+- Repository-local GenLayer CLI `0.39.1` and GenLayerJS `1.1.8` were used only
+  on GenLayer Studionet, chain `61999`, RPC `https://studio.genlayer.com/api`.
+- Fresh source-exact candidate Registry
+  `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE` finalized in
+  `0x857f02cc8a12c79a2a5cd23cb92e987151f0f80ce5cbf1d8868e961ec2d34c22`,
+  source SHA256 `6016F73052E44BED4CD167249AB3C5AFE70CBF457D9CCF28AC4DFF14DDE86C7F`.
+- Fresh source-exact candidate Vault
+  `0xf390D8D77f21710679a72Fc11b84A5e85a318849` finalized in
+  `0x9e68dc1b03b76388701f36d333aac730ce29de85097568d36f0f337416c3db20`,
+  source SHA256 `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F`.
+  The one-time bind finalized in `0x55ff1283efcba6c28c1ddb71a2ff2567fd9df75839c458fff3b9de172e34ef4d`.
+  Deployed bytes match local files, configs are reciprocal, custody is disabled,
+  address-typed reads succeed, and the Vault ledger is zero.
+- A fresh message-proof pair used a disposable Registry emitter with the current
+  source-exact Vault. An authorized snapshot child finalized and wrote once; a
+  duplicate finalized with `false` and no state change; stale nonce and spoofed
+  contract children finalized with execution errors and no state change. An
+  unrelated unlocked A0 wallet's rebind attempt finalized with execution error
+  and the config stayed unchanged. Exact hashes are in
+  [Studionet Evidence](STUDIONET_EVIDENCE.md).
+- The exact current Vault source was deployed to a separate unpaired probe Vault
+  with custody enabled only for a one-wei test. An unknown-offer `fund_offer`
+  finalized with execution success and balanced the one-wei caller credit.
+  One withdrawal parent and child finalized, and an independent signer balance
+  read rose by exactly 1 wei. The probe contract still reports
+  `UNKNOWN_DELIVERY`, with one pending liability and a one-wei shortfall; no
+  retry was made. This is not an escrow lifecycle or release candidate.
+- `npm run preflight` passed: Studionet-only network guard, typecheck, lint,
+  13 JavaScript tests, 8 Python tests, 92 Direct Mode tests, and production build
+  with all 10 routes prerendered. Full `npm audit` reports zero vulnerabilities
+  with the pinned UUID `11.1.1` override; GenLayer CLI `0.39.1` and Dockerode
+  `4.0.12` remain unchanged.
+- GitHub Actions run 9 is green for the current pushed commit. Draft PR #1 is
+  open against `main`; the commit is unsigned because no signing key or local
+  signing configuration is available.
+- Vercel production deployment `dpl_CPP5aU6zJyiJuwRmfLXzWx8wYriZ` is READY at
+  https://the-revigate.vercel.app and was browser-checked at `/publish/`. The
+  page says no Registry/Vault pair is configured and all contract actions are
+  locked. It is still on source commit `f73bcb5d5b999224f5343ffb371c29150e57bb92`.
+  Current pushed commit `ba3ad9a...` has a READY preview
+  `dpl_9PkMxvVokGXKEJDeSB6YCDqoBwBo` at
+  https://the-revigate-d3zxsfyck-bibidees-projects.vercel.app. No contract
+  address is bound to either frontend.
 
 ## Critical release blockers
 
-- **Custody failure on Studionet.** Disposable one-wei probes previously showed value retained without ledger liability after a payable execution error, a no-calldata transfer, and value attached to a nonpayable call. One successful earlier EOA withdrawal increased the recipient balance by one wei, but the contract still classified delivery as UNKNOWN_DELIVERY. Failed-transfer recovery and objective receipt handling remain unresolved. Do not accept GEN into the current or previous candidates.
-- **Cross-contract message proof.** A disposable Registry test harness paired with the source-exact Vault successfully emitted a finalized child, and duplicate, stale-nonce, spoof, and unauthorized-rebind cases were exercised. The exact-source Registry itself has not emitted the tested notification, and full Registry event coverage remains open.
-- **Two-wallet lifecycle.** No signed-source live program verification or Wallet A/B/C run has completed. There has been no funding, acceptance, acknowledgment, revision, refund, material exit, maturity payout, or recipient balance proof on this pair.
-- **Signed source and branch controls.** Current commit `65aeee135c3152e3c51e11688fccdb7c384efd19` is unsigned and push/CI are pending. The branch-protection API previously returned 403 for the GitHub connection and the ruleset list was empty; branch controls and a fresh independent hostile audit remain outstanding.
-- **Full release matrix and browser acceptance.** T01–T52 remains incomplete. Production routes were previously read-only checked on desktop/mobile, and the protected preview publish page was checked through authenticated CLI. A local browser check of this pair was limited by a connection timeout. No wallet lifecycle browser suite has run.
-- **Dependency audit.** A root npm override pins the CLI's transitive UUID dependency to patched 11.1.1 while leaving GenLayer CLI 0.39.1 and Dockerode 4.0.12 unchanged. Clean `npm ci`, `npm ls`, and full `npm audit` succeeded with zero vulnerabilities. Dockerode continues to resolve its UUID v4 call through the patched version.
+- **Custody safety fails.** Disposable Studionet probes showed value remains
+  without accounting after a payable execution error, a no-calldata send, and
+  value attached to a nonpayable call. The current source fixes only ordinary
+  validation returns on the supported payable method. The one successful EOA
+  transfer remains `UNKNOWN_DELIVERY`; failed outgoing recovery and objective
+  contract-side receipt reconciliation are unresolved.
+- **No signed-source lifecycle.** The unsigned source commit cannot pass the
+  live program-verification requirement. No genuine program verification,
+  wallet A/B/C lifecycle, funding, acceptance, revision, refund, early exit,
+  maturity payout, or two-party balance proof ran. Real GenLayer materiality
+  outcomes were not certified.
+- **Message proof is limited.** A separate test Registry paired with the exact
+  current Vault source proved the message boundary and replay checks. The exact
+  Registry itself has not sent a notification from a verified signed program.
+- **Release matrix and audit remain open.** T01–T52 is incomplete (27 PASS,
+  15 PARTIAL, 2 FAIL, 2 BLOCKED, 6 NOT EXECUTED). No fresh independent hostile
+  production audit or complete browser wallet/transaction suite exists.
+- **GitHub protections remain unavailable.** The branch-protection API returned
+  403 for the connected GitHub integration, and the repository rulesets list is
+  empty. A user with repository admin access must configure required checks and
+  signed-commit policy.
 
-## Deployment and safety decision
+## Release posture
 
-Use only the Registry/Vault addresses above for further read-only test evidence. They are custody-disabled test contracts and must not receive GEN. Do not configure them in production. Keep the public site's contract address unset and writes locked.
+Do not accept GEN into any Revigate candidate, enable production writes, or
+bind the deployed addresses to Vercel. The source-exact pair proves deployment,
+byte integrity, reciprocal pairing and address ABI behavior. Probe evidence
+proves limited message behavior and one ordinary payable/EOA transfer path. It
+does not clear custody risk or certify the product's economic lifecycle.
 
-The exact-source pair establishes deployment, bytecode integrity, and reciprocal address configuration. The probe pair establishes a limited hosted message path. Neither establishes custody safety, live source verification, materiality consensus, or economic lifecycle correctness.
-
-See [Two-Contract Migration](TWO_CONTRACT_MIGRATION.md), [Studionet Evidence](STUDIONET_EVIDENCE.md), [Test Matrix](TEST_MATRIX.md), [Risk Register](RISK_REGISTER.md), and [Release Checklist](RELEASE_CHECKLIST.md).
+See [Two-Contract Migration](TWO_CONTRACT_MIGRATION.md),
+[Studionet Evidence](STUDIONET_EVIDENCE.md), [Test Matrix](TEST_MATRIX.md),
+[Risk Register](RISK_REGISTER.md), and [Release Checklist](RELEASE_CHECKLIST.md).

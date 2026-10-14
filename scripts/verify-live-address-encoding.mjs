@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { encodeAddressArguments } from "../lib/calldata-address.mjs";
 
 const [registryAddress, vaultAddress, walletAddress,
-  registrySourcePath = "artifacts/live-message-proof/revigate_registry_probe.py"] = process.argv.slice(2);
+  registrySourcePath = "evidence/live-message-proof/revigate_registry_probe.py"] = process.argv.slice(2);
 for (const [label, address] of [["Registry", registryAddress], ["Vault", vaultAddress], ["Wallet", walletAddress]]) {
   assert.match(address ?? "", /^0x[0-9a-fA-F]{40}$/, `${label} must be a 20-byte 0x address`);
 }

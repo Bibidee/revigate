@@ -11,7 +11,7 @@ Network: GenLayer Studionet, chain `61999`, RPC
 
 | Route | What was observed | Classification | Disposition |
 | --- | --- | --- | --- |
-| Intended payable `fund_offer` with unknown offer | On a disposable single-contract candidate, 1 wei finalized with execution success, returned `REFUNDABLE_CREDIT_UNKNOWN_OFFER`, and produced a 1 wei wallet credit. A subsequent withdrawal child finalized and the EOA balance increased by exactly 1 wei. | Supported payable method with ordinary validation rejection. One successful refund path. | Useful precedent, but one success does not bound failed execution or prove generic receipt recovery. See [Studionet evidence](STUDIONET_EVIDENCE.md). |
+| Intended payable `fund_offer` with unknown offer | Earlier one-wei evidence produced a credit and withdrawal. The current Vault source was separately deployed to an isolated probe; 1 wei to unknown offer 999999 finalized with execution SUCCESS and balanced caller credit. One withdrawal parent and child finalized, and the signer balance increased exactly 1 wei. | Supported payable method with ordinary validation rejection and one observed EOA delivery. The probe record remains UNKNOWN_DELIVERY. | The bounded return path is now live-tested once, but this does not bound failed execution or provide objective contract-side receipt recovery. See [Studionet evidence](STUDIONET_EVIDENCE.md). |
 | Payable call that errors after crediting value | A disposable clone credited 1 wei in storage and deliberately raised an execution error. The value remained at the contract, while all storage accounting rolled back to zero. | Runtime execution failure after a supported payable entry point. | Critical: source ordering cannot restore state that the runtime rolls back. No automatic recovery or credit is claimed. |
 | No-calldata value transfer | 1 wei reached a disposable clone without GenVM method execution; no ledger entry or wallet credit was created. | Unexpected/unsupported incoming route. | Studio does not execute the EVM Ghost Contract receive path, so a `__receive__` handler is not a verified fix. The source ledger reports native balance separately as unassigned surplus. |
 | Value attached to nonpayable `create_offer` | The transaction finalized with execution error but credited 1 wei to the disposable clone; the offer and ledger stayed unchanged. | Unsupported/misrouted call, not a legitimate funding action. | Keep offer creation nonpayable and show funding as a separate explicit action. The live probe still demonstrates that attaching value to the wrong method can strand it. |
@@ -33,11 +33,22 @@ balance. `get_wallet_credit(Address)` now exposes the Vault credit view required
 by the frontend, and its address argument is encoded as a GenLayer
 `CalldataAddress`.
 
-Direct Mode assertions cover these branches. This source change has not yet
-been deployed or exercised live. It does not protect against protocol-level
-execution failure, `UNDETERMINED`, no-calldata value, or nonpayable value. The
-custody-disabled deployments reject the payable route before creating a
-liability and must not receive GEN.
+Direct Mode assertions cover these branches. The current Vault source was also
+deployed byte-for-byte to a separate isolated Vault
+`0xfDA04A975d1467580C6c16eb8cCD576fec4076Af` with custody enabled only for a
+controlled one-wei probe. `fund_offer(999999)` finalized with execution success;
+the Vault recorded `received=1`, `claimable=1`, `wallet_credit=1`,
+`unassigned_surplus=0`, and `liability_shortfall=0`. This closes the specific
+ordinary unknown-offer path for that single live transaction.
+
+One withdrawal then finalized with a finalized child transfer and an
+independently observed +1 wei signer balance delta. The contract still records
+`UNKNOWN_DELIVERY`, `transfer_pending=1`, and `liability_shortfall=1` after its
+native balance reached zero. No retry was sent. The isolated probe is not a
+paired candidate or release deployment. The local change still does not protect
+against protocol-level execution failure, `UNDETERMINED`, no-calldata value, or
+value attached to nonpayable methods. The source-exact candidate pairs remain
+custody-disabled and must not receive GEN.
 
 The Vault distinguishes user liabilities from unassigned surplus in
 `get_ledger()`: `held + claimable + transfer_pending` are liabilities;
@@ -84,11 +95,11 @@ and [Accordant contract source](https://github.com/Bibidee/accordant/blob/master
 
 ## Release rule
 
-The current deployed pair remains a custody-disabled test candidate with zero
-ledger state. No user deposits, payout, or refund lifecycle is authorized by
-this evidence. Do not enable production writes until the local mitigation is
-deployed and live-tested, ordinary invalid payables reconcile to sender credit,
-failed payable execution and no-calldata value have a runtime-supported safe
-disposition, an outgoing failure can be recovered without resending unknown
-transfers, and recipient delivery is independently observable. If the runtime
-cannot meet those conditions, keep custody disabled and report that limitation.
+The latest source-exact pair remains custody-disabled with zero ledger state.
+No user deposits, payout, or refund lifecycle is authorized by this evidence.
+The ordinary unknown-offer route has now been live-tested once, but the release
+gate remains failed until failed payable execution and no-calldata value have a
+runtime-supported safe disposition, outgoing failures can be recovered without
+resending unknown transfers, and recipient delivery can be reconciled by the
+contract from independent evidence. If the runtime cannot meet those
+conditions, keep custody disabled and report that limitation.
