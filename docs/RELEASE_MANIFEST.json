@@ -5,6 +5,7 @@
   "branch": "codex/revigate-remove-escrow-2026-10-14",
   "network": { "name": "GenLayer Studionet", "chain_id": 61999 },
   "active_contract": "contracts/revigate_registry.py",
+  "source_commit_sha": "f912d56f0bd040c7a3cb6bf7b7aa3a4b71a15596",
   "active_contract_sha256": "fb71c77e81e93caf8d411a00e7d969f5282902899dfcb714ea2dfd3da380e26c",
   "protocol": "revigate-registry-v1",
   "contract_version": 2,
