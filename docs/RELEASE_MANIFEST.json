@@ -5,7 +5,7 @@
   "branch": "codex/revigate-remediation-2026-10-14",
   "base_commit": "0c4de92062c2866612d8269078bc9ddd66fe0bd6",
   "worktree_state_at_contract_deployment": "address typing and calldata encoding changes were uncommitted at source-exact deployment",
-  "implementation_commit": "PENDING_COMMIT",
+  "implementation_commit": "65aeee135c3152e3c51e11688fccdb7c384efd19",
   "commit_signature": "unsigned; no local signing key/configuration",
   "application_source_commit": "3ecf429a9dff768b9133dfce9a2243dfcafd6dbd",
   "application_source_commit_signature": "unsigned",
@@ -48,13 +48,14 @@
       "both_ledgers_zero": true,
       "registry_bind_transaction": "0xf14c1fce80975470197d2d9287667644412cb95facf641158a34d9d1be6e2894",
       "registry_bind_transaction_note": "Source-exact pair bind finalized; reciprocal on-chain reads confirm binding.",
-      "custody_enabled": false,
       "authenticated_child_message_proof": "PASS_ON_DISPOSABLE_REGISTRY_HARNESS_PAIRED_WITH_EXACT_SOURCE_VAULT",
       "message_parent": "0xfd28fe8a7cc9ce707d86413d00c9e2ad8c2116197fd594b3cf85fce5260da385",
       "message_child": "0x144194ce3ab7866106c6d56644f82dda4bda37d20c65a6c68bf312ebe2224310",
       "duplicate_child": "0x8a18f75603a94b90fa545bd47475df4a25514b7787da78296aa55ad2c0b199f3",
       "stale_nonce_child": "0x0ebe0cd6f534d1e801bc06e5a5eb45633b8f2909e967429471fcd44679c5dfc4",
-      "spoof_child": "0xb426bda84e67e114cf5081b0f579a8b6210d6c7fee883d129f56cf74c00e9bfc"
+      "spoof_child": "0xb426bda84e67e114cf5081b0f579a8b6210d6c7fee883d129f56cf74c00e9bfc",
+      "unauthorized_wallet_rebind_transaction": "0xa63ccb9b749d41f077697634b9539d6f6bb43b5abd2d154cc257cfc4dd5e498f",
+      "exact_source_registry_message": "NOT_PROVEN"
     }
   },
   "custody_failure_probes": {
@@ -93,7 +94,7 @@
     "production_dependency_audit": "0 vulnerabilities",
     "full_dependency_audit": "0 vulnerabilities; UUID 11.1.1 transitive override; GenLayer CLI 0.39.1 unchanged",
     "full_preflight": "PASS: network guard, typecheck, lint, 13 JavaScript tests, 8 Python tests, 90 Direct Mode tests, production build with all 10 routes prerendered",
-    "github_actions": "PENDING_PUSH",
+    "github_actions": "PENDING_PUSH_AND_CI",
     "vercel_preview_check": "PASS: current PR preview READY and authenticated publish page shows write lock",
     "vercel_production": "PASS: staged then promoted deployment READY; write lock checked; last-hour error log scan returned zero entries",
     "t01_t52": "INCOMPLETE",
@@ -103,12 +104,12 @@
   },
   "release_gates": {
     "custody": "FAIL",
-    "authenticated_child_message": "NOT_PROVEN",
+    "authenticated_child_message": "PARTIAL_ON_DISPOSABLE_REGISTRY_HARNESS; EXACT_SOURCE_REGISTRY_MESSAGE_NOT_PROVEN",
     "two_wallet_lifecycle": "NOT_RUN",
     "source_integrity": "PASS_FOR_DEPLOYED_CONTRACT_FILES",
     "frontend_release_binding": "NOT_CONFIGURED",
     "signed_publication": "NOT_COMPLETE_UNSIGNED",
-    "github_ci": "PASS_FOR_IMPLEMENTATION_COMMIT",
+    "github_ci": "PENDING_FOR_COMMIT_65AEEE1",
     "branch_protection": "NOT_ENABLED; endpoint returned 403 and rulesets list is empty",
     "t01_t52_matrix": "INCOMPLETE",
     "verdict": "NOT_COMPLETE"

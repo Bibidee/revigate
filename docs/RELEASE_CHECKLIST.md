@@ -10,7 +10,8 @@
 - [x] Full preflight passed: network guard, typecheck, lint, 13 JavaScript tests, 8 Python tests, 90 Direct Mode tests, and production build prerendering all 10 routes.
 - [x] Full dependency audit: zero vulnerabilities after pinning transitive UUID to 11.1.1; GenLayer CLI remains pinned to 0.39.1 and Dockerode remains on 4.0.12.
 - [ ] Full contract mutation suite and fresh independent hostile audit.
-- [x] Implementation and evidence commits pushed; draft PR #1 open; GitHub Actions CI run 6 passed for application commit 3ecf429a.
+- [x] Verified implementation changes committed locally as `65aeee135c3152e3c51e11688fccdb7c384efd19`; commit is unsigned.
+- [ ] Push current remediation commit and confirm GitHub Actions CI for that exact head; existing draft PR #1 is open.
 - [ ] Signed commit verified. The implementation commit is unsigned because local signing was not configured.
 
 ## Studionet pair and custody
@@ -35,7 +36,7 @@
 
 ## GitHub and release decision
 
-- [x] Existing remediation branch and draft pull request against main are present; this turn's changes still need committing/pushing and CI.
+- [x] Existing remediation branch and draft pull request against main are present; this turn's changes are committed locally and push/CI remain pending.
 - [ ] Main requires pull requests, signed commits, passing CI, and prevents force pushes/deletion.
 - [x] Ready Vercel Preview for application commit 3ecf429a checked with authenticated CLI; publish page shows the write lock and does not contain the pair addresses.
 - [x] Current remediation source deployed to https://the-revigate.vercel.app as dpl_J4rL77NTRTwc2S4YkiVTKRvizkgv; authenticated page check confirms the write lock and no pair addresses; last-hour error-log scan returned zero entries.

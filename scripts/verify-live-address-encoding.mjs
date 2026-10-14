@@ -44,7 +44,7 @@ assert.equal(vaultConfig.custody_enabled, false);
 assert.equal(deployedRegistry, localRegistry, "deployed test Registry must match its generated source");
 assert.equal(deployedVault, localVault, "deployed Vault must match the repository source");
 
-const [acknowledgment, offerPage] = await Promise.all([
+const [acknowledgment, offerPage, ledger] = await Promise.all([
   client.readContract({
     address: registryAddress,
     functionName: "get_acknowledgment",
@@ -57,7 +57,20 @@ const [acknowledgment, offerPage] = await Promise.all([
     args: encodeAddressArguments("get_wallet_offer_page", [walletAddress, 0n, 20n]),
     jsonSafeReturn: true,
   }),
+  client.readContract({
+    address: vaultAddress,
+    functionName: "get_ledger",
+    args: [],
+    jsonSafeReturn: true,
+  }),
 ]);
+const zeroLedgerFields = [
+  "received", "held", "claimable", "transfer_pending", "recipient_claimed_delivery",
+  "unreconciled", "native_balance", "unassigned_surplus", "liability_shortfall",
+  "accounted_liabilities", "reconciled_total", "reconciliation_delta",
+];
+assert.ok(zeroLedgerFields.every((field) => BigInt(ledger[field]) === 0n),
+  "the custody-disabled test Vault must have a zero ledger and native balance");
 
 console.log(JSON.stringify({
   chain_id: Number(studionet.id),
@@ -70,4 +83,5 @@ console.log(JSON.stringify({
   address_encoded_reads_succeeded: true,
   acknowledgment_is_dict: acknowledgment !== null && typeof acknowledgment === "object",
   wallet_offer_page_is_dict: offerPage !== null && typeof offerPage === "object",
+  vault_ledger_zero: true,
 }, null, 2));
