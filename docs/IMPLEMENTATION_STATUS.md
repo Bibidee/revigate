@@ -70,17 +70,21 @@ readback finalized transaction
 `MAJORITY_AGREE`; canonical history contains the epoch-3 record at index 1.
 The browser transaction card retained an earlier pending/accepted snapshot, so
 the direct finalized receipt and canonical acknowledgment read are the
-authoritative evidence. Wrong-network switching, rejection, disconnect recovery,
-and the protected Vercel preview (which redirects to Vercel login) remain
-unverified; no credentials or bypass link were used. The observer does not infer
-recipient credit from finality and records `value_credited=false` from the
-canonical transaction read.
+authoritative evidence. Commit `13bc812f352a6f484d8ba4d34ffb244fc65dc223`
+now treats finalized receipts as canonical-readback candidates and clears a
+pending hash only after the method-specific Registry readback matches. Unknown,
+failed, delayed, and duplicate states remain distinct; no automatic replay is
+allowed. A fresh public deployment and browser rerun are still required. Wrong-
+network switching, rejection, disconnect recovery, and the protected Vercel
+preview (which redirects to Vercel login) remain unverified; no credentials or
+bypass link were used. The observer does not infer recipient credit from
+finality and records `value_credited=false` from the canonical transaction read.
 
 Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 (47 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh GitHub Actions run 38651609914 for commit 8a79c79
-passed npm ci, frozen Python dependencies, preflight, production build, and the
-production dependency audit.
+validator evidence. Fresh GitHub Actions run 38652447172 for commit
+13bc812f352a6f484d8ba4d34ffb244fc65dc223 passed npm ci, frozen Python
+dependencies, preflight, production build, and the production dependency audit.
 
 ## Release decision
 

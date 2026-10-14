@@ -81,9 +81,9 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38651609914,
-    "run_number": 33,
-    "commit_sha": "8a79c79d4f2a5ae5e9245e8d187002aa20a1f2a6",
+    "run_id": 38652447172,
+    "run_number": 36,
+    "commit_sha": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
@@ -172,8 +172,10 @@
     "browser_refresh_recovery": "PASS_WALLET_A_SESSION_AND_REGISTRY_STATUS",
     "wallet_b_history_read": "PASS_PROGRAM_3_HISTORY_INDEX_1_AFTER_FINALIZED_ACK",
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["extension account/network/rejection coverage", "protected preview requires Vercel authentication", "independent security review"]
+    "remaining": ["fresh public deployment/browser rerun for observer hardening", "extension account/network/rejection coverage", "protected preview requires Vercel authentication", "independent security review"]
   },
+  "observer_hardening_commit": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
+  "observer_hardening_status": "BRANCH_CI_PASSED_PUBLIC_DEPLOYMENT_BROWSER_RERUN_REQUIRED",
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,

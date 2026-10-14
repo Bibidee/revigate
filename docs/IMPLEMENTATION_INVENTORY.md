@@ -70,7 +70,8 @@ at history index 1.
 The local suite currently passes 13 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
 build evidence are recorded on the remediation branch. Fresh GitHub Actions run
-38651609914 for commit 8a79c79 passed npm ci, frozen Python dependencies,
+38652447172 for observer-hardening commit
+13bc812f352a6f484d8ba4d34ffb244fc65dc223 passed npm ci, frozen Python dependencies,
 preflight, production build, and the production dependency audit.
 
 ## Browser and review boundary
@@ -81,7 +82,8 @@ Wallet B, which submitted one zero-value acknowledgment and has a finalized
 canonical epoch-3 history record. The browser card retained a stale accepted
 snapshot, so direct RPC finality plus the canonical readback are authoritative.
 Network switching, rejection, disconnect recovery, protected preview access, and
-independent security review remain open. The work performed is an adversarial
+independent security review remain open. The observer fix still requires a fresh
+public deployment/browser rerun. The work performed is an adversarial
 self-audit, not an independent review.
 
 ## Release decision
