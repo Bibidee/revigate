@@ -351,6 +351,58 @@ The fixture signatures and publisher nomination are independently recorded in [r
 
 Final canonical program readback: `VERIFIED`; active SHA `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`; digest `55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4`; epoch 1; `pending_review=0`; material-event count 0. The existing deployment successfully verified the baseline, but hosted source authentication later returned HTTP 403 for both revisions' base and candidate commit requests. The response establishes the status code, not the underlying reason for the provider denial.
 
+## 2026-10-14 source correction and hosted probe status
+
+The current local Registry source correction is commit
+`46b749669c532bf85b3491d2ea6dd4bcee987422`. Its contract file has Git blob
+`3e094b1b359cc7d451a209db79a2456cbc17bd` and SHA-256
+`EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
+It stores authenticated source snapshots, classifies GitHub provider errors,
+and applies bounded retry timing based on response headers. Local preflight
+passed on this source; it has not been deployed to Studionet. The address and
+deployment transaction above attest only source commit `4971823`.
+
+A disposable, zero-value GitHub diagnostic contract is prepared at
+`evidence/github-access-diagnostic/github_api_probe.py`. It has not been
+deployed or executed. The repository-local CLI prompted to decrypt the
+configured keystore, rejected the password entered, and was stopped before
+the final attempt. No diagnostic deployment or transaction was created, and
+no hosted probe response was obtained. Therefore the earlier hosted HTTP 403
+cause remains **unknown**; local DNS failures and GitHub responses from other
+egress paths do not establish the GenVM cause.
+
+There is no new Studionet source attestation, deployment address, transaction,
+or current-source lifecycle in this correction record. Do not associate the
+earlier deployment with the corrected source. The hosted baseline and
+NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
+ambiguous fixtures, remain valid only for the earlier deployed source.
+
 ### Release boundaries
 
 This is a zero-value Studionet test deployment, not a production deployment. No user funds were accepted, production writes remain locked, and no merge or production promotion occurred. These transactions show actual baseline verification, acknowledgment, and one NONMATERIAL transition. They do not demonstrate a hosted MATERIAL result, a semantic ambiguous-language result, validator disagreement, or prompt-injection handling. The full outcome ledger is in [the T01–T52 matrix](TEST_MATRIX.md); the verdict remains **NOT RELEASED**.
+
+## 2026-10-14 source correction and hosted probe status
+
+The current local Registry source correction is commit
+`46b749669c532bf85b3491d2ea6dd4bcee987422`. Its contract file has Git blob
+`3e094b1b359cc7d451a209db79a2456cbc17bd` and SHA-256
+`EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
+It stores authenticated source snapshots, classifies GitHub provider errors,
+and applies bounded retry timing based on response headers. Local preflight
+passed on this source; it has not been deployed to Studionet. The address and
+deployment transaction above attest only source commit `4971823`.
+
+A disposable, zero-value GitHub diagnostic contract is prepared at
+`evidence/github-access-diagnostic/github_api_probe.py`. It has not been
+deployed or executed. The repository-local CLI prompted to decrypt the
+configured keystore, rejected the password entered, and was stopped before
+the final attempt. No diagnostic deployment or transaction was created, and
+no hosted probe response was obtained. Therefore the earlier hosted HTTP 403
+cause remains **unknown**; local DNS failures and GitHub responses from other
+egress paths do not establish the GenVM cause.
+
+There is no new Studionet source attestation, deployment address, transaction,
+or current-source lifecycle in this correction record. Do not associate the
+earlier deployment with the corrected source. The hosted baseline and
+NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
+ambiguous fixtures, remain valid only for the earlier deployed source.

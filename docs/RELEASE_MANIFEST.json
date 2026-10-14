@@ -2,13 +2,12 @@
   "manifest_type": "non_custodial_registry_candidate",
   "recorded_at": "2026-10-14",
   "repository": "https://github.com/Bibidee/revigate",
-  "branch": "codex/revigate-remove-escrow-2026-10-14",
+  "branch": "codex/revigate-remediation-2026-10-14",
   "pull_request": {
     "url": "https://github.com/Bibidee/revigate/pull/1",
     "state": "OPEN",
     "draft": true,
-    "merged": false,
-    "head_commit_sha": "4971823c43d1b552215475573e81e1da89a979c7"
+    "merged": false
   },
   "network": {
     "name": "GenLayer Studionet",
@@ -19,6 +18,14 @@
   "source_commit_sha": "4971823c43d1b552215475573e81e1da89a979c7",
   "active_contract_git_blob": "fd246b3766bdb4be78819f116513435f56d73a66",
   "active_contract_sha256": "169F2569CC7374B94A7CD0059D002A87480B8E62D60F18BCE42A22E0CD50F2EF",
+  "candidate_source": {
+    "commit_sha": "46b749669c532bf85b3491d2ea6dd4bcee987422",
+    "contract_git_blob": "3e094b1b359cc7d451a209db79a2456cbc17bd",
+    "contract_sha256": "EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56",
+    "deployment_status": "NOT_DEPLOYED",
+    "hosted_diagnostic_status": "NOT_RUN",
+    "hosted_403_cause": "UNKNOWN"
+  },
   "protocol": "revigate-registry-v1",
   "contract_version": 2,
   "custody": "NONE",
@@ -38,8 +45,9 @@
     }
   },
   "local_verification": {
+    "source_commit_sha": "46b749669c532bf85b3491d2ea6dd4bcee987422",
     "javascript_tests": "10/10 PASS",
-    "direct_mode_tests": "27/27 PASS",
+    "direct_mode_tests": "34/34 PASS",
     "typecheck": "PASS",
     "lint": "PASS",
     "studionet_source_guard": "PASS",
@@ -47,10 +55,11 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38602164168,
-    "run_number": 16,
-    "commit_sha": "4971823c43d1b552215475573e81e1da89a979c7",
-    "conclusion": "SUCCESS"
+    "run_id": 38606661131,
+    "run_number": 17,
+    "commit_sha": "f2987c90368c874cdedfe7fd72c12f4b7114b208",
+    "conclusion": "SUCCESS",
+    "candidate_commit_status": "NO_RUN_RECORDED_FOR_46B7496"
   },
   "vercel_status_check": "SUCCESS_PREVIEW_URL_NOT_ACCESSIBLE",
   "signed_fixture_publication": "GITHUB_VERIFIED",
@@ -110,7 +119,7 @@
     "local_app_access": "BROWSER_TABS_TIMED_OUT",
     "preview_lookup": "VERCEL_SCOPE_HTTP_403"
   },
-  "independent_security_review": "NOT_OBTAINED",
+  "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,
   "merge_or_production_promotion": false,

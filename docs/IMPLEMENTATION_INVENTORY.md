@@ -1,26 +1,44 @@
 # Implementation inventory
 
+Recorded 2026-10-14 for Registry source correction commit `46b749669c532bf85b3491d2ea6dd4bcee987422` on `codex/revigate-remediation-2026-10-14`.
+
 ## Active product
 
-Revigate contains one active Intelligent Contract: `contracts/revigate_registry.py`. It authenticates fixed GitHub rulebook commits, records participant acknowledgments, and classifies publisher submitted revisions. The active application contains no Vault, offer, escrow, deposit, credit, refund, payout, withdrawal, transfer, or cross contract message path.
+Revigate is a single noncustodial GenLayer Registry. The active contract is `contracts/revigate_registry.py`. It authenticates signed GitHub rulebook commits, records participant acknowledgments, assesses publisher submitted revisions, and tracks material epochs and bounded history. Escrow, deposits, user credits, refunds, payouts, withdrawals, and Vault messaging are absent from active contracts and frontend code.
 
-The frontend reads canonical programs, reviews, material event pages, and wallet acknowledgment pages. It fetches rulebook text from the exact commit recorded by the Registry and verifies the normalized SHA-256 digest before rendering. Every write sends zero native value, persists the returned hash, refuses an identical pending action, waits for finality, and requires a matching canonical readback before reporting success.
+The frontend reads canonical programs, reviews, material event pages, and acknowledgment pages. It fetches the exact rulebook commit recorded by the Registry and checks the normalized SHA-256 digest. Each application write sends zero native value, persists its transaction hash, refuses duplicate pending actions, waits for finality, and checks canonical state before reporting success.
 
 ## Registry controls
 
-- Studionet chain identity is fixed to `61999`.
-- Repository, branch, path, full SHA, branch ancestry, commit tree, Git blob identity, GitHub signature metadata, publisher manifest, UTF-8 normalization, clause structure, and source digest are checked.
-- GitHub verification requires `verified=true`, `reason=valid`, and nonempty signature, payload, and verification timestamp fields.
-- Revision requests have one pending review, a five minute cooldown, a three attempt cap, and a one day decision deadline.
-- `MATERIAL`, `NONMATERIAL`, and `INCONCLUSIVE` remain distinct. Only successful decisions consume a candidate permanently. Only MATERIAL increments the epoch.
-- Program, review, material event, and acknowledgment reads are bounded to 50 records.
+- The supported network is fixed to GenLayer Studionet chain `61999`.
+- Source authentication checks repository, branch, path, full commit SHA, ancestry, Git tree and blob identity, GitHub signature metadata, publisher nomination, UTF-8 normalization, clause structure, and source digest.
+- A GitHub signature must report `verified=true`, `reason=valid`, and nonempty signature, payload, and verification timestamp fields.
+- Revision requests allow one pending review, a five minute cooldown, at most three attempts, and a one day decision deadline.
+- `MATERIAL`, `NONMATERIAL`, and `INCONCLUSIVE` remain separate outcomes. Only a successful decision consumes a candidate; only `MATERIAL` advances the epoch.
+- Program, review, material-event, and acknowledgment reads are bounded to 50 records.
+- Source correction `46b7496` persists authenticated baseline and candidate snapshots. It avoids repeating verified baseline reads and reuses a candidate only when its complete source identity, signature metadata, tree/blob proofs, digest, and ancestry binding match.
+- Provider failures are classified and include sanitized, bounded diagnostics. Retry timing respects GitHub `Retry-After` and reset headers with capped exponential backoff. This source correction has passed local Direct Mode checks but has not been deployed or verified on Studionet.
 
 ## Automated evidence
 
-As of 2026-10-14, JavaScript tests pass 10/10 and Direct Mode tests pass 22/22. TypeScript, lint, the Studionet source guard, and the production build pass. Direct Mode uses mocked GitHub and model providers and is not live validator proof.
+For source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`, local preflight passed: 10 JavaScript tests, 34 Direct Mode tests, TypeScript checking, lint, the Studionet source guard, and the production build. Direct Mode uses mocked providers and does not establish hosted validator behavior. A production dependency audit could not reach `registry.npmjs.org` because host DNS returned `ENOTFOUND`.
 
-## Live boundary
+GitHub Actions run 17 (`38606661131`) passed for evidence commit `f2987c90368c874cdedfe7fd72c12f4b7114b208`, before source correction `46b7496`. No Actions run is recorded for `46b7496` yet. CI run 16 on commit `4971823` is older still.
 
-DNS and HTTPS connectivity to `https://studio.genlayer.com/api` are available and the RPC returned chain ID `0xf22f`. Registry V2 has not yet been deployed. Genuine GitHub verified fixture commits, hosted lifecycle results, real extension browser tests, fresh CI, and independent security review remain release gates. Production writes stay locked.
+## Hosted boundary
 
-Historical custody material remains in explicitly archived documents and Git history as evidence for removing custody. It is not part of the active implementation.
+Registry source `4971823c43d1b552215475573e81e1da89a979c7` is deployed on Studionet at `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F`. That deployment successfully verified the signed baseline and completed one `NONMATERIAL` transition. Signed `MATERIAL` and ambiguous assessments returned `INCONCLUSIVE` when GitHub commit lookups returned HTTP 403. These results do not reveal why GitHub denied the hosted requests.
+
+The new two-URL diagnostic probe is prepared at `evidence/github-access-diagnostic/github_api_probe.py`, but has not been deployed or run. The repository-local CLI rejected the password provided for the keystore; the prompt was stopped before its final attempt. No diagnostic transaction or deployment was created. No password is recorded here.
+
+The current source correction differs from deployed commit `4971823`; the prior deployment address and attestation do not attest the correction. No new Registry deployment or current-source hosted lifecycle has occurred.
+
+## Browser, preview, and review
+
+The Vercel preview is protected. The connected Vercel identity returned HTTP 403 for the `bibidees-projects` scope and preview access. Real browser and wallet-extension tests remain unverified. Preview protection was not disabled.
+
+This repository's checked CI workflow does not require an independent security review. No independent review has been obtained; the work performed is an adversarial self-audit. Independent review remains recommended assurance, not a formal CI requirement.
+
+## Release decision
+
+**NOT RELEASED.** Production writes remain locked. No user funds were accepted, and no merge or production promotion occurred. The current source needs a Studionet deployment and exact source attestation, followed by hosted source-authentication diagnosis and semantic `MATERIAL` and ambiguous assessments with canonical readbacks. Fresh Actions for the corrected source and real browser/wallet checks are also outstanding. The cause of hosted HTTP 403 remains unknown.

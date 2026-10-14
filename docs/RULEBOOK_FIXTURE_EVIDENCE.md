@@ -29,3 +29,7 @@ The deployed Registry at `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F` was exerci
 | Ambiguous candidate after cooldown | Request `0xb85625fdb851b9bb1c4708bdb9ee34581e21bc59e3ed8f8d19419f48d1b82d5a`; review 3 assessment `0x6829dae057666682f4775dd0bfd001e0b95017380c9ce6ae0d8abdbe1654bcc9` | Actual `INCONCLUSIVE`. Both base and candidate source lookups returned HTTP 403. Canonical review 3 is `INCONCLUSIVE`; canonical program remains `VERIFIED`, active SHA/digest unchanged, epoch 1, pending review 0. No semantic ambiguity verdict was produced. |
 
 The hosted lifecycle therefore confirms baseline authentication, acknowledgment, and one NONMATERIAL transition, but it does not demonstrate a semantic MATERIAL result or an assessment of ambiguous language. The two HTTP 403 outcomes do not identify the underlying cause of provider authorization failure. No expected model outcome is counted as a result, and no validator disagreement was observed.
+
+## Current source correction boundary
+
+The hosted lifecycle above was executed against Registry source commit `4971823`. The later correction at source commit `46b749669c532bf85b3491d2ea6dd4bcee987422` has not been deployed. Its source changes and local tests do not revise the recorded hosted outcomes and do not establish that the GitHub HTTP 403 cause has been fixed. A fresh hosted lifecycle must use a deployment attested to the exact corrected source before any semantic result is reported.
