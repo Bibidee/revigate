@@ -100,6 +100,11 @@ Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 validator evidence. Fresh GitHub Actions run 38652447172 for commit
 13bc812f352a6f484d8ba4d34ffb244fc65dc223 passed npm ci, frozen Python
 dependencies, preflight, production build, and the production dependency audit.
+The follow-up evidence commit `41806293bc3bfeef668a364aaab54b9b8cc64ae5`
+also passed CI run `38655050695` (run 39). Its matching Vercel branch
+deployment `the-revigate-hp0uh9nix-bibidees-projects.vercel.app` is READY;
+authenticated read-only content inspection confirms the noncustodial warning,
+Registry lock, and Studionet chain 61999.
 
 ## Release decision
 

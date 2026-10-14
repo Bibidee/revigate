@@ -81,13 +81,19 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38652447172,
-    "run_number": 36,
-    "commit_sha": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
+    "run_id": 38655050695,
+    "run_number": 39,
+    "commit_sha": "41806293bc3bfeef668a364aaab54b9b8cc64ae5",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
   "vercel_status_check": "SUCCESS_FOR_EVIDENCE_PAYLOAD_COMMIT",
+  "vercel_branch_deployment": {
+    "url": "https://the-revigate-hp0uh9nix-bibidees-projects.vercel.app",
+    "commit_sha": "41806293bc3bfeef668a364aaab54b9b8cc64ae5",
+    "state": "READY",
+    "authenticated_content_check": "PASS_NONCUSTODIAL_WARNING_REGISTRY_LOCK_CHAIN_61999"
+  },
   "signed_fixture_publication": "GITHUB_VERIFIED",
   "signed_fixture_branch": "revigate-rulebook-wallet-a-web",
   "signed_fixture_baseline": "b1c5254617155214e210a39dafd742fd33b102d6",
