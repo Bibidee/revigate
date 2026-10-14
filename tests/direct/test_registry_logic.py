@@ -10,7 +10,6 @@ import re
 
 
 PUBLISHER = "0x" + "a" * 40
-VAULT = "0x" + "2" * 40
 REPO = "bibidee/revigate"
 RULE_PATH = "rules/program.md"
 MANIFEST_PATH = ".revigate/publisher.json"
@@ -71,25 +70,6 @@ def deploy_registry(direct_deploy, direct_vm):
     direct_vm.check_pickling = True
     direct_vm.sender = PUBLISHER
     registry = direct_deploy("contracts/revigate_registry.py", sdk_version="v0.2.16")
-    from genlayer.py import calldata
-    from genlayer import gl
-
-    def hook(vm, request):
-        if "CallContract" in request:
-            call = request["CallContract"]
-            if call.get("calldata", {}).get("method") == "get_config":
-                identity = {"protocol": "revigate-vault-v1", "chain_id": 61999,
-                            "contract_version": 1,
-                            "registry": str(gl.message.contract_address).lower(),
-                            "custody_enabled": False}
-                return b"\x00" + calldata.encode(identity)
-        if "PostMessage" in request:
-            return {"ok": None}
-        return None
-
-    direct_vm._gl_call_hook = hook
-    direct_vm.sender = PUBLISHER
-    assert registry.bind_vault(VAULT) is True
     return registry
 
 
@@ -121,8 +101,7 @@ def test_registry_material_revision_advances_once_and_preserves_first_event(dire
     registry = deploy_registry(direct_deploy, direct_vm)
     program_id = propose(registry, direct_vm)
     mock_snapshot(direct_vm, BASE_SHA, BASE_TEXT, "a" * 40)
-    message_id = registry.verify_program(program_id)
-    assert re.fullmatch(r"[0-9a-f]{64}", message_id)
+    assert registry.verify_program(program_id) == "VERIFIED"
     assert registry.get_program(program_id)["epoch"] == 1
 
     review_id = registry.request_revision(program_id, NEXT_SHA)

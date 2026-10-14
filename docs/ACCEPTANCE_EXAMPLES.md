@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Worked Acceptance Cases for Contract, UI and Validators
 
 These are exact expected *business effects*; use whole integer wei amounts in the implementation and no fabricated transaction hashes.

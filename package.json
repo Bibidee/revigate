@@ -11,7 +11,7 @@
     "start": "node scripts/local-tool.mjs next:next start",
     "lint": "node scripts/local-tool.mjs eslint:eslint .",
     "typecheck": "node scripts/local-tool.mjs typescript:tsc --noEmit",
-    "test:js": "node --test tests/economics.test.mjs tests/calldata-address.test.mjs tests/transfer-evidence.test.mjs tests/wallet-session.test.mjs tests/pending-storage.test.mjs",
+    "test:js": "node --test tests/wallet-session.test.mjs",
     "test:python": "node scripts/run-python.mjs -m unittest discover -s tests -v",
     "test:direct": "node scripts/run-python.mjs -m pytest tests/direct -q",
     "test": "npm run test:js && npm run test:python && npm run test:direct",

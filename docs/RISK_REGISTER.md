@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Revigate risk register
 
 | Risk | Severity | Evidence and mitigation | Residual release risk |

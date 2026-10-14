@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Early Intelligent Contract API Proposal (Superseded)
 
 > This is a design-stage proposal. Its single-contract recommendation and

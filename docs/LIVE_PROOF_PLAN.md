@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Real Studionet Acceptance and Proof Plan
 
 Use GenLayer Studionet 61999 only, through the repository-local CLI 0.39.1 and https://studio.genlayer.com/api. The user has authorized unlocked-CLI deployment and lifecycle work. Do not send value to the current pair: the deployed contracts are custody-disabled test candidates and the runtime's incoming-value accounting failure remains unresolved. Do not fabricate transaction hashes, child receipts, browser results, or claimed finality.

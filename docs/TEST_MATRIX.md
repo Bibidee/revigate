@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Mandatory Test Matrix
 
 Do not optimize for count; every test below must map to a real assertion and executable suite. Report PASS/FAIL/SKIPPED/TOOLING-LIMITED with exact commit and evidence.

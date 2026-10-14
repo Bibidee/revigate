@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Registry/Vault migration status
 
 Recorded 2026-10-14. The two-contract implementation and a custody-disabled live pair exist. This is not a custody certification.
