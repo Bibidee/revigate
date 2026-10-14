@@ -14,7 +14,12 @@ independent audit and branch protection remain open.
 - [x] Current `npm run preflight`: network guard, TypeScript, lint, 19
   JavaScript, 8 Python, 93 Direct Mode tests, and production build of all 10
   routes passed.
-- [ ] GitHub Actions for the new commit are pending.
+- [x] GitHub Actions run 11 passed for candidate implementation commit
+  `8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14`, including clean dependency
+  installation, full preflight, and production dependency audit.
+- [x] GitHub's Vercel check is green for the candidate implementation commit;
+  the Vercel details endpoint returned 403, so its exact preview URL/state was
+  not independently inspected. Production remains locked and unbound.
 - [x] Full `npm audit`: zero vulnerabilities with UUID `11.1.1` override;
   GenLayer CLI `0.39.1` and Dockerode `4.0.12` retained.
 - [ ] Complete T01–T52 evidence matrix. Current counts: 27 PASS, 15 PARTIAL,

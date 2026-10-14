@@ -4,6 +4,7 @@
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
   "last_verified_pushed_base_commit": "9376fbd2b25c2346d53761128a61b4dc85ed089b",
+  "candidate_implementation_commit": "8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14",
   "candidate_changes_committed_in_this_revision": true,
   "commit_signature": "candidate commit unsigned; no local signing key/configuration",
   "pull_request": {
@@ -114,7 +115,7 @@
     "current_contract_pair_configured": false,
     "contract_writes_enabled": false
   },
-  "preview": {
+  "previous_preview": {
     "deployment_id": "dpl_9PkMxvVokGXKEJDeSB6YCDqoBwBo",
     "url": "https://the-revigate-d3zxsfyck-bibidees-projects.vercel.app",
     "state": "READY",
@@ -122,6 +123,13 @@
     "source_commit": "ba3ad9a83178bede7b27864d7d5c5cdded872694",
     "commit_signature": "unverified",
     "current_contract_pair_configured": false
+  },
+  "candidate_preview_check": {
+    "context": "Vercel",
+    "commit": "8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14",
+    "check_state": "SUCCESS",
+    "dashboard_url": "https://vercel.com/bibidees-projects/the-revigate/ATSvLYzZrUtGmLoDua2qo2KHDZgh",
+    "deployment_details": "NOT_READ: Vercel API returned 403 for bibidees-projects"
   },
   "verification": {
     "javascript_tests": "19 passed (current targeted suite)",
@@ -133,8 +141,8 @@
     "production_dependency_audit": "0 vulnerabilities",
     "full_dependency_audit": "0 vulnerabilities; UUID 11.1.1 transitive override; GenLayer CLI 0.39.1 unchanged",
     "full_preflight": "PASS: network guard, typecheck, lint, 19 JavaScript tests, 8 Python tests, 93 Direct Mode tests, production build with all 10 routes prerendered",
-    "github_actions": "PENDING for the candidate revision at record time; prior pushed base CI passed",
-    "vercel_preview_check": "PASS: current pushed commit preview READY",
+    "github_actions": "PASS: run 11 for candidate implementation commit 8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14; clean install, preflight, and production dependency audit passed",
+    "vercel_preview_check": "SUCCESS check for candidate commit; detailed deployment state and URL not independently read because Vercel API returned 403",
     "vercel_production": "PASS: production READY; browser checked publish route remains locked and unbound",
     "t01_t52": "INCOMPLETE: 27 PASS, 15 PARTIAL, 2 FAIL, 2 BLOCKED, 6 NOT EXECUTED",
     "two_wallet_lifecycle": "NOT_RUN",
@@ -148,7 +156,7 @@
     "source_integrity": "REGISTRY_MATCHES_DEPLOYED_SOURCE; LOCAL_VAULT_CANDIDATE_NOT_DEPLOYED",
     "frontend_release_binding": "NOT_CONFIGURED; production writes locked",
     "signed_publication": "NOT_COMPLETE_NO_PUBLISHER_NOMINATED_SIGNED_RULEBOOK_COMMIT",
-    "github_ci": "PRIOR_BASE_GREEN; CANDIDATE_REVISION_PENDING",
+    "github_ci": "PASS: candidate implementation commit 8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14, Actions run 11",
     "branch_protection": "NOT_ENABLED; protection endpoint returned 403 and rulesets list is empty",
     "t01_t52_matrix": "INCOMPLETE",
     "verdict": "NOT_COMPLETE"

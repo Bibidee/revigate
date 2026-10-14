@@ -68,11 +68,13 @@ https://github.com/Bibidee/revigate/pull/1. Do not merge.
   15 PARTIAL, 2 FAIL, 2 BLOCKED, and 6 NOT EXECUTED. The targeted checks do not
   close hosted validator, browser wallet, two-wallet, or failed-custody cases.
   There is no independent production audit.
-- **Publishing checks remain open at this record.** Full local preflight passes;
-  GitHub Actions for the candidate revision are pending. The prior pushed
-  revision's CI is the last verified run. No local commit-signing
-  key/configuration is present, and branch protection remains unavailable to
-  the connected GitHub API.
+- **Candidate implementation commit is pushed and verified.** Commit
+  `8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14` passed GitHub Actions run 11,
+  including clean dependency install, full preflight, and the production
+  dependency audit. GitHub's Vercel check is green for the same commit, but the
+  Vercel details API returned 403, so its preview URL/state was not inspected.
+  No local commit-signing key/configuration is present, and
+  branch protection remains unavailable to the connected GitHub API.
 - Vercel production at https://the-revigate.vercel.app is still on its prior
   locked, unbound deployment. No production contract addresses are configured.
 
