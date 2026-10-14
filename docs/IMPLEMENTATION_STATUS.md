@@ -43,6 +43,7 @@ Probe transaction `0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469
 - The Windows sandbox initially denied Next.js generated route-directory creation; the same preflight passed with scoped permission to write build output under this repository.
 - `npm audit --omit=dev --audit-level=high` could not reach `registry.npmjs.org` because host DNS returned `ENOTFOUND`; this is not an audit result.
 - GitHub Actions run 18 (`38615258759`) passed for commit `ab4d2c29e2f1592eac80947d5170a08020b98f72`, including `npm ci`, frozen Python dependencies, preflight, production build, and production dependency audit. Run 17 passed for its parent evidence commit `f2987c9`; run 16 passed for the older deployment source `4971823`.
+- GitHub Actions run 20 (`38621313012`) passed for deployment and lifecycle evidence commit `2ebd9f9`, including `npm ci`, frozen Python dependencies, the complete preflight, production build, and production dependency audit. The corresponding Vercel preview status also passed.
 
 ## Preview and review
 

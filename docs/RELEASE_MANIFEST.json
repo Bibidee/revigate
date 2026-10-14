@@ -70,13 +70,13 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38615258759,
-    "run_number": 18,
-    "commit_sha": "ab4d2c29e2f1592eac80947d5170a08020b98f72",
+    "run_id": 38621313012,
+    "run_number": 20,
+    "commit_sha": "2ebd9f9f211e529ad85f27a6144ad32c9293ef60",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
-  "vercel_status_check": "SUCCESS_PREVIEW_URL_NOT_ACCESSIBLE",
+  "vercel_status_check": "SUCCESS_FOR_EVIDENCE_PAYLOAD_COMMIT",
   "signed_fixture_publication": "GITHUB_VERIFIED",
   "signed_fixture_branch": "revigate-rulebook-fixture-v2",
   "signed_fixture_baseline": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
