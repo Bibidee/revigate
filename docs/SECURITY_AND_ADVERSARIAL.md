@@ -24,7 +24,7 @@ The rulebook is quoted to the model as untrusted evidence. Model output is type 
 
 ## Residual risks
 
-- GitHub availability, API behavior, signature policy, and validator web access can cause INCONCLUSIVE results. On the deployed source, both signed MATERIAL and ambiguous assessments returned INCONCLUSIVE after commit lookups returned HTTP 403. The cause of those denials remains unknown. The new provider diagnostics and backoff are local-only until exact-source deployment and hosted verification.
+- GitHub availability, API behavior, signature policy, and validator web access can cause INCONCLUSIVE results. On the deployed Registry source, both signed MATERIAL and ambiguous assessments returned INCONCLUSIVE after commit lookups returned HTTP 403. A later source-exact disposable probe reached the same public commit endpoint and GitHub rate-limit endpoint with HTTP 200 and 42 of 60 core requests remaining. This proves the denial was not recurring during the probe, but its historical cause remains unknown. The new Registry provider diagnostics and backoff are local-only until exact-source Registry deployment and hosted verification.
 - A GitHub verified signature proves GitHub's verification result; it does not prove legal authority over an organization.
 - Semantic materiality remains a judgment result and may disagree or remain undetermined.
 - Repository changes are invisible until the publisher submits a signed candidate.

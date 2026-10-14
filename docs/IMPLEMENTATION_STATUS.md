@@ -27,7 +27,9 @@ Commit `46b749669c532bf85b3491d2ea6dd4bcee987422` stores the authenticated activ
 
 Provider failures now distinguish access denial, rate limiting, missing resources, and upstream errors. Safe GitHub response headers and bounded error messages are recorded without authorization headers. Retries use capped exponential delay and respect numeric or date-form `Retry-After` and GitHub reset times. The program view exposes `provider_retry_at`.
 
-The actual cause of the earlier HTTP 403 remains unknown. A disposable two-URL probe is prepared in `evidence/github-access-diagnostic/github_api_probe.py`, but it could not be deployed: the repository-local CLI rejected the supplied keystore password, and the interactive prompt was stopped before the final attempt. No probe transaction or deployment was created. No permanent access-policy change is claimed.
+The disposable two-URL probe at `evidence/github-access-diagnostic/github_api_probe.py` was deployed to Studionet at `0x1d89559F621AEb81b53E7004Fe54BfBe1D5c9a02`. Deployment transaction `0x45aa328c86e642173a3a331e0c25d0030100fa1808c3d80c1530a4ff8418f8ae` finalized `MAJORITY_AGREE`, with successful execution and no value credited. Readback matched the local source exactly at SHA-256 `82328DAF235D06A2C790AE093D916E4E69EF3EA6F37F03378981ECDD91396F1D`.
+
+Probe transaction `0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228` finalized `MAJORITY_DISAGREE`. The leader and successful validator executions both reached the GitHub commit and rate-limit endpoints with HTTP 200; the captured rate-limit response reported 42 of 60 core requests remaining. This establishes that the previous HTTP 403 was not recurring during this probe, but it does not establish its historical cause. The disagreement was caused by a diagnostic-contract defect: it truncated the commit response to 512 bytes before JSON parsing, so the separately returned `sha` field was empty and the validator's expected-SHA check necessarily returned false. No permanent GitHub access-policy change is claimed.
 
 ## Verification
 
@@ -44,4 +46,4 @@ The checked repository CI workflow does not require an external security review.
 
 ## Release decision
 
-**NOT RELEASED.** Production writes remain locked. No user funds were accepted; no merge or production promotion occurred. The corrected source still needs exact-source Studionet deployment and attestation, live signed MATERIAL and ambiguous assessments with canonical readbacks, fresh GitHub Actions, and real browser/wallet testing. The 403 cause remains undiagnosed until the hosted probe can run. The existing deployment is evidence for its older source only.
+**NOT RELEASED.** Production writes remain locked. No user funds were accepted; no merge or production promotion occurred. The corrected Registry source still needs exact-source Studionet deployment and attestation, live signed MATERIAL and ambiguous assessments with canonical readbacks, fresh GitHub Actions, and real browser/wallet testing. The diagnostic probe ran and observed HTTP 200, but the historical 403 cause remains unknown. The existing Registry deployment is evidence for its older source only.

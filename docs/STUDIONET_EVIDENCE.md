@@ -362,20 +362,36 @@ and applies bounded retry timing based on response headers. Local preflight
 passed on this source; it has not been deployed to Studionet. The address and
 deployment transaction above attest only source commit `4971823`.
 
-A disposable, zero-value GitHub diagnostic contract is prepared at
-`evidence/github-access-diagnostic/github_api_probe.py`. It has not been
-deployed or executed. The repository-local CLI prompted to decrypt the
-configured keystore, rejected the password entered, and was stopped before
-the final attempt. No diagnostic deployment or transaction was created, and
-no hosted probe response was obtained. Therefore the earlier hosted HTTP 403
-cause remains **unknown**; local DNS failures and GitHub responses from other
-egress paths do not establish the GenVM cause.
+A disposable, zero-value GitHub diagnostic contract at
+`evidence/github-access-diagnostic/github_api_probe.py` was deployed at
+`0x1d89559F621AEb81b53E7004Fe54BfBe1D5c9a02`. Deployment transaction
+`0x45aa328c86e642173a3a331e0c25d0030100fa1808c3d80c1530a4ff8418f8ae`
+finalized `MAJORITY_AGREE`: four validators agreed, one was idle, execution
+succeeded, and `value_credited=false`. Deployed-source readback exactly
+matched the local source, SHA-256
+`82328DAF235D06A2C790AE093D916E4E69EF3EA6F37F03378981ECDD91396F1D`.
 
-There is no new Studionet source attestation, deployment address, transaction,
-or current-source lifecycle in this correction record. Do not associate the
-earlier deployment with the corrected source. The hosted baseline and
+Probe transaction
+`0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228`
+finalized `MAJORITY_DISAGREE` after four rounds, with three disagreeing votes
+and two validators cancelled after quorum. The leader and completed validator
+executions each succeeded and observed HTTP 200 from both the signed fixture
+commit endpoint and GitHub's rate-limit endpoint. The captured rate-limit
+response reported a core limit of 60 with 42 remaining.
+
+The disagreement does not indicate another provider denial. The probe
+truncated the successful commit body to 512 bytes before attempting JSON
+parsing, so its separate `sha` field was empty. Because the validator requires
+that field to equal the expected commit SHA on HTTP 200, it returned false.
+The evidence proves that the two public URLs were reachable during this run
+and that the earlier 403 did not recur. It cannot establish why the historical
+403 occurred, so that cause remains **unknown**.
+
+There is no new Registry source attestation or current-source lifecycle in
+this correction record. The diagnostic address is not the Registry and does
+not attest corrected Registry source `46b7496`. The hosted baseline and
 NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
-ambiguous fixtures, remain valid only for the earlier deployed source.
+ambiguous fixtures, remain valid only for the earlier deployed Registry.
 
 ### Release boundaries
 
@@ -392,17 +408,22 @@ and applies bounded retry timing based on response headers. Local preflight
 passed on this source; it has not been deployed to Studionet. The address and
 deployment transaction above attest only source commit `4971823`.
 
-A disposable, zero-value GitHub diagnostic contract is prepared at
-`evidence/github-access-diagnostic/github_api_probe.py`. It has not been
-deployed or executed. The repository-local CLI prompted to decrypt the
-configured keystore, rejected the password entered, and was stopped before
-the final attempt. No diagnostic deployment or transaction was created, and
-no hosted probe response was obtained. Therefore the earlier hosted HTTP 403
-cause remains **unknown**; local DNS failures and GitHub responses from other
-egress paths do not establish the GenVM cause.
+A disposable, zero-value GitHub diagnostic contract at
+`evidence/github-access-diagnostic/github_api_probe.py` was deployed at
+`0x1d89559F621AEb81b53E7004Fe54BfBe1D5c9a02`. Deployment transaction
+`0x45aa328c86e642173a3a331e0c25d0030100fa1808c3d80c1530a4ff8418f8ae`
+finalized `MAJORITY_AGREE`, and deployed-source readback exactly matched local
+SHA-256 `82328DAF235D06A2C790AE093D916E4E69EF3EA6F37F03378981ECDD91396F1D`.
+Probe transaction
+`0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228`
+finalized `MAJORITY_DISAGREE`, although both endpoints returned HTTP 200 and
+the rate-limit response reported 42 of 60 core requests remaining. The
+disagreement came from truncating the commit response before JSON parsing,
+which left the comparison SHA empty. The earlier 403 did not recur, but its
+historical cause remains **unknown**.
 
-There is no new Studionet source attestation, deployment address, transaction,
-or current-source lifecycle in this correction record. Do not associate the
-earlier deployment with the corrected source. The hosted baseline and
+There is no new Registry source attestation or current-source lifecycle in
+this correction record. The diagnostic address is not the Registry and does
+not attest corrected Registry source `46b7496`. The hosted baseline and
 NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
-ambiguous fixtures, remain valid only for the earlier deployed source.
+ambiguous fixtures, remain valid only for the earlier deployed Registry.

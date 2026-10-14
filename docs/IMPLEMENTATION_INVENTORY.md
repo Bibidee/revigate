@@ -29,7 +29,9 @@ GitHub Actions run 18 (`38615258759`) passed for commit `ab4d2c29e2f1592eac80947
 
 Registry source `4971823c43d1b552215475573e81e1da89a979c7` is deployed on Studionet at `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F`. That deployment successfully verified the signed baseline and completed one `NONMATERIAL` transition. Signed `MATERIAL` and ambiguous assessments returned `INCONCLUSIVE` when GitHub commit lookups returned HTTP 403. These results do not reveal why GitHub denied the hosted requests.
 
-The new two-URL diagnostic probe is prepared at `evidence/github-access-diagnostic/github_api_probe.py`, but has not been deployed or run. The repository-local CLI rejected the password provided for the keystore; the prompt was stopped before its final attempt. No diagnostic transaction or deployment was created. No password is recorded here.
+The two-URL diagnostic probe at `evidence/github-access-diagnostic/github_api_probe.py` was deployed through the repository-local CLI at `0x1d89559F621AEb81b53E7004Fe54BfBe1D5c9a02`. Transaction `0x45aa328c86e642173a3a331e0c25d0030100fa1808c3d80c1530a4ff8418f8ae` finalized `MAJORITY_AGREE`, and deployed-source readback exactly matched local SHA-256 `82328DAF235D06A2C790AE093D916E4E69EF3EA6F37F03378981ECDD91396F1D`.
+
+Probe transaction `0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228` finalized `MAJORITY_DISAGREE`. Its leader and successful validator executions received HTTP 200 from both fixed GitHub endpoints, with 42 of 60 core requests remaining. The earlier 403 did not recur, but its historical cause remains unknown. The probe disagreed because it truncated the successful commit response before JSON parsing and consequently compared an empty `sha` against the expected SHA. No keystore password is recorded here.
 
 The current source correction differs from deployed commit `4971823`; the prior deployment address and attestation do not attest the correction. No new Registry deployment or current-source hosted lifecycle has occurred.
 
@@ -41,4 +43,4 @@ This repository's checked CI workflow does not require an independent security r
 
 ## Release decision
 
-**NOT RELEASED.** Production writes remain locked. No user funds were accepted, and no merge or production promotion occurred. The current source needs a Studionet deployment and exact source attestation, followed by hosted source-authentication diagnosis and semantic `MATERIAL` and ambiguous assessments with canonical readbacks. Fresh Actions for the corrected source and real browser/wallet checks are also outstanding. The cause of hosted HTTP 403 remains unknown.
+**NOT RELEASED.** Production writes remain locked. No user funds were accepted, and no merge or production promotion occurred. The current Registry source needs a Studionet deployment and exact source attestation, followed by semantic `MATERIAL` and ambiguous assessments with canonical readbacks. The diagnostic probe observed HTTP 200 but did not determine the historical 403 cause. Fresh Actions for the corrected source and real browser/wallet checks are also outstanding.
