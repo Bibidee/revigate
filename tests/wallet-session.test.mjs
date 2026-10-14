@@ -15,10 +15,17 @@ const accountB = `0x${"b".repeat(40)}`;
 class FakeProvider {
   listeners = new Map();
   pending = new Map();
+  calls = [];
   current = { eth_accounts: [], eth_chainId: "0xf22f" };
-  request({ method }) {
+  request({ method, params }) {
+    this.calls.push({ method, params });
     if (this.pending.has(method)) return this.pending.get(method)();
     if (method === "eth_requestAccounts") return Promise.resolve([accountA]);
+    if (method === "wallet_switchEthereumChain") {
+      this.current.eth_chainId = params[0].chainId;
+      return Promise.resolve(null);
+    }
+    if (method === "wallet_addEthereumChain") return Promise.resolve(null);
     return Promise.resolve(this.current[method]);
   }
   on(event, callback) {
@@ -66,6 +73,58 @@ test("T43 provider absence, account normalization, and wallet rejection remain e
   await session.ready;
   provider.request = ({ method }) => method === "eth_requestAccounts"
     ? Promise.reject(new Error("User rejected the request")) : Promise.resolve("0xf22f");
+  await assert.rejects(() => requestWalletConnection(provider, session), /User rejected/);
+  session.stop();
+});
+
+test("T43 connection requests Studionet when the wallet is on another chain", async () => {
+  const provider = new FakeProvider();
+  provider.current.eth_chainId = "0x1";
+  const session = watchWallet(provider, () => undefined);
+  await session.ready;
+  await requestWalletConnection(provider, session);
+  assert.ok(provider.calls.some(({ method, params }) => method === "wallet_switchEthereumChain"
+    && params[0].chainId === "0xf22f"));
+  assert.equal(session.getState().chainId, "0xf22f");
+  session.stop();
+});
+
+test("T43 connection adds Studionet only when the wallet reports an unknown chain", async () => {
+  const provider = new FakeProvider();
+  provider.current.eth_chainId = "0x1";
+  provider.request = function request({ method, params }) {
+    this.calls.push({ method, params });
+    if (method === "eth_requestAccounts") return Promise.resolve([accountA]);
+    if (method === "eth_accounts") return Promise.resolve([accountA]);
+    if (method === "eth_chainId") return Promise.resolve(this.current.eth_chainId);
+    if (method === "wallet_switchEthereumChain" && !this.added) {
+      const error = new Error("Unknown chain");
+      error.code = 4902;
+      return Promise.reject(error);
+    }
+    if (method === "wallet_addEthereumChain") { this.added = true; return Promise.resolve(null); }
+    if (method === "wallet_switchEthereumChain") { this.current.eth_chainId = params[0].chainId; return Promise.resolve(null); }
+    return Promise.resolve(null);
+  };
+  const session = watchWallet(provider, () => undefined);
+  await session.ready;
+  await requestWalletConnection(provider, session);
+  assert.ok(provider.calls.some(({ method }) => method === "wallet_addEthereumChain"));
+  assert.equal(session.getState().chainId, "0xf22f");
+  session.stop();
+});
+
+test("T43 declined network switch remains an explicit wallet error", async () => {
+  const provider = new FakeProvider();
+  provider.current.eth_chainId = "0x1";
+  provider.request = ({ method }) => {
+    if (method === "eth_requestAccounts") return Promise.resolve([accountA]);
+    if (method === "eth_chainId") return Promise.resolve("0x1");
+    if (method === "wallet_switchEthereumChain") return Promise.reject(Object.assign(new Error("User rejected"), { code: 4001 }));
+    return Promise.resolve(null);
+  };
+  const session = watchWallet(provider, () => undefined);
+  await session.ready;
   await assert.rejects(() => requestWalletConnection(provider, session), /User rejected/);
   session.stop();
 });
