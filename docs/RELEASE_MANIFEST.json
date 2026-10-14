@@ -70,9 +70,9 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38621313012,
-    "run_number": 20,
-    "commit_sha": "2ebd9f9f211e529ad85f27a6144ad32c9293ef60",
+    "run_id": 38647691742,
+    "run_number": 21,
+    "commit_sha": "9ad57513783a3c2019a7e5e90c5400aca3ff374c",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
@@ -140,7 +140,7 @@
     "browser_connected_account": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
     "browser_publisher_write": "WALLET_A_SIGNED_ZERO_VALUE_REQUEST_AND_ASSESSMENT",
     "preview_lookup": "VERCEL_SCOPE_HTTP_403",
-    "remaining": ["extension account/network/rejection coverage", "protected preview", "fresh CI for updated evidence", "independent security review"]
+    "remaining": ["extension account/network/rejection coverage", "protected preview", "independent security review"]
   },
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",

@@ -61,8 +61,9 @@ zero attached value and `value_credited=false`.
 
 The local suite currently passes 13 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
-build evidence are recorded on the remediation branch. A fresh CI run after this
-evidence update remains to be checked.
+build evidence are recorded on the remediation branch. Fresh GitHub Actions run
+38647691742 for commit 9ad5751 passed npm ci, frozen Python dependencies,
+preflight, production build, and the production dependency audit.
 
 ## Browser and review boundary
 

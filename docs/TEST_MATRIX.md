@@ -2,7 +2,7 @@
 
 Recorded 2026-10-14 for the clean Wallet A lifecycle on corrected Registry `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
 
-Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. TypeScript, lint, source guard, and production-build evidence remain recorded on the remediation branch. A fresh CI run for this evidence update is still required. `PARTIAL` and `BLOCKED` entries are not release passes.
+Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. Fresh GitHub Actions run `38647691742` for commit `9ad5751` passed npm ci, frozen Python dependencies, preflight, production build, and production dependency audit. `PARTIAL` and `BLOCKED` entries are not release passes.
 
 | ID | Status | Evidence or boundary |
 |---|---|---|
@@ -57,8 +57,8 @@ Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 | T49 | PASS | Exact corrected-source deployment verified the signed baseline, returned actual `NONMATERIAL` for the editorial fixture, and actual `MATERIAL` for both the 60-day and ambiguous fixtures. Canonical sources were VERIFIED and final Program 3 state advanced to epoch 3. Historical 403 cause remains unknown. |
 | T50 | N/A | Financial payout, refund, and exit cases were retired with escrow and are outside Registry V2. |
 | T51 | PASS | Corrected Registry source `46b749669c532bf85b3491d2ea6dd4bcee987422` is deployed and exactly attested at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`, transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2`. |
-| T52 | PARTIAL | Local tests and the clean hosted Wallet A lifecycle pass. Public routes and signed publisher writes were exercised, but protected preview access, remaining extension flows, fresh CI for this evidence update, and independent review remain incomplete. |
+| T52 | PARTIAL | Local tests, fresh CI, and the clean hosted Wallet A lifecycle pass. Public routes and signed publisher writes were exercised, but protected preview access, remaining extension flows, and independent review remain incomplete. |
 
 ## Current decision
 
-NOT RELEASED. The corrected Registry is deployed and source-attested. Program 3 has verified baseline, NONMATERIAL, MATERIAL, and ambiguous MATERIAL results with canonical finality. Wallet A is the only current publisher signer; Wallet B has not been used in this clean publisher cycle. Protected preview access, remaining wallet-extension flows, independent security review, and fresh CI remain open. No user funds were accepted, and no merge or production promotion occurred.
+NOT RELEASED. The corrected Registry is deployed and source-attested. Program 3 has verified baseline, NONMATERIAL, MATERIAL, and ambiguous MATERIAL results with canonical finality. Wallet A is the only current publisher signer; Wallet B has not been used in this clean publisher cycle. Protected preview access, remaining wallet-extension flows, and independent security review remain open. No user funds were accepted, and no merge or production promotion occurred.

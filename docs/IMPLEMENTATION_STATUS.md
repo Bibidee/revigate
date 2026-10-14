@@ -58,12 +58,13 @@ receipt and Registry readback agree.
 
 Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests
 (47 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Earlier CI runs remain recorded in the release evidence; a
-fresh CI run for this evidence update is still required.
+validator evidence. Fresh GitHub Actions run 38647691742 for commit 9ad5751
+passed npm ci, frozen Python dependencies, preflight, production build, and the
+production dependency audit.
 
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
 PR #1 remains a draft, and no merge or production promotion occurred. Independent
-security review, remaining extension-flow checks, protected-preview access, and
-fresh CI for the updated evidence remain open gates.
+security review, remaining extension-flow checks, and protected-preview access
+remain open gates.
