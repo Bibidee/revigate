@@ -3,32 +3,117 @@
   "recorded_at": "2026-10-14",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remove-escrow-2026-10-14",
-  "network": { "name": "GenLayer Studionet", "chain_id": 61999 },
+  "pull_request": {
+    "url": "https://github.com/Bibidee/revigate/pull/1",
+    "state": "OPEN",
+    "draft": true,
+    "merged": false,
+    "head_commit_sha": "4971823c43d1b552215475573e81e1da89a979c7"
+  },
+  "network": {
+    "name": "GenLayer Studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
   "active_contract": "contracts/revigate_registry.py",
-  "source_commit_sha": "f912d56f0bd040c7a3cb6bf7b7aa3a4b71a15596",
-  "active_contract_sha256": "fb71c77e81e93caf8d411a00e7d969f5282902899dfcb714ea2dfd3da380e26c",
+  "source_commit_sha": "4971823c43d1b552215475573e81e1da89a979c7",
+  "active_contract_git_blob": "fd246b3766bdb4be78819f116513435f56d73a66",
+  "active_contract_sha256": "169F2569CC7374B94A7CD0059D002A87480B8E62D60F18BCE42A22E0CD50F2EF",
   "protocol": "revigate-registry-v1",
   "contract_version": 2,
   "custody": "NONE",
-  "deployment": "NOT_DEPLOYED",
+  "deployment": {
+    "environment": "STUDIONET_TEST_ONLY",
+    "address": "0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F",
+    "transaction": "0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97",
+    "receipt": "FINALIZED_MAJORITY_AGREE",
+    "leader_execution": "SUCCESS",
+    "value_credited": false,
+    "source_attestation": "EXACT_BYTE_MATCH",
+    "config": {
+      "chain_id": 61999,
+      "protocol": "revigate-registry-v1",
+      "contract_version": 2,
+      "custody": "NONE"
+    }
+  },
   "local_verification": {
     "javascript_tests": "10/10 PASS",
-    "direct_mode_tests": "22/22 PASS",
+    "direct_mode_tests": "27/27 PASS",
     "typecheck": "PASS",
     "lint": "PASS",
+    "studionet_source_guard": "PASS",
     "production_build": "PASS"
   },
+  "github_actions": {
+    "workflow": "CI",
+    "run_id": 38602164168,
+    "run_number": 16,
+    "commit_sha": "4971823c43d1b552215475573e81e1da89a979c7",
+    "conclusion": "SUCCESS"
+  },
+  "vercel_status_check": "SUCCESS_PREVIEW_URL_NOT_ACCESSIBLE",
   "signed_fixture_publication": "GITHUB_VERIFIED",
   "signed_fixture_branch": "revigate-rulebook-fixture-v2",
   "signed_fixture_baseline": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
   "signed_fixture_nonmaterial": "7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10",
   "signed_fixture_material": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
   "signed_fixture_ambiguous": "14401f20f2d3eeeac537746966646809e5c01b8c",
-  "hosted_signed_fixture_lifecycle": "NOT_RUN",
-  "hosted_validator_lifecycle": "NOT_VERIFIED",
-  "real_browser_wallet_tests": "NOT_VERIFIED",
+  "hosted_lifecycle": {
+    "program_id": 1,
+    "registration_transaction": "0xc4069ee95a663fb183e801b6c31912a0737573cf11380b2b9187a5f7d9db6e52",
+    "baseline_verification_transaction": "0xb2ef13b3191e01b884f7a59cc6ffa6a86520da83fe24ecdcf976bfa0365cccd9",
+    "baseline_status": "VERIFIED_EPOCH_1",
+    "publisher_acknowledgment_transaction": "0x96d42b7cbc90339dda4f0c16752139450b30fbbe1cbe89d12b49b296c46a46b0",
+    "nonmaterial": {
+      "request_transaction": "0xb33c3f63d957b00ac2a90883d6dec2898234287347745f72ad87afc73e3b2ffa",
+      "assessment_transaction": "0xfb6cb52f1145c564ef2b3feae7a728cdccc8f970118987b2c8041e9628ebd624",
+      "outcome": "NONMATERIAL",
+      "readback_active_sha": "7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10",
+      "readback_digest": "55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4",
+      "readback_epoch": 1,
+      "readback_pending_review": 0,
+      "readback_material_event_count": 0
+    },
+    "material": {
+      "request_transaction": "0xe87dfeb08031474f41c442c116c196788571740e633e253540f5d529d95cdfe2",
+      "assessment_transaction": "0xbc87505c4131907777fd7ea3a9c8d38fa762bbdbcbabf09984cfa4159a31bf0b",
+      "actual_outcome": "INCONCLUSIVE",
+      "base_source_reason": "commit request failed with HTTP status 403",
+      "candidate_source_reason": "commit request failed with HTTP status 403"
+    },
+    "ambiguous": {
+      "initial_request_transaction": "0x5b32091c5e36b98acb0ad193ebf53dde25c69a2bad25fc3dc4e3216cb53c8552",
+      "initial_request_result": "ERROR_NO_REVIEW_CREATED",
+      "initial_request_cause": "300-second publisher cooldown had not elapsed",
+      "request_transaction": "0xb85625fdb851b9bb1c4708bdb9ee34581e21bc59e3ed8f8d19419f48d1b82d5a",
+      "review_id": 3,
+      "assessment_transaction": "0x6829dae057666682f4775dd0bfd001e0b95017380c9ce6ae0d8abdbe1654bcc9",
+      "actual_outcome": "INCONCLUSIVE",
+      "base_source_reason": "commit request failed with HTTP status 403",
+      "candidate_source_reason": "commit request failed with HTTP status 403",
+      "semantic_ambiguity_assessed": false
+    },
+    "final_program_state": {
+      "status": "VERIFIED",
+      "active_sha": "7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10",
+      "document_digest": "55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4",
+      "epoch": 1,
+      "pending_review": 0,
+      "material_event_count": 0
+    },
+    "value_credited": false,
+    "verdict": "PARTIAL_SOURCE_AUTHENTICATION_FAILURE"
+  },
+  "real_browser_wallet_tests": {
+    "status": "NOT_VERIFIED",
+    "local_app_access": "BROWSER_TABS_TIMED_OUT",
+    "preview_lookup": "VERCEL_SCOPE_HTTP_403"
+  },
   "independent_security_review": "NOT_OBTAINED",
-  "production_writes": "LOCKED_UNTIL_VERIFIED_DEPLOYMENT",
+  "production_writes": "LOCKED",
+  "user_funds_accepted": false,
+  "merge_or_production_promotion": false,
   "historical_escrow_evidence_retained": true,
   "verdict": "NOT_RELEASED"
 }

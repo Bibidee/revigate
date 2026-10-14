@@ -310,3 +310,47 @@ CLI's public `write` command has no value option and hardcodes `value: 0n`, so
 it cannot submit the one-wei payable accounting check. No payable write or
 escrow lifecycle was submitted from this corrected-source test address. The
 previously deployed reciprocal pair remains on the earlier Vault source.
+
+## 2026-10-14 Registry V2 deployment and signed rulebook lifecycle
+
+This is the current Registry V2 test deployment and supersedes earlier statements in this file that Registry V2 was not deployed. The deployment and all following Registry writes used GenLayer Studionet 61999 and the repository-local GenLayer CLI `0.39.1`, configured explicitly with `https://studio.genlayer.com/api`. The configured test signer was `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`. Every transaction in this lifecycle had `value_credited=false`.
+
+### Source-exact deployment
+
+| Item | Result |
+|---|---|
+| Source commit | `4971823c43d1b552215475573e81e1da89a979c7` |
+| Contract file | `contracts/revigate_registry.py` |
+| Git blob | `fd246b3766bdb4be78819f116513435f56d73a66` |
+| Local SHA-256 | `169F2569CC7374B94A7CD0059D002A87480B8E62D60F18BCE42A22E0CD50F2EF` |
+| Deployed address | `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F` |
+| Deployment transaction | [`0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97`](https://explorer-studio.genlayer.com/tx/0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97) |
+| Receipt | `FINALIZED`, `MAJORITY_AGREE`, five votes agree, leader execution `SUCCESS` |
+| Value | `0`, `value_credited=false` |
+| Deployed source comparison | Exact byte-for-byte match with the contract file at the source commit |
+| Canonical `get_config` | Chain 61999; protocol `revigate-registry-v1`; version 2; custody `NONE` |
+
+### Baseline and acknowledgment
+
+| Action | Transaction | Canonical result |
+|---|---|---|
+| Register baseline | `0xc4069ee95a663fb183e801b6c31912a0737573cf11380b2b9187a5f7d9db6e52` | Program 1; publisher is the nominated test wallet; repository `bibidee/revigate`; fixture branch `revigate-rulebook-fixture-v2`; fixed manifest and rulebook paths. |
+| Verify baseline | `0xb2ef13b3191e01b884f7a59cc6ffa6a86520da83fe24ecdcf976bfa0365cccd9` | Finalized; canonical program `VERIFIED`, baseline SHA `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`, epoch 1, digest `ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170`. |
+| Publisher acknowledgment | `0x96d42b7cbc90339dda4f0c16752139450b30fbbe1cbe89d12b49b296c46a46b0` | Finalized; readback matched the publisher wallet, epoch 1, baseline SHA, and baseline digest. |
+
+### Signed revisions and actual hosted outcomes
+
+The fixture signatures and publisher nomination are independently recorded in [rulebook fixture evidence](RULEBOOK_FIXTURE_EVIDENCE.md). The outcomes below are hosted transaction results; fixture names do not determine or substitute for an outcome.
+
+| Fixture | Request / assessment | Actual outcome and canonical readback |
+|---|---|---|
+| NONMATERIAL, commit `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10` | Request `0xb33c3f63d957b00ac2a90883d6dec2898234287347745f72ad87afc73e3b2ffa`; assessment `0xfb6cb52f1145c564ef2b3feae7a728cdccc8f970118987b2c8041e9628ebd624` | Finalized as `NONMATERIAL`. Program readback after assessment: status `VERIFIED`, active SHA `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`, digest `55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4`, epoch 1, `pending_review=0`, material-event count 0. |
+| MATERIAL, commit `376e447065b8a7efd1d26a60c6c9ac476bd1e567` | Request `0xe87dfeb08031474f41c442c116c196788571740e633e253540f5d529d95cdfe2`; assessment `0xbc87505c4131907777fd7ea3a9c8d38fa762bbdbcbabf09984cfa4159a31bf0b` | Finalized assessment result `INCONCLUSIVE`. Canonical result records `base_source_status=INCONCLUSIVE` and `candidate_source_status=INCONCLUSIVE`; each reason is `commit request failed with HTTP status 403`. Program stayed on the NONMATERIAL SHA/digest at epoch 1, with no pending review. This is not a semantic MATERIAL verdict. |
+| Ambiguous, commit `14401f20f2d3eeeac537746966646809e5c01b8c` | Initial request `0x5b32091c5e36b98acb0ad193ebf53dde25c69a2bad25fc3dc4e3216cb53c8552` | Finalized with `MAJORITY_AGREE` consensus but execution `ERROR` on all five validators. Validator results decoded to `A review is pending or the publisher cooldown is active`; canonical state had no pending review. The preceding material request timestamp was `1791997634`; this request was timestamped `1791997772`, 138 seconds later, inside the contract's 300-second publisher cooldown. No review was created. |
+| Ambiguous after cooldown, commit `14401f20f2d3eeeac537746966646809e5c01b8c` | Request `0xb85625fdb851b9bb1c4708bdb9ee34581e21bc59e3ed8f8d19419f48d1b82d5a`; review 3 assessment `0x6829dae057666682f4775dd0bfd001e0b95017380c9ce6ae0d8abdbe1654bcc9` | Request finalized and returned review ID 3. Assessment finalized with `MAJORITY_AGREE`; three executions completed with `INCONCLUSIVE`, while two validator executions were cancelled after quorum. Canonical review 3 is `INCONCLUSIVE`; both source lookup reasons are HTTP 403. The ambiguity itself was not semantically assessed. |
+
+Final canonical program readback: `VERIFIED`; active SHA `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`; digest `55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4`; epoch 1; `pending_review=0`; material-event count 0. The existing deployment successfully verified the baseline, but hosted source authentication later returned HTTP 403 for both revisions' base and candidate commit requests. The response establishes the status code, not the underlying reason for the provider denial.
+
+### Release boundaries
+
+This is a zero-value Studionet test deployment, not a production deployment. No user funds were accepted, production writes remain locked, and no merge or production promotion occurred. These transactions show actual baseline verification, acknowledgment, and one NONMATERIAL transition. They do not demonstrate a hosted MATERIAL result, a semantic ambiguous-language result, validator disagreement, or prompt-injection handling. The full outcome ledger is in [the T01–T52 matrix](TEST_MATRIX.md); the verdict remains **NOT RELEASED**.
