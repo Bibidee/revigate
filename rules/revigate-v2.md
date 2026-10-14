@@ -1,7 +1,7 @@
 # Revigate Public Test Rulebook
 
 ## R-01: Eligibility
-Participants qualify after 14 continuous days in the public test program.
+Participants qualify after 60 continuous days in the public test program.
 
 ## R-02: Benefit
 Qualified participants receive access to the published test materials.
