@@ -2,7 +2,7 @@
 
 Recorded 2026-10-14 for the clean Wallet A lifecycle on corrected Registry `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
 
-Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. Fresh GitHub Actions run `38648255895` for commit `ff117c1` passed npm ci, frozen Python dependencies, preflight, production build, and production dependency audit. A live Brave/Rabby pass exercised the public routes, Program 3 readback, Wallet A session persistence across refresh, and the non-custodial Registry banner. GitHub `main` protection is enabled with strict `verify` and `Vercel` checks and one required approval. `PARTIAL` and `BLOCKED` entries are not release passes.
+Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. Fresh GitHub Actions run `38649123007` for commit `bb0d23e` passed npm ci, frozen Python dependencies, preflight, production build, and production dependency audit. A live Brave/Rabby pass exercised the public routes, Program 3 readback, Wallet A session persistence across refresh, and the non-custodial Registry banner. GitHub `main` protection is enabled with strict `verify` and `Vercel` checks and one required approval. `PARTIAL` and `BLOCKED` entries are not release passes.
 
 | ID | Status | Evidence or boundary |
 |---|---|---|

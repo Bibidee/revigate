@@ -81,9 +81,9 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38647998741,
-    "run_number": 22,
-    "commit_sha": "32b2ff1289d203f7304b95266811e64a4a94c83c",
+    "run_id": 38649123007,
+    "run_number": 24,
+    "commit_sha": "bb0d23e385c1d70b2e325b654dabb6f9c0d8441c",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
