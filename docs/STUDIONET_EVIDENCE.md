@@ -311,148 +311,96 @@ it cannot submit the one-wei payable accounting check. No payable write or
 escrow lifecycle was submitted from this corrected-source test address. The
 previously deployed reciprocal pair remains on the earlier Vault source.
 
-## 2026-10-14 Registry V2 deployment and signed rulebook lifecycle
+## Current clean Wallet A lifecycle (2026-10-14)
 
-This is the current Registry V2 test deployment and supersedes earlier statements in this file that Registry V2 was not deployed. The deployment and all following Registry writes used GenLayer Studionet 61999 and the repository-local GenLayer CLI `0.39.1`, configured explicitly with `https://studio.genlayer.com/api`. The configured test signer was `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`. Every transaction in this lifecycle had `value_credited=false`.
+This section is the authoritative current Registry evidence. It supersedes the
+older lifecycle sections below the historical custody probes. The old address
+`0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` came from an earlier fixture and is
+not a user wallet for this lifecycle. It is retained only where needed to keep
+historical probes auditable; it was not used for the current lifecycle.
 
-### Source-exact deployment
-
-| Item | Result |
+| Identity | Address |
 |---|---|
-| Source commit | `4971823c43d1b552215475573e81e1da89a979c7` |
-| Contract file | `contracts/revigate_registry.py` |
-| Git blob | `fd246b3766bdb4be78819f116513435f56d73a66` |
-| Local SHA-256 | `169F2569CC7374B94A7CD0059D002A87480B8E62D60F18BCE42A22E0CD50F2EF` |
-| Deployed address | `0xBB15E0F4Ad5e61AE1374ed1EA3E32f2172EA6D3F` |
-| Deployment transaction | [`0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97`](https://explorer-studio.genlayer.com/tx/0xad9f68174094e34fd971d31314a097d783ed717fe4f07b9524ebd49beca9ec97) |
-| Receipt | `FINALIZED`, `MAJORITY_AGREE`, five votes agree, leader execution `SUCCESS` |
-| Value | `0`, `value_credited=false` |
-| Deployed source comparison | Exact byte-for-byte match with the contract file at the source commit |
-| Canonical `get_config` | Chain 61999; protocol `revigate-registry-v1`; version 2; custody `NONE` |
+| Wallet A (publisher, Rabby signer) | `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5` |
+| Wallet B (participant identity reserved for separate tests) | `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54` |
+| Network | GenLayer Studionet, chain `61999` |
+| Registry | `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3` |
 
-### Baseline and acknowledgment
+All current writes below were signed by Wallet A, attached zero native value,
+and recorded `value_credited=false`. No escrow, Vault, deposit, credit, refund,
+payout, or user funds were involved.
+
+### Exact Registry deployment
+
+The corrected Registry source is commit `46b749669c532bf85b3491d2ea6dd4bcee987422`,
+Git blob `3e094b1b359cc7d451a209db79a2456cbc17bd`, SHA-256
+`EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
+Deployment transaction
+[`0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2`](https://explorer-studio.genlayer.com/tx/0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2)
+finalized with `MAJORITY_AGREE`, successful execution, and exact source
+attestation. `get_config` read back chain 61999, protocol
+`revigate-registry-v1`, version 2, custody `NONE`.
+
+### Program 3 baseline and revisions
+
+The signed baseline is GitHub commit
+[`b1c5254617155214e210a39dafd742fd33b102d6`](https://github.com/Bibidee/revigate/commit/b1c5254617155214e210a39dafd742fd33b102d6)
+on branch `revigate-rulebook-wallet-a-web`. Its manifest nominates Wallet A.
 
 | Action | Transaction | Canonical result |
 |---|---|---|
-| Register baseline | `0xc4069ee95a663fb183e801b6c31912a0737573cf11380b2b9187a5f7d9db6e52` | Program 1; publisher is the nominated test wallet; repository `bibidee/revigate`; fixture branch `revigate-rulebook-fixture-v2`; fixed manifest and rulebook paths. |
-| Verify baseline | `0xb2ef13b3191e01b884f7a59cc6ffa6a86520da83fe24ecdcf976bfa0365cccd9` | Finalized; canonical program `VERIFIED`, baseline SHA `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`, epoch 1, digest `ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170`. |
-| Publisher acknowledgment | `0x96d42b7cbc90339dda4f0c16752139450b30fbbe1cbe89d12b49b296c46a46b0` | Finalized; readback matched the publisher wallet, epoch 1, baseline SHA, and baseline digest. |
+| Register baseline | [`0xf14863cefa5c8c80526b55f1500cdc111c859f4fa0bfd670f93968a49433aa0b`](https://explorer-studio.genlayer.com/tx/0xf14863cefa5c8c80526b55f1500cdc111c859f4fa0bfd670f93968a49433aa0b) | Program `3`, finalized, zero value. |
+| Verify baseline | [`0x6ee5b6bbb3f67d3971bbe965b7386a542872cc9ba6c1e43bbd0c6b0cfa59f048`](https://explorer-studio.genlayer.com/tx/0x6ee5b6bbb3f67d3971bbe965b7386a542872cc9ba6c1e43bbd0c6b0cfa59f048) | `VERIFIED`, epoch 1, active/baseline SHA `b1c5254617155214e210a39dafd742fd33b102d6`, digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`. |
+| Signed NONMATERIAL candidate | GitHub commit [`ee033cbef9450f58990b01eac77b5949453f2130`](https://github.com/Bibidee/revigate/commit/ee033cbef9450f58990b01eac77b5949453f2130), green `Verified` | Editorial-only change. |
+| Request NONMATERIAL review | [`0xb0747438b5d83667b6aa551093aa9ff66240de0b75587a9d1aa6d0002934c82e`](https://explorer-studio.genlayer.com/tx/0xb0747438b5d83667b6aa551093aa9ff66240de0b75587a9d1aa6d0002934c82e) | Review `3`, finalized, zero value. |
+| Assess NONMATERIAL review 3 | [`0x19f9190ef84f8e6e459796dcd7d6b641c5151396cae7945a60efa9c6c083f37c`](https://explorer-studio.genlayer.com/tx/0x19f9190ef84f8e6e459796dcd7d6b641c5151396cae7945a60efa9c6c083f37c) | Actual `NONMATERIAL`; active SHA became `ee033cbef9450f58990b01eac77b5949453f2130`, epoch remained 1, pending review 0. |
+| Signed MATERIAL candidate | GitHub commit [`ecac64c4f95a527c9f587ab992d6e503d713bb11`](https://github.com/Bibidee/revigate/commit/ecac64c4f95a527c9f587ab992d6e503d713bb11), green `Verified` | R-01 changed to a mandatory 60-day eligibility rule. |
+| Request MATERIAL review | [`0xd2dee5dbfce5b605aa7003554f25ba483565ecbf95d887120bc675a37614b4a3`](https://explorer-studio.genlayer.com/tx/0xd2dee5dbfce5b605aa7003554f25ba483565ecbf95d887120bc675a37614b4a3) | Review `4`, finalized, zero value. |
+| Assess MATERIAL review 4 | [`0x18f4f7327ad2f68e7ac33ec6aa62eccd9013ffcf504ac941e9df5b5fdee74340`](https://explorer-studio.genlayer.com/tx/0x18f4f7327ad2f68e7ac33ec6aa62eccd9013ffcf504ac941e9df5b5fdee74340) | Actual `MATERIAL`; both sources `VERIFIED`; active SHA became `ecac64c4f95a527c9f587ab992d6e503d713bb11`, epoch 2. |
+| Signed ambiguous candidate | GitHub commit [`d35d438d0e45e58e3227f95135fa3a2abc523aed`](https://github.com/Bibidee/revigate/commit/d35d438d0e45e58e3227f95135fa3a2abc523aed), green `Verified` | R-01 changed to “generally qualify after sufficient participation, subject to exceptional circumstances.” |
+| Request ambiguous review | [`0x5f19d93b54db9740ffd8f9cc12144632cba4b7553205622a1b970870c9646cd9`](https://explorer-studio.genlayer.com/tx/0x5f19d93b54db9740ffd8f9cc12144632cba4b7553205622a1b970870c9646cd9) | Review `5`, finalized, zero value. |
+| Assess ambiguous review 5 | [`0xc60c1c640fe1fc9803056e596e61bdfcdee05e60609ded5c7f38b82e163f6956`](https://explorer-studio.genlayer.com/tx/0xc60c1c640fe1fc9803056e596e61bdfcdee05e60609ded5c7f38b82e163f6956) | **Actual `MATERIAL`**, `MAJORITY_AGREE`; three validators completed `AGREE` and two were idle after quorum. Both sources `VERIFIED`; changed clause `R-01`. |
 
-### Signed revisions and actual hosted outcomes
+Review 5 canonical result recorded candidate digest
+`2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`, proof
+digest `addbf2d8fd469c539e8caee0712aa2a8289e691707f12556a52bdef0f8798d66`,
+and rationale that the vague eligibility and exception language materially
+changed participant criteria and discretion.
 
-The fixture signatures and publisher nomination are independently recorded in [rulebook fixture evidence](RULEBOOK_FIXTURE_EVIDENCE.md). The outcomes below are hosted transaction results; fixture names do not determine or substitute for an outcome.
+Final `get_program(3)` readback:
 
-| Fixture | Request / assessment | Actual outcome and canonical readback |
-|---|---|---|
-| NONMATERIAL, commit `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10` | Request `0xb33c3f63d957b00ac2a90883d6dec2898234287347745f72ad87afc73e3b2ffa`; assessment `0xfb6cb52f1145c564ef2b3feae7a728cdccc8f970118987b2c8041e9628ebd624` | Finalized as `NONMATERIAL`. Program readback after assessment: status `VERIFIED`, active SHA `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`, digest `55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4`, epoch 1, `pending_review=0`, material-event count 0. |
-| MATERIAL, commit `376e447065b8a7efd1d26a60c6c9ac476bd1e567` | Request `0xe87dfeb08031474f41c442c116c196788571740e633e253540f5d529d95cdfe2`; assessment `0xbc87505c4131907777fd7ea3a9c8d38fa762bbdbcbabf09984cfa4159a31bf0b` | Finalized assessment result `INCONCLUSIVE`. Canonical result records `base_source_status=INCONCLUSIVE` and `candidate_source_status=INCONCLUSIVE`; each reason is `commit request failed with HTTP status 403`. Program stayed on the NONMATERIAL SHA/digest at epoch 1, with no pending review. This is not a semantic MATERIAL verdict. |
-| Ambiguous, commit `14401f20f2d3eeeac537746966646809e5c01b8c` | Initial request `0x5b32091c5e36b98acb0ad193ebf53dde25c69a2bad25fc3dc4e3216cb53c8552` | Finalized with `MAJORITY_AGREE` consensus but execution `ERROR` on all five validators. Validator results decoded to `A review is pending or the publisher cooldown is active`; canonical state had no pending review. The preceding material request timestamp was `1791997634`; this request was timestamped `1791997772`, 138 seconds later, inside the contract's 300-second publisher cooldown. No review was created. |
-| Ambiguous after cooldown, commit `14401f20f2d3eeeac537746966646809e5c01b8c` | Request `0xb85625fdb851b9bb1c4708bdb9ee34581e21bc59e3ed8f8d19419f48d1b82d5a`; review 3 assessment `0x6829dae057666682f4775dd0bfd001e0b95017380c9ce6ae0d8abdbe1654bcc9` | Request finalized and returned review ID 3. Assessment finalized with `MAJORITY_AGREE`; three executions completed with `INCONCLUSIVE`, while two validator executions were cancelled after quorum. Canonical review 3 is `INCONCLUSIVE`; both source lookup reasons are HTTP 403. The ambiguity itself was not semantically assessed. |
+```json
+{
+  "status": "VERIFIED",
+  "active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+  "baseline_sha": "b1c5254617155214e210a39dafd742fd33b102d6",
+  "document_digest": "2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b",
+  "epoch": 3,
+  "material_event_count": 2,
+  "pending_review": 0,
+  "publisher": "0x4a7d76b8c4668a3426d6d54ec24b41fa87b532f5"
+}
+```
 
-Final canonical program readback: `VERIFIED`; active SHA `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`; digest `55fa1674d3523cb117b08643556f06ea39085790266ba047fe430fc0cf2ae3a4`; epoch 1; `pending_review=0`; material-event count 0. The existing deployment successfully verified the baseline, but hosted source authentication later returned HTTP 403 for both revisions' base and candidate commit requests. The response establishes the status code, not the underlying reason for the provider denial.
+### Browser boundary
 
-## 2026-10-14 source correction and hosted probe status
+The production browser is bound to the Registry-only frontend at
+`https://the-revigate.vercel.app`, Studionet 61999, and Rabby account Wallet A.
+The publisher page signed the current request and assessment above. The browser
+observer conservatively labels the RPC wrapper `pending` or
+`finalized-execution-unknown` when the endpoint omits an execution-name field;
+the canonical receipt and `get_review`/`get_program` readbacks above are the
+source of truth. Wallet B was not used in this clean publisher lifecycle and no
+participant funds were accepted.
 
-The current local Registry source correction is commit
-`46b749669c532bf85b3491d2ea6dd4bcee987422`. Its contract file has Git blob
-`3e094b1b359cc7d451a209db79a2456cbc17bd` and SHA-256
-`EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
-It stores authenticated source snapshots, classifies GitHub provider errors,
-and applies bounded retry timing based on response headers. This paragraph
-records the historical state before the corrected deployment documented below;
-the address and deployment transaction above attest only source commit `4971823`.
-
-A disposable, zero-value GitHub diagnostic contract at
-`evidence/github-access-diagnostic/github_api_probe.py` was deployed at
-`0x1d89559F621AEb81b53E7004Fe54BfBe1D5c9a02`. Deployment transaction
-`0x45aa328c86e642173a3a331e0c25d0030100fa1808c3d80c1530a4ff8418f8ae`
-finalized `MAJORITY_AGREE`: four validators agreed, one was idle, execution
-succeeded, and `value_credited=false`. Deployed-source readback exactly
-matched the local source, SHA-256
-`82328DAF235D06A2C790AE093D916E4E69EF3EA6F37F03378981ECDD91396F1D`.
-
-Probe transaction
-`0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228`
-finalized `MAJORITY_DISAGREE` after four rounds, with three disagreeing votes
-and two validators cancelled after quorum. The leader and completed validator
-executions each succeeded and observed HTTP 200 from both the signed fixture
-commit endpoint and GitHub's rate-limit endpoint. The captured rate-limit
-response reported a core limit of 60 with 42 remaining.
-
-The disagreement does not indicate another provider denial. The probe
-truncated the successful commit body to 512 bytes before attempting JSON
-parsing, so its separate `sha` field was empty. Because the validator requires
-that field to equal the expected commit SHA on HTTP 200, it returned false.
-The evidence proves that the two public URLs were reachable during this run
-and that the earlier 403 did not recur. It cannot establish why the historical
-403 occurred, so that cause remains **unknown**.
-
-There is no new Registry source attestation or current-source lifecycle in
-this correction record. The diagnostic address is not the Registry and does
-not attest corrected Registry source `46b7496`. The hosted baseline and
-NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
-ambiguous fixtures, remain valid only for the earlier deployed Registry.
-
-## 2026-10-14 corrected Registry deployment and lifecycle
-
-The corrected Registry source at commit `46b749669c532bf85b3491d2ea6dd4bcee987422` was deployed with the repository-local CLI to `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. Deployment transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2` finalized `MAJORITY_AGREE` with execution `SUCCESS` and `value_credited=false`. Source readback exactly matched local SHA-256 `EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56` and Git blob `3e094b1b359cc7d451a209db79a2456cbc17bd`. `get_config` returned chain 61999, contract version 2, protocol `revigate-registry-v1`, custody `NONE`.
-
-| Action | Transaction | Final result |
-|---|---|---|
-| Register signed baseline | `0xc48d0fffa186b9c35ec1e7181b2902feb7a1f9b48019d4795609f5cab255fe09` | Program 1, finalized successfully, zero value. |
-| Verify baseline | `0xad3ee46ca318d710c1a957d4f47a51c4c464d00f0cbb2025f980eaede6f86db8` | `VERIFIED`, epoch 1, baseline SHA `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`. |
-| Request material revision | `0x1deee7091023f61e2797fe526cae9521e5ef8a7d34fff07826cab49fd2f45f52` | Review 1 created. |
-| Assess material revision | `0xeae537a1354d3335cb9c721eb6225edd4ffe71a52e7629d75b819a4c6756df1f` | Actual `MATERIAL`; canonical review sources `VERIFIED`; active SHA advanced to `376e447065b8a7efd1d26a60c6c9ac476bd1e567`, epoch 2. |
-| Request ambiguous revision after cooldown | `0x79c27d3aed9bdd7bfeb6073764b91d5fe3108744083bb930a77369b559493a12` | Review 2 created and finalized successfully. |
-| Assess ambiguous revision | `0x37bff50bff4456cb062fda7a210d6a4f3a8ac8d37d9585d4f08c4b78f37ab866` | Actual `MATERIAL`, `MAJORITY_AGREE`; three validators agreed and two were idle after quorum. Both sources were `VERIFIED`. |
-
-Canonical review 2 records candidate digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, proof digest `5c8e51d5b8d47f5b57de572bb1643769df42be42965b2504dee1e8d545f559aa`, changed clause `R-01`, and rationale that replacing the 60-day rule with vague sufficient participation plus discretion changed eligibility criteria. Final `get_program(1)` returned `VERIFIED`, active SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, epoch 3, material-event count 2, `pending_review=0`, and `provider_retry_at=0`.
-
-This current lifecycle supersedes the older deployment's HTTP 403 outcomes for release-gate verification. It does not prove the cause of those historical 403 responses. Production writes remain locked, no funds were accepted, and no merge or production promotion occurred.
+Older Program 1/2 records, the old fixture branch, and the old `0x527d…` signer
+are historical evidence only. They do not define the current wallet identities.
 
 ### Release boundaries
 
-This is a zero-value Studionet test deployment, not a production deployment. No user funds were accepted, production writes remain locked, and no merge or production promotion occurred. These transactions show actual baseline verification, acknowledgment, and one NONMATERIAL transition. They do not demonstrate a hosted MATERIAL result, a semantic ambiguous-language result, validator disagreement, or prompt-injection handling. The full outcome ledger is in [the T01–T52 matrix](TEST_MATRIX.md); the verdict remains **NOT RELEASED**.
-
-## 2026-10-14 live browser validation
-
-The public noncustodial frontend at `https://the-revigate.vercel.app` was exercised in Brave against Studionet chain 61999. The reading room, publisher, acknowledgments, activity, about, and `/program/1/` routes all loaded over HTTPS. The browser read the exact canonical Program 1 record (`VERIFIED`, epoch 3, active SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, `pending_review=0`, material-event count 2).
-
-Wallet B `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54` signed the zero-value `acknowledge_rules` action for Program 1, epoch 3. Transaction `0xb3c62284235bddd5f785f4c8c47bb9da0f4e924c0c675ec89328def5b199f140` finalized on the Registry. The transaction sender and recipient were checked, `value_credited=false`, and the canonical acknowledgment history readback showed the epoch 3 SHA and digest. The browser observer conservatively labeled the RPC response `finalized-execution-unknown` because this endpoint omitted `txExecutionResultName`; the receipt itself had `statusName=FINALIZED`, `result_name=MAJORITY_AGREE`, leader payload `true`, successful validator executions, and no retry was submitted.
-
-The browser also read canonical review 1 (`376e447065b8a7efd1d26a60c6c9ac476bd1e567`) and review 2 (`14401f20f2d3eeeac537746966646809e5c01b8c`). Both showed `base_source_status=VERIFIED`, `candidate_source_status=VERIFIED`, and actual `MATERIAL` outcomes. Review 1 recorded the 14-to-60-day eligibility change; review 2 recorded the ambiguous discretion change in `R-01`.
-
-The connected Rabby account during the publisher-page check was `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`. Program 2 is owned by that address but remains `PROPOSED`; its existing verification transaction `0xb3d5a978732741af0b0ad04b65cd6f271aca6ef46a87f48262ede91b3ed8b43b` finalized `MAJORITY_AGREE` with execution `INCONCLUSIVE` because the signed manifest nominates the different publisher `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`. No retry was submitted. The successful publisher lifecycle for Program 1 therefore remains bound to the manifest wallet `0x527d…56b5`; a browser publisher write from that account is still unverified.
-
-These browser checks used zero native value. They do not prove wallet-extension account switching, network switching, rejection handling, or independent security review. Production writes remain locked and the release verdict remains **NOT RELEASED**.
-
-## 2026-10-14 source correction and hosted probe status
-
-The current local Registry source correction is commit
-`46b749669c532bf85b3491d2ea6dd4bcee987422`. Its contract file has Git blob
-`3e094b1b359cc7d451a209db79a2456cbc17bd` and SHA-256
-`EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56`.
-It stores authenticated source snapshots, classifies GitHub provider errors,
-and applies bounded retry timing based on response headers. This duplicate
-historical record predates the corrected deployment documented below; the
-address and deployment transaction above attest only source commit `4971823`.
-
-A disposable, zero-value GitHub diagnostic contract at
-`evidence/github-access-diagnostic/github_api_probe.py` was deployed at
-`0x1d89559F621AEb81b53E7004Fe54BfBe1D5c9a02`. Deployment transaction
-`0x45aa328c86e642173a3a331e0c25d0030100fa1808c3d80c1530a4ff8418f8ae`
-finalized `MAJORITY_AGREE`, and deployed-source readback exactly matched local
-SHA-256 `82328DAF235D06A2C790AE093D916E4E69EF3EA6F37F03378981ECDD91396F1D`.
-Probe transaction
-`0x2add2cd295c1cbcfc2753631582947d4ef59b266eef77bb377cc7d74469c0228`
-finalized `MAJORITY_DISAGREE`, although both endpoints returned HTTP 200 and
-the rate-limit response reported 42 of 60 core requests remaining. The
-disagreement came from truncating the commit response before JSON parsing,
-which left the comparison SHA empty. The earlier 403 did not recur, but its
-historical cause remains **unknown**.
-
-There is no new Registry source attestation or current-source lifecycle in
-this correction record. The diagnostic address is not the Registry and does
-not attest corrected Registry source `46b7496`. The hosted baseline and
-NONMATERIAL outcomes, and the actual INCONCLUSIVE outcomes for MATERIAL and
-ambiguous fixtures, remain valid only for the earlier deployed Registry.
+This is zero-value Studionet test evidence, not a production release. Escrow and
+custody are absent. Production writes remain locked; no user funds were accepted;
+PR #1 remains a draft; and no merge or production promotion occurred. The full
+52-scenario matrix, independent security review, protected Vercel preview,
+and wallet-extension account/network/rejection coverage are still separate
+release gates.

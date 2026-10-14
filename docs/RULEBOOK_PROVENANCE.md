@@ -36,16 +36,18 @@ GitHub HEAD is mutable. Registry V2 does not poll branches or automatically dete
 ## Canonical fixtures
 See `fixtures/rulebook_v1.md`, `fixtures/rulebook_v1_typo.md`, `fixtures/rulebook_v2_material.md`, `fixtures/rulebook_v2_ambiguous.md` and `fixtures/publisher_manifest.example.json`. These are **synthetic local tests only**, not public signed GitHub publication records. Live signed commits must be created in a repository controlled by the tester and their URLs recorded as real evidence.
 
-## 2026-10-14 GitHub signing attempt
+## 2026-10-14 current signed publication
 
-A test baseline object was assembled from `fixtures/rulebook_v1.md` at
-`rules/program.md` and `.revigate/publisher.json` nominating the active test
-publisher wallet `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` on chain 61999.
-GitHub's public commit API reports the resulting object
-[`3986cbdb35e55e0cffc1457190605787680f1170`](https://github.com/Bibidee/revigate/commit/3986cbdb35e55e0cffc1457190605787680f1170)
-as `verified=false`, reason `unsigned`, with null signature and payload. The
-object was not referenced by or pushed to the remediation branch. No revision
-commits were created from it and no Registry verification call was made. The
-GitHub API commit path does not provide the user's signing key; local signing
-tools and keys are unavailable in this environment. Do not treat this object
-or any fixture as an authenticated publication.
+The live fixture is on branch `revigate-rulebook-wallet-a-web` in
+`Bibidee/revigate`. Its manifest nominates Wallet A
+`0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5` on chain 61999. The baseline
+commit is `b1c5254617155214e210a39dafd742fd33b102d6`; the verified ancestry
+continues through `ee033cbef9450f58990b01eac77b5949453f2130`,
+`ecac64c4f95a527c9f587ab992d6e503d713bb11`, and the current ambiguous head
+`d35d438d0e45e58e3227f95135fa3a2abc523aed`. GitHub shows the green Verified
+badge for each commit. These records establish GitHub-side verification and a
+published wallet nomination; they do not establish legal identity.
+
+The previously documented `0x527d...` address and unsigned object
+`3986cbdb35e55e0cffc1457190605787680f1170` are archived historical attempts.
+They are not part of the current fixture or current publisher identity.

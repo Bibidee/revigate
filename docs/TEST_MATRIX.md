@@ -1,8 +1,8 @@
 # Registry V2 test matrix
 
-Recorded 2026-10-14 for source correction commit `46b749669c532bf85b3491d2ea6dd4bcee987422` on branch `codex/revigate-remediation-2026-10-14`. The evidence update at `ab4d2c29e2f1592eac80947d5170a08020b98f72` was verified by GitHub Actions run 18. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
+Recorded 2026-10-14 for the clean Wallet A lifecycle on corrected Registry `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`. This matrix covers the noncustodial Registry only. Historical escrow tests remain archived and do not count toward this release.
 
-Local verification for source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`: 10 JavaScript tests and 34 Direct Mode tests pass; TypeScript, lint, the Studionet source guard, and the production build pass. Direct Mode uses mocked providers. GitHub Actions run 18 (ID `38615258759`) passed on evidence commit `ab4d2c29e2f1592eac80947d5170a08020b98f72`, including `npm ci`, frozen Python dependencies, preflight, production build, and production dependency audit. `PARTIAL` and `BLOCKED` entries are not release passes.
+Local verification currently passes 13 JavaScript tests and 34 Direct Mode tests (47 total). Direct Mode uses mocked providers. TypeScript, lint, source guard, and production-build evidence remain recorded on the remediation branch. A fresh CI run for this evidence update is still required. `PARTIAL` and `BLOCKED` entries are not release passes.
 
 | ID | Status | Evidence or boundary |
 |---|---|---|
@@ -36,11 +36,11 @@ Local verification for source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`:
 | T28 | PASS | Registry configuration requires chain 61999, protocol v1, version 2, custody NONE. |
 | T29 | PASS | Every frontend write constructs native value zero. |
 | T30 | PASS | Stored pending transactions reject nonzero value and are chain/address scoped. |
-| T31 | PARTIAL | Live browser connected to Rabby and exposed the active account; a wallet B acknowledgment was signed. Extension account switching, network switching, and disconnect cleanup remain unverified. |
-| T32 | PASS | Hosted baseline verification on signed commit `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`; verification transaction `0xb2ef13b3191e01b884f7a59cc6ffa6a86520da83fe24ecdcf976bfa0365cccd9`, canonical state VERIFIED at epoch 1. |
-| T33 | PASS | Hosted NONMATERIAL assessment of signed commit `7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10`; assessment transaction `0xfb6cb52f1145c564ef2b3feae7a728cdccc8f970118987b2c8041e9628ebd624`; canonical readback updated active SHA/digest and kept epoch 1. |
-| T34 | PARTIAL | Signed material candidate `376e447065b8a7efd1d26a60c6c9ac476bd1e567` was assessed, but the actual result was INCONCLUSIVE: base and candidate GitHub commit lookups returned HTTP 403. Program state did not advance. |
-| T35 | PASS | On corrected Registry `0xFe59…36B3`, signed ambiguous candidate `14401f20f2d3eeeac537746966646809e5c01b8c` assessment `0x37bff50bff4456cb062fda7a210d6a4f3a8ac8d37d9585d4f08c4b78f37ab866` returned actual `MATERIAL`; both sources were `VERIFIED`, three validators agreed, and two were idle after quorum. |
+| T31 | PARTIAL | Live browser connected Rabby as Wallet A and signed the current publisher request and assessment. Extension account switching, network switching, rejection, disconnect cleanup, and Wallet B participation remain unverified. |
+| T32 | PASS | Program 3 baseline `b1c5254617155214e210a39dafd742fd33b102d6`; verification transaction `0x6ee5b6bbb3f67d3971bbe965b7386a542872cc9ba6c1e43bbd0c6b0cfa59f048`; canonical state VERIFIED at epoch 1. |
+| T33 | PASS | Hosted NONMATERIAL assessment of signed commit `ee033cbef9450f58990b01eac77b5949453f2130`; assessment `0x19f9190ef84f8e6e459796dcd7d6b641c5151396cae7945a60efa9c6c083f37c`; canonical readback updated active SHA/digest and kept epoch 1. |
+| T34 | PASS | Signed material candidate `ecac64c4f95a527c9f587ab992d6e503d713bb11`; assessment `0x18f4f7327ad2f68e7ac33ec6aa62eccd9013ffcf504ac941e9df5b5fdee74340`; actual `MATERIAL`, both source statuses VERIFIED, epoch advanced to 2. |
+| T35 | PASS | Signed ambiguous candidate `d35d438d0e45e58e3227f95135fa3a2abc523aed`; request `0x5f19d93b54db9740ffd8f9cc12144632cba4b7553205622a1b970870c9646cd9`, assessment `0xc60c1c640fe1fc9803056e596e61bdfcdee05e60609ded5c7f38b82e163f6956`; actual `MATERIAL`, both sources VERIFIED, three validators agreed and two were idle after quorum. |
 | T36 | BLOCKED | Hosted prompt-injection case has not been run; source-authentication 403 prevents a trustworthy semantic comparison. |
 | T37 | BLOCKED | No validator disagreement or undetermined outcome has been observed. Quorum-cancelled validator executions are not disagreement. |
 | T38 | PASS | Unsafe repository paths and source identity mismatches fail closed locally. |
@@ -48,17 +48,17 @@ Local verification for source commit `46b749669c532bf85b3491d2ea6dd4bcee987422`:
 | T40 | PASS | Wrong repository and non-descendant revision fixtures fail closed locally. |
 | T41 | PASS | Unscoped preamble is included in the Registry clause map and semantic diff. |
 | T42 | PASS | Production build prerenders all nine active routes with the Registry-only frontend. |
-| T43 | PARTIAL | Live route checks and a signed wallet B acknowledgment passed. Publisher-account switching to the manifest wallet, network changes, rejection, and provider-absence UI remain unverified. |
-| T44 | PARTIAL | The browser observed a finalized acknowledgment and canonical readback; the RPC omitted `txExecutionResultName`, so the UI conservatively classified it as finalized-execution-unknown. Local classification tests still cover the remaining states. |
+| T43 | PARTIAL | Live route checks passed and Wallet A signed the current publisher request and assessment. Publisher/participant account switching, network changes, rejection, disconnect recovery, and provider-absence UI remain unverified. |
+| T44 | PARTIAL | The browser observer conservatively classified the current Registry wrappers as pending or finalized-execution-unknown when the RPC omitted an execution-name field; canonical receipts and review/program readbacks were successful. Local classification tests cover remaining states. |
 | T45 | PASS | Returned hashes persist; pre-hash rejection stores nothing; storage failure exposes the hash in local tests. |
-| T46 | PASS | Corrected-source hosted write/readback checks match for baseline verification and both MATERIAL decisions; final state is epoch 3, two material events, and no pending review. |
-| T47 | PARTIAL | Browser navigation across the live routes preserved the saved zero-value acknowledgment hash and canonical readback. Full refresh/account-switch recovery remains unverified. |
+| T46 | PASS | Corrected-source hosted write/readback checks match for baseline verification, NONMATERIAL, MATERIAL, and ambiguous MATERIAL decisions; final Program 3 state is epoch 3, two material events, and no pending review. |
+| T47 | PARTIAL | Browser navigation and current publisher writes were exercised; full refresh recovery, account switching, and disconnect recovery remain unverified. |
 | T48 | PASS | Program, review, material-event, and acknowledgment reads use bounded pagination. |
-| T49 | PASS | Exact corrected-source deployment verified the signed baseline, then returned actual `MATERIAL` for the 14-to-60-day fixture and actual `MATERIAL` for the ambiguous fixture. Canonical sources were verified and final state advanced to epoch 3. Historical 403 cause remains unknown. |
+| T49 | PASS | Exact corrected-source deployment verified the signed baseline, returned actual `NONMATERIAL` for the editorial fixture, and actual `MATERIAL` for both the 60-day and ambiguous fixtures. Canonical sources were VERIFIED and final Program 3 state advanced to epoch 3. Historical 403 cause remains unknown. |
 | T50 | N/A | Financial payout, refund, and exit cases were retired with escrow and are outside Registry V2. |
 | T51 | PASS | Corrected Registry source `46b749669c532bf85b3491d2ea6dd4bcee987422` is deployed and exactly attested at `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`, transaction `0xe51db5761f1808bdb93b3a98a4d895e31339a48a85882b8c081a4e455dc6fbf2`. |
-| T52 | PARTIAL | Local preflight and hosted lifecycle evidence pass. Live public routes and wallet B acknowledgment were exercised, but the protected preview, manifest-wallet publisher signing, remaining extension flows, and independent review remain incomplete. |
+| T52 | PARTIAL | Local tests and the clean hosted Wallet A lifecycle pass. Public routes and signed publisher writes were exercised, but protected preview access, remaining extension flows, fresh CI for this evidence update, and independent review remain incomplete. |
 
 ## Current decision
 
-NOT RELEASED. The corrected Registry is deployed, source-attested, and has produced hosted semantic results for both required revisions. Live public routes and a zero-value wallet B acknowledgment were exercised, but manifest-wallet publisher signing, remaining wallet-extension flows, the protected preview, independent security review, and fresh CI for this evidence update remain incomplete. The historical 403 cause remains unknown. No user funds were accepted, and no merge or production promotion occurred.
+NOT RELEASED. The corrected Registry is deployed and source-attested. Program 3 has verified baseline, NONMATERIAL, MATERIAL, and ambiguous MATERIAL results with canonical finality. Wallet A is the only current publisher signer; Wallet B has not been used in this clean publisher cycle. Protected preview access, remaining wallet-extension flows, independent security review, and fresh CI remain open. No user funds were accepted, and no merge or production promotion occurred.
