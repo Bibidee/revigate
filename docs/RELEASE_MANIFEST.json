@@ -176,6 +176,12 @@
     "local_observer_probe_status_at_capture": "ACCEPTED_FIVE_AGREE_NOT_TERMINAL",
     "local_observer_probe_value_credited": false,
     "local_observer_probe_replay": "NONE",
+    "local_observer_probe_later_poll": {
+      "method": "eth_getTransactionByHash",
+      "response": "RESOURCE_NOT_FOUND",
+      "interpretation": "UNAVAILABLE_NOT_FINALITY_OR_FAILURE",
+      "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
+    },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
     "remaining": ["terminal finality readback for local observer probe", "fresh public deployment/browser rerun for observer hardening", "extension rejection/disconnect coverage", "protected preview requires Vercel authentication", "independent security review"]
   },

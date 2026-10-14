@@ -1,0 +1,20 @@
+{
+  "network": "GenLayer Studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "method": "eth_getTransactionByHash",
+  "probe_hash": "0x7fd119eb65480dd7ef401dc862a751515f0613fcd4058d383b7a76d4b69d823",
+  "response": {
+    "jsonrpc": "2.0",
+    "error": {
+      "code": -32001,
+      "message": "Transaction 0x7fd119eb65480dd7ef401dc862a751515f0613fcd4058d383b7a76d4b69d823 not found",
+      "data": {
+        "hash": "0x7fd119eb65480dd7ef401dc862a751515f0613fcd4058d383b7a76d4b69d823"
+      }
+    },
+    "id": 1
+  },
+  "comparison_finalized_hash": "0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209",
+  "interpretation": "The previously observed ACCEPTED probe is currently unavailable through this RPC method. This does not prove FINALIZED, failure, cancellation, or rollback. No retry was submitted."
+}
