@@ -132,13 +132,14 @@ protected preview still redirects a normal browser to Vercel login.
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
 PR #1 remains a draft, and the draft was not merged. The corrected
-reconciliation/source-integrity frontend is promoted, but hosted prompt-injection
-and disagreement evidence, independent review, and full extension-level wallet
-flows remain open.
+reconciliation/source-integrity frontend is promoted, but hosted assessment and
+disagreement evidence for the now-verified prompt-injection fixture, independent
+review, and full extension-level wallet flows remain open.
 GitHub `main` branch protection is enabled with strict `verify` and `Vercel`
 checks, one required approval, last-push approval, and admin enforcement.
-Independent security review, extension-level flow checks, and a
-GitHub-verified prompt-injection fixture remain open gates. Production
+Independent security review, extension-level flow checks, and the hosted
+assessment/disagreement for the GitHub-verified prompt-injection fixture remain
+open gates. Production
 app-session disconnect is recorded in
 `evidence/local-browser/2026-10-15-production-disconnect.json`; observer
 evidence is in `evidence/local-browser/2026-10-15-production-observer.json`.

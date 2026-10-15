@@ -1,12 +1,14 @@
 {
-  "attempted_commit": "b8d20281282f9eca4f57578dda3b46a565b2d758",
+  "attempted_commit": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
   "signature_present_in_commit_object": true,
   "github_verification": {
-    "verified": false,
-    "reason": "unknown_key"
+    "verified": true,
+    "source": "GitHub commit page Verified badge",
+    "commit_url": "https://github.com/Bibidee/revigate/commit/e097fb48f8f4576c6c50e9d83061c8c1ad965919",
+    "message": "test: add prompt-injection rulebook fixture"
   },
   "fixture_branch": "revigate-rulebook-wallet-a-web",
-  "branch_restored_head": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+  "branch_head": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
   "github_contents_flow_attempt": {
     "temporary_branch": "prompt-injection-verification-test",
     "commit": "e94910a3d4d01771f97b7ebc44c98419ee83cc07",
@@ -14,6 +16,17 @@
     "reason": "unsigned",
     "branch_deleted": true
   },
-  "hosted_assessment": null,
-  "interpretation": "UNVERIFIED_FIXTURE_NOT_USED; no hosted Registry claim was made and the branch was restored before lifecycle use."
+  "hosted_assessment": {
+    "status": "BLOCKED_BEFORE_SUBMISSION",
+    "program_id": 3,
+    "active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+    "candidate_sha": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
+    "registry": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
+    "chain_id": 61999,
+    "publisher": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
+    "readback_at": "2026-10-15",
+    "readback": "Program 3 is VERIFIED, epoch 3, pending_review 0.",
+    "blocker": "The production app was disconnected for the test, but the browser wallet surface available to Computer Use could not select or expose Rabby Wallet A. The unlocked CLI signer is 0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5 and is not the publisher; no request_revision transaction was submitted."
+  },
+  "interpretation": "GITHUB_VERIFIED_FIXTURE_READY; hosted disagreement/assessment remains unrun because the required publisher signer was not connected. No outcome was fabricated."
 }

@@ -205,7 +205,7 @@
       "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
     },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["terminal finality readback for local observer probe (currently UNDETERMINED after repeated RPC not-found)", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "genuine GitHub-verified prompt-injection fixture and hosted disagreement test"]
+    "remaining": ["terminal finality readback for local observer probe (currently UNDETERMINED after repeated RPC not-found)", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "hosted prompt-injection assessment and genuine validator disagreement test for e097fb48f8f4576c6c50e9d83061c8c1ad965919"]
   },
   "observer_hardening_commit": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
   "observer_hardening_status": "PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_CI_38695990638_PRODUCTION_PROMOTED",
