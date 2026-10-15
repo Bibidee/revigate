@@ -17,14 +17,19 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   const [contractStatus, setContractStatus] = useState(() => process.env.NEXT_PUBLIC_REVIGATE_REGISTRY ? "Checking Registry…" : "Registry is not configured.");
   const walletSession = useRef<ReturnType<typeof watchWallet> | undefined>(undefined);
   const wrongNetwork = Boolean(chain && Number.parseInt(chain, 16) !== 61999);
-  useEffect(() => {
-    const provider = window.ethereum;
-    if (!provider) return;
+  function attachWalletSession(provider: Provider) {
+    if (walletSession.current) return walletSession.current;
     const session = watchWallet(provider, (next) => {
       if (appDisconnected.current) return;
       setAccount(next.account); setChain(next.chainId);
     });
     walletSession.current = session;
+    return session;
+  }
+  useEffect(() => {
+    const provider = window.ethereum;
+    if (!provider) return;
+    const session = attachWalletSession(provider);
     return () => { session.stop(); walletSession.current = undefined; };
   }, []);
   useEffect(() => {
@@ -38,9 +43,10 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   }, []);
   async function connect() {
     const provider = window.ethereum;
-    if (!provider || !walletSession.current) { setMessage("Install an EIP-1193 wallet such as MetaMask or Rabby to connect."); return; }
+    if (!provider) { setMessage("Install an EIP-1193 wallet such as MetaMask or Rabby to connect."); return; }
+    const session = attachWalletSession(provider);
     try {
-      const state = await requestWalletConnection(provider, walletSession.current);
+      const state = await requestWalletConnection(provider, session);
       appDisconnected.current = false;
       setAccount(state.account); setChain(state.chainId);
       window.dispatchEvent(new Event("revigate:wallet-connect"));
