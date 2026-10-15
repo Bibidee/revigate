@@ -106,6 +106,16 @@ remains connected in Rabby.` The wallet extension remained connected and no
 transaction or contract write was sent. Exact evidence is
 `evidence/local-browser/2026-10-15-production-disconnect.json`.
 
+The same production page then ran the saved Wallet B acknowledgment through
+the read-only observer. It classified hash
+`0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209` as
+`FINALIZED` with execution result unavailable, verified the canonical
+acknowledgment at epoch 3 with SHA `d35d438d0e45e58e3227f95135fa3a2abc523aed`
+and digest `2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`,
+removed the pending card, and did not replay. This is canonical-readback
+evidence; it does not infer execution success or recipient credit from
+finality. Evidence is `evidence/local-browser/2026-10-15-production-observer.json`.
+
 Local verification currently passes 15 JavaScript tests and 34 Direct Mode tests
 (49 total). Direct Mode uses mocked providers and does not replace hosted
 validator evidence. Fresh CI run `38667968711` (run 46) for commit
@@ -123,8 +133,8 @@ PR #1 remains a draft, and the draft was not merged. The corrected frontend was
 promoted to production, but this does not open Registry writes or custody. GitHub
 `main` branch protection is enabled with strict `verify` and `Vercel` checks,
 one required approval, last-push approval, and admin enforcement. Independent
-security review, the observer-specific finality rerun, and remaining
-extension-level flow checks remain open gates. Production app-session disconnect
+security review and remaining extension-level flow checks remain open gates.
+Hosted prompt-injection/disagreement evidence is also incomplete. Production app-session disconnect
 is recorded in `evidence/local-browser/2026-10-15-production-disconnect.json`;
 the local evidence remains in
 `evidence/local-browser/2026-10-15-wallet-disconnect.json`.

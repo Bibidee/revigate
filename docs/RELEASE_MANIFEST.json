@@ -191,6 +191,9 @@
     "local_disconnect_evidence": "evidence/local-browser/2026-10-15-wallet-disconnect.json",
     "production_disconnect_control": "PASS_APP_SESSION_CLEAR_WALLET_REMAINS_CONNECTED",
     "production_disconnect_evidence": "evidence/local-browser/2026-10-15-production-disconnect.json",
+    "production_observer_status": "PASS_FINALIZED_EXECUTION_UNKNOWN_CANONICAL_STATE_VERIFIED",
+    "production_observer_transaction": "0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209",
+    "production_observer_evidence": "evidence/local-browser/2026-10-15-production-observer.json",
     "local_observer_probe_later_poll": {
       "method": "eth_getTransactionByHash",
       "response": "RESOURCE_NOT_FOUND",
@@ -198,10 +201,10 @@
       "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
     },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["terminal finality readback for local observer probe", "public production observer rerun beyond the disconnect check", "real extension rejection and extension-level disconnect coverage", "independent security review"]
+    "remaining": ["terminal finality readback for local observer probe", "real extension rejection and extension-level disconnect coverage", "independent security review"]
   },
   "observer_hardening_commit": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
-  "observer_hardening_status": "BRANCH_CI_AND_PRODUCTION_DEPLOYMENT_PASSED_DISCONNECT_RERUN_COMPLETE_OBSERVER_FINALITY_REMAINS_OPEN",
+  "observer_hardening_status": "BRANCH_CI_AND_PRODUCTION_DEPLOYMENT_PASSED_CANONICAL_READBACK_VERIFIED_EXECUTION_UNKNOWN_REPLAY_DISABLED",
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,

@@ -35,4 +35,4 @@ The rulebook is quoted to the model as untrusted evidence. Model output is type 
 
 ## Current verdict
 
-NOT RELEASED. Source authentication and the required hosted Registry lifecycle pass. The corrected frontend is promoted, but production writes stay locked. Real wallet-extension rejection and extension-level disconnect flows, hosted prompt-injection and disagreement cases, observer-specific finality rerun, and independent security review remain open.
+NOT RELEASED. Source authentication and the required hosted Registry lifecycle pass. The corrected frontend is promoted, and the production observer now verifies canonical state without replay while preserving execution-unknown semantics. Production writes stay locked. Real wallet-extension rejection and extension-level disconnect flows, hosted prompt-injection and disagreement cases, and independent security review remain open.
