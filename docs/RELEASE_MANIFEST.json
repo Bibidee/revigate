@@ -14,24 +14,42 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "4d0f316",
+  "source_commit": "cfc786a822b7e69b530dcf67a503828169d643d9",
   "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
-    "address": "0xD86A6C0a3949D2452bB8964e076983254375b5fE",
-    "transaction": "0x29af681ee4ebb8bb03f52c2f36b4e1c686798e97dbcd0c0b1b2963e9ccf5d8b5",
+    "address": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+    "transaction": "0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6",
     "receipt": "FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS_ZERO_VALUE",
     "source_attestation": "EXACT_BYTE_MATCH",
     "config": {
       "protocol": "revigate-registry-v1",
       "contract_version": 3,
-      "custody": "SINGLE_CONTRACT_ESCROW",
-      "escrow": "NATIVE_GEN",
-      "transfer_evidence": "EXTERNAL_MESSAGE"
+      "custody": "NONE",
+      "escrow": "NONE",
+      "transfer_evidence": "NONE"
     },
-    "status": "HISTORICAL_ESCROW_DO_NOT_USE"
+    "status": "NONCUSTODIAL_STUDIONET_TEST"
   },
-  "hosted_probe": {
+  "registry_v4_lifecycle": {
+    "program_id": 1,
+    "registration_transaction": "0xcb804849e1b6887da5ce777d77d1a0ad5843f2d88f0dd3ae84f5f289f5b20b3d",
+    "verification_transaction": "0x21b7018b1073223f6b3968a4ed59772356993e6caed3510a983ac40d800472b4",
+    "verification_result": "VERIFIED",
+    "nonmaterial_assessment": "0xb87b66fc63234ae3620d5838e3096a42fa8248210d54387853578067b50dbb42",
+    "nonmaterial_result": "NONMATERIAL",
+    "material_assessment": "0xf1b2be8dbb138680056f83003d33e2bfaa3aebd85975541ab50f0380c75a0b69",
+    "material_result": "MATERIAL",
+    "ambiguous_assessment": "0x23635a0e7ce84e60eb9ea907dc2542dff2e6bc3b79f7241048d7136caac74ae9",
+    "ambiguous_result": "MATERIAL",
+    "acknowledgment_transaction": "0x310be3f7ef26f28bba656fb4960a636b62fdd8afcd989da8e200b8464cfdb844",
+    "reaffirmation_transaction": "0x21d8e5fb2adc4d62a9584849f68ed5a9405bf907903eac8d80c7ca547f2b79ee",
+    "final_epoch": 3,
+    "final_active_sha": "14401f20f2d3eeeac537746966646809e5c01b8c",
+    "final_digest": "3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631",
+    "value_sent_wei": 0
+  },
+  "historical_hosted_probe": {
     "registration_transaction": "0xc347a08ea1967993dd5ae855bfaa3819edbf690ba9e92ffcd392cc4bfa9a750a",
     "program_id": 1,
     "verification_transaction": "0xdec8f4cf8c0373223fcba3b28ed557a719e55d638591dbed3f8855fa416008ce",
@@ -85,8 +103,8 @@
     "build": "PASS"
   },
   "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
-  "production_status": "LOCKED",
-  "release_verdict": "NOT_RELEASED_PENDING_HOSTED_LIFECYCLE_BROWSER_AND_REVIEW_GATES",
+  "production_status": "PROMOTED_NONCUSTODIAL_WRITES_LOCKED",
+  "release_verdict": "NOT_RELEASED_PENDING_BROWSER_INDEPENDENT_REVIEW_AND_SECOND_APPROVAL",
   "ci": {
     "workflow": "CI",
     "run_id": 38801323765,
@@ -95,11 +113,11 @@
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
-    "deployment_id": "5JFSWQJCt5AkfzQZPipxZc8sRuc7",
-    "url": "https://the-revigate-git-codex-revigate-remedi-94105f-bibidees-projects.vercel.app",
+    "deployment_id": "dpl_DU9orgaUtJ7BW3NAvx2m44fNKMtS",
+    "url": "https://the-revigate-fjom9uznt-bibidees-projects.vercel.app",
     "state": "READY",
-    "browser_check": "PUBLIC_PASS_WALLET_A_SIGNED_SOURCE_LIFECYCLE",
-    "production_promoted": false
+    "browser_check": "PUBLIC_HTTP_200_BROWSER_RUNTIME_UNVERIFIED",
+    "production_promoted": true
   },
   "direct_transfer_probe": {
     "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",

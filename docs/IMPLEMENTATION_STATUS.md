@@ -35,13 +35,17 @@ Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc
 
 ## Remaining gates
 
-1. Refresh hosted zero-value Registry registration, verification, NONMATERIAL, MATERIAL, ambiguous and acknowledgment evidence against the new address.
-2. Complete remaining browser wallet rejection, mobile, pending/unknown and refresh checks for the corrected build.
-3. Obtain an independent security review and a second approved PR review.
-4. Obtain explicit authorization before production promotion or merge into `main`.
+1. Complete browser wallet rejection, mobile, pending/unknown and refresh checks against the promoted build. Computer Use could not safely inspect the current Brave URL, so this remains unverified.
+2. Obtain a genuinely independent security review; the existing audit is self-audit.
+3. Obtain a second approved PR review.
+4. Obtain explicit approval before merging into `main`.
+
+The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review.
+
+The corrected frontend was promoted to `https://the-revigate.vercel.app` from commit `cfc786a822b7e69b530dcf67a503828169d643d9`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200. Runtime browser disappearance of the identity warning remains unverified because the browser safety check stopped before reading the live tab.
 
 Funded escrow scenarios are removed from the active product. They are not pending implementation work because the runtime evidence makes native custody unsafe.
 
 ## Release verdict
 
-**NOT RELEASED.** The custody blocker is addressed by removing native custody, and the replacement source is deployed and exactly attested. Refreshed hosted lifecycle, browser, independent-review and approval gates remain open.
+**NOT RELEASED.** The custody blocker is addressed by removing native custody, and the replacement source is deployed, exactly attested and promoted. Independent review, second approval and fresh real-browser verification remain open. No user funds are accepted.
