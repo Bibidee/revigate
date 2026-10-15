@@ -11,8 +11,10 @@ Recorded 2026-10-15 after removing native custody from the active release.
 ## Local verification
 
 - JavaScript: 23 passing.
-- Direct Mode: pending rerun after the custody redesign.
-- TypeScript, ESLint and production build: pending rerun after the custody redesign.
+- Direct Mode: **43 passing** after the custody redesign.
+- TypeScript: **passing**.
+- ESLint: **passing**.
+- Production build: **passing**.
 - The new Direct Mode checks assert the noncustodial config, absence of payable and escrow methods, authenticated rulebook writes and acknowledgment state.
 
 These checks do not prove hosted consensus. They do prove that the active source no longer exposes the unsafe custody surface.
