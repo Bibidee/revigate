@@ -2,14 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import { ContractUnavailable, PageIntro } from "@/components/content";
-import { ContractWorkbench } from "@/components/contract-workbench";
 
 export default function AgreementPage() {
   const parts = usePathname().split("/").filter(Boolean);
-  const offerId = parts[1] ?? "";
+  const legacyId = parts[1] ?? "";
   return <div className="page-wrap">
-    <PageIntro eyebrow={`AGREEMENT · ${offerId || "UNSPECIFIED"}`} title="Frozen offer terms." intro="Read the canonical offer before signing. Funding, acceptance, allocation and delivery are distinct states." />
+    <PageIntro eyebrow={`LEGACY AGREEMENT · ${legacyId || "UNSPECIFIED"}`} title="Financial agreements removed." intro="This route is retained only so old links fail safely. Revigate no longer accepts or holds native GEN." />
     <ContractUnavailable />
-    <ContractWorkbench key={offerId} mode="participant" initialOfferId={offerId} />
+    <p className="safety-copy">Do not send funds to the Registry address. Open <a href="/my-rules">My rules</a> to view and acknowledge authenticated rulebooks.</p>
   </div>;
 }

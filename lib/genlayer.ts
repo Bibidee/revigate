@@ -36,9 +36,9 @@ export async function verifyRevigateDeployment() {
   }) as { chain_id?: number | string; protocol?: string; contract_version?: number | string; custody?: string };
   if (Number(registryConfig.chain_id) !== STUDIONET_CHAIN_ID
       || registryConfig.protocol !== "revigate-registry-v1"
-      || Number(registryConfig.contract_version) !== 3
-      || registryConfig.custody !== "SINGLE_CONTRACT_ESCROW") {
-    throw new Error("The configured contract is not the source-attested Revigate single-contract escrow.");
+      || Number(registryConfig.contract_version) !== 4
+      || registryConfig.custody !== "NONE") {
+    throw new Error("The configured contract is not the source-attested Revigate noncustodial Registry.");
   }
   return { registryAddress, registryConfig };
 }

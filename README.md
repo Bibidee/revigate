@@ -1,18 +1,18 @@
 # Revigate
 
-Revigate is a GenLayer application for authenticated rulebooks, participant acknowledgments, revision materiality and native GEN offers in one Intelligent Contract. The active source is `contracts/revigate.py`; the earlier Registry candidate is retained under `contracts/archive/` as historical evidence.
+Revigate is a GenLayer application for authenticated rulebooks, participant acknowledgments and revision materiality in a noncustodial Registry. The active source is `contracts/revigate.py`; the former native-GEN escrow source is retained under `contracts/archive/` and historical evidence.
 
 ## Current contract model
 
-The single contract binds a publisher-funded offer to a verified rulebook epoch. It supports exact-value funding, participant acceptance, decline and expiry refunds, material exits, maturity allocation, mutual closure, wallet credits and one-use withdrawal records. Every financial transition conserves the contract ledger. Outbound transfer records deliberately remain `UNKNOWN_DELIVERY` until an independent recipient balance observation exists.
+The active contract authenticates GitHub rulebook sources, verifies revisions and records wallet acknowledgments. It has no payable method, native-value ledger, offer state, wallet credit or withdrawal path. Writes always use zero native GEN. Unsolicited network transfers are outside the application accounting model and are not recoverable through Revigate.
 
-The payable entry point credits nonzero payments before ordinary validation so wrong amount, wrong sender, duplicate and late funding can become an explicit wallet credit. This is a bounded application mitigation. It does not prove that protocol-level execution rollback or unsolicited native transfers are recoverable on Studionet. Production custody stays locked until those runtime paths and recipient delivery are independently verified.
+The historical escrow candidate is not deployable for user funds because Studionet retained value across failed payable execution and unsupported transfer routes. Removing native custody is the release safety decision; the old deployment must never be used for deposits.
 
 ## Active implementation
 
 - `contracts/revigate.py` — the only deployable contract.
 - `components/contract-workbench.tsx` and `lib/genlayer.ts` — wallet actions, native-value submission and canonical transaction recovery.
-- `tests/direct/` — source-authentication, revision and escrow state tests.
+- `tests/direct/` — source-authentication, revision and noncustodial Registry state tests.
 - `docs/IMPLEMENTATION_STATUS.md` — exact release state and evidence.
 
 Network: GenLayer Studionet, chain `61999`, RPC `https://studio.genlayer.com/api`. Never send funds to archived addresses.

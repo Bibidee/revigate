@@ -1,10 +1,10 @@
 {
   "project": "revigate",
-  "architecture": "single-contract-rulebook-and-native-gen-offers",
+  "architecture": "noncustodial-rulebook-registry",
   "network": "GenLayer Studionet",
   "chain_id": 61999,
   "rpc": "https://studio.genlayer.com/api",
   "active_contract": "contracts/revigate.py",
-  "custody": "NATIVE_GEN_SINGLE_CONTRACT",
-  "production_writes": "LOCKED_UNTIL_LIVE_CUSTODY_GATE"
+  "custody": "NONE",
+  "production_writes": "LOCKED_UNTIL_NONCUSTODIAL_SOURCE_ATTESTED"
 }

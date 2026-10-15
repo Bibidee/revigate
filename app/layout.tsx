@@ -4,7 +4,7 @@ import { Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Revigate — rules with a history",
-  description: "Reviewed rulebooks and native GEN offers with explicit state and custody evidence.",
+  description: "Reviewed rulebooks and wallet acknowledgments without custody.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

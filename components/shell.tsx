@@ -38,7 +38,7 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     catch (error) { queueMicrotask(() => setContractStatus(error instanceof Error ? error.message : "Invalid Registry configuration.")); return; }
     if (!registry) return;
     verifyRevigateDeployment()
-      .then(() => setContractStatus("Single-contract escrow identity verified."))
+      .then(() => setContractStatus("Noncustodial Registry identity verified."))
       .catch(() => setContractStatus("The configured contract could not be verified."));
   }, []);
   async function connect() {

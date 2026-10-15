@@ -1,5 +1,5 @@
 {
-  "manifest_type": "revigate_single_contract_remediation",
+  "manifest_type": "revigate_noncustodial_release",
   "recorded_at": "2026-10-15",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
@@ -14,8 +14,8 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "cb84344",
-  "source_sha256": "BDF1D0B952719D8EDA16F1AC26A49C2F1B9CBB0465B7DAC972175A3015E904EF",
+  "source_commit": "PENDING_POST_REDESIGN_COMMIT",
+  "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
     "address": "0xD86A6C0a3949D2452bB8964e076983254375b5fE",
@@ -28,7 +28,8 @@
       "custody": "SINGLE_CONTRACT_ESCROW",
       "escrow": "NATIVE_GEN",
       "transfer_evidence": "EXTERNAL_MESSAGE"
-    }
+    },
+    "status": "HISTORICAL_ESCROW_DO_NOT_USE"
   },
   "hosted_probe": {
     "registration_transaction": "0xc347a08ea1967993dd5ae855bfaa3819edbf690ba9e92ffcd392cc4bfa9a750a",
@@ -65,21 +66,27 @@
     "execution_hash": "0x5a28e18a8bcf3cd86544c429d780d781886ec4aa44c5b2ee56e16e3aa40de866",
     "status": "FINALIZED",
     "result": "MAJORITY_AGREE",
-    "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+    "validator_votes": [
+      "AGREE",
+      "AGREE",
+      "AGREE",
+      "AGREE",
+      "AGREE"
+    ],
     "value_credited": false,
     "classification": "REJECTION_NOT_PROVEN_TRANSACTION_FINALIZED",
     "evidence": "evidence/local-browser/2026-10-15-rabby-rejection-probe.json"
   },
   "local_checks": {
-    "javascript": "23 PASS",
-    "direct_mode": "52 PASS",
-    "typecheck": "PASS",
-    "lint": "PASS",
-    "build": "PASS"
+    "javascript": "PENDING",
+    "direct_mode": "PENDING",
+    "typecheck": "PENDING",
+    "lint": "PENDING",
+    "build": "PENDING"
   },
-  "custody_status": "CRITICAL_STUDIONET_ROLLBACK_BLOCKER",
+  "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
   "production_status": "LOCKED",
-  "release_verdict": "NOT_RELEASED",
+  "release_verdict": "NOT_RELEASED_PENDING_NONCUSTODIAL_DEPLOYMENT_AND_EVIDENCE",
   "ci": {
     "workflow": "CI",
     "run_id": 38801323765,
@@ -106,5 +113,16 @@
     },
     "contract_balance_hex": "0x1",
     "interpretation": "UNSOLICITED_SURPLUS_UNASSIGNED"
+  },
+  "active_architecture": "noncustodial-rulebook-registry",
+  "current_candidate": {
+    "source": "contracts/revigate.py",
+    "contract_version": 4,
+    "custody": "NONE",
+    "escrow": "NONE",
+    "transfer_evidence": "NONE",
+    "deployment": "NOT_DEPLOYED",
+    "source_attestation": "PENDING_EXACT_BYTE_MATCH",
+    "value_sent_wei": 0
   }
 }

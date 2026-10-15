@@ -2,19 +2,14 @@
 
 ## Active product
 
-`contracts/revigate.py` is the only deployable Intelligent Contract. It contains authenticated GitHub source verification, acknowledgments, revision materiality and native GEN offer accounting. The former Registry source is archived at `contracts/archive/revigate_registry_v2.py` and is not deployed.
+`contracts/revigate.py` is the only active deployable Intelligent Contract. It authenticates GitHub rulebook sources, verifies revisions and records wallet acknowledgments. It is explicitly noncustodial: no payable method, native GEN accounting, offers, credits, refunds, payouts or withdrawals exist. The former escrow source and its evidence are archived under `contracts/archive/` and must not receive funds.
 
-The frontend uses injected EIP-1193 wallets and one configured address. It submits the exact attached value, persists the hash with chain/address/wallet scope, distinguishes pending, unknown, failed and finalized states, and only clears a pending item after canonical readback. It never treats an emitted transfer or parent finality as proof of recipient credit.
+The frontend uses injected EIP-1193 wallets for zero-value Registry writes. It persists transaction hashes with chain/address/wallet scope and distinguishes pending, unknown, failed and finalized states. It never treats transaction finality as proof of a balance change.
 
-## Local evidence
+## Verification state
 
-- JavaScript tests: 23 passing.
-- Direct Mode tests: 52 passing against the single active source.
-- TypeScript: passing.
-- ESLint: passing.
-
-These checks do not certify hosted validator behavior, protocol rollback or recipient delivery.
+The source redesign is complete locally but requires the post-change JavaScript, Direct Mode, typecheck, lint and build rerun. A disposable Studionet deployment and source attestation must use the exact reviewed commit.
 
 ## Release boundary
 
-No production contract address is approved by this document. A disposable Studionet deployment may be used for source attestation and controlled tests, but production custody remains locked until live failure recovery, outbound delivery and the two-wallet matrix are complete. The work is an adversarial self-audit; it is not an independent security review.
+No production contract address is approved. Production writes and promotion remain locked. The previous escrow deployment is historical and cannot be used as the address for the noncustodial source. The custody decision is a defensive product change, not an independent security review.
