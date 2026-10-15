@@ -113,8 +113,8 @@
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
-    "deployment_id": "dpl_79sKxC8KY6U1k58X78BxfLbza65d",
-    "url": "https://the-revigate-ickesu8kv-bibidees-projects.vercel.app",
+    "deployment_id": "dpl_CHuXE5cV6WN8AgZPVkANJk7j96LM",
+    "url": "https://the-revigate-ildh3tdeh-bibidees-projects.vercel.app",
     "state": "READY",
     "browser_check": "PUBLIC_HTTP_200_BROWSER_RUNTIME_UNVERIFIED",
     "production_promoted": true
