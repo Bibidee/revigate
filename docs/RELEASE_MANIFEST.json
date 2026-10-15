@@ -81,16 +81,16 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38655050695,
-    "run_number": 39,
-    "commit_sha": "41806293bc3bfeef668a364aaab54b9b8cc64ae5",
+    "run_id": 38657450326,
+    "run_number": 43,
+    "commit_sha": "051ddbe45f304bce41c6672c83160448d837ec24",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
   "vercel_status_check": "SUCCESS_FOR_EVIDENCE_PAYLOAD_COMMIT",
   "vercel_branch_deployment": {
-    "url": "https://the-revigate-hp0uh9nix-bibidees-projects.vercel.app",
-    "commit_sha": "41806293bc3bfeef668a364aaab54b9b8cc64ae5",
+    "url": "https://the-revigate-git-codex-revigate-remedi-94105f-bibidees-projects.vercel.app",
+    "commit_sha": "051ddbe45f304bce41c6672c83160448d837ec24",
     "state": "READY",
     "authenticated_content_check": "PASS_NONCUSTODIAL_WARNING_REGISTRY_LOCK_CHAIN_61999"
   },
@@ -182,6 +182,8 @@
     "local_observer_probe_status_at_capture": "ACCEPTED_FIVE_AGREE_NOT_TERMINAL",
     "local_observer_probe_value_credited": false,
     "local_observer_probe_replay": "NONE",
+    "local_disconnect_control": "PRESENT_RABBY_NO_CONFIRMED_REVOCATION_WITHIN_5_SECONDS",
+    "local_disconnect_evidence": "evidence/local-browser/2026-10-15-wallet-disconnect.json",
     "local_observer_probe_later_poll": {
       "method": "eth_getTransactionByHash",
       "response": "RESOURCE_NOT_FOUND",
@@ -192,7 +194,7 @@
     "remaining": ["terminal finality readback for local observer probe", "fresh public deployment/browser rerun for observer hardening and disconnect control", "real extension rejection/disconnect coverage", "protected preview requires Vercel authentication", "independent security review"]
   },
   "observer_hardening_commit": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
-  "observer_hardening_status": "BRANCH_CI_PASSED_PUBLIC_DEPLOYMENT_BROWSER_RERUN_REQUIRED",
+  "observer_hardening_status": "BRANCH_CI_AND_VERCEL_PASSED_PUBLIC_DEPLOYMENT_BROWSER_RERUN_REQUIRED",
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,

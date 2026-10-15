@@ -70,8 +70,8 @@ at history index 1.
 The local suite currently passes 15 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
 build evidence are recorded on the remediation branch. Fresh GitHub Actions run
-38652447172 for observer-hardening commit
-13bc812f352a6f484d8ba4d34ffb244fc65dc223 passed npm ci, frozen Python dependencies,
+38657450326 (run 43) for commit
+051ddbe45f304bce41c6672c83160448d837ec24 passed npm ci, frozen Python dependencies,
 preflight, production build, and the production dependency audit.
 
 ## Browser and review boundary
@@ -81,9 +81,12 @@ signed the current publisher request and assessment. The account was switched to
 Wallet B, which submitted one zero-value acknowledgment and has a finalized
 canonical epoch-3 history record. The browser card retained a stale accepted
 snapshot, so direct RPC finality plus the canonical readback are authoritative.
-Network switching, rejection, disconnect recovery, protected preview access, and
-independent security review remain open. The observer fix still requires a fresh
-public deployment/browser rerun. The work performed is an adversarial
+Network switching, rejection, real extension disconnect recovery, protected preview
+access, and independent security review remain open. The local build now exposes a
+Disconnect control, with Rabby behavior recorded in
+evidence/local-browser/2026-10-15-wallet-disconnect.json. The observer fix has a
+fresh READY deployment, but the protected preview still requires an authenticated
+browser rerun. The work performed is an adversarial
 self-audit, not an independent review.
 
 ## Release decision
