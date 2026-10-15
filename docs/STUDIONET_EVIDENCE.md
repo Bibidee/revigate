@@ -6,7 +6,21 @@ The exact committed `contracts/revigate.py` source was deployed with zero attach
 
 The deployed source was fetched from Studionet and matched the local UTF-8 source byte-for-byte at SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064`. Canonical `get_config()` returned protocol `revigate-registry-v1`, chain `61999`, contract version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`. Initial `get_program_page(0, 5)` returned no programs and cursor zero.
 
-This proves deployment identity and clean initial Registry state. It does not prove the hosted signed-source lifecycle, which must be repeated on this address. It accepts no application funds and does not rehabilitate the historical escrow deployment. Machine-readable evidence is in `evidence/noncustodial/2026-10-15-registry-v4-deployment.json`.
+This proves deployment identity and clean initial Registry state. It accepts no application funds and does not rehabilitate the historical escrow deployment. Machine-readable deployment evidence is in `evidence/noncustodial/2026-10-15-registry-v4-deployment.json`.
+
+### Registry V4 signed-source lifecycle
+
+The unlocked repository-local CLI completed the zero-value lifecycle on this exact V4 deployment using the genuinely GitHub-verified `revigate-rulebook-fixture-v2` commit chain and publisher `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
+
+| Action | Transaction | Final result |
+|---|---|---|
+| Register | `0xcb804849e1b6887da5ce777d77d1a0ad5843f2d88f0dd3ae84f5f289f5b20b3d` | Program 1, FINALIZED |
+| Verify source | `0x21b7018b1073223f6b3968a4ed59772356993e6caed3510a983ac40d800472b4` | VERIFIED, epoch 1 |
+| Assess NONMATERIAL | `0xb87b66fc63234ae3620d5838e3096a42fa8248210d54387853578067b50dbb42` | NONMATERIAL; epoch stayed 1 |
+| Assess MATERIAL | `0xf1b2be8dbb138680056f83003d33e2bfaa3aebd85975541ab50f0380c75a0b69` | MATERIAL; epoch 2 |
+| Assess ambiguous | `0x23635a0e7ce84e60eb9ea907dc2542dff2e6bc3b79f7241048d7136caac74ae9` | Actual MATERIAL; epoch 3 |
+
+All eight lifecycle writes finalized with successful execution and majority agreement. Final canonical state is VERIFIED at SHA `14401f20f2d3eeeac537746966646809e5c01b8c`, digest `3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631`, two material events and no pending review. Full machine-readable evidence is in `evidence/noncustodial/2026-10-15-registry-v4-lifecycle.json`.
 
 ## Current single-contract Wallet A lifecycle — 2026-10-15
 

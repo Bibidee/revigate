@@ -1,0 +1,41 @@
+{
+  "network": "GenLayer Studionet",
+  "chain_id": 61999,
+  "contract": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+  "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+  "value_sent_wei": 0,
+  "fixture": {
+    "repository": "Bibidee/revigate",
+    "branch": "revigate-rulebook-fixture-v2",
+    "baseline": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+    "nonmaterial": "7fa24a913b0e7e86aaec2cb42011df7bcf8a4e10",
+    "material": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+    "ambiguous": "14401f20f2d3eeeac537746966646809e5c01b8c",
+    "github_signature_status": "VERIFIED"
+  },
+  "program_id": 1,
+  "transactions": {
+    "register": "0xcb804849e1b6887da5ce777d77d1a0ad5843f2d88f0dd3ae84f5f289f5b20b3d",
+    "verify": "0x21b7018b1073223f6b3968a4ed59772356993e6caed3510a983ac40d800472b4",
+    "request_nonmaterial": "0x1cbe060f42e17e1d48518b50c63aa7f6a429a4042c3e2379a4e208b6bbaa9f9b",
+    "assess_nonmaterial": "0xb87b66fc63234ae3620d5838e3096a42fa8248210d54387853578067b50dbb42",
+    "request_material": "0x8cc4999754e76e622c411c37b8c84aeb41b68e2394070f969ca1da57ef702566",
+    "assess_material": "0xf1b2be8dbb138680056f83003d33e2bfaa3aebd85975541ab50f0380c75a0b69",
+    "request_ambiguous": "0xed1b97eb2837c91759635fd5f6d8a270046c717292ad90aeabc400752d27cec2",
+    "assess_ambiguous": "0x23635a0e7ce84e60eb9ea907dc2542dff2e6bc3b79f7241048d7136caac74ae9"
+  },
+  "receipts": "ALL_FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS",
+  "outcomes": {
+    "nonmaterial": "NONMATERIAL",
+    "material": "MATERIAL",
+    "ambiguous": "MATERIAL"
+  },
+  "final_state": {
+    "status": "VERIFIED",
+    "epoch": 3,
+    "active_sha": "14401f20f2d3eeeac537746966646809e5c01b8c",
+    "document_digest": "3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631",
+    "material_event_count": 2,
+    "pending_review": 0
+  }
+}
