@@ -58,6 +58,18 @@
     "final_active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
     "value_sent_wei": 0
   },
+  "wallet_b_rabby_probe": {
+    "method": "acknowledge_rules",
+    "user_reported_action": "REJECTED",
+    "transaction": "0x20d4871e7fe584d12dd044c103c9f2e70994461bf484d1a7bf18fa99627a639a",
+    "execution_hash": "0x5a28e18a8bcf3cd86544c429d780d781886ec4aa44c5b2ee56e16e3aa40de866",
+    "status": "FINALIZED",
+    "result": "MAJORITY_AGREE",
+    "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+    "value_credited": false,
+    "classification": "REJECTION_NOT_PROVEN_TRANSACTION_FINALIZED",
+    "evidence": "evidence/local-browser/2026-10-15-rabby-rejection-probe.json"
+  },
   "local_checks": {
     "javascript": "23 PASS",
     "direct_mode": "52 PASS",
