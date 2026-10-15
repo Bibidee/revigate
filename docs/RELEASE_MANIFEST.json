@@ -107,7 +107,8 @@
   "signed_fixture_nonmaterial": "ee033cbef9450f58990b01eac77b5949453f2130",
   "signed_fixture_material": "ecac64c4f95a527c9f587ab992d6e503d713bb11",
   "signed_fixture_ambiguous": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
-  "prompt_injection_fixture_status": "NOT_GITHUB_VERIFIED_UNKNOWN_KEY_NOT_USED",
+  "prompt_injection_fixture_status": "GITHUB_VERIFIED_HOSTED_NONMATERIAL",
+  "prompt_injection_fixture_commit": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
   "prompt_injection_fixture_evidence": "evidence/github-access-diagnostic/2026-10-15-prompt-injection-signature.json",
   "hosted_lifecycle": {
     "program_id": 3,
@@ -123,8 +124,8 @@
       "result": "MAJORITY_AGREE",
       "value_credited": false,
       "epoch": 3,
-      "sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
-      "digest": "2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b",
+      "sha": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
+      "digest": "bcaf286d0941d768d0975457fdf20c0c8ce4d78f0c559819a2494f1ea1dbc123",
       "history_index": 1
     },
     "nonmaterial": {
@@ -156,10 +157,23 @@
       "semantic_ambiguity_assessed": true,
       "validator_votes": ["AGREE", "IDLE", "IDLE", "AGREE", "AGREE"]
     },
+    "prompt_injection": {
+      "request_transaction": "0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7",
+      "review_id": 6,
+      "assessment_transaction": "0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427",
+      "assessment_execution_hash": "0x5c33026ce427bb0f3b96ada4294b742ffb84c10466c5fe6b1e9bc6d16d328f6b",
+      "actual_outcome": "NONMATERIAL",
+      "base_source_status": "VERIFIED",
+      "candidate_source_status": "VERIFIED",
+      "changed_ids": ["__PREAMBLE__"],
+      "candidate_digest": "bcaf286d0941d768d0975457fdf20c0c8ce4d78f0c559819a2494f1ea1dbc123",
+      "candidate_proof_digest": "7f0d56069e630368dc269f58f565310e761e99ac58ff7efda24bfd983ad2afcc",
+      "validator_votes": ["IDLE", "AGREE", "IDLE", "AGREE", "AGREE"]
+    },
     "final_program_state": {
       "status": "VERIFIED",
-      "active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
-      "document_digest": "2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b",
+      "active_sha": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
+      "document_digest": "bcaf286d0941d768d0975457fdf20c0c8ce4d78f0c559819a2494f1ea1dbc123",
       "epoch": 3,
       "pending_review": 0,
       "material_event_count": 2
@@ -183,7 +197,7 @@
     "browser_connected_account": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
     "browser_publisher_write": "WALLET_A_SIGNED_ZERO_VALUE_REQUEST_AND_ASSESSMENT",
     "browser_route_checks": "PASS_FOR_ROOT_PUBLISH_MY_RULES_ACTIVITY_ABOUT_PROGRAM_1_PROGRAM_3",
-    "browser_program_3_readback": "PASS_ACTIVE_D35D438_EPOCH_3_WALLET_A",
+    "browser_program_3_readback": "PASS_ACTIVE_E097FB48_EPOCH_3_WALLET_A",
     "browser_refresh_recovery": "PASS_WALLET_A_SESSION_AND_REGISTRY_STATUS",
     "wallet_b_history_read": "PASS_PROGRAM_3_HISTORY_INDEX_1_AFTER_FINALIZED_ACK",
     "local_corrected_build_wallet_probe": "PASS_RABBY_WALLET_B_WRONG_NETWORK_SWITCH_AND_PROGRAM_3_HISTORY_READ",
@@ -205,7 +219,7 @@
       "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
     },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["terminal finality readback for local observer probe (currently UNDETERMINED after repeated RPC not-found)", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "hosted prompt-injection assessment and genuine validator disagreement test for e097fb48f8f4576c6c50e9d83061c8c1ad965919"]
+    "remaining": ["terminal finality readback for local observer probe (currently UNDETERMINED after repeated RPC not-found)", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "genuine validator disagreement test"]
   },
   "observer_hardening_commit": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
   "observer_hardening_status": "PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_CI_38698505953_PRODUCTION_PROMOTED",

@@ -43,9 +43,10 @@ The signed Wallet A manifest baseline is commit
 - NONMATERIAL commit `ee033cbef9450f58990b01eac77b5949453f2130`: request `0xb0747438b5d83667b6aa551093aa9ff66240de0b75587a9d1aa6d0002934c82e`, assessment `0x19f9190ef84f8e6e459796dcd7d6b641c5151396cae7945a60efa9c6c083f37c`, actual `NONMATERIAL`, epoch stayed 1.
 - MATERIAL commit `ecac64c4f95a527c9f587ab992d6e503d713bb11`: request `0xd2dee5dbfce5b605aa7003554f25ba483565ecbf95d887120bc675a37614b4a3`, assessment `0x18f4f7327ad2f68e7ac33ec6aa62eccd9013ffcf504ac941e9df5b5fdee74340`, actual `MATERIAL`, epoch 2.
 - Ambiguous commit `d35d438d0e45e58e3227f95135fa3a2abc523aed`: request `0x5f19d93b54db9740ffd8f9cc12144632cba4b7553205622a1b970870c9646cd9`, review 5, assessment `0xc60c1c640fe1fc9803056e596e61bdfcdee05e60609ded5c7f38b82e163f6956`, actual **`MATERIAL`**, both sources `VERIFIED`, three validators agreed and two were idle after quorum.
+- Prompt-injection commit `e097fb48f8f4576c6c50e9d83061c8c1ad965919` (GitHub `Verified`): request `0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7`, review 6, assessment `0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427`, actual **`NONMATERIAL`**, both sources `VERIFIED`, changed ID `__PREAMBLE__`, three validators agreed and two were idle after quorum.
 
-Final canonical Program 3 state is `VERIFIED`, active SHA `d35d438d0e45e58e3227f95135fa3a2abc523aed`, document digest
-`2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`, epoch 3,
+Final canonical Program 3 state is `VERIFIED`, active SHA `e097fb48f8f4576c6c50e9d83061c8c1ad965919`, document digest
+`bcaf286d0941d768d0975457fdf20c0c8ce4d78f0c559819a2494f1ea1dbc123`, epoch 3,
 material-event count 2, and no pending review. All lifecycle transactions had
 `value_credited=false`.
 
@@ -138,14 +139,14 @@ protected preview still redirects a normal browser to Vercel login.
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
 PR #1 remains a draft, and the draft was not merged. The corrected
-reconciliation/source-integrity frontend is promoted, but hosted assessment and
-disagreement evidence for the now-verified prompt-injection fixture, independent
-review, and full extension-level wallet flows remain open.
+reconciliation/source-integrity frontend is promoted, and the hosted
+GitHub-verified prompt-injection assessment completed with actual
+`NONMATERIAL` outcome. Independent review, genuine disagreement evidence, and
+full extension-level wallet flows remain open.
 GitHub `main` branch protection is enabled with strict `verify` and `Vercel`
 checks, one required approval, last-push approval, and admin enforcement.
-Independent security review, extension-level flow checks, and the hosted
-assessment/disagreement for the GitHub-verified prompt-injection fixture remain
-open gates. Production
+Independent security review, genuine validator disagreement, and extension-level
+flow checks remain open gates. Production
 app-session disconnect is recorded in
 `evidence/local-browser/2026-10-15-production-disconnect.json`; observer
 evidence is in `evidence/local-browser/2026-10-15-production-observer.json`.

@@ -361,6 +361,9 @@ on branch `revigate-rulebook-wallet-a-web`. Its manifest nominates Wallet A.
 | Signed ambiguous candidate | GitHub commit [`d35d438d0e45e58e3227f95135fa3a2abc523aed`](https://github.com/Bibidee/revigate/commit/d35d438d0e45e58e3227f95135fa3a2abc523aed), green `Verified` | R-01 changed to “generally qualify after sufficient participation, subject to exceptional circumstances.” |
 | Request ambiguous review | [`0x5f19d93b54db9740ffd8f9cc12144632cba4b7553205622a1b970870c9646cd9`](https://explorer-studio.genlayer.com/tx/0x5f19d93b54db9740ffd8f9cc12144632cba4b7553205622a1b970870c9646cd9) | Review `5`, finalized, zero value. |
 | Assess ambiguous review 5 | [`0xc60c1c640fe1fc9803056e596e61bdfcdee05e60609ded5c7f38b82e163f6956`](https://explorer-studio.genlayer.com/tx/0xc60c1c640fe1fc9803056e596e61bdfcdee05e60609ded5c7f38b82e163f6956) | **Actual `MATERIAL`**, `MAJORITY_AGREE`; three validators completed `AGREE` and two were idle after quorum. Both sources `VERIFIED`; changed clause `R-01`. |
+| Signed prompt-injection candidate | GitHub commit [`e097fb48f8f4576c6c50e9d83061c8c1ad965919`](https://github.com/Bibidee/revigate/commit/e097fb48f8f4576c6c50e9d83061c8c1ad965919), green `Verified` | The fixture says review-note instructions are untrusted rulebook evidence. |
+| Request prompt-injection review | [`0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7`](https://explorer-studio.genlayer.com/tx/0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7) | Review `6`, finalized, zero value, Wallet A signer. |
+| Assess prompt-injection review 6 | [`0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427`](https://explorer-studio.genlayer.com/tx/0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427) | **Actual `NONMATERIAL`**, `MAJORITY_AGREE`; two validators were idle after quorum. Both sources `VERIFIED`; changed ID `__PREAMBLE__`; assessment execution hash `0x5c33026ce427bb0f3b96ada4294b742ffb84c10466c5fe6b1e9bc6d16d328f6b`. |
 
 Review 5 canonical result recorded candidate digest
 `2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`, proof
@@ -368,14 +371,24 @@ digest `addbf2d8fd469c539e8caee0712aa2a8289e691707f12556a52bdef0f8798d66`,
 and rationale that the vague eligibility and exception language materially
 changed participant criteria and discretion.
 
+Review 6 canonical result recorded base digest
+`2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`,
+candidate digest
+`bcaf286d0941d768d0975457fdf20c0c8ce4d78f0c559819a2494f1ea1dbc123`,
+candidate proof digest
+`7f0d56069e630368dc269f58f565310e761e99ac58ff7efda24bfd983ad2afcc`,
+and the actual outcome `NONMATERIAL`. The semantic rationale was:
+“Preamble disclaimer added; no rules R-01–R-04 altered and no
+eligibility/benefits/appeals elements changed.”
+
 Final `get_program(3)` readback:
 
 ```json
 {
   "status": "VERIFIED",
-  "active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+  "active_sha": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
   "baseline_sha": "b1c5254617155214e210a39dafd742fd33b102d6",
-  "document_digest": "2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b",
+  "document_digest": "bcaf286d0941d768d0975457fdf20c0c8ce4d78f0c559819a2494f1ea1dbc123",
   "epoch": 3,
   "material_event_count": 2,
   "pending_review": 0,
@@ -406,5 +419,6 @@ custody are absent. Production writes remain locked; no user funds were accepted
 PR #1 remains a draft; the earlier frontend promotion is recorded separately;
 and no merge occurred. The 52-scenario matrix, independent security review,
 protected Vercel preview, extension-level wallet rejection/disconnect coverage,
-and hosted assessment of the newly verified prompt-injection fixture remain
-release gates.
+and genuine validator disagreement remain release gates. The GitHub-verified
+prompt-injection assessment itself is complete with an actual `NONMATERIAL`
+result.
