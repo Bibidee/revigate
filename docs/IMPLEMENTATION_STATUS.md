@@ -45,8 +45,12 @@ nor Wallet B, and it is not a user wallet for the application.
 A disposable single-contract deployment is source-attested on Studionet at `0xD86A6C0a3949D2452bB8964e076983254375b5fE`. Deployment transaction `0x29af681ee4ebb8bb03f52c2f36b4e1c686798e97dbcd0c0b1b2963e9ccf5d8b5` finalized with majority agreement and zero value. The deployed bytes exactly match source SHA-256 `BDF1D0B952719D8EDA16F1AC26A49C2F1B9CBB0465B7DAC972175A3015E904EF` from commit `cb84344`. Initial config and ledger reads are clean. This is disposable evidence, not a production binding. No production address
 is approved, no user funds were accepted, and production writes remain locked.
 
-The existing Vercel production site still serves the earlier noncustodial build. The escrow frontend has not been promoted because production custody is locked. This is an
-environmental deployment task, not evidence of escrow readiness.
+Vercel Authentication was disabled for the `the-revigate` project on
+2026-10-15 through the authenticated project settings UI. Both the production
+alias and the corrected preview now open publicly without the Vercel login
+page. The production alias still serves the earlier noncustodial build; the
+corrected single-contract frontend remains a preview and has not been promoted.
+This changes deployment visibility only and is not evidence of escrow readiness.
 
 A fresh Brave/Rabby check against that currently promoted build passed the
 in-app disconnect and reconnect controls for the observed account without

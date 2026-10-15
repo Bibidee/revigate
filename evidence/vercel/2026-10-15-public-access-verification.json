@@ -1,0 +1,16 @@
+{
+  "project": "the-revigate",
+  "team": "bibidees-projects",
+  "performed_at": "2026-10-15",
+  "change": "Vercel Authentication disabled through the project settings UI after user confirmation.",
+  "settings_url": "https://vercel.com/bibidees-projects/the-revigate/settings/deployment-protection",
+  "production_url": "https://the-revigate.vercel.app",
+  "preview_url": "https://the-revigate-ix1t1a93s-bibidees-projects.vercel.app",
+  "production_browser_result": "PASS_PUBLIC_NO_VERCEL_LOGIN",
+  "preview_browser_result": "PASS_PUBLIC_NO_VERCEL_LOGIN",
+  "production_build": "older noncustodial build remains promoted",
+  "preview_build": "corrected single-contract frontend, custody release gated",
+  "production_promoted": false,
+  "custody_writes_enabled": false,
+  "notes": "Removing Vercel Authentication changes deployment visibility only. It does not promote the corrected preview or prove hosted custody safety."
+}
