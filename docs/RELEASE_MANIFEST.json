@@ -14,7 +14,7 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "cfc786a822b7e69b530dcf67a503828169d643d9",
+  "source_commit": "d73c78f37ba7240fbadea06d435b7a3550e36e38",
   "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
@@ -109,12 +109,12 @@
     "workflow": "CI",
     "run_id": 38825405914,
     "url": "https://github.com/Bibidee/revigate/actions/runs/38825405914",
-    "head_sha": "f374142d342f296d113d5e03eba3aafff90c98e9",
+    "head_sha": "d73c78f37ba7240fbadea06d435b7a3550e36e38",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
-    "deployment_id": "dpl_DU9orgaUtJ7BW3NAvx2m44fNKMtS",
-    "url": "https://the-revigate-fjom9uznt-bibidees-projects.vercel.app",
+    "deployment_id": "dpl_79sKxC8KY6U1k58X78BxfLbza65d",
+    "url": "https://the-revigate-ickesu8kv-bibidees-projects.vercel.app",
     "state": "READY",
     "browser_check": "PUBLIC_HTTP_200_BROWSER_RUNTIME_UNVERIFIED",
     "production_promoted": true
