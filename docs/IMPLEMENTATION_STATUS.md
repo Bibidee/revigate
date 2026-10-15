@@ -36,8 +36,9 @@ protocol rollback or recipient delivery.
 - Wallet B / participant: `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`
 - Studionet: chain `61999`, RPC `https://studio.genlayer.com/api`
 
-The old `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` address belongs only to
-archived fixture evidence and is not a current wallet.
+The unlocked CLI deployer `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` was
+used only for the disposable deployment and probes. It is neither Wallet A
+nor Wallet B, and it is not a user wallet for the application.
 
 ## Hosted and production state
 
