@@ -118,8 +118,8 @@ finality. Evidence is `evidence/local-browser/2026-10-15-production-observer.jso
 
 Local verification currently passes 23 JavaScript tests and 34 Direct Mode tests
 (57 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. GitHub Actions run `38694594371`
-(`https://github.com/Bibidee/revigate/actions/runs/38694594371`) passed for the
+validator evidence. GitHub Actions run `38695990638`
+(`https://github.com/Bibidee/revigate/actions/runs/38695990638`) passed for the
 final branch head, including clean install, preflight, production build, and
 production dependency audit. Production promotion evidence is preserved in
 `evidence/vercel/2026-10-15-production-promotion.json`.

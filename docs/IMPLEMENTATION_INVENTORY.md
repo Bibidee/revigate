@@ -69,8 +69,8 @@ at history index 1.
 ## Automated evidence
 
 The local suite currently passes 23 JavaScript tests and 34 Direct Mode tests.
-Direct Mode uses mocked providers. GitHub Actions run `38694594371`
-(`https://github.com/Bibidee/revigate/actions/runs/38694594371`) passed for the
+Direct Mode uses mocked providers. GitHub Actions run `38695990638`
+(`https://github.com/Bibidee/revigate/actions/runs/38695990638`) passed for the
 final branch head, including clean install, preflight, production build, and
 production dependency audit.
 
