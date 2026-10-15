@@ -9,5 +9,12 @@
   "production_promoted": false,
   "browser_check": "BLOCKED_BY_VERCEL_AUTHENTICATION",
   "reason": "Preview deployment protection redirected Brave to Vercel login; no bypass attempted.",
+  "authenticated_cli_check": {
+    "method": "vercel curl",
+    "result": "PASS_READ_ONLY",
+    "observed_title": "Revigate — rules with a history",
+    "observed_custody_copy": "Native GEN · release gated",
+    "observed_write_gate_copy": "Native GEN offers remain disabled until hosted custody and recipient-delivery evidence passes"
+  },
   "production_status": "UNCHANGED"
 }
