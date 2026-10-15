@@ -97,8 +97,8 @@ is observer evidence only; it is not a replacement for a finalized receipt.
 
 Local verification currently passes 15 JavaScript tests and 34 Direct Mode tests
 (49 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh CI run `38657450326` (run 43) for commit
-`051ddbe45f304bce41c6672c83160448d837ec24` passed npm ci, frozen Python
+validator evidence. Fresh CI run `38667733432` (run 45) for commit
+`d2362855d8e4c89c13ea3badfd41075df3b88b01` passed npm ci, frozen Python
 dependencies, preflight, production build, and the production dependency audit.
 Its Vercel branch deployment is READY; authenticated read-only content inspection
 confirms the noncustodial warning, Registry lock, and Studionet chain 61999.

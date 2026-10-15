@@ -70,8 +70,8 @@ at history index 1.
 The local suite currently passes 15 JavaScript tests and 34 Direct Mode tests.
 Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
 build evidence are recorded on the remediation branch. Fresh GitHub Actions run
-38657450326 (run 43) for commit
-051ddbe45f304bce41c6672c83160448d837ec24 passed npm ci, frozen Python dependencies,
+38667733432 (run 45) for commit
+d2362855d8e4c89c13ea3badfd41075df3b88b01 passed npm ci, frozen Python dependencies,
 preflight, production build, and the production dependency audit.
 
 ## Browser and review boundary
