@@ -16,8 +16,10 @@ identity, registered and verified Program 3, and completed actual NONMATERIAL,
 MATERIAL and ambiguous assessments. The NONMATERIAL assessment included a
 genuine validator disagreement. Account switching and the wrong-network guard
 now have live PASS observations on the corrected preview; the network switch
-was accepted, so a rejected switch and an actual Rabby transaction rejection
-remain unrecorded. Mobile layout still needs fresh extension evidence.
+was accepted. The attempted Rabby rejection probe produced a finalized
+`acknowledge_rules` transaction with five `AGREE` votes, so rejection is still
+not proven. Mobile layout still needs fresh extension evidence. The exact
+classification is in `evidence/local-browser/2026-10-15-rabby-rejection-probe.json`.
 
 The latest read-only Wallet B recheck read Program 3 as VERIFIED at epoch 3,
 confirmed two material events and no pending review, and returned zero wallet

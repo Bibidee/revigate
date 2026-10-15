@@ -80,7 +80,9 @@ submitted no transaction; the record is in
 1. Signed Wallet A baseline, NONMATERIAL, MATERIAL and ambiguous source tests are complete on the single-contract deployment.
 2. Funded Wallet A/B scenarios remain blocked by the reproduced Studionet behavior where an execution error rolls back accounting while retaining attached value. Wrong-method and no-calldata value also remain unassigned. There is no runtime-supported recovery path in this contract.
 3. Independently observe recipient balance deltas for any future withdrawal; do not treat parent or child finality alone as proof of credit and never replay an UNKNOWN_DELIVERY transfer.
-4. Complete the remaining real extension rejection, account/network switch and mobile browser checks, then refresh the evidence matrix.
+4. Complete a genuine Rabby rejection observation (the attempted probe
+   finalized instead), plus mobile browser checks, then refresh the evidence
+   matrix.
 5. Obtain an independent security review and the required second PR approval.
 6. Keep custody writes locked. GitHub `main` protection requires `verify`, `Vercel`, one approving review, last-push approval and conversation resolution.
 
