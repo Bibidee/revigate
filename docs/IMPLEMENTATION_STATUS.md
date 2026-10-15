@@ -98,13 +98,19 @@ is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`. This
 is observer evidence only; it is not a replacement for a finalized receipt.
 
 The corrected frontend was promoted to production deployment
-`dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n` at
+`dpl_Ac37qSNmvRMpdRPJm5SEB1opt378` at
 `https://the-revigate.vercel.app`. A real Brave/Rabby production session
 connected Wallet B and showed `Disconnect`; clicking it changed the app to
 `Connect wallet` and displayed `Revigate app session disconnected. Your wallet
 remains connected in Rabby.` The wallet extension remained connected and no
 transaction or contract write was sent. Exact evidence is
 `evidence/local-browser/2026-10-15-production-disconnect.json`.
+
+The wallet connection path was then hardened so a provider injected after
+initial page load is attached lazily when the user clicks Connect wallet. The
+change is committed at `1d826d4dcf8dfab832bc1801512b1399aec5bb55` and promoted
+in the deployment above. Automated browser contexts without Rabby injection
+still cannot exercise the extension popup.
 
 The same production page then ran the saved Wallet B acknowledgment through
 the read-only observer. It classified hash

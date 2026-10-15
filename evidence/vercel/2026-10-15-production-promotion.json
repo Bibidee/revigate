@@ -1,18 +1,19 @@
 {
   "project": "bibidees-projects/the-revigate",
   "target": "production",
-  "deployment_id": "dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n",
-  "deployment_url": "https://the-revigate-7ca3uxf2p-bibidees-projects.vercel.app",
+  "deployment_id": "dpl_Ac37qSNmvRMpdRPJm5SEB1opt378",
+  "deployment_url": "https://the-revigate-ijfm1ae9m-bibidees-projects.vercel.app",
   "alias": "https://the-revigate.vercel.app",
   "ready_state": "READY",
   "ready_substate": "PROMOTED",
   "git_ref": "codex/revigate-remediation-2026-10-14",
-  "git_commit": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
+  "git_commit": "1d826d4dcf8dfab832bc1801512b1399aec5bb55",
   "registry_address": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
   "custody": "NONE",
   "writes": "LOCKED",
   "user_funds_accepted": false,
   "build": "PASS",
-  "source": "vercel api /v13/deployments/dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n",
+  "source": "vercel inspect dpl_Ac37qSNmvRMpdRPJm5SEB1opt378 --scope bibidees-projects",
+  "wallet_fix": "lazy wallet-session attachment when Rabby injects after initial page load",
   "observed_at": "2026-10-15"
 }

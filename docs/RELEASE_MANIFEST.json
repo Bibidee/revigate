@@ -91,10 +91,10 @@
   "vercel_status_check": "SUCCESS_FOR_PRODUCTION_PROMOTION",
   "vercel_branch_deployment": {
     "url": "https://the-revigate.vercel.app",
-    "deployment_url": "https://the-revigate-7ca3uxf2p-bibidees-projects.vercel.app",
-    "deployment_id": "dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n",
+    "deployment_url": "https://the-revigate-ijfm1ae9m-bibidees-projects.vercel.app",
+    "deployment_id": "dpl_Ac37qSNmvRMpdRPJm5SEB1opt378",
     "environment": "PRODUCTION",
-    "commit_sha": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
+    "commit_sha": "1d826d4dcf8dfab832bc1801512b1399aec5bb55",
     "state": "READY",
     "authenticated_content_check": "PASS_NONCUSTODIAL_WARNING_REGISTRY_LOCK_CHAIN_61999",
     "public_browser_check": "PASS_BRAVE_RABBY_APP_DISCONNECT",
