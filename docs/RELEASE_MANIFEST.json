@@ -82,9 +82,9 @@
   "release_verdict": "NOT_RELEASED",
   "ci": {
     "workflow": "CI",
-    "run_id": 38730352955,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38730352955",
-    "head_sha": "20280587c2187729909540a760ce118d8d251202",
+    "run_id": 38800925058,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38800925058",
+    "head_sha": "8ee47da90c422c70996f60b74b8e4ec9245d0ebe",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
