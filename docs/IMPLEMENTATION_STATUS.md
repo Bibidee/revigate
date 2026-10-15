@@ -22,6 +22,7 @@ message transfer evidence.
 - Direct Mode: **52 passing** against `contracts/revigate.py`.
 - TypeScript: **passing**.
 - ESLint: **passing**.
+- Production build: **passing** (rerun 2026-10-15).
 - The Direct Mode suite covers signed-source parsing, publisher and participant
   authorization, funding validation and refundable credits, acceptance,
   decline, expiry, material exit, maturity, mutual closure, single-use
@@ -67,6 +68,12 @@ and MATERIAL. Canonical state is VERIFIED at epoch 3 with active SHA
 review. The NONMATERIAL round included one genuine validator DISAGREE vote.
 Exact hashes are in
 `evidence/single-contract/2026-10-15-wallet-a-program-3-lifecycle.json`.
+
+A later read-only Brave/Rabby check with Wallet B re-read Program 3 from the
+same contract, confirmed `VERIFIED` epoch 3 with two material events and no
+pending review, and returned zero wallet credit with an empty offer index. It
+submitted no transaction; the record is in
+`evidence/local-browser/2026-10-15-wallet-b-readonly-recheck.json`.
 
 ## Remaining gates
 

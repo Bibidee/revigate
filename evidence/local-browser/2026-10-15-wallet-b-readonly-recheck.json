@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-10-15",
+  "browser": "Brave Browser",
+  "wallet_extension": "Rabby",
+  "deployment": "https://the-revigate-git-codex-revigate-remedi-94105f-bibidees-projects.vercel.app",
+  "chain_id": 61999,
+  "wallet": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+  "contract": "0xD86A6C0a3949D2452bB8964e076983254375b5fE",
+  "checks": {
+    "connected_wallet": "PASS_WALLET_B",
+    "canonical_program_read": "PASS_PROGRAM_3_VERIFIED_EPOCH_3",
+    "active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+    "material_event_count": 2,
+    "pending_review": 0,
+    "wallet_credit_read": "PASS_ZERO",
+    "offer_index_read": "PASS_EMPTY"
+  },
+  "safety": "READ_ONLY_NO_TRANSACTION_SUBMITTED",
+  "limitations": [
+    "This observation does not prove funded custody safety or recipient delivery.",
+    "Rabby transaction rejection remains unrecorded pending an explicit user rejection of a zero-value test write."
+  ]
+}
