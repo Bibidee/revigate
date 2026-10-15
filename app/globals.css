@@ -31,3 +31,4 @@
 @media(max-width:690px){.action-grid{grid-template-columns:1fr}.action-inline{align-items:stretch}.action-inline label{min-width:100%}.contract-workbench{padding:20px}.workbench-heading{align-items:flex-start;flex-direction:column}}
 
 .wallet-account{color:#536875;font-size:11px;white-space:nowrap}
+.wallet-button:disabled{opacity:.65;cursor:wait}

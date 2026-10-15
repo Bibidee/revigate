@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-15",
+  "browser": "Brave with Rabby provider",
+  "url": "http://127.0.0.1:3100/my-rules/",
+  "wallet": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+  "chain_id": "0xf22f",
+  "ui_before": {
+    "account_visible": true,
+    "disconnect_control_visible": true,
+    "label": "Disconnect"
+  },
+  "action": "Clicked the in-app Disconnect control once.",
+  "observed_after_5_seconds": {
+    "account_visible": true,
+    "disconnect_control_visible": true,
+    "wallet_account_changed": false,
+    "toast": false
+  },
+  "interpretation": "The injected wallet did not return a confirmed wallet_revokePermissions result during the observation window. This is not evidence of successful disconnect or failure of wallet permission revocation. The UI now times out and directs the user to the wallet extension instead of hanging.",
+  "scope": "Local browser UX evidence only; no transaction or contract write was submitted."
+}
