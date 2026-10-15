@@ -23,9 +23,21 @@
   },
   "initial_reads": {
     "get_config": "MATCHED",
-    "get_ledger_totals": {"accounted": 0, "credits": 0, "deposited": 0, "dispatched": 0, "held": 0},
-    "get_program_page": {"items": [], "next_cursor": 0},
-    "get_offer_page": {"items": [], "next_cursor": 0}
+    "get_ledger_totals": {
+      "accounted": 0,
+      "credits": 0,
+      "deposited": 0,
+      "dispatched": 0,
+      "held": 0
+    },
+    "get_program_page": {
+      "items": [],
+      "next_cursor": 0
+    },
+    "get_offer_page": {
+      "items": [],
+      "next_cursor": 0
+    }
   },
   "hosted_probe": {
     "registration_transaction": "0xc347a08ea1967993dd5ae855bfaa3819edbf690ba9e92ffcd392cc4bfa9a750a",
@@ -37,10 +49,29 @@
     "verification_transaction": "0xdec8f4cf8c0373223fcba3b28ed557a719e55d638591dbed3f8855fa416008ce",
     "verification_result": "INCONCLUSIVE",
     "verification_reason": "manifest wallet does not nominate publisher",
-    "post_state": {"status": "PROPOSED", "epoch": 0, "active_sha": "", "document_digest": ""},
+    "post_state": {
+      "status": "PROPOSED",
+      "epoch": 0,
+      "active_sha": "",
+      "document_digest": ""
+    },
     "value_credited": false
   },
   "custody_status": "NOT_PROVEN",
   "production_status": "LOCKED",
-  "release_verdict": "NOT_RELEASED"
+  "release_verdict": "NOT_RELEASED",
+  "direct_transfer_probe": {
+    "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",
+    "amount_wei": 1,
+    "contract_balance_hex": "0x1",
+    "ledger_after": {
+      "deposited": 0,
+      "held": 0,
+      "credits": 0,
+      "dispatched": 0,
+      "accounted": 0
+    },
+    "classification": "UNSOLICITED_SURPLUS_UNASSIGNED",
+    "recovery": "NOT_AVAILABLE_AT_CONTRACT_LEVEL"
+  }
 }

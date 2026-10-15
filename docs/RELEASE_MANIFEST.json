@@ -3,8 +3,16 @@
   "recorded_at": "2026-10-15",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
-  "pull_request": {"url": "https://github.com/Bibidee/revigate/pull/1", "draft": true, "merged": false},
-  "network": {"name": "GenLayer Studionet", "chain_id": 61999, "rpc": "https://studio.genlayer.com/api"},
+  "pull_request": {
+    "url": "https://github.com/Bibidee/revigate/pull/1",
+    "draft": true,
+    "merged": false
+  },
+  "network": {
+    "name": "GenLayer Studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
   "active_contract": "contracts/revigate.py",
   "source_commit": "cb84344",
   "source_sha256": "BDF1D0B952719D8EDA16F1AC26A49C2F1B9CBB0465B7DAC972175A3015E904EF",
@@ -14,7 +22,13 @@
     "transaction": "0x29af681ee4ebb8bb03f52c2f36b4e1c686798e97dbcd0c0b1b2963e9ccf5d8b5",
     "receipt": "FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS_ZERO_VALUE",
     "source_attestation": "EXACT_BYTE_MATCH",
-    "config": {"protocol": "revigate-registry-v1", "contract_version": 3, "custody": "SINGLE_CONTRACT_ESCROW", "escrow": "NATIVE_GEN", "transfer_evidence": "EXTERNAL_MESSAGE"}
+    "config": {
+      "protocol": "revigate-registry-v1",
+      "contract_version": 3,
+      "custody": "SINGLE_CONTRACT_ESCROW",
+      "escrow": "NATIVE_GEN",
+      "transfer_evidence": "EXTERNAL_MESSAGE"
+    }
   },
   "hosted_probe": {
     "registration_transaction": "0xc347a08ea1967993dd5ae855bfaa3819edbf690ba9e92ffcd392cc4bfa9a750a",
@@ -22,11 +36,49 @@
     "verification_transaction": "0xdec8f4cf8c0373223fcba3b28ed557a719e55d638591dbed3f8855fa416008ce",
     "verification_result": "INCONCLUSIVE",
     "verification_reason": "manifest wallet does not nominate publisher",
-    "post_state": {"status": "PROPOSED", "epoch": 0, "active_sha": "", "document_digest": ""},
+    "post_state": {
+      "status": "PROPOSED",
+      "epoch": 0,
+      "active_sha": "",
+      "document_digest": ""
+    },
     "value_credited": false
   },
-  "local_checks": {"javascript": "23 PASS", "direct_mode": "52 PASS", "typecheck": "PASS", "lint": "PASS", "build": "PASS"},
+  "local_checks": {
+    "javascript": "23 PASS",
+    "direct_mode": "52 PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
+  },
   "custody_status": "NOT_PROVEN",
   "production_status": "LOCKED",
-  "release_verdict": "NOT_RELEASED"
+  "release_verdict": "NOT_RELEASED",
+  "ci": {
+    "workflow": "CI",
+    "run_id": 38717669185,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38717669185",
+    "head_sha": "7e0157c5211effb0395a819a40795ca2bec7b234",
+    "conclusion": "SUCCESS"
+  },
+  "vercel_preview": {
+    "deployment_id": "dpl_7TDiUpxJK1cXehAfobrS5me4g426",
+    "url": "https://the-revigate-ix1t1a93s-bibidees-projects.vercel.app",
+    "state": "READY",
+    "browser_check": "BLOCKED_BY_VERCEL_AUTHENTICATION",
+    "production_promoted": false
+  },
+  "direct_transfer_probe": {
+    "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",
+    "amount_wei": 1,
+    "ledger_after": {
+      "deposited": 0,
+      "held": 0,
+      "credits": 0,
+      "dispatched": 0,
+      "accounted": 0
+    },
+    "contract_balance_hex": "0x1",
+    "interpretation": "UNSOLICITED_SURPLUS_UNASSIGNED"
+  }
 }
