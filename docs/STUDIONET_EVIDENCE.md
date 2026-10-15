@@ -1,5 +1,13 @@
 # Studionet Candidate Evidence
 
+## Noncustodial Registry V4 deployment — 2026-10-15
+
+The exact committed `contracts/revigate.py` source was deployed with zero attached value to `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Deployment transaction `0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6` reached `FINALIZED` with successful execution, `MAJORITY_AGREE`, and five `AGREE` votes.
+
+The deployed source was fetched from Studionet and matched the local UTF-8 source byte-for-byte at SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064`. Canonical `get_config()` returned protocol `revigate-registry-v1`, chain `61999`, contract version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`. Initial `get_program_page(0, 5)` returned no programs and cursor zero.
+
+This proves deployment identity and clean initial Registry state. It does not prove the hosted signed-source lifecycle, which must be repeated on this address. It accepts no application funds and does not rehabilitate the historical escrow deployment. Machine-readable evidence is in `evidence/noncustodial/2026-10-15-registry-v4-deployment.json`.
+
 ## Current single-contract Wallet A lifecycle — 2026-10-15
 
 The source-attested disposable contract

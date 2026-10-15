@@ -25,7 +25,9 @@ The former Studionet escrow deployment `0xD86A6C0a3949D2452bB8964e076983254375b5
 
 ## Deployment state
 
-The noncustodial source has been changed locally but is not yet deployed or source-attested. It must be deployed as a disposable zero-value Studionet test contract before hosted Registry lifecycle evidence is refreshed. No user funds are accepted, production writes remain locked, and the old escrow deployment is not rebound to the new source.
+The exact noncustodial source was deployed with zero value to Studionet at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Deployment transaction `0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6` finalized with majority agreement, successful execution and five `AGREE` votes. Deployed source SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064` matches `contracts/revigate.py` byte-for-byte. Canonical `get_config()` returned chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`.
+
+The local frontend is bound to this test Registry. No user funds are accepted, production writes remain locked, and the historical escrow deployment is not rebound to the new source.
 
 Wallet A / publisher: `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`.
 Wallet B / participant: `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`.
@@ -33,14 +35,13 @@ Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc
 
 ## Remaining gates
 
-1. Run local checks, deploy the exact committed source to Studionet with zero value and record address, transaction, receipt and byte-for-byte source attestation.
-2. Refresh hosted zero-value Registry registration, verification, NONMATERIAL, MATERIAL, ambiguous and acknowledgment evidence against that new address.
-3. Complete remaining browser wallet rejection, mobile, pending/unknown and refresh checks for the corrected build.
-4. Obtain an independent security review and a second approved PR review.
-5. Obtain explicit authorization before production promotion or merge into `main`.
+1. Refresh hosted zero-value Registry registration, verification, NONMATERIAL, MATERIAL, ambiguous and acknowledgment evidence against the new address.
+2. Complete remaining browser wallet rejection, mobile, pending/unknown and refresh checks for the corrected build.
+3. Obtain an independent security review and a second approved PR review.
+4. Obtain explicit authorization before production promotion or merge into `main`.
 
 Funded escrow scenarios are removed from the active product. They are not pending implementation work because the runtime evidence makes native custody unsafe.
 
 ## Release verdict
 
-**NOT RELEASED.** The custody blocker is addressed in code by removing native custody, but the replacement source still needs local verification, disposable deployment, exact attestation and refreshed hosted lifecycle evidence.
+**NOT RELEASED.** The custody blocker is addressed by removing native custody, and the replacement source is deployed and exactly attested. Refreshed hosted lifecycle, browser, independent-review and approval gates remain open.

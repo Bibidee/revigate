@@ -1,0 +1,36 @@
+{
+  "network": "GenLayer Studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "contract_source": "contracts/revigate.py",
+  "source_commit": "4d0f316e737d58180d9d9c98636ad8e2d4a841d0",
+  "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
+  "deployer": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+  "transaction": "0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6",
+  "contract_address": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+  "receipt_status": "FINALIZED",
+  "result": "MAJORITY_AGREE",
+  "execution_result": "SUCCESS",
+  "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+  "value_credited": false,
+  "attached_value_wei": 0,
+  "source_attestation": {
+    "matches_local_source": true,
+    "method": "gen_getContractCode through GenLayerJS"
+  },
+  "config": {
+    "protocol": "revigate-registry-v1",
+    "chain_id": 61999,
+    "contract_version": 4,
+    "custody": "NONE",
+    "escrow": "NONE",
+    "transfer_evidence": "NONE"
+  },
+  "initial_state": {
+    "programs": [],
+    "next_program_cursor": 0
+  },
+  "classification": "DISPOSABLE_NONCUSTODIAL_REGISTRY_TEST_DEPLOYMENT",
+  "production_promoted": false,
+  "user_funds_accepted": false
+}

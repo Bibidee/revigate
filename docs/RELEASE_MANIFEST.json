@@ -86,7 +86,7 @@
   },
   "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
   "production_status": "LOCKED",
-  "release_verdict": "NOT_RELEASED_PENDING_NONCUSTODIAL_DEPLOYMENT_AND_EVIDENCE",
+  "release_verdict": "NOT_RELEASED_PENDING_HOSTED_LIFECYCLE_BROWSER_AND_REVIEW_GATES",
   "ci": {
     "workflow": "CI",
     "run_id": 38801323765,
@@ -121,8 +121,20 @@
     "custody": "NONE",
     "escrow": "NONE",
     "transfer_evidence": "NONE",
-    "deployment": "NOT_DEPLOYED",
-    "source_attestation": "PENDING_EXACT_BYTE_MATCH",
-    "value_sent_wei": 0
+    "deployment": "FINALIZED_STUDIONET_TEST",
+    "address": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+    "transaction": "0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6",
+    "receipt": "FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS",
+    "validator_votes": [
+      "AGREE",
+      "AGREE",
+      "AGREE",
+      "AGREE",
+      "AGREE"
+    ],
+    "source_attestation": "EXACT_BYTE_MATCH",
+    "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
+    "value_sent_wei": 0,
+    "evidence": "evidence/noncustodial/2026-10-15-registry-v4-deployment.json"
   }
 }
