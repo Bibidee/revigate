@@ -1,0 +1,21 @@
+{
+  "repository": "Bibidee/revigate",
+  "branch": "main",
+  "checked_at": "2026-10-15",
+  "source": "gh api repos/Bibidee/revigate/branches/main/protection",
+  "required_status_checks": {
+    "strict": true,
+    "contexts": ["verify", "Vercel"]
+  },
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true,
+    "require_last_push_approval": true
+  },
+  "enforce_admins": true,
+  "required_conversation_resolution": true,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "required_signatures": false,
+  "interpretation": "BRANCH_PROTECTION_ENABLED; signed commits are not a branch-protection requirement and remain a separate source-authentication gate."
+}

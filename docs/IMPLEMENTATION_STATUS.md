@@ -61,7 +61,7 @@ or a funded lifecycle.
 3. Execute funded Wallet A/B scenarios only after the payable rollback and outbound delivery hypotheses have a testable, runtime-supported path.
 4. Independently observe recipient balance deltas for withdrawals; do not treat parent or child finality alone as proof of credit.
 5. Complete the 52-scenario browser and integration matrix, fresh CI and an independent security review.
-6. Keep PR #1 draft and do not merge or promote custody without explicit approval after all critical gates pass.
+6. Keep PR #1 draft and do not merge or promote custody without explicit approval after all critical gates pass. GitHub `main` branch protection is enabled and requires `verify`, `Vercel`, one approving review, last-push approval and conversation resolution.
 
 ## Release verdict
 
