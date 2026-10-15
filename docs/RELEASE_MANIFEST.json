@@ -105,6 +105,8 @@
   "signed_fixture_nonmaterial": "ee033cbef9450f58990b01eac77b5949453f2130",
   "signed_fixture_material": "ecac64c4f95a527c9f587ab992d6e503d713bb11",
   "signed_fixture_ambiguous": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+  "prompt_injection_fixture_status": "NOT_GITHUB_VERIFIED_UNKNOWN_KEY_NOT_USED",
+  "prompt_injection_fixture_evidence": "evidence/github-access-diagnostic/2026-10-15-prompt-injection-signature.json",
   "hosted_lifecycle": {
     "program_id": 3,
     "publisher_wallet": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
