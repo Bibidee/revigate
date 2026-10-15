@@ -74,9 +74,11 @@ authoritative evidence. Commit `13bc812f352a6f484d8ba4d34ffb244fc65dc223`
 now treats finalized receipts as canonical-readback candidates and clears a
 pending hash only after the method-specific Registry readback matches. Unknown,
 failed, delayed, and duplicate states remain distinct; no automatic replay is
-allowed. A fresh public deployment and browser rerun are still required. Wrong-
-network switching, rejection, disconnect recovery, and the protected Vercel
-preview (which redirects to Vercel login) remain unverified; no credentials or
+allowed. The corrected frontend is now promoted to production and the public
+Brave/Rabby app-session disconnect check passes. Wrong-network switching and
+the local disconnect case are verified; extension-level rejection/disconnect,
+observer-specific production finality, and the protected Vercel preview (which
+redirects to Vercel login) remain outside this evidence. No credentials or
 bypass link were used. The observer does not infer recipient credit from
 finality and records `value_credited=false` from the canonical transaction read.
 
@@ -95,21 +97,34 @@ it does not prove finality, failure, cancellation, or rollback. The exact poll
 is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`. This
 is observer evidence only; it is not a replacement for a finalized receipt.
 
+The corrected frontend was promoted to production deployment
+`dpl_GCgi5KsDCHsx7tikQ5Fw22LZf4rP` at
+`https://the-revigate.vercel.app`. A real Brave/Rabby production session
+connected Wallet B and showed `Disconnect`; clicking it changed the app to
+`Connect wallet` and displayed `Revigate app session disconnected. Your wallet
+remains connected in Rabby.` The wallet extension remained connected and no
+transaction or contract write was sent. Exact evidence is
+`evidence/local-browser/2026-10-15-production-disconnect.json`.
+
 Local verification currently passes 15 JavaScript tests and 34 Direct Mode tests
 (49 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh CI run `38667733432` (run 45) for commit
-`d2362855d8e4c89c13ea3badfd41075df3b88b01` passed npm ci, frozen Python
+validator evidence. Fresh CI run `38667968711` (run 46) for commit
+`3b2327ddcc5fb77eaf27d011a390bdfa190ae486` passed npm ci, frozen Python
 dependencies, preflight, production build, and the production dependency audit.
-Its Vercel branch deployment is READY; authenticated read-only content inspection
-confirms the noncustodial warning, Registry lock, and Studionet chain 61999.
-The protected preview still redirects a normal browser to Vercel login.
+The promoted Vercel production deployment is READY; authenticated content
+inspection and the public Brave/Rabby check confirm the noncustodial warning,
+Registry lock, Studionet chain 61999, and app-session disconnect behavior. The
+protected preview still redirects a normal browser to Vercel login.
 
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
-PR #1 remains a draft, and no merge or production promotion occurred. GitHub
+PR #1 remains a draft, and the draft was not merged. The corrected frontend was
+promoted to production, but this does not open Registry writes or custody. GitHub
 `main` branch protection is enabled with strict `verify` and `Vercel` checks,
 one required approval, last-push approval, and admin enforcement. Independent
-security review, remaining extension-level flow checks, and protected-preview access
-remain open gates. Local Brave/Rabby app-session disconnect is recorded in
+security review, the observer-specific finality rerun, and remaining
+extension-level flow checks remain open gates. Production app-session disconnect
+is recorded in `evidence/local-browser/2026-10-15-production-disconnect.json`;
+the local evidence remains in
 `evidence/local-browser/2026-10-15-wallet-disconnect.json`.

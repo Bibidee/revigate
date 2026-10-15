@@ -1,0 +1,29 @@
+{
+  "captured_at": "2026-10-15",
+  "environment": {
+    "browser": "Brave Browser",
+    "wallet_extension": "Rabby",
+    "url": "https://the-revigate.vercel.app/my-rules/",
+    "deployment_id": "dpl_GCgi5KsDCHsx7tikQ5Fw22LZf4rP",
+    "deployment_url": "https://the-revigate-rdlf4ck8c-bibidees-projects.vercel.app",
+    "network": "GenLayer Studionet",
+    "chain_id": 61999
+  },
+  "wallet": {
+    "account_before": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+    "account_after_in_app": "",
+    "account_remained_connected_in_rabby": true
+  },
+  "before": {
+    "header_control": "Disconnect",
+    "registry_status": "Registry verified"
+  },
+  "action": "Clicked the production app Disconnect control once.",
+  "after": {
+    "header_control": "Connect wallet",
+    "toast": "Revigate app session disconnected. Your wallet remains connected in Rabby.",
+    "registry_status": "Registry verified"
+  },
+  "transaction_or_contract_write": false,
+  "interpretation": "PASS_APP_SESSION_DISCONNECT_ONLY; extension-level wallet revocation was not attempted or claimed."
+}
