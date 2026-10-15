@@ -119,8 +119,10 @@ finality. Evidence is `evidence/local-browser/2026-10-15-production-observer.jso
 
 Local verification currently passes 23 JavaScript tests and 34 Direct Mode tests
 (57 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. The previous successful CI run is historical evidence for
-its older commit; a fresh run for this branch head is required after the fixes.
+validator evidence. GitHub Actions run `38694338175`
+(`https://github.com/Bibidee/revigate/actions/runs/38694338175`) passed for the
+documentation-synchronized branch head, including clean install, preflight,
+production build, and production dependency audit.
 The promoted Vercel production deployment is READY; authenticated content
 inspection and the public Brave/Rabby check confirm the noncustodial warning,
 Registry lock, Studionet chain 61999, and app-session disconnect behavior. The

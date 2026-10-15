@@ -69,11 +69,10 @@ at history index 1.
 ## Automated evidence
 
 The local suite currently passes 23 JavaScript tests and 34 Direct Mode tests.
-Direct Mode uses mocked providers. Typecheck and lint pass locally; the first
-unsandboxed build attempt hit a Windows EPERM cache-directory restriction and is
-rerun with the approved workspace tool. A fresh GitHub Actions run for the final
-branch head is required; the older run listed in prior evidence remains
-historical.
+Direct Mode uses mocked providers. GitHub Actions run `38694338175`
+(`https://github.com/Bibidee/revigate/actions/runs/38694338175`) passed for the
+documentation-synchronized branch head, including clean install, preflight,
+production build, and production dependency audit.
 
 ## Browser and review boundary
 
