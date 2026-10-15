@@ -10,10 +10,12 @@ export function watchWallet(provider: WalletProvider, onChange: (state: WalletSe
   ready: Promise<PromiseSettledResult<void>[]>;
   refresh(): Promise<WalletSessionState>;
   getState(): WalletSessionState;
+  clear(): WalletSessionState;
+  resume(): void;
   stop(): void;
 };
 export function requestWalletConnection(provider: WalletProvider | undefined, session: { refresh(): Promise<WalletSessionState> }): Promise<WalletSessionState>;
-export function disconnectWallet(provider: WalletProvider | undefined, session: { refresh(): Promise<WalletSessionState> }): Promise<WalletSessionState>;
+export function disconnectWallet(session: { clear(): WalletSessionState }): WalletSessionState;
 export function classifyTransactionFinality(transaction: { statusName?: string; txExecutionResultName?: string } | null | undefined): "finalized-success" | "finalized-error" | "finalized-execution-unknown" | "undetermined" | "cancelled" | "pending";
 export function isFinalizedForCanonical(state: string): boolean;
 export function submitAndPersistHash<T>(submit: () => Promise<unknown>, makePending: (hash: string) => T, persist: (pending: T) => void): Promise<{ pending: T; persisted: true } | { pending: T; persisted: false; error: unknown }>;

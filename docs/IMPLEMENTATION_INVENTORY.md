@@ -81,7 +81,7 @@ signed the current publisher request and assessment. The account was switched to
 Wallet B, which submitted one zero-value acknowledgment and has a finalized
 canonical epoch-3 history record. The browser card retained a stale accepted
 snapshot, so direct RPC finality plus the canonical readback are authoritative.
-Network switching, rejection, real extension disconnect recovery, protected preview
+Network switching, rejection, extension-level disconnect recovery, protected preview
 access, and independent security review remain open. The local build now exposes a
 Disconnect control, with Rabby behavior recorded in
 evidence/local-browser/2026-10-15-wallet-disconnect.json. The observer fix has a

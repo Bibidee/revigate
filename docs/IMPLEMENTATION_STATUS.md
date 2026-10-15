@@ -110,5 +110,6 @@ The protected preview still redirects a normal browser to Vercel login.
 PR #1 remains a draft, and no merge or production promotion occurred. GitHub
 `main` branch protection is enabled with strict `verify` and `Vercel` checks,
 one required approval, last-push approval, and admin enforcement. Independent
-security review, remaining extension-flow checks, and protected-preview access
-remain open gates.
+security review, remaining extension-level flow checks, and protected-preview access
+remain open gates. Local Brave/Rabby app-session disconnect is recorded in
+`evidence/local-browser/2026-10-15-wallet-disconnect.json`.

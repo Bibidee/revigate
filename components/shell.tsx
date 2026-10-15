@@ -13,14 +13,17 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   const [account, setAccount] = useState("");
   const [chain, setChain] = useState("");
   const [message, setMessage] = useState("");
-  const [disconnecting, setDisconnecting] = useState(false);
+  const appDisconnected = useRef(false);
   const [contractStatus, setContractStatus] = useState(() => process.env.NEXT_PUBLIC_REVIGATE_REGISTRY ? "Checking Registry…" : "Registry is not configured.");
   const walletSession = useRef<ReturnType<typeof watchWallet> | undefined>(undefined);
   const wrongNetwork = Boolean(chain && Number.parseInt(chain, 16) !== 61999);
   useEffect(() => {
     const provider = window.ethereum;
     if (!provider) return;
-    const session = watchWallet(provider, (next) => { setAccount(next.account); setChain(next.chainId); });
+    const session = watchWallet(provider, (next) => {
+      if (appDisconnected.current) return;
+      setAccount(next.account); setChain(next.chainId);
+    });
     walletSession.current = session;
     return () => { session.stop(); walletSession.current = undefined; };
   }, []);
@@ -38,27 +41,24 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     if (!provider || !walletSession.current) { setMessage("Install an EIP-1193 wallet such as MetaMask or Rabby to connect."); return; }
     try {
       const state = await requestWalletConnection(provider, walletSession.current);
+      appDisconnected.current = false;
+      setAccount(state.account); setChain(state.chainId);
+      window.dispatchEvent(new Event("revigate:wallet-connect"));
       setMessage(state.chainId && Number.parseInt(state.chainId, 16) !== 61999 ? "Switch your wallet to GenLayer Studionet (chain 61999) before signing." : "");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Wallet connection was rejected."); }
   }
-  async function disconnect() {
-    const provider = window.ethereum;
-    if (!provider || !walletSession.current) { setMessage("No wallet is connected to this browser."); return; }
-    setDisconnecting(true);
-    setMessage("Requesting wallet disconnect…");
-    try {
-      await Promise.race([
-        disconnectWallet(provider, walletSession.current),
-        new Promise((_, reject) => setTimeout(() => reject(new Error("The wallet did not respond. Disconnect Revigate from the wallet extension.")), 8000)),
-      ]);
-      setMessage("Wallet disconnected from Revigate.");
-    } catch (error) { setMessage(error instanceof Error ? error.message : "The wallet could not confirm disconnect."); }
-    finally { setDisconnecting(false); }
+  function disconnect() {
+    if (!walletSession.current || !account) { setMessage("No Revigate wallet session is active."); return; }
+    appDisconnected.current = true;
+    disconnectWallet(walletSession.current);
+    setAccount(""); setChain("");
+    window.dispatchEvent(new Event("revigate:wallet-disconnect"));
+    setMessage("Revigate app session disconnected. Your wallet remains connected in Rabby.");
   }
   return <>
     <header className="topbar"><Link href="/" className="brand"><span className="brand-mark">R</span><span>Revi<span className="brand-light">gate</span><small>RULES WITH A HISTORY</small></span></Link>
       <nav aria-label="Main navigation"><Link href="/">Reading room</Link><Link href="/publish">Publish</Link><Link href="/my-rules">My rules</Link><Link href="/activity">Activity</Link><Link href="/about">About</Link></nav>
-      {account ? <><span className="wallet-account" aria-label={`Connected wallet ${account}`}>{account.slice(0, 6)}…{account.slice(-4)}</span><button className="wallet-button" disabled={disconnecting} onClick={() => void disconnect}>{disconnecting ? "Disconnecting…" : "Disconnect"}</button></> : <button className="wallet-button" onClick={() => void connect}>Connect wallet</button>}
+      {account ? <><span className="wallet-account" aria-label={`Connected wallet ${account}`}>{account.slice(0, 6)}…{account.slice(-4)}</span><button className="wallet-button" onClick={disconnect}>Disconnect</button></> : <button className="wallet-button" onClick={() => void connect}>Connect wallet</button>}
     </header>
     {wrongNetwork && <div className="network-warning">Wrong network · Connect to GenLayer Studionet · Chain 61999</div>}
     {message && <div className="toast" role="status">{message}<button aria-label="Dismiss" onClick={() => setMessage("")}>×</button></div>}

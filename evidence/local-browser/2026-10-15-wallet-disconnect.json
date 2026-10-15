@@ -10,12 +10,12 @@
     "label": "Disconnect"
   },
   "action": "Clicked the in-app Disconnect control once.",
-  "observed_after_5_seconds": {
-    "account_visible": true,
-    "disconnect_control_visible": true,
+  "observed_after_action": {
+    "account_visible": false,
+    "connect_control_visible": true,
     "wallet_account_changed": false,
-    "toast": false
+    "toast": "Revigate app session disconnected. Your wallet remains connected in Rabby."
   },
-  "interpretation": "The injected wallet did not return a confirmed wallet_revokePermissions result during the observation window. This is not evidence of successful disconnect or failure of wallet permission revocation. The UI now times out and directs the user to the wallet extension instead of hanging.",
+  "interpretation": "Revigate cleared its own wallet session and did not claim to revoke Rabby permissions. The wallet extension account remained connected, as expected for an app-level disconnect.",
   "scope": "Local browser UX evidence only; no transaction or contract write was submitted."
 }

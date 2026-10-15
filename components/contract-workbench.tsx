@@ -28,6 +28,7 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   const [program, setProgram] = useState<RecordValue | null>(null);
   const [pending, setPending] = useState<PendingTransaction[]>([]);
   const walletIdentity = useRef("");
+  const appDisconnected = useRef(false);
   const [form, setForm] = useState({ repo: "", rulebookPath: "rules/program.md",
     manifestPath: ".revigate/publisher.json", branch: "main", baselineSha: "", candidateSha: "" });
 
@@ -36,11 +37,29 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
     if (!wallet) return;
     queueMicrotask(() => setProvider(wallet));
     const session = watchWallet(wallet, (state) => {
+      if (appDisconnected.current) return;
       walletIdentity.current = `${state.account.toLowerCase()}|${state.chainId.toLowerCase()}`;
       setAccount(state.account); setChainId(state.chainId);
     });
+    const onAppDisconnect = () => {
+      appDisconnected.current = true;
+      session.clear();
+      walletIdentity.current = "|";
+      setAccount(""); setChainId("");
+    };
+    const onAppConnect = () => {
+      appDisconnected.current = false;
+      session.resume();
+      void session.refresh();
+    };
+    window.addEventListener("revigate:wallet-disconnect", onAppDisconnect);
+    window.addEventListener("revigate:wallet-connect", onAppConnect);
     queueMicrotask(() => setPending(loadPendingTransactions()));
-    return () => session.stop();
+    return () => {
+      window.removeEventListener("revigate:wallet-disconnect", onAppDisconnect);
+      window.removeEventListener("revigate:wallet-connect", onAppConnect);
+      session.stop();
+    };
   }, []);
 
   useEffect(() => {
