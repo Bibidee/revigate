@@ -14,7 +14,7 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "PENDING_POST_REDESIGN_COMMIT",
+  "source_commit": "4d0f316",
   "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
@@ -78,11 +78,11 @@
     "evidence": "evidence/local-browser/2026-10-15-rabby-rejection-probe.json"
   },
   "local_checks": {
-    "javascript": "PENDING",
-    "direct_mode": "PENDING",
-    "typecheck": "PENDING",
-    "lint": "PENDING",
-    "build": "PENDING"
+    "javascript": "23 PASS",
+    "direct_mode": "43 PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
   },
   "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
   "production_status": "LOCKED",
