@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-10-15",
+  "environment": {
+    "browser": "Brave Browser",
+    "wallet_extension": "Rabby",
+    "url": "https://the-revigate.vercel.app/",
+    "chain_id": 61999,
+    "deployment_scope": "existing production noncustodial build"
+  },
+  "wallet": {
+    "account_before": "0x16ef7b584ba9b3d33d3885646857e7a7de640bb7",
+    "account_after_reconnect": "0x16ef7b584ba9b3d33d3885646857e7a7de640bb7",
+    "is_wallet_a_or_b": false
+  },
+  "actions": [
+    {
+      "action": "Clicked in-app Disconnect",
+      "result": "Connect wallet control returned; toast stated the app session was disconnected while Rabby remained connected"
+    },
+    {
+      "action": "Clicked Connect wallet",
+      "result": "The same account reattached and Disconnect control returned"
+    }
+  ],
+  "transaction_or_contract_write": false,
+  "interpretation": "PASS_PRODUCTION_APP_CONNECT_DISCONNECT_RECONNECT; this verifies only the currently promoted noncustodial UI and does not verify the disposable escrow frontend or a funded lifecycle."
+}

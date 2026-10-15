@@ -48,6 +48,12 @@ is approved, no user funds were accepted, and production writes remain locked.
 The existing Vercel production site still serves the earlier noncustodial build. The escrow frontend has not been promoted because production custody is locked. This is an
 environmental deployment task, not evidence of escrow readiness.
 
+A fresh Brave/Rabby check against that currently promoted build passed the
+in-app disconnect and reconnect controls for the observed account without
+submitting a transaction. This verifies only app-session UX; it does not verify
+the disposable escrow frontend, wallet rejection, network/account switching,
+or a funded lifecycle.
+
 ## Remaining gates
 
 1. Use a genuinely GitHub-verified fixture that nominates the submitting publisher wallet. The existing Wallet A fixture is verified, but the unlocked CLI deployer is a different address; the hosted probe correctly returned `INCONCLUSIVE` and left Program 1 `PROPOSED` (`0xc347a08e…`, `0xdec8f4cf…`).
