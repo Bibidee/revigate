@@ -17,10 +17,10 @@ export type Eip1193Provider = {
 };
 export type PendingCanonicalState = Record<string, unknown>;
 export type PendingTransaction = { hash: Hash; account: string; method: string; args?: (string | number | boolean)[];
-  value: "0"; submittedAt: number; contractAddress: string; chainId: number; preState?: PendingCanonicalState };
+  value: string; submittedAt: number; contractAddress: string; chainId: number; preState?: PendingCanonicalState };
 
 export function getConfiguredRegistryAddress(): Address | undefined {
-  const value = process.env.NEXT_PUBLIC_REVIGATE_REGISTRY?.trim();
+  const value = (process.env.NEXT_PUBLIC_REVIGATE_CONTRACT || process.env.NEXT_PUBLIC_REVIGATE_REGISTRY)?.trim();
   if (!value) return undefined;
   if (!/^0x[0-9a-fA-F]{40}$/.test(value)) throw new Error("The configured Registry address is invalid.");
   return value as Address;
@@ -36,8 +36,9 @@ export async function verifyRevigateDeployment() {
   }) as { chain_id?: number | string; protocol?: string; contract_version?: number | string; custody?: string };
   if (Number(registryConfig.chain_id) !== STUDIONET_CHAIN_ID
       || registryConfig.protocol !== "revigate-registry-v1"
-      || Number(registryConfig.contract_version) !== 2 || registryConfig.custody !== "NONE") {
-    throw new Error("The configured contract is not the non-custodial Revigate Registry v2.");
+      || Number(registryConfig.contract_version) !== 3
+      || registryConfig.custody !== "SINGLE_CONTRACT_ESCROW") {
+    throw new Error("The configured contract is not the source-attested Revigate single-contract escrow.");
   }
   return { registryAddress, registryConfig };
 }
@@ -50,6 +51,7 @@ export async function readRevigate(functionName: string, args: CalldataEncodable
 
 export async function submitRevigateWrite(options: {
   provider: Eip1193Provider; account: string; functionName: string; args?: CalldataEncodable[];
+  value?: bigint;
 }): Promise<Hash> {
   const { registryAddress } = await verifyRevigateDeployment();
   const [chain, accounts] = await Promise.all([
@@ -59,7 +61,7 @@ export async function submitRevigateWrite(options: {
   if (!Array.isArray(accounts) || typeof accounts[0] !== "string" || accounts[0].toLowerCase() !== options.account.toLowerCase()) throw new Error("The active wallet changed. Reconnect before signing.");
   const client = createClient({ chain: studionet, endpoint, account: options.account as Address, provider: options.provider as never });
   const hash = await client.writeContract(makeWriteRequest({ address: registryAddress,
-    functionName: options.functionName, args: options.args ?? [], value: 0n }));
+    functionName: options.functionName, args: options.args ?? [], value: options.value ?? 0n }));
   if (typeof hash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(hash)) throw new Error("The wallet did not return a transaction hash.");
   return hash as Hash;
 }

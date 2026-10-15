@@ -14,7 +14,7 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   const [chain, setChain] = useState("");
   const [message, setMessage] = useState("");
   const appDisconnected = useRef(false);
-  const [contractStatus, setContractStatus] = useState(() => process.env.NEXT_PUBLIC_REVIGATE_REGISTRY ? "Checking Registry…" : "Registry is not configured.");
+  const [contractStatus, setContractStatus] = useState(() => (process.env.NEXT_PUBLIC_REVIGATE_CONTRACT || process.env.NEXT_PUBLIC_REVIGATE_REGISTRY) ? "Checking contract…" : "Contract is not configured.");
   const walletSession = useRef<ReturnType<typeof watchWallet> | undefined>(undefined);
   const wrongNetwork = Boolean(chain && Number.parseInt(chain, 16) !== 61999);
   function attachWalletSession(provider: Provider) {
@@ -38,8 +38,8 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     catch (error) { queueMicrotask(() => setContractStatus(error instanceof Error ? error.message : "Invalid Registry configuration.")); return; }
     if (!registry) return;
     verifyRevigateDeployment()
-      .then(() => setContractStatus("Non-custodial Registry identity verified."))
-      .catch(() => setContractStatus("The configured Registry could not be verified."));
+      .then(() => setContractStatus("Single-contract escrow identity verified."))
+      .catch(() => setContractStatus("The configured contract could not be verified."));
   }, []);
   async function connect() {
     const provider = window.ethereum;

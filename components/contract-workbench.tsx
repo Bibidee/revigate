@@ -1,195 +1,353 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { forgetPendingTransaction, getConfiguredRegistryAddress, loadPendingTransactions,
-  observeTransaction, readRevigate, savePendingTransaction, submitRevigateWrite,
-  verifyRevigateDeployment, type Eip1193Provider, type Hash, type PendingTransaction } from "@/lib/genlayer";
-import { isDuplicatePendingWrite } from "@/lib/pending-storage.mjs";
-import { isFinalizedForCanonical, submitAndPersistHash, watchWallet } from "@/lib/wallet-session.mjs";
-import { reconcileCanonicalTransaction, transactionStateLabel } from "@/lib/transaction-reconciliation.mjs";
+import { useEffect, useState } from "react";
+import {
+  forgetPendingTransaction,
+  getConfiguredRegistryAddress,
+  loadPendingTransactions,
+  observeTransaction,
+  readRevigate,
+  savePendingTransaction,
+  submitRevigateWrite,
+  verifyRevigateDeployment,
+} from "@/lib/genlayer";
+import type { Eip1193Provider, Hash, PendingTransaction } from "@/lib/genlayer";
 
+const contractConfigured = Boolean(process.env.NEXT_PUBLIC_REVIGATE_CONTRACT || process.env.NEXT_PUBLIC_REVIGATE_REGISTRY);
+
+type WorkbenchMode = "publisher" | "participant";
 type RecordValue = Record<string, unknown>;
-const asInteger = (value: string, label: string) => {
-  if (!/^\d+$/.test(value)) throw new Error(`${label} must be a non-negative integer.`);
-  return BigInt(value);
-};
-const asRecord = (value: unknown) => value && typeof value === "object" && !Array.isArray(value) ? value as RecordValue : null;
-const pretty = (value: unknown) => JSON.stringify(value, (_, item) => typeof item === "bigint" ? item.toString() : item, 2);
 
-export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId = "" }:
-  { mode: "publisher" | "participant"; initialProgramId?: string; initialReviewId?: string }) {
-  const [provider, setProvider] = useState<Eip1193Provider>();
+function asRecord(value: unknown): RecordValue | null {
+  return value !== null && typeof value === "object" && !Array.isArray(value) ? value as RecordValue : null;
+}
+
+function asInteger(value: unknown, label: string): bigint {
+  const stringValue = String(value).trim();
+  if (!/^\d+$/.test(stringValue)) throw new Error(`${label} must be a whole, non-negative integer.`);
+  return BigInt(stringValue);
+}
+
+function pretty(value: unknown) {
+  return JSON.stringify(value, (_key, item: unknown) => typeof item === "bigint" ? item.toString() : item, 2);
+}
+
+export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId = "", initialReviewId = "" }: { mode: WorkbenchMode; initialOfferId?: string; initialProgramId?: string; initialReviewId?: string }) {
   const [account, setAccount] = useState("");
+  const [provider, setProvider] = useState<Eip1193Provider>();
   const [chainId, setChainId] = useState("");
   const [verified, setVerified] = useState(false);
-  const [busy, setBusy] = useState(false);
   const [output, setOutput] = useState("");
+  const [busy, setBusy] = useState(false);
   const [programId, setProgramId] = useState(initialProgramId);
+  const [programDetails, setProgramDetails] = useState<RecordValue | null>(null);
   const [reviewId, setReviewId] = useState(initialReviewId);
-  const [program, setProgram] = useState<RecordValue | null>(null);
+  const [offerId, setOfferId] = useState(initialOfferId);
+  const [offer, setOffer] = useState<RecordValue | null>(null);
+  const [walletOffers, setWalletOffers] = useState<RecordValue[]>([]);
   const [pending, setPending] = useState<PendingTransaction[]>([]);
-  const walletIdentity = useRef("");
-  const appDisconnected = useRef(false);
-  const writeInFlight = useRef(false);
-  const [form, setForm] = useState({ repo: "", rulebookPath: "rules/program.md",
-    manifestPath: ".revigate/publisher.json", branch: "main", baselineSha: "", candidateSha: "" });
+  const [lastHash, setLastHash] = useState<Hash | "">("");
+  const [lastAccount, setLastAccount] = useState("");
+  const [form, setForm] = useState({
+    repo: "",
+    rulebookPath: "rules/program.md",
+    manifestPath: ".revigate/publisher.json",
+    branch: "main",
+    baselineSha: "",
+    candidateSha: "",
+    participant: "",
+    amount: "",
+    fundingDeadline: "",
+    acceptanceDeadline: "",
+    maturity: "",
+    exitBps: "0",
+    exitWindow: "604800",
+    closurePublisherShare: "",
+    closureParticipantShare: "",
+    closureExpiry: "",
+  });
 
   useEffect(() => {
-    const wallet = window.ethereum as Eip1193Provider | undefined;
+    queueMicrotask(() => setPending(loadPendingTransactions()));
+    const wallet = typeof window === "undefined" ? undefined : window.ethereum;
     if (!wallet) return;
     queueMicrotask(() => setProvider(wallet));
-    const session = watchWallet(wallet, (state) => {
-      if (appDisconnected.current) return;
-      walletIdentity.current = `${state.account.toLowerCase()}|${state.chainId.toLowerCase()}`;
-      setAccount(state.account); setChainId(state.chainId);
-    });
-    const onAppDisconnect = () => {
-      appDisconnected.current = true;
-      session.clear();
-      walletIdentity.current = "|";
-      setAccount(""); setChainId("");
-    };
-    const onAppConnect = () => {
-      appDisconnected.current = false;
-      session.resume();
-      void session.refresh();
-    };
-    window.addEventListener("revigate:wallet-disconnect", onAppDisconnect);
-    window.addEventListener("revigate:wallet-connect", onAppConnect);
-    queueMicrotask(() => setPending(loadPendingTransactions()));
-    return () => {
-      window.removeEventListener("revigate:wallet-disconnect", onAppDisconnect);
-      window.removeEventListener("revigate:wallet-connect", onAppConnect);
-      session.stop();
-    };
+    const refresh = (value: unknown) => setAccount(Array.isArray(value) && typeof value[0] === "string" ? value[0] : "");
+    const refreshChain = (value: unknown) => setChainId(typeof value === "string" ? value : "");
+    wallet.request({ method: "eth_accounts" }).then(refresh).catch(() => setAccount(""));
+    wallet.request({ method: "eth_chainId" }).then(refreshChain).catch(() => setChainId(""));
+    wallet.on?.("accountsChanged", refresh);
+    wallet.on?.("chainChanged", refreshChain);
+    return () => { wallet.removeListener?.("accountsChanged", refresh); wallet.removeListener?.("chainChanged", refreshChain); };
   }, []);
 
   useEffect(() => {
-    if (!getConfiguredRegistryAddress()) return;
-    verifyRevigateDeployment().then(() => setVerified(true)).catch((error: unknown) => setOutput(error instanceof Error ? error.message : "Registry verification failed."));
+    if (!contractConfigured) return;
+    verifyRevigateDeployment().then(() => setVerified(true)).catch((error: unknown) => {
+      setVerified(false);
+      setOutput(error instanceof Error ? error.message : "The configured contract could not be verified.");
+    });
   }, []);
 
-  const update = (key: keyof typeof form, value: string) => setForm((current) => ({ ...current, [key]: value }));
-  const run = (action: () => Promise<void>) => {
-    if (busy) return;
-    setBusy(true); setOutput("");
-    action().catch((error: unknown) => setOutput(error instanceof Error ? error.message : "Action failed.")).finally(() => setBusy(false));
-  };
-  const readProgram = async () => {
-    const value = await readRevigate("get_program", [asInteger(programId, "Program ID")]);
-    setProgram(asRecord(value)); setOutput(pretty(value));
-  };
-  const readPageItems = async (method: string, args: unknown[]) => {
-    const value = asRecord(await readRevigate(method, args as never[]));
-    return Array.isArray(value?.items) ? value.items.map(asRecord).filter((entry): entry is RecordValue => Boolean(entry)) : [];
-  };
-  const captureCanonicalStateForItem = async (item: PendingTransaction) => {
-    const first = item.args?.[0];
-    if (["acknowledge_rules", "reaffirm_rules"].includes(item.method)) {
-      return { acknowledgments: await readPageItems("get_acknowledgment_page", [BigInt(String(first)), item.account, 0n, 50n]) };
-    }
-    if (item.method === "register_program") return { programs: await readPageItems("get_program_page", [0n, 50n]) };
-    if (item.method === "verify_program") return { program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {} };
-    if (item.method === "request_revision") return {
-      program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {},
-      reviews: await readPageItems("get_review_page", [0n, 50n]),
-    };
-    return { review: asRecord(await readRevigate("get_review", [BigInt(String(first))])) ?? {} };
-  };
-  const verifyCanonical = async (item: PendingTransaction) => {
-    if (!item.preState) return { verified: false as const, reason: "the transaction has no captured pre-state; historical matches are not proof" };
-    const after = await captureCanonicalStateForItem(item);
-    return reconcileCanonicalTransaction(item, item.preState, after);
-  };
-  const checkPending = async (item: PendingTransaction) => {
-    const observed = await observeTransaction(item.hash, 10, item.account, item.contractAddress);
-    if (isFinalizedForCanonical(observed.state)) {
-      let reconciliation;
-      try {
-        reconciliation = await verifyCanonical(item);
-      } catch (error) {
-        const detail = error instanceof Error ? error.message : "canonical readback failed";
-        setOutput(`${item.hash}\nRPC_UNAVAILABLE\nCanonical state could not be read: ${detail}\nNo retry was submitted.`);
-        return;
-      }
-      if (reconciliation.verified) {
-        forgetPendingTransaction(item.hash); setPending(loadPendingTransactions());
-        const execution = observed.state === "finalized-success" ? "execution succeeded" : "execution result not exposed by the RPC";
-        setOutput(`${item.hash}\nFINALIZED · ${execution} · canonical state transition verified\n${pretty(reconciliation.value)}`);
-      } else {
-        setOutput(`${item.hash}\n${transactionStateLabel(observed.state)}\nCANONICAL_STATE_UNVERIFIED · ${reconciliation.reason}\nNo retry was submitted.`);
-      }
-      return;
-    }
-    setOutput(`${item.hash}\n${transactionStateLabel(observed.state)}\n${pretty(observed)}\nNo retry was submitted.`);
-  };
-  const write = async (method: string, args: unknown[]) => {
-    if (writeInFlight.current) throw new Error("A Registry transaction is already being prepared or submitted.");
-    writeInFlight.current = true;
+  function update(name: keyof typeof form, value: string) {
+    setForm((current) => ({ ...current, [name]: value }));
+  }
+
+  function runAction(action: () => Promise<unknown>) {
     try {
-    if (!provider || !account || !verified) throw new Error("Connect a wallet and verify the Registry before signing.");
-    const registry = getConfiguredRegistryAddress();
-    if (!registry) throw new Error("The Registry is not configured.");
-    const savedArgs = args.map((arg) => typeof arg === "bigint" ? arg.toString() : arg) as (string | number | boolean)[];
-    const candidate = { account, method, args: savedArgs };
-    if (isDuplicatePendingWrite(pending, candidate)) throw new Error("This exact Registry action already has a pending hash. Check it instead of submitting again.");
-    const preState = await (async () => {
-      const first = args[0];
-      if (method === "register_program") return { programs: await readPageItems("get_program_page", [0n, 50n]) };
-      if (method === "verify_program") return { program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {} };
-      if (method === "request_revision") return {
-        program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {},
-        reviews: await readPageItems("get_review_page", [0n, 50n]),
-      };
-      if (method === "assess_revision" || method === "expire_revision_request") return {
-        review: asRecord(await readRevigate("get_review", [BigInt(String(first))])) ?? {},
-      };
-      if (method === "acknowledge_rules" || method === "reaffirm_rules") return {
-        acknowledgments: await readPageItems("get_acknowledgment_page", [BigInt(String(first)), account, 0n, 50n]),
-      };
-      throw new Error("This Registry action has no canonical pre-state rule.");
-    })();
-    const identity = walletIdentity.current;
-    const result = await submitAndPersistHash(
-      () => submitRevigateWrite({ provider, account, functionName: method, args: args as never[] }),
-      (hash): PendingTransaction => ({ hash: hash as Hash, account, method, args: savedArgs,
-        value: "0", submittedAt: Date.now(), contractAddress: registry, chainId: 61999, preState }), savePendingTransaction);
-    const item = result.pending;
-    setPending((current) => [item, ...current.filter((entry) => entry.hash !== item.hash)]);
-    if (!result.persisted) {
-      setOutput(`Submitted ${item.hash}\nBrowser storage failed. Keep this hash and do not resubmit.`);
-      return;
+      void action().catch((error: unknown) => setOutput(error instanceof Error ? error.message : "Action failed."));
+    } catch (error) {
+      setOutput(error instanceof Error ? error.message : "Check the form values and try again.");
     }
-    if (identity !== walletIdentity.current) { setOutput(`Wallet changed after submission. Recover using ${item.hash}.`); return; }
-    setOutput(`Submitted ${item.hash}\nWaiting for protocol finality. Do not resubmit.`);
-    await checkPending(item);
+  }
+
+  async function write(method: string, args: (string | bigint | number | boolean)[], value = 0n) {
+    if (!provider || !account) { setOutput("Connect a wallet with the header button before signing."); return; }
+    if (!verified) { setOutput("The configured single-contract deployment has not passed the identity check."); return; }
+    if (Number.parseInt(chainId || "0", 16) !== 61999) { setOutput("Switch the wallet to GenLayer Studionet (chain 61999) before signing."); return; }
+    setBusy(true);
+    setOutput(`Waiting for wallet approval: ${method}`);
+    try {
+      const hash = await submitRevigateWrite({ provider, account, functionName: method, args, value });
+      setLastHash(hash);
+      setLastAccount(account);
+      setOutput(`Transaction submitted. Hash: ${hash}\nThe hash is saved locally. Check its status here; do not submit the action again while it is pending.`);
+      try {
+        const contractAddress = getConfiguredRegistryAddress();
+        if (!contractAddress) throw new Error("The contract address is not configured.");
+        savePendingTransaction({ hash, account, method,
+          args: args.map((arg) => typeof arg === "bigint" ? arg.toString() : arg) as (string | number | boolean)[],
+          value: value.toString(), submittedAt: Date.now(), contractAddress, chainId: 61999 });
+        setPending(loadPendingTransactions());
+      } catch {
+        setOutput(`Transaction submitted, but this browser could not save the recovery pointer. Copy this hash now and check only this hash: ${hash}`);
+      }
+    } catch (error) {
+      setOutput(error instanceof Error ? error.message : "The wallet rejected the request before a transaction hash was returned.");
     } finally {
-      writeInFlight.current = false;
+      setBusy(false);
     }
-  };
-  const enabled = verified && Boolean(provider && account) && Number.parseInt(chainId || "0", 16) === 61999;
+  }
+
+  async function checkTransaction(hash: Hash, expectedAccount?: string) {
+    setBusy(true);
+    setOutput(`Checking the existing transaction ${hash}. No new transaction will be submitted.`);
+    try {
+      const observed = await observeTransaction(hash, 10, expectedAccount);
+      if (observed.state === "finalized-success") {
+        forgetPendingTransaction(hash);
+        setPending(loadPendingTransactions());
+        setOutput(`FINALIZED · execution succeeded\n${pretty(observed.transaction)}`);
+        if (offerId) await loadOffer(offerId, false);
+      } else if (observed.state === "finalized-error") {
+        forgetPendingTransaction(hash);
+        setPending(loadPendingTransactions());
+        setOutput(`FINALIZED · execution failed. No state change is assumed.\n${pretty(observed.transaction)}`);
+      } else if (observed.state === "undetermined") {
+        setOutput(`UNDETERMINED · do not assume a product verdict, balance change, or success. Keep this hash and do not resubmit.\n${pretty(observed.transaction)}`);
+      } else if (observed.state === "cancelled") {
+        forgetPendingTransaction(hash);
+        setPending(loadPendingTransactions());
+        setOutput(`Transaction was cancelled.\n${pretty(observed.transaction)}`);
+      } else if (observed.state === "sender-mismatch") {
+        setOutput(`The transaction sender does not match the wallet that initiated this action. No success or state change is assumed.\n${pretty(observed.transaction)}`);
+      } else {
+        setOutput(`Still processing. The original hash remains saved; check this same hash again later.\n${pretty(observed.transaction ?? {})}`);
+      }
+    } catch (error) {
+      setOutput(`Could not read the existing hash. It is still saved; do not resubmit. ${error instanceof Error ? error.message : "RPC error"}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function read(method: string, args: (string | bigint | number | boolean)[]) {
+    setBusy(true);
+    try {
+      const result = await readRevigate(method, args);
+      setOutput(pretty(result));
+      return result;
+    } catch (error) {
+      setOutput(error instanceof Error ? error.message : "Contract read failed.");
+      return undefined;
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function loadOffer(id: string, show = true) {
+    const result = await readRevigate("get_offer", [asInteger(id, "Offer ID")]);
+    const record = asRecord(result);
+    setOffer(record && Object.keys(record).length ? record : null);
+    if (show) setOutput(record && Object.keys(record).length ? pretty(record) : "No offer exists with this ID.");
+    return record;
+  }
+
+  async function loadProgram(id: string, show = true) {
+    const result = await readRevigate("get_program", [asInteger(id, "Program ID")]);
+    const record = asRecord(result);
+    setProgramDetails(record && Object.keys(record).length ? record : null);
+    if (show) setOutput(record && Object.keys(record).length ? pretty(record) : "No program exists with this ID.");
+    return record;
+  }
+
+  async function loadOfferSafely() {
+    if (!offerId.trim()) { setOutput("Enter an offer ID."); return; }
+    setBusy(true);
+    try { await loadOffer(offerId); }
+    catch (error) { setOutput(error instanceof Error ? error.message : "Offer read failed."); }
+    finally { setBusy(false); }
+  }
+
+  async function loadProgramSafely() {
+    if (!programId.trim()) { setOutput("Enter a program ID."); return; }
+    setBusy(true);
+    try { await loadProgram(programId); }
+    catch (error) { setOutput(error instanceof Error ? error.message : "Program read failed."); }
+    finally { setBusy(false); }
+  }
+
+  async function loadMyOffers() {
+    if (!account) { setOutput("Connect a wallet before loading its offers."); return; }
+    setBusy(true);
+    try {
+      const result = asRecord(await readRevigate("get_wallet_offer_page", [account, 0n, 20n]));
+      const items = Array.isArray(result?.items) ? result.items.map(asRecord).filter((item): item is RecordValue => Boolean(item)) : [];
+      setWalletOffers(items);
+      setOutput(`${items.length} offer(s) loaded for ${account}.`);
+    } catch (error) { setOutput(error instanceof Error ? error.message : "Offer index read failed."); }
+    finally { setBusy(false); }
+  }
+
+  async function reaffirmAcceptedOffer() {
+    if (!offer) throw new Error("Read an offer first.");
+    const program = asRecord(await readRevigate("get_program", [asInteger(offer.program_id, "Program ID")]));
+    if (!program || program.status !== "VERIFIED") throw new Error("Current program rules are not verified.");
+    await write("reaffirm_offer_rules", [asInteger(offerId, "Offer ID"), asInteger(program.epoch, "Program epoch"), String(program.active_sha), String(program.document_digest)]);
+  }
+
+  const isPublisher = Boolean(offer && account && String(offer.publisher).toLowerCase() === account.toLowerCase());
+  const isParticipant = Boolean(offer && account && String(offer.participant).toLowerCase() === account.toLowerCase());
+  const unaccepted = offer?.state === "FUNDED_UNACCEPTED";
+  const accepted = offer?.state === "ACCEPTED_LOCKED";
+  const closure = asRecord(offer?.closure);
 
   return <section className="contract-workbench">
-    <div className="workbench-heading"><div><span className="panel-number">STUDIONET · NON-CUSTODIAL REGISTRY</span><h2>Rulebook actions</h2></div><span className="wallet-context">{verified ? "Registry verified" : "Registry locked"}</span></div>
-    <p className="safety-copy">Revigate does not accept, hold, allocate, refund, or transfer funds.</p>
-    {mode === "publisher" && <>
-      <div className="action-group"><h3>Register authenticated source</h3><div className="action-grid">
-        <label>GitHub repository<input value={form.repo} onChange={(e) => update("repo", e.target.value)} placeholder="owner/repository" /></label>
-        <label>Rulebook path<input value={form.rulebookPath} onChange={(e) => update("rulebookPath", e.target.value)} /></label>
-        <label>Publisher manifest path<input value={form.manifestPath} onChange={(e) => update("manifestPath", e.target.value)} /></label>
-        <label>Branch<input value={form.branch} onChange={(e) => update("branch", e.target.value)} /></label>
-        <label>Signed baseline commit SHA<input value={form.baselineSha} onChange={(e) => update("baselineSha", e.target.value)} /></label>
-      </div><button disabled={busy || !enabled} onClick={() => run(() => write("register_program", [form.repo, form.rulebookPath, form.manifestPath, form.branch, form.baselineSha]))}>Propose program</button></div>
-      <div className="action-group"><h3>Verify or revise</h3><label>Program ID<input inputMode="numeric" value={programId} onChange={(e) => setProgramId(e.target.value)} /></label>
-        <div className="button-row"><button disabled={busy || !enabled || !programId} onClick={() => run(() => write("verify_program", [asInteger(programId, "Program ID")]))}>Verify source</button><button disabled={busy || !programId} onClick={() => run(readProgram)}>Read program</button></div>
-        <label>Candidate signed commit SHA<input value={form.candidateSha} onChange={(e) => update("candidateSha", e.target.value)} /></label>
-        <button disabled={busy || !enabled || !programId} onClick={() => run(() => write("request_revision", [asInteger(programId, "Program ID"), form.candidateSha]))}>Request revision review</button>
-        <label>Review ID<input inputMode="numeric" value={reviewId} onChange={(e) => setReviewId(e.target.value)} /></label>
-        <div className="button-row"><button disabled={busy || !enabled || !reviewId} onClick={() => run(() => write("assess_revision", [asInteger(reviewId, "Review ID")]))}>Assess revision</button><button disabled={busy || !reviewId} onClick={() => run(async () => setOutput(pretty(await readRevigate("get_review", [asInteger(reviewId, "Review ID")]))))}>Read review</button></div></div>
+    <div className="workbench-heading">
+      <div><span className="panel-number">{mode === "publisher" ? "STUDIONET · PUBLISHER" : "STUDIONET · PARTICIPANT"}</span><h2>Contract actions</h2></div>
+      <span className="wallet-context">{account ? `${account.slice(0, 6)}…${account.slice(-4)}` : "Wallet not connected"}</span>
+    </div>
+    <p className="workbench-copy">Every write uses the connected wallet through GenLayerJS on chain 61999. The console shows the transaction hash before checking finality, and resumes status checks by that same hash.</p>
+
+    {!contractConfigured && <p className="safety-copy">Actions are locked because no verified deployment address is configured.</p>}
+    {contractConfigured && !verified && <p className="safety-copy">Actions are locked until the configured source-attested deployment is verified.</p>}
+    <fieldset className="workbench-actions" disabled={!contractConfigured || !verified}>
+    {mode === "publisher" ? <>
+      <div className="action-group">
+        <h3>Register and verify a rulebook</h3>
+        <div className="action-grid">
+          <label>GitHub owner/repository<input value={form.repo} onChange={(event) => update("repo", event.target.value)} placeholder="owner/repository" /></label>
+          <label>Rulebook path<input value={form.rulebookPath} onChange={(event) => update("rulebookPath", event.target.value)} /></label>
+          <label>Publisher manifest path<input value={form.manifestPath} onChange={(event) => update("manifestPath", event.target.value)} /></label>
+          <label>Branch<input value={form.branch} onChange={(event) => update("branch", event.target.value)} /></label>
+          <label>Signed baseline commit SHA<input value={form.baselineSha} onChange={(event) => update("baselineSha", event.target.value)} placeholder="40 hex characters" /></label>
+        </div>
+        <button disabled={busy} onClick={() => runAction(() => write("propose_program", [form.repo, form.rulebookPath, form.manifestPath, form.branch, form.baselineSha]))}>Propose program</button>
+        <div className="action-inline"><label>Program ID<input inputMode="numeric" value={programId} onChange={(event) => setProgramId(event.target.value)} /></label>
+          <button disabled={busy || !programId} onClick={() => runAction(() => write("verify_program", [asInteger(programId, "Program ID")]))}>Verify source</button>
+          <button disabled={busy || !programId} onClick={() => runAction(() => loadProgramSafely())}>Read program</button>
+        </div>
+      </div>
+
+      <div className="action-group">
+        <h3>Request a rulebook review</h3>
+        <div className="action-inline"><label>Candidate commit SHA<input value={form.candidateSha} onChange={(event) => update("candidateSha", event.target.value)} placeholder="40 hex characters" /></label>
+          <button disabled={busy || !programId} onClick={() => runAction(() => write("request_revision", [asInteger(programId, "Program ID"), form.candidateSha]))}>Request review</button>
+        </div>
+        <div className="action-inline"><label>Review ID<input inputMode="numeric" value={reviewId} onChange={(event) => setReviewId(event.target.value)} /></label>
+          <button disabled={busy || !reviewId} onClick={() => runAction(() => write("assess_revision", [asInteger(reviewId, "Review ID")]))}>Assess revision</button>
+          <button disabled={busy || !reviewId} onClick={() => runAction(() => write("expire_revision_request", [asInteger(reviewId, "Review ID")]))}>Expire after deadline</button>
+        </div>
+      </div>
+
+      <div className="action-group">
+        <h3>Issue a funded participant offer</h3>
+        <div className="action-grid">
+          <label>Designated participant wallet<input value={form.participant} onChange={(event) => update("participant", event.target.value)} placeholder="0x…" /></label>
+          <label>Amount in wei<input inputMode="numeric" value={form.amount} onChange={(event) => update("amount", event.target.value)} /></label>
+          <label>Funding deadline · Unix seconds<input inputMode="numeric" value={form.fundingDeadline} onChange={(event) => update("fundingDeadline", event.target.value)} /></label>
+          <label>Acceptance deadline · Unix seconds<input inputMode="numeric" value={form.acceptanceDeadline} onChange={(event) => update("acceptanceDeadline", event.target.value)} /></label>
+          <label>Maturity · Unix seconds<input inputMode="numeric" value={form.maturity} onChange={(event) => update("maturity", event.target.value)} /></label>
+          <label>Participant material exit · basis points<input inputMode="numeric" value={form.exitBps} onChange={(event) => update("exitBps", event.target.value)} /></label>
+          <label>Fixed exit window · seconds<input inputMode="numeric" value={form.exitWindow} onChange={(event) => update("exitWindow", event.target.value)} /></label>
+        </div>
+        <button disabled={busy || !programId} onClick={() => runAction(() => write("create_offer", [
+          asInteger(programId, "Program ID"), form.participant, asInteger(form.amount, "Amount"),
+          asInteger(form.fundingDeadline, "Funding deadline"), asInteger(form.acceptanceDeadline, "Acceptance deadline"),
+          asInteger(form.maturity, "Maturity"), asInteger(form.exitBps, "Exit share"), asInteger(form.exitWindow, "Exit window"),
+        ]))}>Create offer</button>
+      </div>
+    </> : <>
+      <div className="action-group">
+        <h3>Rulebook acknowledgments</h3>
+        <div className="action-inline"><label>Program ID<input inputMode="numeric" value={programId} onChange={(event) => { setProgramId(event.target.value); setProgramDetails(null); }} /></label>
+          <button disabled={busy || !programId} onClick={() => runAction(() => loadProgramSafely())}>Read program</button>
+        </div>
+        {programDetails && <div className="offer-summary"><b>{String(programDetails.status)} · epoch {String(programDetails.epoch)}</b><span>Reviewed commit: {String(programDetails.active_sha)}</span><span>Rulebook digest: {String(programDetails.document_digest)}</span></div>}
+        {programDetails?.status === "VERIFIED" && <div className="action-buttons">
+          <button disabled={busy} onClick={() => runAction(() => write("acknowledge_rules", [asInteger(programId, "Program ID"), asInteger(programDetails.epoch, "Program epoch"), String(programDetails.active_sha), String(programDetails.document_digest)]))}>Acknowledge current rules</button>
+          <button disabled={busy} onClick={() => runAction(() => write("reaffirm_rules", [asInteger(programId, "Program ID"), asInteger(programDetails.epoch, "Program epoch"), String(programDetails.active_sha), String(programDetails.document_digest)]))}>Reaffirm current rules</button>
+        </div>}
+      </div>
+      <div className="action-group">
+        <h3>Review an offer</h3>
+        <button disabled={busy || !account} onClick={() => void loadMyOffers()}>Load my indexed offers</button>
+        {walletOffers.length > 0 && <div className="offer-list">{walletOffers.map((item) => <button className="offer-list-item" key={String(item.id)} disabled={busy} onClick={() => { setOfferId(String(item.id)); runAction(() => loadOffer(String(item.id))); }}>{`Offer ${String(item.id)} · ${String(item.state)} · ${String(item.amount)} wei`}</button>)}</div>}
+        <div className="action-inline"><label>Offer ID<input inputMode="numeric" value={offerId} onChange={(event) => { setOfferId(event.target.value); setOffer(null); }} /></label>
+          <button disabled={busy || !offerId} onClick={() => void loadOfferSafely()}>Read offer</button>
+        </div>
+        {offer && <div className="offer-summary"><b>{String(offer.state)}</b><span>Amount: {String(offer.amount)} wei</span><span>Publisher: {String(offer.publisher)}</span><span>Participant: {String(offer.participant)}</span><span>Maturity: {String(offer.maturity)}</span></div>}
+        {offer && isPublisher && offer.state === "OFFERED_UNFUNDED" && <button disabled={busy} onClick={() => runAction(() => write("fund_offer", [asInteger(offerId, "Offer ID")], asInteger(offer.amount, "Offer amount")))}>Fund exact offer amount</button>}
+        {offer && isParticipant && unaccepted && <div className="action-buttons">
+          <button disabled={busy} onClick={() => runAction(() => write("accept_offer", [asInteger(offerId, "Offer ID"), String(offer.terms_digest), asInteger(offer.epoch, "Offer epoch"), String(offer.sha)]))}>Accept frozen terms</button>
+          <button disabled={busy} onClick={() => runAction(() => write("decline_offer", [asInteger(offerId, "Offer ID")]))}>Decline and allocate refund</button>
+        </div>}
+        {offer && isPublisher && unaccepted && <button disabled={busy} onClick={() => runAction(() => write("cancel_unaccepted_offer", [asInteger(offerId, "Offer ID")]))}>Cancel unaccepted offer</button>}
+        {offer && unaccepted && <button disabled={busy} onClick={() => runAction(() => write("expire_unaccepted_offer", [asInteger(offerId, "Offer ID")]))}>Expire after deadline</button>}
+        {offer && accepted && isParticipant && <button disabled={busy} onClick={() => runAction(() => write("exercise_material_exit", [asInteger(offerId, "Offer ID")]))}>Exercise valid material exit</button>}
+        {offer && accepted && isParticipant && <button disabled={busy} onClick={() => runAction(() => reaffirmAcceptedOffer())}>Reaffirm offer under current rules</button>}
+        {offer && accepted && <button disabled={busy} onClick={() => runAction(() => write("allocate_matured_claim", [asInteger(offerId, "Offer ID")]))}>Allocate matured claim</button>}
+        {offer && accepted && !closure && <div className="action-group">
+          <h3>Propose mutual closure</h3>
+          <div className="action-grid">
+            <label>Publisher allocation · wei<input inputMode="numeric" value={form.closurePublisherShare} onChange={(event) => update("closurePublisherShare", event.target.value)} /></label>
+            <label>Participant allocation · wei<input inputMode="numeric" value={form.closureParticipantShare} onChange={(event) => update("closureParticipantShare", event.target.value)} /></label>
+            <label>Proposal expiry · Unix seconds<input inputMode="numeric" value={form.closureExpiry} onChange={(event) => update("closureExpiry", event.target.value)} /></label>
+          </div>
+          <button disabled={busy || (!isPublisher && !isParticipant)} onClick={() => runAction(() => write("propose_closure", [asInteger(offerId, "Offer ID"), asInteger(form.closurePublisherShare, "Publisher allocation"), asInteger(form.closureParticipantShare, "Participant allocation"), asInteger(form.closureExpiry, "Closure expiry")]))}>Propose exact split</button>
+        </div>}
+        {offer && accepted && closure && <div className="action-group">
+          <h3>Pending mutual closure</h3>
+          <p className="workbench-copy">Digest: {String(closure.digest)} · expires {String(closure.expires_at)}</p>
+          <p className="workbench-copy">Publisher: {String(closure.amount_a)} wei · Participant: {String(closure.amount_b)} wei</p>
+          {account && String(closure.proposer).toLowerCase() !== account.toLowerCase() && <button disabled={busy} onClick={() => runAction(() => write("approve_closure", [asInteger(offerId, "Offer ID"), String(closure.digest)]))}>Approve exact closure</button>}
+          {(isPublisher || isParticipant) && <button disabled={busy} onClick={() => runAction(() => write("cancel_closure", [asInteger(offerId, "Offer ID")]))}>Cancel pending closure</button>}
+          <button disabled={busy} onClick={() => runAction(() => write("expire_closure", [asInteger(offerId, "Offer ID")]))}>Expire after deadline</button>
+        </div>}
+      </div>
+      <div className="action-group">
+        <h3>Read wallet credit</h3>
+        {account ? <button disabled={busy} onClick={() => runAction(() => read("get_wallet_credit", [account]))}>Check connected wallet credit</button> : <p>Connect a wallet to check its canonical credit balance.</p>}
+        <p className="safety-copy">Credit withdrawal stays disabled until outgoing transfer delivery and recovery pass the required live proof.</p>
+      </div>
     </>}
-    {mode === "participant" && <div className="action-group"><h3>Acknowledge a reviewed version</h3><label>Program ID<input inputMode="numeric" value={programId} onChange={(e) => setProgramId(e.target.value)} /></label><button disabled={busy || !programId} onClick={() => run(readProgram)}>Read current rules</button>
-      {program && <><pre className="result-console">{pretty(program)}</pre><div className="button-row"><button disabled={busy || !enabled} onClick={() => run(() => write("acknowledge_rules", [asInteger(programId, "Program ID"), BigInt(String(program.epoch)), String(program.active_sha), String(program.document_digest)]))}>Acknowledge current version</button><button disabled={busy || !enabled} onClick={() => run(() => write("reaffirm_rules", [asInteger(programId, "Program ID"), BigInt(String(program.epoch)), String(program.active_sha), String(program.document_digest)]))}>Reaffirm current version</button></div></>}</div>}
-    {pending.length > 0 && <div className="action-group transaction-group"><h3>Saved Registry transactions</h3>{pending.map((item) => <button className="pending-hash" key={item.hash} disabled={busy} onClick={() => run(() => checkPending(item))}>{item.method} · {item.hash}</button>)}</div>}
-    {output && <pre className="result-console" aria-live="polite">{output}</pre>}
+    </fieldset>
+
+    <div className="action-group transaction-group">
+      <h3>Transaction status</h3>
+      {lastHash && <button disabled={busy} onClick={() => void checkTransaction(lastHash, lastAccount)}>Check current hash</button>}
+      {pending.map((item) => <button className="pending-hash" key={item.hash} disabled={busy} onClick={() => void checkTransaction(item.hash, item.account)}>{item.method} · {item.hash.slice(0, 12)}… · resume status</button>)}
+      <pre className="result-console" aria-live="polite">{output || "Contract reads and transaction evidence will appear here."}</pre>
+    </div>
   </section>;
 }

@@ -1,5 +1,10 @@
-# Archived escrow material
+# Archived escrow and Registry candidates
 
-Documents describing offers, Vaults, deposits, refunds, payouts, credits, withdrawals or transfer delivery describe earlier candidates and security investigations. They are retained as historical evidence. None of those financial features belongs to the current Revigate product or active contract API.
+The old two-contract Vault work, earlier single-contract experiments and the
+previous noncustodial Registry deployment are retained as historical evidence
+in Git history and evidence files. They are not active deployment targets.
 
-The current implementation is defined by `README.md`, `PRODUCT_SPEC.md`, `contracts/revigate_registry.py` and `docs/IMPLEMENTATION_STATUS.md`.
+The sole active source is `contracts/revigate.py`. It must be compiled,
+deployed and source-attested as one contract before any frontend binding is
+considered valid. Historical transaction hashes and failure probes must not be
+presented as proof that the current source is safe.

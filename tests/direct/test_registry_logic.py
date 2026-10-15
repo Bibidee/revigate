@@ -73,7 +73,7 @@ def deploy_registry(direct_deploy, direct_vm):
     direct_vm.warp("2026-01-01T00:00:00Z")
     direct_vm.check_pickling = True
     direct_vm.sender = PUBLISHER
-    registry = direct_deploy("contracts/revigate_registry.py", sdk_version="v0.2.16")
+    registry = direct_deploy("contracts/revigate.py", sdk_version="v0.2.16")
     return registry
 
 

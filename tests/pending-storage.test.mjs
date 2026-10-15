@@ -12,8 +12,10 @@ test("Registry transaction persists across refresh and is address scoped", () =>
   forgetPendingTransaction(storage, key, item.hash, registry, 61999);
   assert.deepEqual(loadPendingTransactions(storage, key, registry, 61999), []);
 });
-test("duplicate action is detected and native value is rejected", () => {
+test("duplicate action is detected and native value is preserved", () => {
   assert.equal(isDuplicatePendingWrite([item], item), true);
   const storage = new MemoryStorage();
-  assert.throws(() => savePendingTransaction(storage, pendingStorageKey(61999, registry), { ...item, value: "1" }, registry, 61999), /active Registry/);
+  savePendingTransaction(storage, pendingStorageKey(61999, registry), { ...item, value: "1" }, registry, 61999);
+  assert.equal(loadPendingTransactions(storage, pendingStorageKey(61999, registry), registry, 61999)[0].value, "1");
+  assert.throws(() => savePendingTransaction(storage, pendingStorageKey(61999, registry), { ...item, value: "one" }, registry, 61999), /active Registry/);
 });

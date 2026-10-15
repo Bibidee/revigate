@@ -102,7 +102,7 @@ def mock_valid_snapshot(
 def propose(direct_deploy, direct_vm):
     direct_vm.warp("2026-01-01T00:00:00Z")
     direct_vm.check_pickling = True
-    contract = direct_deploy("contracts/revigate_registry.py", sdk_version="v0.2.16")
+    contract = direct_deploy("contracts/revigate.py", sdk_version="v0.2.16")
     direct_vm.sender = PUBLISHER
     program_id = contract.register_program(REPO, RULE_PATH, MANIFEST_PATH, "release/v1", SHA)
     return contract, program_id

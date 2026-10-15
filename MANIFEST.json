@@ -1,9 +1,10 @@
 {
   "project": "revigate",
-  "architecture": "non-custodial-rulebook-registry",
+  "architecture": "single-contract-rulebook-and-native-gen-offers",
   "network": "GenLayer Studionet",
   "chain_id": 61999,
-  "active_contract": "contracts/revigate_registry.py",
-  "custody": "NONE",
-  "escrow_removed": true
+  "rpc": "https://studio.genlayer.com/api",
+  "active_contract": "contracts/revigate.py",
+  "custody": "NATIVE_GEN_SINGLE_CONTRACT",
+  "production_writes": "LOCKED_UNTIL_LIVE_CUSTODY_GATE"
 }
