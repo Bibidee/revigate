@@ -462,7 +462,7 @@ are historical evidence only. They do not define the current wallet identities.
 ### Release boundaries
 
 This is zero-value Studionet test evidence, not a production release. Escrow and
-custody are absent. Production writes remain locked; no user funds were accepted;
+custody are absent. Only zero-value Registry writes are available; no user funds were accepted;
 PR #1 remains a draft; the earlier frontend promotion is recorded separately;
 and no merge occurred. The 52-scenario matrix, independent security review,
 protected Vercel preview, extension-level wallet rejection/disconnect coverage,

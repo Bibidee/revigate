@@ -6,5 +6,5 @@
   "rpc": "https://studio.genlayer.com/api",
   "active_contract": "contracts/revigate.py",
   "custody": "NONE",
-  "production_writes": "LOCKED_UNTIL_NONCUSTODIAL_SOURCE_ATTESTED"
+  "production_writes": "NONCUSTODIAL_ZERO_VALUE_ONLY"
 }

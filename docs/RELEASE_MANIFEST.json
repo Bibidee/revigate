@@ -103,7 +103,7 @@
     "build": "PASS"
   },
   "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
-  "production_status": "PROMOTED_NONCUSTODIAL_WRITES_LOCKED",
+  "production_status": "PROMOTED_NONCUSTODIAL_ZERO_VALUE_ONLY",
   "release_verdict": "NOT_RELEASED_PENDING_BROWSER_INDEPENDENT_REVIEW_AND_SECOND_APPROVAL",
   "ci": {
     "workflow": "CI",

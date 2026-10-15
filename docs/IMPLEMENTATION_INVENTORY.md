@@ -12,4 +12,4 @@ The source redesign is complete locally but requires the post-change JavaScript,
 
 ## Release boundary
 
-The approved noncustodial test address is `0x2E2065063b63F305512Ee66F0FEb305557c9143b` on Studionet 61999, and the corrected frontend has been promoted publicly. Production writes remain locked. The previous escrow deployment is historical and cannot be used as the address for the noncustodial source. The custody decision is a defensive product change, not an independent security review.
+The approved noncustodial test address is `0x2E2065063b63F305512Ee66F0FEb305557c9143b` on Studionet 61999, and the corrected frontend has been promoted publicly. Only zero-value Registry actions are available; native custody writes do not exist. The previous escrow deployment is historical and cannot be used as the address for the noncustodial source. The custody decision is a defensive product change, not an independent security review.

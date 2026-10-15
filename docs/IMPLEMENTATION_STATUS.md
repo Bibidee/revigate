@@ -27,7 +27,7 @@ The former Studionet escrow deployment `0xD86A6C0a3949D2452bB8964e076983254375b5
 
 The exact noncustodial source was deployed with zero value to Studionet at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Deployment transaction `0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6` finalized with majority agreement, successful execution and five `AGREE` votes. Deployed source SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064` matches `contracts/revigate.py` byte-for-byte. Canonical `get_config()` returned chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`.
 
-The local frontend is bound to this test Registry. No user funds are accepted, production writes remain locked, and the historical escrow deployment is not rebound to the new source.
+The local frontend is bound to this test Registry. Only zero-value Registry actions are available; no user funds are accepted, and the historical escrow deployment is not rebound to the new source.
 
 Wallet A / publisher: `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`.
 Wallet B / participant: `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`.
