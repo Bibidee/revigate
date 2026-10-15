@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   async rewrites() { return [
     { source: "/program/:programId/revision/:reviewId", destination: "/program/revision" },
     { source: "/program/:programId", destination: "/program" },
+    { source: "/agreement/:offerId", destination: "/agreement" },
   ]; },
 };
 
