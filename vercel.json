@@ -5,6 +5,7 @@
   "buildCommand": "npm run build",
   "rewrites": [
     { "source": "/program/:programId/revision/:reviewId", "destination": "/program/revision/" },
-    { "source": "/program/:programId", "destination": "/program/" }
+    { "source": "/program/:programId", "destination": "/program/" },
+    { "source": "/agreement/:offerId", "destination": "/agreement/" }
   ]
 }

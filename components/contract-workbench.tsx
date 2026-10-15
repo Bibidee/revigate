@@ -252,7 +252,7 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
           <label>Branch<input value={form.branch} onChange={(event) => update("branch", event.target.value)} /></label>
           <label>Signed baseline commit SHA<input value={form.baselineSha} onChange={(event) => update("baselineSha", event.target.value)} placeholder="40 hex characters" /></label>
         </div>
-        <button disabled={busy} onClick={() => runAction(() => write("propose_program", [form.repo, form.rulebookPath, form.manifestPath, form.branch, form.baselineSha]))}>Propose program</button>
+        <button disabled={busy} onClick={() => runAction(() => write("register_program", [form.repo, form.rulebookPath, form.manifestPath, form.branch, form.baselineSha]))}>Register program</button>
         <div className="action-inline"><label>Program ID<input inputMode="numeric" value={programId} onChange={(event) => setProgramId(event.target.value)} /></label>
           <button disabled={busy || !programId} onClick={() => runAction(() => write("verify_program", [asInteger(programId, "Program ID")]))}>Verify source</button>
           <button disabled={busy || !programId} onClick={() => runAction(() => loadProgramSafely())}>Read program</button>
