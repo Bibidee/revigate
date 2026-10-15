@@ -151,6 +151,8 @@ export function ContractWorkbench({ mode, initialOfferId = "", initialProgramId 
         setOutput(`Transaction was cancelled.\n${pretty(observed.transaction)}`);
       } else if (observed.state === "sender-mismatch") {
         setOutput(`The transaction sender does not match the wallet that initiated this action. No success or state change is assumed.\n${pretty(observed.transaction)}`);
+      } else if (observed.state === "finalized-execution-unknown") {
+        setOutput(`FINALIZED · execution result unavailable. Do not infer success or resubmit from this status alone; confirm canonical contract state separately.\n${pretty(observed.transaction)}`);
       } else {
         setOutput(`Still processing. The original hash remains saved; check this same hash again later.\n${pretty(observed.transaction ?? {})}`);
       }
