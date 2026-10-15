@@ -58,20 +58,31 @@ submitting a transaction. This verifies only app-session UX; it does not verify
 the disposable escrow frontend, wallet rejection, network/account switching,
 or a funded lifecycle.
 
+The corrected public preview was then exercised with Wallet A against the
+single-contract deployment. Program 3 registered the GitHub-verified baseline
+at `rules/revigate-v2.md`, verified it, and completed genuine NONMATERIAL,
+MATERIAL and ambiguous reviews. The actual outcomes were NONMATERIAL, MATERIAL
+and MATERIAL. Canonical state is VERIFIED at epoch 3 with active SHA
+`d35d438d0e45e58e3227f95135fa3a2abc523aed`, two material events and no pending
+review. The NONMATERIAL round included one genuine validator DISAGREE vote.
+Exact hashes are in
+`evidence/single-contract/2026-10-15-wallet-a-program-3-lifecycle.json`.
+
 ## Remaining gates
 
-1. Use a genuinely GitHub-verified fixture that nominates the submitting publisher wallet. The existing Wallet A fixture is verified, but the unlocked CLI deployer is a different address; the hosted probe correctly returned `INCONCLUSIVE` and left Program 1 `PROPOSED` (`0xc347a08e…`, `0xdec8f4cf…`).
-2. Run hosted signed baseline, NONMATERIAL, MATERIAL and ambiguous revision assessments with the correct Wallet A signer, preserving hashes and canonical reads.
-3. Execute funded Wallet A/B scenarios only after the payable rollback and outbound delivery hypotheses have a testable, runtime-supported path.
-4. Independently observe recipient balance deltas for withdrawals; do not treat parent or child finality alone as proof of credit.
-5. Complete the 52-scenario browser and integration matrix, fresh CI and an independent security review.
-6. Keep PR #1 draft and do not merge or promote custody without explicit approval after all critical gates pass. GitHub `main` branch protection is enabled and requires `verify`, `Vercel`, one approving review, last-push approval and conversation resolution.
+1. Signed Wallet A baseline, NONMATERIAL, MATERIAL and ambiguous source tests are complete on the single-contract deployment.
+2. Funded Wallet A/B scenarios remain blocked by the reproduced Studionet behavior where an execution error rolls back accounting while retaining attached value. Wrong-method and no-calldata value also remain unassigned. There is no runtime-supported recovery path in this contract.
+3. Independently observe recipient balance deltas for any future withdrawal; do not treat parent or child finality alone as proof of credit and never replay an UNKNOWN_DELIVERY transfer.
+4. Complete the remaining real extension rejection, account/network switch and mobile browser checks, then refresh the evidence matrix.
+5. Obtain an independent security review and the required second PR approval.
+6. Keep custody writes locked. GitHub `main` protection requires `verify`, `Vercel`, one approving review, last-push approval and conversation resolution.
 
 ## Release verdict
 
 **NOT RELEASED.** The engineering consolidation and offline state-machine
-coverage are complete for this stage. Hosted source attestation, funded
-lifecycle evidence, failure recovery, recipient delivery and independent review
-remain open. The implementation does not claim custody safety until those
-runtime limitations are resolved and documented.
+coverage and the hosted signed source lifecycle are complete for this stage.
+Funded lifecycle evidence, failure recovery, recipient delivery, remaining
+browser coverage and independent review remain open. The reproduced rollback
+behavior is a critical Studionet custody blocker; the implementation does not
+claim custody safety.
 

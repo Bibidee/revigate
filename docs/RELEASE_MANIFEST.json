@@ -44,6 +44,20 @@
     },
     "value_credited": false
   },
+  "wallet_a_program_3_lifecycle": {
+    "registration_transaction": "0xd26927aecb3c4f48dbbc9a95e2b6688aa5b2738277f71023b741d016c848f4fa",
+    "verification_transaction": "0x3e2b087cc0e993377e93f4ab59412ce0c0c45893a215879e3852840efb2db49c",
+    "verification_result": "VERIFIED",
+    "nonmaterial_assessment": "0x9356e29b69c5ffed1d96b03d1e104d69a69fab9f93505636e74cf464a3d4d296",
+    "nonmaterial_result": "NONMATERIAL_WITH_ONE_VALIDATOR_DISAGREE",
+    "material_assessment": "0x9cb332734cb483ea2ae72bec1c38efe57e530e5697dc0b62dc322f93f1b43d44",
+    "material_result": "MATERIAL",
+    "ambiguous_assessment": "0x5514cf142fe14a041138c55c85da8fd2849591d5ac9de8109b46abb78b61fff2",
+    "ambiguous_result": "MATERIAL",
+    "final_epoch": 3,
+    "final_active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+    "value_sent_wei": 0
+  },
   "local_checks": {
     "javascript": "23 PASS",
     "direct_mode": "52 PASS",
@@ -51,21 +65,21 @@
     "lint": "PASS",
     "build": "PASS"
   },
-  "custody_status": "NOT_PROVEN",
+  "custody_status": "CRITICAL_STUDIONET_ROLLBACK_BLOCKER",
   "production_status": "LOCKED",
   "release_verdict": "NOT_RELEASED",
   "ci": {
     "workflow": "CI",
-    "run_id": 38718147522,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38718147522",
-    "head_sha": "28161f3526c5744ab92a8e369c80dd940ad0a58a",
+    "run_id": 38730352955,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38730352955",
+    "head_sha": "20280587c2187729909540a760ce118d8d251202",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
-    "deployment_id": "dpl_7TDiUpxJK1cXehAfobrS5me4g426",
-    "url": "https://the-revigate-ix1t1a93s-bibidees-projects.vercel.app",
+    "deployment_id": "5JFSWQJCt5AkfzQZPipxZc8sRuc7",
+    "url": "https://the-revigate-git-codex-revigate-remedi-94105f-bibidees-projects.vercel.app",
     "state": "READY",
-    "browser_check": "BLOCKED_BY_VERCEL_AUTHENTICATION",
+    "browser_check": "PUBLIC_PASS_WALLET_A_SIGNED_SOURCE_LIFECYCLE",
     "production_promoted": false
   },
   "direct_transfer_probe": {

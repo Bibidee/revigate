@@ -1,5 +1,30 @@
 # Studionet Candidate Evidence
 
+## Current single-contract Wallet A lifecycle — 2026-10-15
+
+The source-attested disposable contract
+`0xD86A6C0a3949D2452bB8964e076983254375b5fE` completed a fresh signed source
+lifecycle through the corrected public preview. All transactions used Wallet A
+`0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5` and attached zero GEN.
+
+| Action | Transaction | Result |
+|---|---|---|
+| Register corrected baseline | `0xd26927aecb3c4f48dbbc9a95e2b6688aa5b2738277f71023b741d016c848f4fa` | Program 3, correct path `rules/revigate-v2.md` |
+| Verify baseline | `0x3e2b087cc0e993377e93f4ab59412ce0c0c45893a215879e3852840efb2db49c` | VERIFIED, epoch 1 |
+| Request NONMATERIAL | `0x438c40e23536ddc426604bd726cd917f26ca3f402eb1f00ef3eb2669dc931e5c` | Review 1 |
+| Assess NONMATERIAL | `0x9356e29b69c5ffed1d96b03d1e104d69a69fab9f93505636e74cf464a3d4d296` | Actual NONMATERIAL; one validator DISAGREE; epoch stayed 1 |
+| Request MATERIAL | `0xd2017c0d4b5161360ebc2db254c6897e73cf29a31d67dc829261876dc38a0bbb` | Review 2 |
+| Assess MATERIAL | `0x9cb332734cb483ea2ae72bec1c38efe57e530e5697dc0b62dc322f93f1b43d44` | Actual MATERIAL; epoch 2 |
+| Request ambiguous | `0xa31f497bf11a463c5b4495511ee475abba6a6dc6818b2e6d1b5e76e188587b78` | Review 3 |
+| Assess ambiguous | `0x5514cf142fe14a041138c55c85da8fd2849591d5ac9de8109b46abb78b61fff2` | Actual MATERIAL; epoch 3 |
+
+Final canonical Program 3 state is VERIFIED with active SHA
+`d35d438d0e45e58e3227f95135fa3a2abc523aed`, digest
+`2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b`,
+two material events and no pending review. This proves the hosted semantic
+lifecycle on the single-contract deployment. It does not clear the custody
+blocker documented below.
+
 Recorded 2026-10-14. This is testnet evidence, not a production custody certification.
 
 ## Latest source revision and live proofs (commit `ba3ad9a83178bede7b27864d7d5c5cdded872694`)
