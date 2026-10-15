@@ -2,7 +2,7 @@
 
 
 ## R-01: Eligibility
-Participants qualify after maintaining an active public enrollment record.
+Participants qualify only after maintaining an active public enrollment record for 60 consecutive days.
 
 
 ## R-02: Benefit
@@ -16,4 +16,4 @@ Eligibility is demonstrated by a dated public enrollment record.
 ## R-04: Appeals
 A participant may request a manual review within seven days of a decision.
 
-<!-- Editorial marker: baseline; formatting-only revision. -->
+<!-- Editorial marker: material eligibility revision. -->
