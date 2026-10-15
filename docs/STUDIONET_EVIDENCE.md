@@ -404,7 +404,7 @@ are historical evidence only. They do not define the current wallet identities.
 This is zero-value Studionet test evidence, not a production release. Escrow and
 custody are absent. Production writes remain locked; no user funds were accepted;
 PR #1 remains a draft; the earlier frontend promotion is recorded separately;
-and no merge or new production promotion occurred. The 52-scenario matrix,
-independent security review, protected Vercel preview, extension-level wallet
-rejection/disconnect coverage, and deployment of the new reconciliation fix
-remain release gates.
+and no merge occurred. The 52-scenario matrix, independent security review,
+protected Vercel preview, extension-level wallet rejection/disconnect coverage,
+and hosted assessment of the newly verified prompt-injection fixture remain
+release gates.
