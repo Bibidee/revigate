@@ -81,10 +81,10 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38695990638,
-    "run_number": 54,
-    "commit_sha": "5c0e4a963196e9b5200437f6565f2f1a377068fc",
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38695990638",
+    "run_id": 38698505953,
+    "run_number": 57,
+    "commit_sha": "440c6c9cfa67e35b6481bb172e0d571e7f18ea93",
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38698505953",
     "conclusion": "SUCCESS",
     "candidate_source_status": "INCLUDED_AND_PASSED"
   },
@@ -208,7 +208,7 @@
     "remaining": ["terminal finality readback for local observer probe (currently UNDETERMINED after repeated RPC not-found)", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "hosted prompt-injection assessment and genuine validator disagreement test for e097fb48f8f4576c6c50e9d83061c8c1ad965919"]
   },
   "observer_hardening_commit": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
-  "observer_hardening_status": "PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_CI_38695990638_PRODUCTION_PROMOTED",
+  "observer_hardening_status": "PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_CI_38698505953_PRODUCTION_PROMOTED",
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,
