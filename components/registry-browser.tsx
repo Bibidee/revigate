@@ -3,18 +3,23 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readRevigate } from "@/lib/genlayer";
-import { normalizeRulebookSource, parseRulebookClauses, sha256Hex } from "@/lib/rulebook-source.mjs";
+import { normalizeRulebookSource, parseRulebookClauses, sha256Hex, validateRevisionSourceIdentity } from "@/lib/rulebook-source.mjs";
 
 type Row = Record<string, unknown>;
 const rows = (value: unknown) => value && typeof value === "object" && Array.isArray((value as Row).items) ? (value as { items: Row[] }).items : [];
-async function source(program: Row, sha: string, expectedDigest?: string) {
+const COMMIT_SHA = /^[0-9a-f]{40}$/i;
+const SOURCE_DIGEST = /^[0-9a-f]{64}$/i;
+async function source(program: Row, sha: string, expectedDigest: string) {
+  if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(String(program.repo))
+      || !/^[A-Za-z0-9_./-]+\.md$/.test(String(program.rulebook_path))
+      || !COMMIT_SHA.test(sha) || !SOURCE_DIGEST.test(expectedDigest)) {
+    throw new Error("Authenticated source identity or digest is incomplete.");
+  }
   const response = await fetch(`https://raw.githubusercontent.com/${program.repo}/${sha}/${program.rulebook_path}`);
   if (!response.ok) throw new Error(`Authenticated source returned HTTP ${response.status}.`);
   const text = normalizeRulebookSource(await response.text());
-  if (expectedDigest) {
-    const digest = await sha256Hex(text);
-    if (digest !== expectedDigest.toLowerCase()) throw new Error("Fetched source does not match the canonical Registry digest.");
-  }
+  const digest = await sha256Hex(text);
+  if (digest !== expectedDigest.toLowerCase()) throw new Error("Fetched source does not match the canonical Registry digest.");
   return text;
 }
 
@@ -51,11 +56,17 @@ export function ProgramRecord({ programId }: { programId: string }) {
 }
 
 export function RevisionRecord({ programId, reviewId }: { programId: string; reviewId: string }) {
-  const [data, setData] = useState<{ review: Row; before: Record<string, unknown>; after: Record<string, unknown> }>(); const [error, setError] = useState("");
-  useEffect(() => { void (async () => { try { const [program, review] = await Promise.all([readRevigate("get_program", [BigInt(programId)]), readRevigate("get_review", [BigInt(reviewId)])]) as [Row, Row]; const result = review.result && typeof review.result === "object" ? review.result as Row : {}; const [before, after] = await Promise.all([source(program, String(review.base_sha), String(review.base_digest)), source(program, String(review.candidate_sha), typeof result.candidate_digest === "string" ? result.candidate_digest : undefined)]); setData({ review, before: parseRulebookClauses(before), after: parseRulebookClauses(after) }); } catch (e) { setError(e instanceof Error ? e.message : "Revision unavailable."); } })(); }, [programId, reviewId]);
+  const [data, setData] = useState<{ review: Row; before: Record<string, unknown>; after: Record<string, unknown>; candidateAuthenticated: boolean }>(); const [error, setError] = useState("");
+  useEffect(() => { void (async () => { try {
+    const [program, review] = await Promise.all([readRevigate("get_program", [BigInt(programId)]), readRevigate("get_review", [BigInt(reviewId)])]) as [Row, Row];
+    const { candidateDigest, candidateAuthenticated } = validateRevisionSourceIdentity(programId, review);
+    const beforeText = await source(program, String(review.base_sha), String(review.base_digest));
+    const afterText = candidateDigest ? await source(program, String(review.candidate_sha), candidateDigest) : "";
+    setData({ review, before: parseRulebookClauses(beforeText), after: afterText ? parseRulebookClauses(afterText) : {}, candidateAuthenticated });
+  } catch (e) { setError(e instanceof Error ? e.message : "Revision unavailable."); } })(); }, [programId, reviewId]);
   if (error) return <div className="notice notice-amber">{error}</div>; if (!data) return <div className="empty-state"><p>Loading authenticated revision evidence…</p></div>;
   const ids = [...new Set([...Object.keys(data.before), ...Object.keys(data.after)])];
-  return <><div className="notice">Outcome: {String(data.review.status)} · base {String(data.review.base_sha)} · candidate {String(data.review.candidate_sha)}</div><div className="compare-grid">{ids.map((id) => <div className="program-sheet" key={id}><strong>{id}</strong><h3>Before</h3><pre>{JSON.stringify(data.before[id], null, 2)}</pre><h3>After</h3><pre>{JSON.stringify(data.after[id], null, 2)}</pre></div>)}</div></>;
+  return <><div className="notice">Outcome: {String(data.review.status)} · base {String(data.review.base_sha)} · candidate {String(data.review.candidate_sha)}</div>{!data.candidateAuthenticated && <div className="notice notice-amber">Candidate source UNVERIFIED. The Registry did not provide an authenticated candidate digest for this INCONCLUSIVE review, so candidate text is not rendered as trusted evidence.</div>}<div className="compare-grid">{ids.map((id) => <div className="program-sheet" key={id}><strong>{id}</strong><h3>Before</h3><pre>{JSON.stringify(data.before[id], null, 2)}</pre>{data.candidateAuthenticated ? <><h3>After</h3><pre>{JSON.stringify(data.after[id], null, 2)}</pre></> : <><h3>After</h3><p className="notice notice-amber">UNVERIFIED candidate source withheld.</p></>}</div>)}</div></>;
 }
 
 export function AcknowledgmentHistory() {

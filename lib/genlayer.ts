@@ -15,8 +15,9 @@ export type Eip1193Provider = {
   on?(event: string, callback: (...args: unknown[]) => void): void;
   removeListener?(event: string, callback: (...args: unknown[]) => void): void;
 };
+export type PendingCanonicalState = Record<string, unknown>;
 export type PendingTransaction = { hash: Hash; account: string; method: string; args?: (string | number | boolean)[];
-  value: "0"; submittedAt: number; contractAddress: string; chainId: number };
+  value: "0"; submittedAt: number; contractAddress: string; chainId: number; preState?: PendingCanonicalState };
 
 export function getConfiguredRegistryAddress(): Address | undefined {
   const value = process.env.NEXT_PUBLIC_REVIGATE_REGISTRY?.trim();
@@ -66,8 +67,12 @@ export async function submitRevigateWrite(options: {
 export async function observeTransaction(hash: Hash, checks = 10, expectedAccount?: string, expectedContract?: string) {
   let latest: GenLayerTransaction | undefined;
   for (let index = 0; index < checks; index += 1) {
-    latest = await getReadClient().getTransaction({ hash });
-    if (!latest) throw new Error(`Transaction ${hash} is unavailable from the configured RPC.`);
+    try {
+      latest = await getReadClient().getTransaction({ hash });
+    } catch (error) {
+      return { state: "rpc-unavailable" as const, error: error instanceof Error ? error.message : String(error) };
+    }
+    if (!latest) return { state: "rpc-unavailable" as const, error: `Transaction ${hash} is unavailable from the configured RPC.` };
     const sender = latest.from_address ?? latest.sender;
     if (expectedAccount && !sender) return { state: "sender-unverified" as const, transaction: latest };
     if (expectedAccount && sender?.toLowerCase() !== expectedAccount.toLowerCase()) return { state: "sender-mismatch" as const, transaction: latest };

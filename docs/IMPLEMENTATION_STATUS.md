@@ -1,7 +1,8 @@
 # Implementation status
 
-Recorded 2026-10-15 after the clean Wallet A lifecycle and finalized Wallet B
-participant acknowledgment on GenLayer Studionet.
+Recorded 2026-10-15 after the clean Wallet A lifecycle, finalized Wallet B
+participant acknowledgment, and the transaction/source-integrity hardening pass
+on GenLayer Studionet.
 
 ## Current architecture
 
@@ -70,17 +71,17 @@ readback finalized transaction
 `MAJORITY_AGREE`; canonical history contains the epoch-3 record at index 1.
 The browser transaction card retained an earlier pending/accepted snapshot, so
 the direct finalized receipt and canonical acknowledgment read are the
-authoritative evidence. Commit `13bc812f352a6f484d8ba4d34ffb244fc65dc223`
-now treats finalized receipts as canonical-readback candidates and clears a
-pending hash only after the method-specific Registry readback matches. Unknown,
-failed, delayed, and duplicate states remain distinct; no automatic replay is
-allowed. The corrected frontend is now promoted to production and the public
-Brave/Rabby app-session disconnect check passes. Wrong-network switching and
-the local disconnect case are verified; extension-level rejection/disconnect,
-observer-specific production finality, and the protected Vercel preview (which
-redirects to Vercel login) remain outside this evidence. No credentials or
-bypass link were used. The observer does not infer recipient credit from
-finality and records `value_credited=false` from the canonical transaction read.
+authoritative evidence. The new transaction observer captures a canonical
+pre-state before every write and clears a pending hash only after a newly created
+record or a unique state transition attributable to that write is read back.
+Historical argument matches, same-version acknowledgment replays, and
+execution-unknown receipts remain `CANONICAL_STATE_UNVERIFIED`; unknown,
+failed, delayed, canceled, and RPC-unavailable states remain distinct. No
+automatic replay is allowed. These fixes are on this remediation branch and
+have not yet been promoted to production. The existing public Brave/Rabby
+app-session disconnect and observer evidence is retained for the prior promoted
+build. Extension-level rejection and disconnect interaction remains
+tooling-limited. The observer does not infer recipient credit from finality.
 
 The corrected local build was also opened in Brave at `127.0.0.1:3100`. Rabby
 connected as Wallet B from a non-Studionet state, the app requested and reached
@@ -116,11 +117,10 @@ removed the pending card, and did not replay. This is canonical-readback
 evidence; it does not infer execution success or recipient credit from
 finality. Evidence is `evidence/local-browser/2026-10-15-production-observer.json`.
 
-Local verification currently passes 15 JavaScript tests and 34 Direct Mode tests
-(49 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. Fresh CI run `38667968711` (run 46) for commit
-`3b2327ddcc5fb77eaf27d011a390bdfa190ae486` passed npm ci, frozen Python
-dependencies, preflight, production build, and the production dependency audit.
+Local verification currently passes 23 JavaScript tests and 34 Direct Mode tests
+(57 total). Direct Mode uses mocked providers and does not replace hosted
+validator evidence. The previous successful CI run is historical evidence for
+its older commit; a fresh run for this branch head is required after the fixes.
 The promoted Vercel production deployment is READY; authenticated content
 inspection and the public Brave/Rabby check confirm the noncustodial warning,
 Registry lock, Studionet chain 61999, and app-session disconnect behavior. The
@@ -129,12 +129,13 @@ protected preview still redirects a normal browser to Vercel login.
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
-PR #1 remains a draft, and the draft was not merged. The corrected frontend was
-promoted to production, but this does not open Registry writes or custody. GitHub
-`main` branch protection is enabled with strict `verify` and `Vercel` checks,
-one required approval, last-push approval, and admin enforcement. Independent
-security review and remaining extension-level flow checks remain open gates.
-Hosted prompt-injection/disagreement evidence is also incomplete. Production app-session disconnect
-is recorded in `evidence/local-browser/2026-10-15-production-disconnect.json`;
-the local evidence remains in
-`evidence/local-browser/2026-10-15-wallet-disconnect.json`.
+PR #1 remains a draft, and the draft was not merged. The earlier corrected
+frontend was promoted to production, but the new reconciliation/source-integrity
+fixes are not production-promoted because promotion requires explicit approval.
+GitHub `main` branch protection is enabled with strict `verify` and `Vercel`
+checks, one required approval, last-push approval, and admin enforcement.
+Independent security review, extension-level flow checks, and a
+GitHub-verified prompt-injection fixture remain open gates. Production
+app-session disconnect is recorded in
+`evidence/local-browser/2026-10-15-production-disconnect.json`; observer
+evidence is in `evidence/local-browser/2026-10-15-production-observer.json`.

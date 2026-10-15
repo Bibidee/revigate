@@ -6,6 +6,7 @@ import { forgetPendingTransaction, getConfiguredRegistryAddress, loadPendingTran
   verifyRevigateDeployment, type Eip1193Provider, type Hash, type PendingTransaction } from "@/lib/genlayer";
 import { isDuplicatePendingWrite } from "@/lib/pending-storage.mjs";
 import { isFinalizedForCanonical, submitAndPersistHash, watchWallet } from "@/lib/wallet-session.mjs";
+import { reconcileCanonicalTransaction, transactionStateLabel } from "@/lib/transaction-reconciliation.mjs";
 
 type RecordValue = Record<string, unknown>;
 const asInteger = (value: string, label: string) => {
@@ -29,6 +30,7 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   const [pending, setPending] = useState<PendingTransaction[]>([]);
   const walletIdentity = useRef("");
   const appDisconnected = useRef(false);
+  const writeInFlight = useRef(false);
   const [form, setForm] = useState({ repo: "", rulebookPath: "rules/program.md",
     manifestPath: ".revigate/publisher.json", branch: "main", baselineSha: "", candidateSha: "" });
 
@@ -77,77 +79,81 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
     const value = await readRevigate("get_program", [asInteger(programId, "Program ID")]);
     setProgram(asRecord(value)); setOutput(pretty(value));
   };
-  const verifyCanonical = async (item: PendingTransaction) => {
+  const readPageItems = async (method: string, args: unknown[]) => {
+    const value = asRecord(await readRevigate(method, args as never[]));
+    return Array.isArray(value?.items) ? value.items.map(asRecord).filter((entry): entry is RecordValue => Boolean(entry)) : [];
+  };
+  const captureCanonicalStateForItem = async (item: PendingTransaction) => {
     const first = item.args?.[0];
-    if (item.method === "verify_program") {
-      const state = asRecord(await readRevigate("get_program", [BigInt(String(first))]));
-      if (!state || state.status !== "VERIFIED" || !state.active_sha || !state.document_digest) {
-        throw new Error("Finalized verification has no matching verified program state.");
-      }
-      return state;
-    }
     if (["acknowledge_rules", "reaffirm_rules"].includes(item.method)) {
-      const state = asRecord(await readRevigate("get_acknowledgment", [BigInt(String(first)), item.account]));
-      if (!state || !Object.keys(state).length) throw new Error("Finalized execution has no matching canonical Registry state.");
-      if (String(state.epoch) !== String(item.args?.[1]) || state.sha !== String(item.args?.[2]).toLowerCase()
-          || state.digest !== String(item.args?.[3])) throw new Error("Canonical acknowledgment does not match the submitted rule version.");
-      return state;
+      return { acknowledgments: await readPageItems("get_acknowledgment_page", [BigInt(String(first)), item.account, 0n, 50n]) };
     }
-    if (item.method === "request_revision") {
-      const page = asRecord(await readRevigate("get_review_page", [0n, 50n]));
-      const review = Array.isArray(page?.items) ? page.items.map(asRecord).find((entry) => entry
-        && String(entry.program_id) === String(first) && entry.candidate_sha === String(item.args?.[1]).toLowerCase()) : undefined;
-      if (!review) throw new Error("Finalized revision request has no matching canonical review.");
-      return review;
-    }
-    if (["assess_revision", "expire_revision_request"].includes(item.method)) {
-      const review = asRecord(await readRevigate("get_review", [BigInt(String(first))]));
-      if (!review || review.status === "PENDING") throw new Error("Finalized execution has no matching decided review state.");
-      return review;
-    }
-    if (item.method === "register_program") {
-      const page = asRecord(await readRevigate("get_program_page", [0n, 50n]));
-      const program = Array.isArray(page?.items) ? page.items.map(asRecord).find((entry) => entry
-        && String(entry.publisher).toLowerCase() === item.account.toLowerCase()
-        && entry.repo === String(item.args?.[0]).toLowerCase()
-        && entry.rulebook_path === item.args?.[1] && entry.manifest_path === item.args?.[2]
-        && entry.branch === item.args?.[3] && entry.baseline_sha === String(item.args?.[4]).toLowerCase()) : undefined;
-      if (!program) throw new Error("Finalized registration has no matching canonical program.");
-      return program;
-    }
-    throw new Error("This Registry action has no canonical readback rule.");
+    if (item.method === "register_program") return { programs: await readPageItems("get_program_page", [0n, 50n]) };
+    if (item.method === "verify_program") return { program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {} };
+    if (item.method === "request_revision") return {
+      program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {},
+      reviews: await readPageItems("get_review_page", [0n, 50n]),
+    };
+    return { review: asRecord(await readRevigate("get_review", [BigInt(String(first))])) ?? {} };
+  };
+  const verifyCanonical = async (item: PendingTransaction) => {
+    if (!item.preState) return { verified: false as const, reason: "the transaction has no captured pre-state; historical matches are not proof" };
+    const after = await captureCanonicalStateForItem(item);
+    return reconcileCanonicalTransaction(item, item.preState, after);
   };
   const checkPending = async (item: PendingTransaction) => {
     const observed = await observeTransaction(item.hash, 10, item.account, item.contractAddress);
     if (isFinalizedForCanonical(observed.state)) {
+      let reconciliation;
       try {
-        const canonical = await verifyCanonical(item);
-        forgetPendingTransaction(item.hash); setPending(loadPendingTransactions());
-        const execution = observed.state === "finalized-success"
-          ? "execution succeeded"
-          : "execution result not exposed by the RPC";
-        setOutput(`${item.hash}\nFINALIZED · ${execution} · canonical state verified\n${pretty(canonical)}`);
+        reconciliation = await verifyCanonical(item);
       } catch (error) {
-        if (observed.state !== "finalized-execution-unknown") throw error;
         const detail = error instanceof Error ? error.message : "canonical readback failed";
-        setOutput(`${item.hash}\nFINALIZED · execution result not exposed by the RPC\nCanonical state not verified: ${detail}\nNo retry was submitted.`);
+        setOutput(`${item.hash}\nRPC_UNAVAILABLE\nCanonical state could not be read: ${detail}\nNo retry was submitted.`);
+        return;
+      }
+      if (reconciliation.verified) {
+        forgetPendingTransaction(item.hash); setPending(loadPendingTransactions());
+        const execution = observed.state === "finalized-success" ? "execution succeeded" : "execution result not exposed by the RPC";
+        setOutput(`${item.hash}\nFINALIZED · ${execution} · canonical state transition verified\n${pretty(reconciliation.value)}`);
+      } else {
+        setOutput(`${item.hash}\n${transactionStateLabel(observed.state)}\nCANONICAL_STATE_UNVERIFIED · ${reconciliation.reason}\nNo retry was submitted.`);
       }
       return;
     }
-    setOutput(`${item.hash}\n${pretty(observed)}\nNo retry was submitted.`);
+    setOutput(`${item.hash}\n${transactionStateLabel(observed.state)}\n${pretty(observed)}\nNo retry was submitted.`);
   };
   const write = async (method: string, args: unknown[]) => {
+    if (writeInFlight.current) throw new Error("A Registry transaction is already being prepared or submitted.");
+    writeInFlight.current = true;
+    try {
     if (!provider || !account || !verified) throw new Error("Connect a wallet and verify the Registry before signing.");
     const registry = getConfiguredRegistryAddress();
     if (!registry) throw new Error("The Registry is not configured.");
     const savedArgs = args.map((arg) => typeof arg === "bigint" ? arg.toString() : arg) as (string | number | boolean)[];
     const candidate = { account, method, args: savedArgs };
     if (isDuplicatePendingWrite(pending, candidate)) throw new Error("This exact Registry action already has a pending hash. Check it instead of submitting again.");
+    const preState = await (async () => {
+      const first = args[0];
+      if (method === "register_program") return { programs: await readPageItems("get_program_page", [0n, 50n]) };
+      if (method === "verify_program") return { program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {} };
+      if (method === "request_revision") return {
+        program: asRecord(await readRevigate("get_program", [BigInt(String(first))])) ?? {},
+        reviews: await readPageItems("get_review_page", [0n, 50n]),
+      };
+      if (method === "assess_revision" || method === "expire_revision_request") return {
+        review: asRecord(await readRevigate("get_review", [BigInt(String(first))])) ?? {},
+      };
+      if (method === "acknowledge_rules" || method === "reaffirm_rules") return {
+        acknowledgments: await readPageItems("get_acknowledgment_page", [BigInt(String(first)), account, 0n, 50n]),
+      };
+      throw new Error("This Registry action has no canonical pre-state rule.");
+    })();
     const identity = walletIdentity.current;
     const result = await submitAndPersistHash(
       () => submitRevigateWrite({ provider, account, functionName: method, args: args as never[] }),
       (hash): PendingTransaction => ({ hash: hash as Hash, account, method, args: savedArgs,
-        value: "0", submittedAt: Date.now(), contractAddress: registry, chainId: 61999 }), savePendingTransaction);
+        value: "0", submittedAt: Date.now(), contractAddress: registry, chainId: 61999, preState }), savePendingTransaction);
     const item = result.pending;
     setPending((current) => [item, ...current.filter((entry) => entry.hash !== item.hash)]);
     if (!result.persisted) {
@@ -157,6 +163,9 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
     if (identity !== walletIdentity.current) { setOutput(`Wallet changed after submission. Recover using ${item.hash}.`); return; }
     setOutput(`Submitted ${item.hash}\nWaiting for protocol finality. Do not resubmit.`);
     await checkPending(item);
+    } finally {
+      writeInFlight.current = false;
+    }
   };
   const enabled = verified && Boolean(provider && account) && Number.parseInt(chainId || "0", 16) === 61999;
 

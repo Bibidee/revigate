@@ -322,13 +322,14 @@ historical probes auditable; it was not used for the current lifecycle.
 | Identity | Address |
 |---|---|
 | Wallet A (publisher, Rabby signer) | `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5` |
-| Wallet B (participant identity reserved for separate tests) | `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54` |
+| Wallet B (participant) | `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54` |
 | Network | GenLayer Studionet, chain `61999` |
 | Registry | `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3` |
 
-All current writes below were signed by Wallet A, attached zero native value,
-and recorded `value_credited=false`. No escrow, Vault, deposit, credit, refund,
-payout, or user funds were involved.
+Publisher writes below were signed by Wallet A; the participant acknowledgment
+was signed by Wallet B. Every write attached zero native value and recorded
+`value_credited=false`. No escrow, Vault, deposit, credit, refund, payout, or
+user funds were involved.
 
 ### Exact Registry deployment
 
@@ -390,8 +391,10 @@ The publisher page signed the current request and assessment above. The browser
 observer conservatively labels the RPC wrapper `pending` or
 `finalized-execution-unknown` when the endpoint omits an execution-name field;
 the canonical receipt and `get_review`/`get_program` readbacks above are the
-source of truth. Wallet B was not used in this clean publisher lifecycle and no
-participant funds were accepted.
+source of truth. Wallet B was not used in the clean publisher-only lifecycle
+above, then submitted the finalized zero-value epoch-3 acknowledgment
+`0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209`; the
+canonical history index is 1. No participant funds were accepted.
 
 Older Program 1/2 records, the old fixture branch, and the old `0x527d…` signer
 are historical evidence only. They do not define the current wallet identities.
@@ -400,7 +403,8 @@ are historical evidence only. They do not define the current wallet identities.
 
 This is zero-value Studionet test evidence, not a production release. Escrow and
 custody are absent. Production writes remain locked; no user funds were accepted;
-PR #1 remains a draft; and no merge or production promotion occurred. The full
-52-scenario matrix, independent security review, protected Vercel preview,
-and wallet-extension account/network/rejection coverage are still separate
-release gates.
+PR #1 remains a draft; the earlier frontend promotion is recorded separately;
+and no merge or new production promotion occurred. The 52-scenario matrix,
+independent security review, protected Vercel preview, extension-level wallet
+rejection/disconnect coverage, and deployment of the new reconciliation fix
+remain release gates.

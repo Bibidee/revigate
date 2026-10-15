@@ -1,6 +1,6 @@
 # Signed rulebook fixture evidence
 
-Recorded 2026-10-14 from GitHub public commit pages and the hosted Registry.
+Recorded 2026-10-15 from GitHub public commit pages and the hosted Registry.
 
 ## Current signed public fixture
 
@@ -38,4 +38,4 @@ All writes were signed by Wallet A and attached zero native value.
 
 Review 5 canonical candidate digest: 2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b. Final Program 3 state is VERIFIED, active SHA d35d438d0e45e58e3227f95135fa3a2abc523aed, epoch 3, material-event count 2, and pending_review 0.
 
-No user funds were accepted. Wallet B (0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54) was not used in this publisher-only cycle.
+No user funds were accepted. Wallet B (`0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`) later submitted the finalized zero-value epoch-3 acknowledgment `0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209`; its canonical history index is 1. The publisher lifecycle above remains Wallet A-only.

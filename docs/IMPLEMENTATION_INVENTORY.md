@@ -1,7 +1,7 @@
 # Implementation inventory
 
-Recorded 2026-10-15 after the clean Wallet A lifecycle and finalized Wallet B
-participant acknowledgment.
+Recorded 2026-10-15 after the clean Wallet A lifecycle, finalized Wallet B
+participant acknowledgment, and the new reconciliation/source-integrity tests.
 
 ## Active product
 
@@ -13,8 +13,9 @@ active product.
 
 The frontend reads canonical programs and reviews, fetches the exact rulebook
 commit recorded by the Registry, verifies the normalized digest, persists every
-zero-value transaction hash, refuses duplicate pending actions, and checks
-canonical state after finality.
+zero-value transaction hash, captures a canonical pre-state, refuses duplicate
+pending actions, and checks a unique state transition after finality. A matching
+historical record is never sufficient.
 
 ## Registry controls
 
@@ -67,12 +68,12 @@ at history index 1.
 
 ## Automated evidence
 
-The local suite currently passes 15 JavaScript tests and 34 Direct Mode tests.
-Direct Mode uses mocked providers. Typecheck, lint, source guard, and production
-build evidence are recorded on the remediation branch. Fresh GitHub Actions run
-38667733432 (run 45) for commit
-d2362855d8e4c89c13ea3badfd41075df3b88b01 passed npm ci, frozen Python dependencies,
-preflight, production build, and the production dependency audit.
+The local suite currently passes 23 JavaScript tests and 34 Direct Mode tests.
+Direct Mode uses mocked providers. Typecheck and lint pass locally; the first
+unsandboxed build attempt hit a Windows EPERM cache-directory restriction and is
+rerun with the approved workspace tool. A fresh GitHub Actions run for the final
+branch head is required; the older run listed in prior evidence remains
+historical.
 
 ## Browser and review boundary
 
@@ -81,15 +82,15 @@ signed the current publisher request and assessment. The account was switched to
 Wallet B, which submitted one zero-value acknowledgment and has a finalized
 canonical epoch-3 history record. The browser card retained a stale accepted
 snapshot, so direct RPC finality plus the canonical readback are authoritative.
-Network switching, rejection, extension-level disconnect recovery, protected preview
-access, and independent security review remain open. The local build now exposes a
-Disconnect control, with Rabby behavior recorded in
-evidence/local-browser/2026-10-15-wallet-disconnect.json. The observer fix has a
-fresh READY deployment, but the protected preview still requires an authenticated
-browser rerun. The work performed is an adversarial
-self-audit, not an independent review.
+Network switching and app-session disconnect are recorded. Wallet rejection and
+extension-level disconnect recovery are tooling-limited in this environment;
+protected preview access is behind Vercel login. The prior production observer
+evidence remains valid for that deployed build, while the new pre-state fix is
+branch-only until an explicitly approved promotion. The work performed is an
+adversarial self-audit, not an independent review.
 
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
-PR #1 remains a draft, and no merge or production promotion occurred.
+PR #1 remains a draft, the earlier frontend promotion is recorded, and no merge
+or new production promotion occurred.

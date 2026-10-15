@@ -72,7 +72,7 @@
   },
   "local_verification": {
     "source_commit_sha": "46b749669c532bf85b3491d2ea6dd4bcee987422",
-    "javascript_tests": "15/15 PASS",
+    "javascript_tests": "23/23 PASS",
     "direct_mode_tests": "34/34 PASS",
     "typecheck": "PASS",
     "lint": "PASS",
@@ -81,11 +81,11 @@
   },
   "github_actions": {
     "workflow": "CI",
-    "run_id": 38667968711,
-    "run_number": 46,
-    "commit_sha": "3b2327ddcc5fb77eaf27d011a390bdfa190ae486",
-    "conclusion": "SUCCESS",
-    "candidate_source_status": "INCLUDED_AND_PASSED"
+    "run_id": null,
+    "run_number": null,
+    "commit_sha": null,
+    "conclusion": "PENDING_AFTER_RECONCILIATION_FIX",
+    "candidate_source_status": "AWAITING_FRESH_RUN"
   },
   "vercel_status_check": "SUCCESS_FOR_PRODUCTION_PROMOTION",
   "vercel_branch_deployment": {
@@ -203,10 +203,10 @@
       "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
     },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["terminal finality readback for local observer probe", "real extension rejection and extension-level disconnect coverage", "independent security review"]
+    "remaining": ["terminal finality readback for local observer probe", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "production promotion of the new reconciliation/source-integrity fix requires explicit approval"]
   },
-  "observer_hardening_commit": "13bc812f352a6f484d8ba4d34ffb244fc65dc223",
-  "observer_hardening_status": "BRANCH_CI_AND_PRODUCTION_DEPLOYMENT_PASSED_CANONICAL_READBACK_VERIFIED_EXECUTION_UNKNOWN_REPLAY_DISABLED",
+  "observer_hardening_commit": "BRANCH_HEAD_PENDING",
+  "observer_hardening_status": "LOCAL_PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_PRODUCTION_NOT_PROMOTED",
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,
