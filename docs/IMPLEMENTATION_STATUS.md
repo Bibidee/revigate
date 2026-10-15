@@ -41,30 +41,20 @@ archived fixture evidence and is not a current wallet.
 
 ## Hosted and production state
 
-The previously deployed noncustodial Registry address and its frontend binding
-are retired from the active source. A corrected single-contract deployment has
-not yet been source-attested in this remediation stage. No production address
+A disposable single-contract deployment is source-attested on Studionet at `0xD86A6C0a3949D2452bB8964e076983254375b5fE`. Deployment transaction `0x29af681ee4ebb8bb03f52c2f36b4e1c686798e97dbcd0c0b1b2963e9ccf5d8b5` finalized with majority agreement and zero value. The deployed bytes exactly match source SHA-256 `BDF1D0B952719D8EDA16F1AC26A49C2F1B9CBB0465B7DAC972175A3015E904EF` from commit `cb84344`. Initial config and ledger reads are clean. This is disposable evidence, not a production binding. No production address
 is approved, no user funds were accepted, and production writes remain locked.
 
-The existing Vercel production site may still serve an older noncustodial build
-until the new contract source and frontend are deployed together. This is an
+The existing Vercel production site still serves the earlier noncustodial build. The escrow frontend has not been promoted because production custody is locked. This is an
 environmental deployment task, not evidence of escrow readiness.
 
 ## Remaining gates
 
-1. Diagnose and record current Studionet DNS/HTTPS/RPC availability.
-2. Deploy the exact committed `contracts/revigate.py` with the repository-local
-   CLI to a disposable Studionet address and attest the source/config.
-3. Run hosted signed baseline, NONMATERIAL, MATERIAL and ambiguous revision
-   assessments, preserving hashes and canonical reads.
-4. Execute funded Wallet A/B scenarios only after the payable rollback and
-   outbound delivery hypotheses have a testable, runtime-supported path.
-5. Independently observe recipient balance deltas for withdrawals; do not treat
-   parent or child finality alone as proof of credit.
-6. Complete the 52-scenario browser and integration matrix, fresh CI and an
-   independent security review.
-7. Keep PR #1 draft and do not merge or promote custody without explicit
-   approval after all critical gates pass.
+1. Use a genuinely GitHub-verified fixture that nominates the submitting publisher wallet. The existing Wallet A fixture is verified, but the unlocked CLI deployer is a different address; the hosted probe correctly returned `INCONCLUSIVE` and left Program 1 `PROPOSED` (`0xc347a08e…`, `0xdec8f4cf…`).
+2. Run hosted signed baseline, NONMATERIAL, MATERIAL and ambiguous revision assessments with the correct Wallet A signer, preserving hashes and canonical reads.
+3. Execute funded Wallet A/B scenarios only after the payable rollback and outbound delivery hypotheses have a testable, runtime-supported path.
+4. Independently observe recipient balance deltas for withdrawals; do not treat parent or child finality alone as proof of credit.
+5. Complete the 52-scenario browser and integration matrix, fresh CI and an independent security review.
+6. Keep PR #1 draft and do not merge or promote custody without explicit approval after all critical gates pass.
 
 ## Release verdict
 
@@ -73,3 +63,4 @@ coverage are complete for this stage. Hosted source attestation, funded
 lifecycle evidence, failure recovery, recipient delivery and independent review
 remain open. The implementation does not claim custody safety until those
 runtime limitations are resolved and documented.
+
