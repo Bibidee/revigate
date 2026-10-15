@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-15",
+  "scope": "contracts/revigate.py and its Direct Mode regression suite",
+  "independence": "ADVERSARIAL_SELF_AUDIT_NOT_INDEPENDENT_REVIEW",
+  "source_commit_reviewed": "cb84344",
+  "source_sha256": "BDF1D0B952719D8EDA16F1AC26A49C2F1B9CBB0465B7DAC972175A3015E904EF",
+  "deployed_contract": "0xD86A6C0a3949D2452bB8964e076983254375b5fE",
+  "checks": {
+    "github_signed_source_authentication": "PASS_LOCAL_DIRECT_MODE; HOSTED_PROBE_INCONCLUSIVE_WITH_NOMINATION_MISMATCH",
+    "publisher_and_participant_authorization": "PASS_LOCAL_DIRECT_MODE",
+    "revision_materiality_and_ambiguous_outcomes": "PASS_LOCAL_DIRECT_MODE; CORRECT_HOSTED_WALLET_A_LIFECYCLE_NOT_RUN",
+    "payable_validation_and_refundable_credits": "PASS_LOCAL_DIRECT_MODE",
+    "withdrawal_single_use_accounting": "PASS_LOCAL_DIRECT_MODE",
+    "unsolicited_native_value": "HOSTED_1_WEI_PROBE_LEFT_UNASSIGNED_SURPLUS",
+    "outgoing_child_delivery": "NOT_PROVEN",
+    "recipient_balance_delta": "NOT_OBSERVED",
+    "validator_disagreement": "HOSTED_NOT_OBSERVED",
+    "observer_finality": "UNDETERMINED; NO_REPLAY"
+  },
+  "confirmed_critical_or_high_findings": [],
+  "limitations": [
+    "This is an adversarial self-audit, not an independent security review.",
+    "The unlocked CLI deployer does not match the Wallet A publisher nominated by the genuine fixture, so hosted verification remained INCONCLUSIVE.",
+    "Protocol rollback and network-level unsolicited native-value recovery are not claimed safe.",
+    "No funded user lifecycle or production custody was enabled."
+  ],
+  "result": "NO_NEW_CONFIRMED_CRITICAL_OR_HIGH_DEFECT_IN_LOCAL_SCOPE; RELEASE_BLOCKED_BY_UNVERIFIED_HOSTED_CUSTODY_AND_INDEPENDENT_REVIEW"
+}
