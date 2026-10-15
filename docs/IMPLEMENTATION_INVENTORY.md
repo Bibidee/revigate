@@ -69,10 +69,10 @@ at history index 1.
 ## Automated evidence
 
 The local suite currently passes 23 JavaScript tests and 34 Direct Mode tests.
-Direct Mode uses mocked providers. GitHub Actions run `38694338175`
-(`https://github.com/Bibidee/revigate/actions/runs/38694338175`) passed for the
-documentation-synchronized branch head, including clean install, preflight,
-production build, and production dependency audit.
+Direct Mode uses mocked providers. GitHub Actions run `38694594371`
+(`https://github.com/Bibidee/revigate/actions/runs/38694594371`) passed for the
+final branch head, including clean install, preflight, production build, and
+production dependency audit.
 
 ## Browser and review boundary
 
@@ -83,13 +83,11 @@ canonical epoch-3 history record. The browser card retained a stale accepted
 snapshot, so direct RPC finality plus the canonical readback are authoritative.
 Network switching and app-session disconnect are recorded. Wallet rejection and
 extension-level disconnect recovery are tooling-limited in this environment;
-protected preview access is behind Vercel login. The prior production observer
-evidence remains valid for that deployed build, while the new pre-state fix is
-branch-only until an explicitly approved promotion. The work performed is an
-adversarial self-audit, not an independent review.
+protected preview access is behind Vercel login. The corrected pre-state fix is
+now promoted to production. The work performed is an adversarial self-audit,
+not an independent review.
 
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
-PR #1 remains a draft, the earlier frontend promotion is recorded, and no merge
-or new production promotion occurred.
+PR #1 remains a draft, the corrected frontend is promoted, and no merge occurred.

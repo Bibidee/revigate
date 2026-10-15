@@ -1,0 +1,18 @@
+{
+  "project": "bibidees-projects/the-revigate",
+  "target": "production",
+  "deployment_id": "dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n",
+  "deployment_url": "https://the-revigate-7ca3uxf2p-bibidees-projects.vercel.app",
+  "alias": "https://the-revigate.vercel.app",
+  "ready_state": "READY",
+  "ready_substate": "PROMOTED",
+  "git_ref": "codex/revigate-remediation-2026-10-14",
+  "git_commit": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
+  "registry_address": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
+  "custody": "NONE",
+  "writes": "LOCKED",
+  "user_funds_accepted": false,
+  "build": "PASS",
+  "source": "vercel api /v13/deployments/dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n",
+  "observed_at": "2026-10-15"
+}

@@ -91,14 +91,15 @@
   "vercel_status_check": "SUCCESS_FOR_PRODUCTION_PROMOTION",
   "vercel_branch_deployment": {
     "url": "https://the-revigate.vercel.app",
-    "deployment_url": "https://the-revigate-rdlf4ck8c-bibidees-projects.vercel.app",
-    "deployment_id": "dpl_GCgi5KsDCHsx7tikQ5Fw22LZf4rP",
+    "deployment_url": "https://the-revigate-7ca3uxf2p-bibidees-projects.vercel.app",
+    "deployment_id": "dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n",
     "environment": "PRODUCTION",
-    "commit_sha": "3b2327ddcc5fb77eaf27d011a390bdfa190ae486",
+    "commit_sha": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
     "state": "READY",
     "authenticated_content_check": "PASS_NONCUSTODIAL_WARNING_REGISTRY_LOCK_CHAIN_61999",
     "public_browser_check": "PASS_BRAVE_RABBY_APP_DISCONNECT",
-    "public_browser_evidence": "evidence/local-browser/2026-10-15-production-disconnect.json"
+    "public_browser_evidence": "evidence/local-browser/2026-10-15-production-disconnect.json",
+    "promotion_evidence": "evidence/vercel/2026-10-15-production-promotion.json"
   },
   "signed_fixture_publication": "GITHUB_VERIFIED",
   "signed_fixture_branch": "revigate-rulebook-wallet-a-web",
@@ -204,10 +205,10 @@
       "evidence": "evidence/local-observer-probe/2026-10-15-rpc-poll.json"
     },
     "preview_lookup": "DIRECT_URL_REDIRECTS_TO_VERCEL_LOGIN_NO_BYPASS_ATTEMPTED",
-    "remaining": ["terminal finality readback for local observer probe", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "production promotion of the new reconciliation/source-integrity fix requires explicit approval"]
+    "remaining": ["terminal finality readback for local observer probe (currently UNDETERMINED after repeated RPC not-found)", "real extension rejection and extension-level disconnect coverage (tooling-limited)", "independent security review", "genuine GitHub-verified prompt-injection fixture and hosted disagreement test"]
   },
-  "observer_hardening_commit": "c3ecded142b4158bc87d199653f5177fc6dd0297",
-  "observer_hardening_status": "LOCAL_PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_CI_38694338175_PRODUCTION_NOT_PROMOTED",
+  "observer_hardening_commit": "fc775576ab4b3880caa66c97e0ee2781b05adfce",
+  "observer_hardening_status": "PRESTATE_RECONCILIATION_AND_SOURCE_INTEGRITY_TESTS_PASS_CI_38694594371_PRODUCTION_PROMOTED",
   "independent_security_review": "NOT_OBTAINED_RECOMMENDED_NOT_CI_REQUIRED",
   "production_writes": "LOCKED",
   "user_funds_accepted": false,

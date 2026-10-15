@@ -78,10 +78,9 @@ Historical argument matches, same-version acknowledgment replays, and
 execution-unknown receipts remain `CANONICAL_STATE_UNVERIFIED`; unknown,
 failed, delayed, canceled, and RPC-unavailable states remain distinct. No
 automatic replay is allowed. These fixes are on this remediation branch and
-have not yet been promoted to production. The existing public Brave/Rabby
-app-session disconnect and observer evidence is retained for the prior promoted
-build. Extension-level rejection and disconnect interaction remains
-tooling-limited. The observer does not infer recipient credit from finality.
+are now promoted to production. Extension-level rejection and disconnect
+interaction remains tooling-limited. The observer does not infer recipient
+credit from finality.
 
 The corrected local build was also opened in Brave at `127.0.0.1:3100`. Rabby
 connected as Wallet B from a non-Studionet state, the app requested and reached
@@ -99,7 +98,7 @@ is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`. This
 is observer evidence only; it is not a replacement for a finalized receipt.
 
 The corrected frontend was promoted to production deployment
-`dpl_GCgi5KsDCHsx7tikQ5Fw22LZf4rP` at
+`dpl_4q5XjNb6jAt2Rr3jJVf4Atozsz6n` at
 `https://the-revigate.vercel.app`. A real Brave/Rabby production session
 connected Wallet B and showed `Disconnect`; clicking it changed the app to
 `Connect wallet` and displayed `Revigate app session disconnected. Your wallet
@@ -119,10 +118,11 @@ finality. Evidence is `evidence/local-browser/2026-10-15-production-observer.jso
 
 Local verification currently passes 23 JavaScript tests and 34 Direct Mode tests
 (57 total). Direct Mode uses mocked providers and does not replace hosted
-validator evidence. GitHub Actions run `38694338175`
-(`https://github.com/Bibidee/revigate/actions/runs/38694338175`) passed for the
-documentation-synchronized branch head, including clean install, preflight,
-production build, and production dependency audit.
+validator evidence. GitHub Actions run `38694594371`
+(`https://github.com/Bibidee/revigate/actions/runs/38694594371`) passed for the
+final branch head, including clean install, preflight, production build, and
+production dependency audit. Production promotion evidence is preserved in
+`evidence/vercel/2026-10-15-production-promotion.json`.
 The promoted Vercel production deployment is READY; authenticated content
 inspection and the public Brave/Rabby check confirm the noncustodial warning,
 Registry lock, Studionet chain 61999, and app-session disconnect behavior. The
@@ -131,9 +131,10 @@ protected preview still redirects a normal browser to Vercel login.
 ## Release decision
 
 **NOT RELEASED.** Production writes remain locked. No user funds were accepted,
-PR #1 remains a draft, and the draft was not merged. The earlier corrected
-frontend was promoted to production, but the new reconciliation/source-integrity
-fixes are not production-promoted because promotion requires explicit approval.
+PR #1 remains a draft, and the draft was not merged. The corrected
+reconciliation/source-integrity frontend is promoted, but hosted prompt-injection
+and disagreement evidence, independent review, and full extension-level wallet
+flows remain open.
 GitHub `main` branch protection is enabled with strict `verify` and `Vercel`
 checks, one required approval, last-push approval, and admin enforcement.
 Independent security review, extension-level flow checks, and a

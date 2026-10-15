@@ -16,5 +16,10 @@
     "id": 1
   },
   "comparison_finalized_hash": "0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209",
-  "interpretation": "The previously observed ACCEPTED probe is currently unavailable through this RPC method. This does not prove FINALIZED, failure, cancellation, or rollback. No retry was submitted."
+  "interpretation": "The previously observed ACCEPTED probe is currently unavailable through this RPC method. This does not prove FINALIZED, failure, cancellation, or rollback. No retry was submitted.",
+  "latest_recheck": {
+    "method": "eth_getTransactionByHash",
+    "response": "RESOURCE_NOT_FOUND",
+    "interpretation": "A fresh read-only recheck returned the same unavailable result. The probe remains UNDETERMINED; no replay or replacement transaction was submitted."
+  }
 }
