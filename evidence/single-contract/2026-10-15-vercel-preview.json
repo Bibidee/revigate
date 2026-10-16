@@ -1,4 +1,6 @@
 {
+  "status": "SUPERSEDED_HISTORICAL_PREVIEW",
+  "active_for_release": false,
   "deployment_id": "dpl_7TDiUpxJK1cXehAfobrS5me4g426",
   "preview_url": "https://the-revigate-ix1t1a93s-bibidees-projects.vercel.app",
   "inspector_url": "https://vercel.com/bibidees-projects/the-revigate/7TDiUpxJK1cXehAfobrS5me4g426",

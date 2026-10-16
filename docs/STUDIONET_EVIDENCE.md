@@ -8,9 +8,9 @@ The deployed source was fetched from Studionet and matched the local UTF-8 sourc
 
 This proves deployment identity and clean initial Registry state. It accepts no application funds and does not rehabilitate the historical escrow deployment. Machine-readable deployment evidence is in `evidence/noncustodial/2026-10-15-registry-v4-deployment.json`.
 
-### Registry V4 signed-source lifecycle
+### Registry V4 signed-source lifecycle (archived fixture)
 
-The unlocked repository-local CLI completed the zero-value lifecycle on this exact V4 deployment using the genuinely GitHub-verified `revigate-rulebook-fixture-v2` commit chain and publisher `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
+The unlocked repository-local CLI completed the zero-value lifecycle on this exact V4 deployment using the genuinely GitHub-verified **archived** `revigate-rulebook-fixture-v2` commit chain and its nominated publisher `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`. This is the active V4 deployment evidence, but it is not the later Wallet A fixture described below.
 
 | Action | Transaction | Final result |
 |---|---|---|
@@ -358,13 +358,15 @@ it cannot submit the one-wei payable accounting check. No payable write or
 escrow lifecycle was submitted from this corrected-source test address. The
 previously deployed reciprocal pair remains on the earlier Vault source.
 
-## Current clean Wallet A lifecycle (2026-10-14)
+## Historical Wallet A signed-fixture lifecycle on prior Registry V2 (2026-10-14)
 
-This section is the authoritative current Registry evidence. It supersedes the
-older lifecycle sections below the historical custody probes. The old address
+This section records a genuine signed Wallet A fixture lifecycle on the prior
+single-contract Registry V2 deployment. It is retained as source-authentication
+and hosted-behavior evidence, but it does not attest the active V4 deployment
+above and is not the current production contract. The old address
 `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` came from an earlier fixture and is
 not a user wallet for this lifecycle. It is retained only where needed to keep
-historical probes auditable; it was not used for the current lifecycle.
+historical probes auditable; it was not used for the Wallet A lifecycle.
 
 | Identity | Address |
 |---|---|
@@ -461,11 +463,15 @@ are historical evidence only. They do not define the current wallet identities.
 
 ### Release boundaries
 
-This is zero-value Studionet test evidence, not a production release. Escrow and
-custody are absent. Only zero-value Registry writes are available; no user funds were accepted;
-PR #1 remains a draft; the earlier frontend promotion is recorded separately;
-and no merge occurred. The 52-scenario matrix, independent security review,
-protected Vercel preview, extension-level wallet rejection/disconnect coverage,
-and genuine validator disagreement remain release gates. The GitHub-verified
-prompt-injection assessment itself is complete with an actual `NONMATERIAL`
-result.
+This is zero-value Studionet evidence for the merged V4 noncustodial release.
+Escrow and custody are absent. Only zero-value Registry writes are available;
+no user funds were accepted. PR #1 merged into `main` as
+`c38a61620a1a0625454e7b710272bea441ae4ecb`. Post-merge CI run 98 passed, and
+Vercel production deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` is READY and
+promoted at `https://the-revigate.vercel.app`. The 52-scenario matrix,
+independent security review, extension-level wallet rejection/disconnect
+coverage, and historical observer terminal-finality gap remain disclosed
+limitations. The GitHub-verified prompt-injection assessment itself is complete
+with an actual `NONMATERIAL` result on the historical Wallet A fixture. The
+active V4 lifecycle above uses the archived fixture and has separate canonical
+readbacks; the two records must not be conflated.

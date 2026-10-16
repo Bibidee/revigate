@@ -1,4 +1,6 @@
 {
+  "status": "HISTORICAL_PRIOR_REGISTRY_V2_LIFECYCLE",
+  "authoritative_for_active_v4": false,
   "recorded_at": "2026-10-15",
   "network": "GenLayer Studionet",
   "chain_id": 61999,

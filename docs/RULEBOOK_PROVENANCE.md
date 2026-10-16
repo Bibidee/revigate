@@ -36,7 +36,7 @@ GitHub HEAD is mutable. Registry V2 does not poll branches or automatically dete
 ## Canonical fixtures
 See `fixtures/rulebook_v1.md`, `fixtures/rulebook_v1_typo.md`, `fixtures/rulebook_v2_material.md`, `fixtures/rulebook_v2_ambiguous.md` and `fixtures/publisher_manifest.example.json`. These are **synthetic local tests only**, not public signed GitHub publication records. Live signed commits must be created in a repository controlled by the tester and their URLs recorded as real evidence.
 
-## 2026-10-14 current signed publication
+## 2026-10-14 signed publication fixture (prior Registry V2)
 
 The live fixture is on branch `revigate-rulebook-wallet-a-web` in
 `Bibidee/revigate`. Its manifest nominates Wallet A
@@ -46,7 +46,9 @@ continues through `ee033cbef9450f58990b01eac77b5949453f2130`,
 `ecac64c4f95a527c9f587ab992d6e503d713bb11`, and the current ambiguous head
 `d35d438d0e45e58e3227f95135fa3a2abc523aed`. GitHub shows the green Verified
 badge for each commit. These records establish GitHub-side verification and a
-published wallet nomination; they do not establish legal identity.
+published wallet nomination; they do not establish legal identity. The hosted
+lifecycle for this fixture was run on the prior Registry V2 deployment and is
+not the active V4 deployment evidence.
 
 The previously documented `0x527d...` address and unsigned object
 `3986cbdb35e55e0cffc1457190605787680f1170` are archived historical attempts.

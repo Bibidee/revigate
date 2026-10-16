@@ -2,7 +2,14 @@
 
 Recorded 2026-10-15 from GitHub public commit pages and the hosted Registry.
 
-## Current signed public fixture
+## Signed public fixture (Wallet A; hosted on prior Registry V2)
+
+This is the current public signed fixture branch, but its hosted lifecycle was
+run on the prior Registry V2 deployment `0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3`.
+It is not the fixture used by the active V4 deployment at
+`0x2E2065063b63F305512Ee66F0FEb305557c9143b`; the active V4 lifecycle uses the
+archived `revigate-rulebook-fixture-v2` record in
+`evidence/noncustodial/2026-10-15-registry-v4-lifecycle.json`.
 
 Repository: https://github.com/Bibidee/revigate
 Branch: revigate-rulebook-wallet-a-web

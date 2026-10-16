@@ -2,11 +2,12 @@
   "manifest_type": "revigate_noncustodial_release",
   "recorded_at": "2026-10-16",
   "repository": "https://github.com/Bibidee/revigate",
-  "branch": "codex/revigate-remediation-2026-10-14",
+  "branch": "main",
   "pull_request": {
     "url": "https://github.com/Bibidee/revigate/pull/1",
-    "draft": true,
-    "merged": false
+    "draft": false,
+    "merged": true,
+    "merge_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb"
   },
   "network": {
     "name": "GenLayer Studionet",
@@ -14,7 +15,7 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "3f1c39595fd7556e595789914e4228835bb1fc2b",
+  "source_commit": "4d0f316e737d58180d9d9c98636ad8e2d4a841d0",
   "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
@@ -24,7 +25,7 @@
     "source_attestation": "EXACT_BYTE_MATCH",
     "config": {
       "protocol": "revigate-registry-v1",
-      "contract_version": 3,
+      "contract_version": 4,
       "custody": "NONE",
       "escrow": "NONE",
       "transfer_evidence": "NONE"
@@ -32,6 +33,11 @@
     "status": "NONCUSTODIAL_STUDIONET_TEST"
   },
   "registry_v4_lifecycle": {
+    "status": "ACTIVE_V4_LIFECYCLE_ARCHIVED_FIXTURE",
+    "registry": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+    "fixture_branch": "revigate-rulebook-fixture-v2",
+    "publisher_wallet": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "authoritative_for_active_v4": true,
     "program_id": 1,
     "registration_transaction": "0xcb804849e1b6887da5ce777d77d1a0ad5843f2d88f0dd3ae84f5f289f5b20b3d",
     "verification_transaction": "0x21b7018b1073223f6b3968a4ed59772356993e6caed3510a983ac40d800472b4",
@@ -64,6 +70,12 @@
     "value_credited": false
   },
   "wallet_a_program_3_lifecycle": {
+    "status": "HISTORICAL_PRIOR_REGISTRY_V2",
+    "registry": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
+    "contract_version": 2,
+    "fixture_branch": "revigate-rulebook-wallet-a-web",
+    "publisher_wallet": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
+    "authoritative_for_active_v4": false,
     "registration_transaction": "0xd26927aecb3c4f48dbbc9a95e2b6688aa5b2738277f71023b741d016c848f4fa",
     "verification_transaction": "0x3e2b087cc0e993377e93f4ab59412ce0c0c45893a215879e3852840efb2db49c",
     "verification_result": "VERIFIED",
@@ -104,20 +116,30 @@
   },
   "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
   "production_status": "PROMOTED_NONCUSTODIAL_ZERO_VALUE_ONLY",
-  "release_verdict": "NOT_RELEASED_PENDING_BROWSER_INDEPENDENT_REVIEW_AND_SECOND_APPROVAL",
+  "release_verdict": "SUBMISSION_READY_WITH_DISCLOSED_LIMITATIONS",
   "ci": {
     "workflow": "CI",
-    "run_id": 38845397011,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38845397011",
-    "head_sha": "4a9115fd2ef980a5ceb5077a15a1ad0da3e2fa6c",
+    "run_id": 38848046925,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38848046925",
+    "head_sha": "c38a61620a1a0625454e7b710272bea441ae4ecb",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
     "deployment_id": "dpl_CHuXE5cV6WN8AgZPVkANJk7j96LM",
     "url": "https://the-revigate-ildh3tdeh-bibidees-projects.vercel.app",
     "state": "READY",
-    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_REMAINING_WALLET_SCENARIOS_OPEN",
+    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_MOBILE_REFRESH_DISCONNECT_PASS_RABBY_REJECTION_NOT_REPRODUCED",
     "production_promoted": true
+  },
+  "vercel_production": {
+    "deployment_id": "dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w",
+    "url": "https://the-revigate.vercel.app",
+    "target": "production",
+    "state": "READY",
+    "ready_substate": "PROMOTED",
+    "source_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb",
+    "git_ref": "main",
+    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_MOBILE_REFRESH_DISCONNECT_PASS_RABBY_REJECTION_NOT_REPRODUCED"
   },
   "direct_transfer_probe": {
     "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",

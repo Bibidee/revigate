@@ -1,4 +1,6 @@
 {
+  "status": "SUPERSEDED_HISTORICAL_DEPLOYMENT",
+  "superseded_by": "evidence/browser/2026-10-16-production-wallet-checks.json",
   "project": "bibidees-projects/the-revigate",
   "target": "production",
   "deployment_id": "dpl_Ac37qSNmvRMpdRPJm5SEB1opt378",

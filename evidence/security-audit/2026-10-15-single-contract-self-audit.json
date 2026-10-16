@@ -1,4 +1,6 @@
 {
+  "status": "HISTORICAL_SELF_AUDIT_PRE_V4",
+  "active_for_release": false,
   "date": "2026-10-15",
   "scope": "contracts/revigate.py and its Direct Mode regression suite",
   "independence": "ADVERSARIAL_SELF_AUDIT_NOT_INDEPENDENT_REVIEW",

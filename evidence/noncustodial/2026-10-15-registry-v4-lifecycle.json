@@ -3,6 +3,8 @@
   "chain_id": 61999,
   "contract": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
   "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+  "fixture_status": "ARCHIVED_VERIFIED_FIXTURE_USED_FOR_ACTIVE_V4_LIFECYCLE",
+  "authoritative_for_active_v4": true,
   "value_sent_wei": 0,
   "fixture": {
     "repository": "Bibidee/revigate",
