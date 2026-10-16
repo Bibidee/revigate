@@ -35,7 +35,7 @@ Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc
 
 ## Remaining limitations
 
-1. Rabby rejection was not reproduced because no observable Reject control was available; network switching, account switching and pending/unknown finality remain untested.
+1. Rabby rejection passed on the public build for a zero-value `verify_program` request; the app displayed `User rejected the request`, created no hash and left Program 2 unchanged. Network switching, account switching and pending/unknown finality remain untested.
 2. Mobile layout, disconnect/reconnect and refresh recovery passed on the promoted build; this does not certify mobile wallet-extension behavior.
 3. No genuinely independent external security audit has been obtained; the existing review is an adversarial self-audit.
 4. A historical disposable observer transaction still lacks confirmed terminal finality.

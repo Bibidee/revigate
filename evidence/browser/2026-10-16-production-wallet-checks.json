@@ -18,15 +18,17 @@
       "result": "PASS"
     },
     "rabby_rejection": {
-      "result": "NOT_REPRODUCED",
-      "reason": "No observable Reject control was available in the Rabby prompt; the application received submitted hashes instead.",
+      "result": "PASS",
+      "method": "verify_program",
+      "reason": "Rabby rejected the zero-value signing request; the application displayed User rejected the request and no transaction hash was created.",
+      "wallet_action": "REJECTED",
+      "transaction_hash": null,
+      "state_changed": false,
       "register_program_hash": "0xc048048a7dd5928befe8277d147973d1ed9ce3e026a9ec61157427d1adf04714",
       "verify_program_hash": "0x307f21ce2658d8a556c84982b00944d554cbee1b62e13b09e2779882ad2b5043",
-      "finality": "FINALIZED",
-      "value_credited": false,
-      "program_id": 2,
-      "program_state": "VERIFIED",
-      "interpretation": "These are submitted zero-value test writes, not rejection evidence. No further live request was sent."
+      "rejected_request_program_id": 2,
+      "application_message": "User rejected the request. Details: User rejected the request. Version: viem@2.57.5",
+      "prior_submitted_writes": "The earlier register and verify hashes remain historical successful probes; they are not this rejection attempt."
     },
     "network_switching": "NOT_TESTED",
     "account_switching": "NOT_TESTED",
