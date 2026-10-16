@@ -23,7 +23,8 @@ The corrected source also handled a 1,000 wei unknown-offer payment as `REFUNDAB
 Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
 The corrected frontend was promoted separately to Vercel production as
-`dpl_D3raXV8ajYNZxk3TgfYWxvAForQ3`, aliased at
+`dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7` from frontend commit
+`dcc8db1ec991a6bdaf487dda8194d52acefcf608`, aliased at
 `https://the-revigate.vercel.app`. The public bundle contains the candidate
 address and returns HTTP 200. This is a frontend promotion only: the candidate
 reports `public_custody=false`, and no user funds are accepted.

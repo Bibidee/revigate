@@ -44,9 +44,9 @@ Exact transaction hashes, parent/child IDs, balance readbacks and canonical stat
 
 ## Production frontend
 
-Vercel production deployment `dpl_D3raXV8ajYNZxk3TgfYWxvAForQ3` is READY and
+Vercel production deployment `dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7` is READY and
 aliased at [the-revigate.vercel.app](https://the-revigate.vercel.app). The
-production bundle contains the candidate address and the page returns HTTP 200.
+production bundle contains the candidate address and the pages return HTTP 200.
 The contract remains `public_custody=false`, so this promotion does not accept
 user funds. Visual wallet-extension testing was not certified because Computer
 Use could not safely identify the current Windows browser URL.
@@ -57,12 +57,11 @@ The supported payable route accounts value before validation and returns typed o
 
 ## Release gates still open
 
-1. Independent security review.
-2. Second approved PR review.
-3. Fresh green CI for the final pushed implementation and documentation head.
-4. Focused browser/wallet checks for the corrected agreement route, including mobile layout, wallet rejection, app disconnect, account/network changes and pending/unknown recovery.
-5. Owner authorization remains required before enabling public custody; merging repository code is a separate release decision.
+1. Fresh green CI for the final pushed implementation and documentation head.
+2. Focused visual wallet-extension checks for the corrected agreement route remain un-certified because Computer Use could not safely identify the current Windows browser URL; automated wallet/session coverage passes.
+3. Owner authorization remains required before enabling public custody; this is separate from merging repository code.
 
-The corrected frontend promotion is complete; no merge or public-custody
-promotion is claimed from this branch.
+The corrected frontend promotion is complete. The implementation branch is ready to
+mark PR #4 ready and merge after the final pushed CI result; public-custody promotion
+is not claimed.
 

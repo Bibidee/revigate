@@ -4,6 +4,7 @@
   "repository": "https://github.com/Bibidee/revigate",
   "base_main": "febfafa057488f6d67648d3869b9f0b3c726fde0",
   "branch": "feat/revigate-funded-registry",
+  "frontend_commit": "dcc8db1ec991a6bdaf487dda8194d52acefcf608",
   "network": {
     "name": "GenLayer Studionet",
     "chain_id": 61999,
@@ -55,11 +56,11 @@
   },
   "release_gates": {
     "production_custody": "LOCKED",
-    "vercel_promotion": "PRODUCTION_READY_DPL_D3raXV8ajYNZxk3TgfYWxvAForQ3_ALIAS_THE_REVIGATE_VERCEL_APP",
+    "vercel_promotion": "READY_DPL_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7_ALIAS_THE_REVIGATE_VERCEL_APP",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "GREEN_FOR_PUSHED_IMPLEMENTATION_AND_DOCUMENTATION_HEAD",
-    "merge_to_main": "AUTHORIZED_PENDING_FINAL_CI_AND_PR_UPDATE"
+    "fresh_ci": "PENDING_PUSHED_HEAD_DCC8DB1",
+    "merge_to_main": "AUTHORIZED_PENDING_GREEN_CI"
   },
   "verdict": "NOT_RELEASED",
   "source_commit": "4357b6125d63f24927d03bcc97f09b4798aa5ec4"
