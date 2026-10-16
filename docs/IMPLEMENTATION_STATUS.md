@@ -67,5 +67,5 @@ were not completed in this automation pass.
 The previous V4/Vault deployments and older funded evidence remain historical;
 their addresses must not be substituted for the exact deployment above.
 
-GitHub Actions CI run 118 passed for head `85e04095003a568c0460e5bdba0503b121a8f9ec`; the final docs head is recorded below after its own CI run.
+GitHub Actions CI run 119 passed for head `3e07c22c2bf44b4993d472132bd77ba8bc8d70ab`.
 The current draft is [PR #5](https://github.com/Bibidee/revigate/pull/5).
