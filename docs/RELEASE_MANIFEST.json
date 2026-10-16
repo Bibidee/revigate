@@ -49,10 +49,10 @@
   },
   "release_gates": {
     "production_custody": "LOCKED",
-    "vercel_promotion": "BRANCH_PREVIEW_ONLY",
+    "vercel_promotion": "PREVIEW_ONLY_LATEST_GIT_BUILD_MISSING_BRANCH_ENV",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "GREEN_FOR_D1E519D_AND_PENDING_FOR_LATEST_FIX",
+    "fresh_ci": "GREEN_RUN_106_FOR_AF262CF",
     "merge_to_main": "NOT_REQUESTED"
   },
   "verdict": "NOT_RELEASED",
