@@ -49,8 +49,8 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     verifyRevigateDeployment()
       .then(({ registryConfig }) => setContractStatus(
         registryConfig.public_custody
-          ? "Revigate Registry identity verified; frontend financial controls available."
-          : "Revigate Registry identity verified; frontend financial controls remain locked."))
+          ? "Revigate Registry identity verified; Studionet testnet controls available."
+          : "Revigate Registry identity verified; financial controls are locked."))
       .catch(() => setContractStatus("The configured contract could not be verified."));
   }, []);
   async function connect() {
