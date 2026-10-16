@@ -68,4 +68,5 @@ The previous V4/Vault deployments and older funded evidence remain historical;
 their addresses must not be substituted for the exact deployment above.
 
 GitHub Actions CI run 120 passed for the final release tree at head `2aca3a1d2ee4202404331d0aa4b9ae133b580057`.
-The current draft is [PR #5](https://github.com/Bibidee/revigate/pull/5).
+PR #5 was merged into `main` at merge commit
+`2b5ceca67bc84d969084cc48e0cd9858aeddc4ab`.

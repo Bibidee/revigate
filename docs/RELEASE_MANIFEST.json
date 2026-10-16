@@ -53,7 +53,7 @@
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
     "browser_wallet_extension_matrix": "OPEN",
-    "merge_to_main": "BLOCKED_UNTIL_INDEPENDENT_REVIEW_AND_APPROVAL",
+    "merge_to_main": "MERGED_PR_5_2B5CECA67BC84D969084CC48E0CD9858AEDDC4AB",
     "pull_request": "https://github.com/Bibidee/revigate/pull/5"
   },
   "verdict": "PUBLIC_ENABLED_STUDIONET_TEST_DEMO_NOT_PRODUCTION_RELEASE"
