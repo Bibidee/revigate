@@ -49,7 +49,7 @@
   },
   "release_gates": {
     "production_custody": "LOCKED",
-    "vercel_promotion": "PREVIEW_ONLY_LATEST_GIT_BUILD_MISSING_BRANCH_ENV",
+    "vercel_promotion": "PRODUCTION_READY_DPL_D3raXV8ajYNZxk3TgfYWxvAForQ3_ALIAS_THE_REVIGATE_VERCEL_APP",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
     "fresh_ci": "GREEN_FOR_PUSHED_IMPLEMENTATION_AND_DOCUMENTATION_HEAD",

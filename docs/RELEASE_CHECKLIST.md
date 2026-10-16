@@ -15,6 +15,7 @@
 - [x] Fresh source-attested custody-enabled disposable deployment completed.
 - [x] Signed baseline verification, funded acceptance, MATERIAL exit, unaccepted refund, maturity payout and duplicate rejection completed.
 - [x] Parent child IDs were read from the correct withdrawal parent; recipient balance deltas were independently observed.
+- [x] Corrected frontend promoted to `https://the-revigate.vercel.app` with the candidate address; production writes remain locked.
 
 ## Required before public custody or release
 
@@ -24,6 +25,6 @@
 - [ ] Independent security review.
 - [ ] Second approved PR review.
 - [x] Fresh green CI for the current head `2c648e44e44db77632f0d604fd2132ce71c1497f` (run 108).
-- [ ] Explicit owner approval before production promotion or merge.
+- [ ] Explicit owner approval before public custody or merge.
 
 The public application must remain locked until the custody-critical gates pass. Exact hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.

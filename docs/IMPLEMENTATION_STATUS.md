@@ -4,7 +4,7 @@ Recorded 2026-10-16 on branch `feat/revigate-funded-registry`, based on merged `
 
 ## Active architecture
 
-`contracts/revigate.py` is the single contract. It retains authenticated GitHub source verification and GenLayer materiality consensus while restoring the historical offer mechanics as a gated ledger. `custody_enabled` and `public_custody` are constructor flags. Production remains locked; the hosted custody instance is disposable evidence only.
+`contracts/revigate.py` is the single contract. It retains authenticated GitHub source verification and GenLayer materiality consensus while restoring the historical offer mechanics as a gated ledger. `custody_enabled` and `public_custody` are constructor flags. The public frontend now points at the source-attested candidate, while production writes and public custody remain locked.
 
 ## Local verification
 
@@ -40,6 +40,15 @@ The withdrawal parent hashes were submitted and canonical transfer records exist
 
 Exact transaction hashes, parent/child IDs, balance readbacks and canonical state are in [funded lifecycle evidence](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
+## Production frontend
+
+Vercel production deployment `dpl_D3raXV8ajYNZxk3TgfYWxvAForQ3` is READY and
+aliased at [the-revigate.vercel.app](https://the-revigate.vercel.app). The
+production bundle contains the candidate address and the page returns HTTP 200.
+The contract remains `public_custody=false`, so this promotion does not accept
+user funds. Visual wallet-extension testing was not certified because Computer
+Use could not safely identify the current Windows browser URL.
+
 ## Custody decision
 
 The supported payable route accounts value before validation and returns typed outcomes for invalid offer, sender, deadline, amount and duplicate cases. This does not solve unsolicited no-calldata value, nonpayable value retention or a child transfer with no execution result. The historical GenLayer probes remain protocol-level evidence. Public custody is not enabled, and no user funds are accepted.
@@ -50,7 +59,8 @@ The supported payable route accounts value before validation and returns typed o
 2. Second approved PR review.
 3. Fresh green CI for the pushed implementation and documentation head; the exact run and commit are recorded in PR #4 and the final release report.
 4. Complete hosted/browser matrix, including mobile wallet-extension, network/account switching, pending/unknown finality and refresh recovery.
-5. Owner authorization before any production promotion or merge.
+5. Owner authorization before public custody or merge.
 
-No merge or production promotion is claimed from this branch.
+The corrected frontend promotion is complete; no merge or public-custody
+promotion is claimed from this branch.
 

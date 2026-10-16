@@ -11,7 +11,7 @@ Revigate is one GenLayer Studionet application and one source-attested Intellige
 - Financial mode: constructor-gated `SINGLE_CONTRACT_ESCROW`
 - Production mode: remains locked until the funded and exceptional-transfer gates pass
 
-A custody-enabled disposable Studionet deployment has now completed source verification, funded acceptance, MATERIAL exit allocation, unaccepted refund, and maturity setup. Its exact address, receipts and canonical readbacks are in [the funded lifecycle evidence](evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json). It is test-only and is not bound to production.
+A custody-enabled disposable Studionet deployment has now completed source verification, funded acceptance, MATERIAL exit allocation, unaccepted refund, and a maturity payout. Its exact address, receipts and canonical readbacks are in [the funded lifecycle evidence](evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json). The public frontend points at this candidate, but the contract remains public-custody locked and is not accepting user funds.
 
 The supported payable route accounts the value before ordinary offer validation and returns typed refundable-credit outcomes for invalid offer, sender, deadline, amount and duplicate cases. Withdrawals consume credit once and create a pending external-settlement record. Recipient evidence is recorded as an assertion only; the contract does not infer an EOA balance delta or authorize retries. Unsolicited no-calldata transfers, value sent to nonpayable methods, and failed external delivery remain protocol-level hazards and keep public custody locked.
 
