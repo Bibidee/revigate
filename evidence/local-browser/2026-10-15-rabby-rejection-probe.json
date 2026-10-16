@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-10-15",
+  "browser": "Brave Browser",
+  "wallet_extension": "Rabby",
+  "deployment": "https://the-revigate-git-codex-revigate-remedi-94105f-bibidees-projects.vercel.app",
+  "chain_id": 61999,
+  "wallet": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+  "contract": "0xD86A6C0a3949D2452bB8964e076983254375b5fE",
+  "method": "acknowledge_rules",
+  "user_reported_wallet_action": "REJECTED",
+  "observed_result": {
+    "transaction_hash": "0x20d4871e7fe584d12dd044c103c9f2e70994461bf484d1a7bf18fa99627a639a",
+    "execution_hash": "0x5a28e18a8bcf3cd86544c429d780d781886ec4aa44c5b2ee56e16e3aa40de866",
+    "status": "FINALIZED",
+    "result_name": "MAJORITY_AGREE",
+    "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+    "value_credited": false,
+    "frontend_execution_result": "UNAVAILABLE",
+    "canonical_wallet_state_after": "Wallet B acknowledgment at epoch 3 was present"
+  },
+  "classification": "REJECTION_NOT_PROVEN_TRANSACTION_FINALIZED",
+  "safety": "ZERO_VALUE_NO_CUSTODY_FUNDS",
+  "limitations": [
+    "The Rabby notification page was not observable through the browser automation policy.",
+    "No second submission or replay was attempted.",
+    "This result does not count as a wallet rejection test pass."
+  ]
+}

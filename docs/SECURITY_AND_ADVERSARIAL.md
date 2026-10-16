@@ -1,42 +1,39 @@
-# Security Threat Model and Adversarial Hardening
+# Registry V2 security and adversarial review
 
-## Assets
-Locked participant GEN, refund credits, wallet authority, accurate rulebook epoch/digest, authenticated publication provenance, honest consensus, transfer receipts and canonical public history.
+## Scope and review independence
 
-## Attack scenarios with expected protection
-1. Random wallet pretends to be A or B: derive caller from `msg.sender`, reject rights escalation, view-only public reads allowed.
-2. B recipient address zero/same as A or malformed: reject before offer creation.
-3. A requests withdrawal of B's matured credit: reject; beneficiary allocation immutable.
-4. A changes future rules to reduce already locked payout: old entitlement preserved exactly; GenLayer classification cannot change amount.
-5. A publishes program rules after B signed, but withholds onchain submission: V1 **cannot discover off-chain source change**; explicitly disclose latest reviewed commit and do not claim automatic monitoring. Existing escrow remains protected.
-6. A inserts arbitrary wallet in GitHub manifest: only wallet nominated in baseline verified commit can successfully register via its own signed transaction; provider ownership/authenticity remains an explicit external trust assumption.
-7. Unrelated repo, fork or unrelated full SHA: must not pass canonical repo, verified signature and ancestry checks.
-8. Fake GitHub JSON or signature fields in Markdown: content is never used as provider metadata.
-9. GitHub API HTTP 429/500/404, truncated response, redirect, repo transfer or mismatch: INCONCLUSIVE / do not advance epoch.
-10. Markdown prompt injection asks validator to output NONMATERIAL: data isolation and negative tests; validator independently reproduces and compares materiality.
-11. Leader says NONMATERIAL but validator independently finds MATERIAL: reject consensus equivalence, preserve pending review if no finalization.
-12. A floods request/review to make rules unavailable: publisher-only request, one pending, per-program cooldown, deterministic expiry; existing accepted economic actions never blocked.
-13. B submits acceptance using stale epoch or rewritten terms digest: reject onchain and frontend, display clear path to inspect current reviewed terms.
-14. Extra, wrong sender or repeat payable funding: sender-refundable credit or safe rejection without unaccounted GEN (must prove live).
-15. Attempt to cancel after acceptance: impossible via contract even if UI shows stale state.
-16. Attempt to claim twice (maturity after early exit, double withdrawal, overlapping closure): enforce one allocation and one transfer request per credit unit.
-17. Partial rounding exploit: `A+B==original` in wei; floor B, remainder A.
-18. B sends early-exit claim outside original first-material change window: reject, leave maturity entitlement.
-19. A opens closure to trap B matured funds: maturity takes precedence, timed-out closure nonblocking.
-20. User changes account/network between async reads: discard stale request results; wrong chain blocks writes and resets relevant caches.
-21. Transaction accepted then errors: UI must show execution failure and not claim success.
-22. Failed message delivery after parent finalized: track separate delivery, prevent blind duplicate sends.
-23. Multiple program/offer indexes exceed thousands: bounded pagination and state correctness after concurrent append.
-24. Off-chain screenshot claims 'paid' but recipient didn't receive: release checker compares actual verified finality/balance, not prose.
-25. User supplies address to browser local storage to steal authority: local storage never authoritative; identity derived from wallet provider and onchain.
-26. Compromised Vercel app: no backend signer/admin keys; show public contract and chain address; does not prevent user phishing, therefore audit package/dependency and transaction details.
-27. Negative exit_bps, huge uint, overflow, timestamp wrap or invalid date ordering: deterministic precise bounds, test fuzzer.
-28. Unicode confusables in rulebook headers conceal changed clause: reject invalid canonical form or treat semantic ambiguity as INCONCLUSIVE.
-29. Same candidate SHA submitted again after conclusive review: replay rejected.
-30. Forged recipient confirmation: cannot prove payment delivery, and must not release liability twice or erase unknown transfer.
+This is an adversarial self-audit performed during implementation. It is not a genuinely independent security review. The checked CI workflow does not make independent review a formal gate; an external review remains recommended assurance.
 
-## Required test styles
-Unit/property tests over pure state helpers; GenVM Direct Mode tests using production source; simulator cases for nondeterminism; negative validator judgments including lying leader and evidence conflicts; browser UI/transaction tests; real Studionet two-wallet economic tests; mutation test that kills variants such as removing caller guard, skipping exact digest check and changing payout bps.
+## Protected properties
 
-## Security release principle
-Security is about demonstrable invariants, not achieving arbitrary 5/5 scores or a specific number of tests. Any unresolved HIGH/CRITICAL fund loss, double allocation, unauthorized withdrawal, publisher rewrite or missed recovery is a release blocker. Report remaining medium/low limitations with precise scope and reproducible evidence.
+- Only the program publisher can verify its proposal or request a revision.
+- A verified source must be an exact, signed, branch member commit in the declared repository.
+- The fixed Git tree blob bytes must match the fetched rulebook and publisher manifest.
+- The manifest must nominate the actual publisher wallet on chain 61999.
+- A candidate must descend from the active commit, and the stored base digest must still match.
+- Invalid, missing, conflicting, malformed, or unavailable evidence resolves to INCONCLUSIVE.
+- Semantic output must use the exact changed clause identifiers and a bounded rationale.
+- Repeated successful decisions cannot advance state again; inconclusive and expired attempts are capped.
+- Writes remain disabled until an on-chain Registry V2 identity readback succeeds.
+
+## Adversarial cases exercised locally
+
+Unsigned or incomplete signature metadata, wrong repository identity, wrong branch ancestry, sibling commits, truncated and oversized provider data, rate limits and access denials, wrong blob bytes, duplicate clauses, malformed documents, unsafe paths, stale acknowledgments, unauthorized callers, same epoch source changes, deadline boundaries, replay, retry exhaustion, pagination pressure, wallet account or chain races, rejected signatures, missing finality evidence, browser refresh recovery, duplicate pending writes, and nonzero transaction value persistence are covered by automated fixtures. The latest local source correction adds transaction-specific pre-state reconciliation, distinct RPC-unavailable and canonical-unverified states, unique-record/state-transition checks, source program binding, mandatory decided candidate digests, and explicit unverified INCONCLUSIVE candidate handling.
+
+The rulebook is quoted to the model as untrusted evidence. Model output is type checked and validators compare outcome, commit identities, digests, and changed IDs. The live GitHub-verified prompt-injection fixture now has a finalized hosted result; genuine validator disagreement remains unobserved.
+
+## Residual risks
+
+- GitHub availability, API behavior, signature policy, and validator web access can cause INCONCLUSIVE results. The deployed source later produced actual signed NONMATERIAL and MATERIAL outcomes, including the ambiguous MATERIAL review, so the earlier HTTP 403 was historical and its root cause remains unknown. A later source-exact disposable probe reached the same public commit endpoint and GitHub rate-limit endpoint with HTTP 200 and 42 of 60 core requests remaining. The new provider diagnostics and backoff are covered locally; no contract redeployment is needed for this frontend-only pass.
+- A GitHub verified signature proves GitHub's verification result; it does not prove legal authority over an organization.
+- Semantic materiality remains a judgment result and may disagree or remain undetermined.
+- Repository changes are invisible until the publisher submits a signed candidate.
+- Nonpayable entry points and zero value application writes do not prevent unsolicited native value at the network level.
+- The current V4 deployment `0x2E2065063b63F305512Ee66F0FEb305557c9143b` is byte-for-byte attested. Its signed zero-value lifecycle completed source verification, NONMATERIAL, MATERIAL and ambiguous assessments, acknowledgment and reaffirmation. The actual outcomes were `NONMATERIAL`, `MATERIAL` and `MATERIAL`, with canonical state at epoch 3. The corrected frontend was promoted publicly from commit `3f1c395`; the production identity evidence commit `4a9115f` passed CI run `38845397011` (run 96). External review remains unverified.
+- The corrected local build was exercised with Rabby from a non-Studionet state; the app requested chain 61999, read Program 3 and Wallet B history canonically, and submitted one zero-value probe. Studionet reported the probe as `ACCEPTED` with five `AGREE` votes and `value_credited=false` at capture. The UI kept it pending and did not retry; because a terminal receipt was not yet exposed, this probe does not count as finalized lifecycle evidence. On 2026-10-16, the public production page was also inspected after contract loading and visibly showed `Noncustodial Registry identity verified`.
+- A later read-only `eth_getTransactionByHash` call for that probe returned `-32001 Transaction not found`, while the known finalized Wallet B acknowledgment remained readable. The result is classified as an availability gap and does not establish success, failure, cancellation, rollback, or finality. No replay was attempted; the exact response is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`.
+- A genuine GitHub-verified prompt-injection fixture is published at commit `e097fb48f8f4576c6c50e9d83061c8c1ad965919` on `revigate-rulebook-wallet-a-web`. Wallet A submitted request `0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7` and assessment `0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427`. Review 6 finalized `NONMATERIAL`, with both source statuses `VERIFIED`, changed ID `__PREAMBLE__`, and rationale that no R-01–R-04 rule changed. The receipt was `MAJORITY_AGREE` with two validators idle after quorum; this is not a disagreement. Exact evidence is preserved in `evidence/github-access-diagnostic/2026-10-15-prompt-injection-signature.json`.
+
+## Current verdict
+
+NOT RELEASED. Source authentication and the current signed Registry lifecycle pass, including the actual NONMATERIAL, MATERIAL and ambiguous outcomes. The corrected frontend is publicly promoted, but production writes stay locked. The reproduced Studionet payable rollback, no-calldata and wrong-method value failures are historical reasons native custody remains removed. Fresh Rabby rejection, mobile and runtime browser checks, independent security review and the required second PR approval remain open.

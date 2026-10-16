@@ -1,35 +1,51 @@
-# Revigate V1 Implementation Status
+# Implementation status
 
-**Status: NOT COMPLETE — contract and live custody are not deployed or proven.**
+Recorded 2026-10-16 after removing native custody from the active release.
 
-This report records work completed in the local workspace and evidence that exists as of 2026-10-13. A passing local simulation does not prove Studionet behavior.
+## Active architecture
 
-## Completed locally
+`contracts/revigate.py` is the noncustodial Revigate Registry. It authenticates GitHub rulebooks, records wallet acknowledgments and runs revision materiality assessment. It has no payable entry point, offer state, native-value ledger, wallet credit or withdrawal method. `contracts/archive/` retains the former escrow sources only as historical evidence.
 
-- Renamed the product, package, Python project, and contract identity to **Revigate**.
-- Added a reproducible JavaScript dependency lock (`package-lock.json`) and Python lock (`uv.lock`). A clean `npm ci` has completed.
-- Added a pinned local GenLayer CLI wrapper. The repository-local CLI reports version `0.39.1`; its configured target is Studionet chain `61999` at `https://studio.genlayer.com/api`.
-- Implemented the candidate single contract in `contracts/revigate.py`, the SDK-backed browser integration, and UI actions for publisher and participant workflows. The UI intentionally disables contract actions until a verified address is configured; it does not expose credit withdrawal.
-- Added CI workflow configuration in `.github/workflows/ci.yml`.
-- Local `npm run preflight` passed on 2026-10-13: network guard, TypeScript, ESLint, 5 Node tests, 8 Python accounting tests, 18 GenLayer Direct Mode tests, and a static Next.js production build. The Direct Mode runtime is pinned to GenVM `v0.2.16`, matching the compatible runner bundle.
-- The source is committed and pushed to `Bibidee/revigate` on `main`. GitHub Actions run [#3](https://github.com/Bibidee/revigate/actions/runs/38436496897) passed, including clean `npm ci`, Python sync, preflight, and production-only dependency audit.
-- The Vercel project `the-revigate` is linked to GitHub. Production deployment is Ready at [the-revigate.vercel.app](https://the-revigate.vercel.app); an unauthenticated HTTP check returned 200 and confirmed the page says the contract is not deployed.
-- The production dependency audit passed with zero production dependency vulnerabilities. The development dependency audit still reports advisories.
+`get_config()` reports protocol `revigate-registry-v1`, chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`. The frontend rejects any other identity and every active write sends zero native GEN.
 
-## Not completed / release blockers
+## Local verification
 
-- **No contract compilation/deployment through the GenLayer CLI, Studionet contract address, wallet signature, transaction, or finalized receipt exists.** Direct Mode executes against its local test environment; it is not a deployed-chain test.
-- An unlocked local account was observed for the configured CLI, but no transaction was signed or sent. Its presence does not establish adequate deployment funds or any live proof.
-- Payable error behavior and recovery, outgoing GEN delivery, recipient balance receipt, and reliable recovery from unknown/failed delivery have not been proved on Studionet. Do not use the candidate contract to custody funds until these pass.
-- No two-wallet live lifecycle has been run. The SDK integration has not been exercised with a browser wallet against an actual deployed contract.
-- Only 18 Direct Mode test cases exist. The full 52-scenario matrix in `TEST_MATRIX.md`, including the adversarial revision-provenance and consensus cases, has not been completed. T48 has partial pagination coverage, not the full boundary suite.
-- No independent production security audit has been completed.
-- The full development dependency audit still reports advisories in the ESLint/Next development dependency tree, including braces with no patched release available at audit time. The production-only audit is clear. Do not force a downgrade to an older Next configuration to silence this finding.
-- GitHub branch protection is not configured. The local GitHub CLI credential is invalid, and the connected GitHub API exposes no branch-protection write operation in this session.
-- The Vercel deployment is a static blueprint only. No contract address is configured, and no wallet actions are available on the live site.
+- JavaScript: 23 passing.
+- Direct Mode: **43 passing** after the custody redesign.
+- TypeScript: **passing**.
+- ESLint: **passing**.
+- Production build: **passing**.
+- The new Direct Mode checks assert the noncustodial config, absence of payable and escrow methods, authenticated rulebook writes and acknowledgment state.
 
-## Release decision
+These checks do not prove hosted consensus. They do prove that the active source no longer exposes the unsafe custody surface.
 
-Keep `NEXT_PUBLIC_REVIGATE_CONTRACT` empty and do not announce Revigate as a functioning escrow product until the custody gates, independent audit, complete test matrix, deployed-source verification, two-wallet proof, CI, and frontend verification have actual evidence. A static site may describe the protocol blueprint, but must clearly state that the contract is not deployed and no live programs exist.
+## Historical custody evidence
 
-See [the test matrix](TEST_MATRIX.md), [the live proof plan](LIVE_PROOF_PLAN.md), [the release checklist](RELEASE_CHECKLIST.md), and [the risk register](RISK_REGISTER.md) for required evidence.
+The former Studionet escrow deployment `0xD86A6C0a3949D2452bB8964e076983254375b5fE` and its probes remain historical only. Studionet retained attached value when payable execution failed and also retained value on unsupported incoming routes. Its outgoing child transfer could not be objectively classified from the available RPC. Do not send funds to that address or any Registry address.
+
+## Deployment state
+
+The exact noncustodial source was deployed with zero value to Studionet at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Deployment transaction `0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6` finalized with majority agreement, successful execution and five `AGREE` votes. Deployed source SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064` matches `contracts/revigate.py` byte-for-byte. Canonical `get_config()` returned chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`.
+
+The local frontend is bound to this test Registry. Only zero-value Registry actions are available; no user funds are accepted, and the historical escrow deployment is not rebound to the new source.
+
+Wallet A / publisher: `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`.
+Wallet B / participant: `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`.
+Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
+
+## Remaining gates
+
+1. Complete browser wallet rejection, mobile, pending/unknown and refresh checks against the promoted build. Computer Use could not safely inspect the current Brave URL, so this remains unverified.
+2. Obtain a genuinely independent security review; the existing audit is self-audit.
+3. Obtain a second approved PR review.
+4. Obtain explicit approval before merging into `main`.
+
+The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review.
+
+The corrected frontend was promoted to `https://the-revigate.vercel.app` from commit `3f1c39595fd7556e595789914e4228835bb1fc2b`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. On 2026-10-16, the public production page was inspected after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent.
+
+Funded escrow scenarios are removed from the active product. They are not pending implementation work because the runtime evidence makes native custody unsafe.
+
+## Release verdict
+
+**NOT RELEASED.** The custody blocker is addressed by removing native custody, and the replacement source is deployed, exactly attested and promoted. Independent review, second approval and the remaining wallet/browser scenarios remain open. No user funds are accepted.

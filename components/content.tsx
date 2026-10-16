@@ -7,4 +7,4 @@ export function PageIntro({ eyebrow, title, intro, action }: { eyebrow: string; 
   return <div className="page-intro"><div><Eyebrow>{eyebrow}</Eyebrow><h1>{title}</h1><p>{intro}</p></div>{action && <Link className="button-primary" href={action.href}>{action.label}<span aria-hidden="true"> ↗</span></Link>}</div>;
 }
 export function Notice({ children }: { children: ReactNode }) { return <div className="notice"><span className="notice-dot" />{children}</div>; }
-export function ContractUnavailable() { return process.env.NEXT_PUBLIC_REVIGATE_CONTRACT ? null : <div className="notice notice-amber"><span className="notice-dot" />No deployed contract is bound to this frontend yet. Canonical program and agreement reads are unavailable until a verified Studionet address is configured.</div>; }
+export function ContractUnavailable() { return (process.env.NEXT_PUBLIC_REVIGATE_CONTRACT || process.env.NEXT_PUBLIC_REVIGATE_REGISTRY) ? null : <div className="notice notice-amber"><span className="notice-dot" />Contract actions are disabled until a verified Studionet single-contract address is configured.</div>; }

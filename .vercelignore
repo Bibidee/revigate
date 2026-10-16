@@ -1,0 +1,8 @@
+out/
+.next/
+node_modules/
+.venv/
+.uv-cache/
+artifacts/
+.pytest_cache/
+.vercel/

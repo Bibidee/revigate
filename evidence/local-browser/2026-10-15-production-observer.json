@@ -1,0 +1,28 @@
+{
+  "captured_at": "2026-10-15",
+  "environment": {
+    "browser": "Brave Browser",
+    "wallet_extension": "Rabby",
+    "url": "https://the-revigate.vercel.app/my-rules/",
+    "deployment_id": "dpl_GCgi5KsDCHsx7tikQ5Fw22LZf4rP",
+    "network": "GenLayer Studionet",
+    "chain_id": 61999
+  },
+  "transaction": {
+    "method": "acknowledge_rules",
+    "hash": "0xefb3e3cec4fa655acbc88072574ee6effe5d933ccc7b4f3a20f4aec1631c1209",
+    "account": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+    "value": "0",
+    "observer_state": "FINALIZED_EXECUTION_UNKNOWN",
+    "execution_result_exposed": false,
+    "replay": false
+  },
+  "canonical_readback": {
+    "verified": true,
+    "epoch": 3,
+    "sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
+    "digest": "2cc96aef276627479deb9a9ba9c66b0015a9faaafa28bc9b7805503dd444fb2b",
+    "pending_card_removed": true
+  },
+  "interpretation": "PASS_CANONICAL_READBACK_WITH_EXECUTION_UNKNOWN; no recipient credit or execution success was inferred from finality."
+}

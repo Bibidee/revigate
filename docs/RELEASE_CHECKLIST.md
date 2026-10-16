@@ -1,49 +1,97 @@
-# Revigate V1 Release Checklist — Default = UNVERIFIED
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
 
-## Implemented source and architecture
-- [ ] Actual executable Next.js App Router + TypeScript frontend, not placeholder demo.
-- [ ] Production GenLayer Python Intelligent Contract and Direct Mode tests.
-- [ ] Repository-local `genlayer@0.39.1`, lockfile committed, `npm run cli -- --version` checked.
-- [ ] Actual SDK version selected, pinned and verified on stable Studionet only.
-- [ ] Zero authoritative backend routes/actions/storage/signers/central AI/privileged operator.
-- [ ] Read model supports bounded pagination and a cold browser refresh.
+# Revigate V1 release checklist
 
-## Economic and semantic security
-- [ ] Program and publisher authority/manifest validation live-proven.
-- [ ] Immutable rulebook references, GitHub signed commit and ancestry proof live-proven.
-- [ ] Material/nonmaterial/inconclusive judgment independently reproduced by validator.
-- [ ] Original accepted offer entitlement cannot be rewritten by material change.
-- [ ] Payable failure and value conservation fully audited, with real rejected-funding test.
-- [ ] Double withdrawal, replay, unauthorized wallet, fractional split, closure/maturity race tests pass.
-- [ ] Matured payout and refund work without available GitHub/AI.
-- [ ] Outgoing external delivery successfully demonstrated and limitations explicitly recorded.
-- [ ] Revision-request failure and deterministic expiry proven, with unchanged escrow rights.
-- [ ] No high/critical unresolved economic defect.
+**Current verdict: NOT COMPLETE.** Studionet deployment evidence is preserved.
+The corrected Vault is deployed on a separate custody-disabled test address,
+but the main reciprocal pair still uses the earlier source. Custody failure
+recovery, a signed two-wallet lifecycle, complete browser acceptance,
+independent audit and branch protection remain open.
 
-## Code quality and tests
-- [ ] `npm ci` pass.
-- [ ] `npm run network:check` pass.
-- [ ] `npm run typecheck` pass.
-- [ ] `npm run lint` pass.
-- [ ] `npm run test` pass, real count reported.
-- [ ] `npm run build` pass.
-- [ ] GenVM compile/lint and Direct Mode pass with production source.
-- [ ] Simulator, mutation and browser/mobile suite pass.
-- [ ] `npm audit --omit=dev --audit-level=high` pass or failures disclosed and remediated.
-- [ ] GitHub required CI green on final protected default branch.
+## Source and local verification
 
-## Deployment and live acceptance
-- [ ] Contract deployment tx FINALIZED, successful execution receipt.
-- [ ] Final deployed source SHA256 matches final tracked production source (or inability disclosed).
-- [ ] Final source + proper branch + exact commit recorded.
-- [ ] Correct public Vercel contract binding, chain 61999 only.
-- [ ] Two-wallet funded/acknowledged/revision/exit/matured/refund cases live-proven.
-- [ ] Exact transfer delivery and unknown-delivery boundaries disclosed.
-- [ ] Actual production browser smoke tests on desktop/mobile passed.
-- [ ] Clean git tree, no secrets, production README/evidence synchronized.
-- [ ] GitHub repo, Vercel URL, all real hashes and proof matrix included.
+- [x] Revigate Registry/Vault implementation and `revigate` branding.
+- [x] Lockfiles and local dependencies present; clean install previously passed.
+- [x] Repository-local GenLayer CLI `0.39.1`; production network guard restricts
+  writes to Studionet chain `61999`.
+- [x] Current local `npm run preflight` with host permissions: network guard, TypeScript, lint, 32
+  JavaScript, 8 Python, 93 Direct Mode tests, and production build of all 10
+  routes passed. The sandboxed prerender worker fails `EPERM` creating `.next`
+  directories.
+- [x] GitHub Actions run 11 passed for candidate implementation commit
+  `8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14`, including clean dependency
+  installation, full preflight, and production dependency audit.
+- [x] GitHub's Vercel check is green for the candidate implementation commit;
+  the Vercel details endpoint returned 403, so its exact preview URL/state was
+  not independently inspected. Production remains locked and unbound.
+- [x] Full `npm audit`: zero vulnerabilities with UUID `11.1.1` override;
+  GenLayer CLI `0.39.1` and Dockerode `4.0.12` retained.
+- [ ] Complete T01–T52 evidence matrix. Current counts: 27 PASS, 20 PARTIAL,
+  2 FAIL, 2 BLOCKED, 1 NOT EXECUTED.
+- [ ] Fresh independent hostile production audit.
 
-## Status labels
-`COMPLETE` ONLY when critical requirements including real financial delivery, final deployment, working frontend and live end-to-end proof are genuinely met.
-`COMPLETE WITH MANUAL ACTION` ONLY when functionality and safety are verified but exact user-required noncritical actions (e.g. GitHub push/production promotion) remain.
-`NOT COMPLETE` for unresolved fund safety, unverifiable key assumptions, missing production deployment or incomplete live proof. Do not use superficial `SUBMISSION READY` to paper over these gaps.
+## Studionet candidates and tests
+
+- [x] Latest deployed source-exact pair (before the local accounting patch)
+  deployed and finalized on Studionet 61999:
+  Registry `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE`, Vault
+  `0xf390D8D77f21710679a72Fc11b84A5e85a318849`.
+- [x] Exact deployed source hashes, reciprocal config, custody-disabled state,
+  zero ledger, and address-encoded `get_wallet_credit` read verified.
+- [x] Fresh disposable emitter Registry paired with the previously
+  source-exact Vault:
+  authenticated child, duplicate no-op, stale nonce, spoof rejection, and
+  unrelated-wallet rebind rejection finalized with expected state.
+- [x] Isolated one-wei unknown-offer payable path returned to a balanced caller
+  credit; one withdrawal child finalized and recipient EOA balance increased
+  by one wei. The reported one-wei shortfall was a false positive, not missing
+  GEN, because the old calculation counted emitted value as still Vault-backed.
+- [x] Deploy the corrected Vault source to a separate custody-disabled test
+  address and attest exact source SHA256, finalized transaction, config, and
+  zero initial ledger readback. The contract is not paired or app-bound.
+- [ ] Exercise the corrected backing formula against nonzero live liabilities.
+  The pinned CLI `write` command hardcodes `value: 0n`, so no payable test was
+  submitted. Read-only RPC is reachable from the approved host path.
+- [ ] Resolve failed payable execution and no-calldata value retention; a
+  nonpayable-value route remains unsafe as well.
+- [ ] Recover failed outgoing transfers and reconcile delivery from objective
+  evidence without resending an unknown transfer.
+- [ ] Run signed-source live program verification and full Wallet A/B/C
+  lifecycle with funding, acceptance, revision, refund, material exit, maturity
+  payout, and recipient balances.
+- [ ] Prove the actual source Registry emits authenticated notifications from a
+  verified signed program; the current hosted emitter is a test harness.
+- [ ] No critical custody risk remains.
+
+## Frontend and release controls
+
+- [x] Production `https://the-revigate.vercel.app/publish/` browser check shows
+  no pair configured and all contract actions locked.
+- [x] Current commit preview `dpl_9PkMxvVokGXKEJDeSB6YCDqoBwBo` is READY.
+- [PARTIAL] Offline fake-wallet coverage now exercises account/network races,
+  rejection, finality classes, pre-hash rejection, persisted hash recovery,
+  and address-scoped storage. Actual browser-wallet extension interaction,
+  visual route checks, and refresh in a real browser remain outstanding.
+- [ ] Production contract binding to an approved final pair; keep addresses
+  unset and all writes locked.
+- [x] Remediation commit `4a22602982b902713afde101397362698e4389d5` pushed to
+  the existing branch. PR #1 remains open as a draft. Exact-head GitHub Actions
+  run 13 passed; the Vercel check is green.
+- [ ] Signed source commit. GitHub API reports baseline object
+  `3986cbdb35e55e0cffc1457190605787680f1170` as `verified=false` with reason
+  `unsigned`; it was not added to the branch. No signed rulebook manifest/source
+  has been published or verified, and no local signing key/configuration exists.
+- [ ] Main branch protection and required status checks. Branch-protection API
+  returned 403; repository rulesets list was empty.
+
+Keep the production address unset and contract mutations locked until all
+critical custody, message, source and lifecycle gates pass. A deploy, build,
+pairing transaction, or isolated one-wei result does not clear those gates.
+
+Status definitions:
+- COMPLETE requires all critical custody, source, lifecycle, frontend and
+  release requirements to be proven.
+- COMPLETE WITH MANUAL ACTION is only for a safe verified release with a
+  specific noncritical external action remaining.
+- NOT COMPLETE applies while custody, source identity, lifecycle, audit, or
+  another critical requirement is missing.

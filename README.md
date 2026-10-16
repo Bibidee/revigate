@@ -1,28 +1,21 @@
-# Revigate V1
+# Revigate
 
-Revigate is a backendless GenLayer application for versioned program rules and participant-specific GEN entitlements. The product name, npm package, Python project, and contract are named `revigate`.
+Revigate is a GenLayer application for authenticated rulebooks, participant acknowledgments and revision materiality in a noncustodial Registry. The active source is `contracts/revigate.py`; the former native-GEN escrow source is retained under `contracts/archive/` and historical evidence.
 
-## Release status
+## Current contract model
 
-**NOT COMPLETE.** The Revigate blueprint is published at [the-revigate.vercel.app](https://the-revigate.vercel.app); it explicitly states that the contract is not deployed and no live programs exist. The contract has not been compiled/deployed to Studionet, and the frontend has no verified address, so contract actions remain locked. No wallet signature, contract transaction, address, or live two-wallet lifecycle has been produced.
+The active contract authenticates GitHub rulebook sources, verifies revisions and records wallet acknowledgments. It has no payable method, native-value ledger, offer state, wallet credit or withdrawal path. Writes always use zero native GEN. Unsolicited network transfers are outside the application accounting model and are not recoverable through Revigate.
 
-Outgoing GEN delivery and failure recovery remain a release-blocking custody question. The contract records an outgoing transfer as `UNKNOWN_DELIVERY`; the frontend deliberately does not expose withdrawal. A passing local test cannot prove recipient receipt on Studionet. Do not use this candidate to hold user funds.
+The historical escrow candidate is not deployable for user funds because Studionet retained value across failed payable execution and unsupported transfer routes. Removing native custody is the release safety decision; the old deployment must never be used for deposits.
 
-## Repository layout
+## Active implementation
 
-- `contracts/revigate.py`: single-contract implementation candidate.
-- `components/contract-workbench.tsx`, `lib/genlayer.ts`: browser wallet, GenLayerJS reads/writes, finality observation, and recovery by the same transaction hash.
-- `protocol/accounting.py`: reference accounting model, not production custody logic.
-- `tests/direct/`: GenLayer Direct Mode tests against the contract source.
-- `docs/`: product constraints, risk register, release gates, and current evidence.
-- `.github/workflows/ci.yml`: reproducible Node/Python checks for pushes and pull requests.
+- `contracts/revigate.py` — the only deployable contract.
+- `components/contract-workbench.tsx` and `lib/genlayer.ts` — wallet actions, native-value submission and canonical transaction recovery.
+- `tests/direct/` — source-authentication, revision and noncustodial Registry state tests.
+- `docs/IMPLEMENTATION_STATUS.md` — exact release state and evidence.
 
-## Network and toolchain
-
-- Studionet only: chain ID `61999`, RPC `https://studio.genlayer.com/api`.
-- Repository-local GenLayer CLI is pinned to `0.39.1`; the `npm run cli` wrapper refuses parent or global binaries.
-- GenLayerJS is pinned to `1.1.8` and its Studionet chain definition is used for browser access.
-- Node.js 20+ and Python 3.12+ are required.
+Network: GenLayer Studionet, chain `61999`, RPC `https://studio.genlayer.com/api`. Never send funds to archived addresses.
 
 ## Local checks
 
@@ -30,13 +23,6 @@ Outgoing GEN delivery and failure recovery remain a release-blocking custody que
 npm ci
 uv sync --frozen
 npm run preflight
-npm audit --omit=dev --audit-level=high
-npm run cli -- --version
-npm run cli -- network info
 ```
 
-`npm run preflight` checks the network lock, TypeScript, ESLint, Node helpers, the Python accounting model, GenLayer Direct Mode, and the static production build. It does not replace the live Studionet custody proofs, the full 52-scenario matrix, or an independent production audit.
-
-## Deployment gates
-
-The source is pushed to [GitHub](https://github.com/Bibidee/revigate), and CI has completed a green run. Vercel is connected to the repository and the public blueprint is live at [the-revigate.vercel.app](https://the-revigate.vercel.app). **The contract is not deployed.** Contract release remains blocked until compiler/source checks, the full adversarial matrix, independent audit, payable failure behavior, external transfer evidence/recovery, and live two-wallet tests pass. Read [the current evidence and open gates](docs/IMPLEMENTATION_STATUS.md) before any contract deployment.
+Repository: [Bibidee/revigate](https://github.com/Bibidee/revigate)

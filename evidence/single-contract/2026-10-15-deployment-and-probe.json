@@ -1,0 +1,77 @@
+{
+  "recorded_at": "2026-10-15T10:00:00+01:00",
+  "network": "GenLayer Studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "repository": "https://github.com/Bibidee/revigate",
+  "branch": "codex/revigate-remediation-2026-10-14",
+  "source_commit": "cb84344",
+  "contract_source": "contracts/revigate.py",
+  "source_sha256": "BDF1D0B952719D8EDA16F1AC26A49C2F1B9CBB0465B7DAC972175A3015E904EF",
+  "deployer_account": "polyglot-deployer",
+  "deployer_address": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+  "deployment_transaction": "0x29af681ee4ebb8bb03f52c2f36b4e1c686798e97dbcd0c0b1b2963e9ccf5d8b5",
+  "contract_address": "0xD86A6C0a3949D2452bB8964e076983254375b5fE",
+  "deployment_receipt": "FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS_ZERO_VALUE",
+  "source_attestation": "EXACT_BYTE_MATCH",
+  "config": {
+    "protocol": "revigate-registry-v1",
+    "contract_version": 3,
+    "custody": "SINGLE_CONTRACT_ESCROW",
+    "escrow": "NATIVE_GEN",
+    "transfer_evidence": "EXTERNAL_MESSAGE"
+  },
+  "initial_reads": {
+    "get_config": "MATCHED",
+    "get_ledger_totals": {
+      "accounted": 0,
+      "credits": 0,
+      "deposited": 0,
+      "dispatched": 0,
+      "held": 0
+    },
+    "get_program_page": {
+      "items": [],
+      "next_cursor": 0
+    },
+    "get_offer_page": {
+      "items": [],
+      "next_cursor": 0
+    }
+  },
+  "hosted_probe": {
+    "registration_transaction": "0xc347a08ea1967993dd5ae855bfaa3819edbf690ba9e92ffcd392cc4bfa9a750a",
+    "program_id": 1,
+    "sender": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "fixture_branch": "revigate-rulebook-wallet-a-web",
+    "fixture_baseline": "b1c5254617155214e210a39dafd742fd33b102d6",
+    "registration_result": "SUCCESS",
+    "verification_transaction": "0xdec8f4cf8c0373223fcba3b28ed557a719e55d638591dbed3f8855fa416008ce",
+    "verification_result": "INCONCLUSIVE",
+    "verification_reason": "manifest wallet does not nominate publisher",
+    "post_state": {
+      "status": "PROPOSED",
+      "epoch": 0,
+      "active_sha": "",
+      "document_digest": ""
+    },
+    "value_credited": false
+  },
+  "custody_status": "NOT_PROVEN",
+  "production_status": "LOCKED",
+  "release_verdict": "NOT_RELEASED",
+  "direct_transfer_probe": {
+    "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",
+    "amount_wei": 1,
+    "contract_balance_hex": "0x1",
+    "ledger_after": {
+      "deposited": 0,
+      "held": 0,
+      "credits": 0,
+      "dispatched": 0,
+      "accounted": 0
+    },
+    "classification": "UNSOLICITED_SURPLUS_UNASSIGNED",
+    "recovery": "NOT_AVAILABLE_AT_CONTRACT_LEVEL"
+  }
+}

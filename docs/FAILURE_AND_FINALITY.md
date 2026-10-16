@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Transaction Finality, Recovery, Unknown Funds and Failure Semantics
 
 ## Submission is not execution success
@@ -18,7 +20,9 @@ UI stages: wallet connect -> signature requested -> signed -> tx hash submitted 
 Prevalidated nonpayable offer creation plus isolated payable funding reduces the chance of invalid user terms capturing value. Any payable funding method must reserve incoming value into refundable sender credit before rejecting conditions when runtime supports this. Test whether a protocol `FINISHED_WITH_ERROR` still credited value on Studionet; read contract balance and liabilities, verify ability to recover value. If observed platform behavior makes recovery impossible for an input class, add a safe guard or mark NOT COMPLETE. Do not simply catch all errors and return a success state.
 
 ## External transfer recovery
-External EOA transfers use `emit_transfer` (verified against pinned runtime) and finalize separately from parent consensus. Funds may leave contract balance when emitted, and no immediate recipient credit proof may be available. Distinguish `ALLOCATED`, `EMITTED`, `PARENT_FINALIZED`, `DELIVERY_VERIFIED`, `UNKNOWN_DELIVERY`. A recipient's self-confirmation = acknowledgment only, not objective proof. Without provable non-delivery, duplicate resend would be a double-pay risk, so forbid. Test real ordinary EOA transfer; attempt to detect child transfer IDs and read receipts where supported. Record exact parent tx, child trace, beneficiary balance before/after, time windows and network errors.
+External EOA transfers use `emit_transfer` and finalize separately from the parent. Emitted funds are no longer required to remain in the Vault's native balance, but they stay as unresolved delivery obligations until objective evidence is available. The GenLayerJS SDK exposes parent-listed child IDs and transaction reads; the frontend validates child hash, sender, recipient, value, status and explicit execution result as a separate external status. That status never mutates on-chain `UNKNOWN_DELIVERY`. A delayed child remains pending; an undetermined child remains undetermined; a child execution error does not, by itself, prove non-delivery; multiple successful matches are reported as a possible duplicate payout. The live Studionet read returned the exact child hash, sender, recipient, value, and FINALIZED status, but omitted execution result. The full receipt method returned `Method not found`, so the observer remained UNKNOWN. A separate historical recipient balance delta is not attributed to this child by the observer. No blind resend is permitted.
+
+The contract has no native transaction-query method in the deployed implementation. A nondeterministic web request could fetch third-party explorer/RPC data, but consensus over that response would still rely on the external source and would not itself provide cryptographic receipt proof. Do not add a contract transition for delivered or failed until the evidence source and runtime behavior are independently validated.
 
 ## Recoverable vs unrecoverable
 - Interrupted browser after submit: recover from exact persisted hash, poll receipt and LATEST_FINAL state; do not send new tx.

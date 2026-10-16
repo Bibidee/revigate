@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Codex Repository Build Blueprint and Implementation Ordering
 
 This is an **implementation target tree**, not evidence that these code files exist in this handoff. Codex must actually create, compile, test and inspect them. Adapt file names only for proven framework/toolchain reasons, not to remove scope.

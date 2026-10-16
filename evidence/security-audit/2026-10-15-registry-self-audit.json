@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-15",
+  "scope": "contracts/revigate_registry.py and active Registry Direct Mode tests",
+  "independence": "ADVERSARIAL_SELF_AUDIT_NOT_INDEPENDENT_REVIEW",
+  "deployed_source_commit": "46b749669c532bf85b3491d2ea6dd4bcee987422",
+  "deployed_source_sha256": "EA457FEAB7B270970586FFFCBB12D8B9E58FA5F057A3C49241AA4CBFB6992D56",
+  "checks": {
+    "publisher_authorization": "PASS_LOCAL_DIRECT_MODE",
+    "publisher_manifest_nomination": "PASS_LOCAL_DIRECT_MODE",
+    "signed_commit_and_tree_binding": "PASS_LOCAL_DIRECT_MODE",
+    "candidate_ancestry_and_base_binding": "PASS_LOCAL_DIRECT_MODE",
+    "validator_output_typing": "PASS_LOCAL_DIRECT_MODE",
+    "validator_disagreement": "HOSTED_NOT_OBSERVED",
+    "prompt_injection": "HOSTED_FIXTURE_NOT_GITHUB_VERIFIED",
+    "replay_and_retry_limits": "PASS_LOCAL_DIRECT_MODE",
+    "bounded_provider_and_pagination": "PASS_LOCAL_DIRECT_MODE",
+    "unexpected_value": "ACTIVE_REGISTRY_WRITES_ZERO_VALUE; NETWORK_LEVEL_UNSOLICITED_VALUE_NOT_CLAIMED_SAFE"
+  },
+  "confirmed_critical_or_high_findings": [],
+  "limitations": [
+    "Direct Mode provider and validator fixtures are not an independent review.",
+    "The active deployed Registry source was not changed by this frontend reconciliation pass.",
+    "A production promotion of the new frontend fix requires explicit approval."
+  ],
+  "result": "NO_NEW_CONFIRMED_CRITICAL_OR_HIGH_REGISTRY_DEFECT_IN_SCOPE"
+}

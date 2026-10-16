@@ -1,7 +1,8 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
-  "outputDirectory": "out",
   "rewrites": [
     { "source": "/program/:programId/revision/:reviewId", "destination": "/program/revision/" },
     { "source": "/program/:programId", "destination": "/program/" },

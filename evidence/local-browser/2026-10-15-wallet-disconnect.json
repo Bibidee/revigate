@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-15",
+  "browser": "Brave with Rabby provider",
+  "url": "http://127.0.0.1:3100/my-rules/",
+  "wallet": "0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54",
+  "chain_id": "0xf22f",
+  "ui_before": {
+    "account_visible": true,
+    "disconnect_control_visible": true,
+    "label": "Disconnect"
+  },
+  "action": "Clicked the in-app Disconnect control once.",
+  "observed_after_action": {
+    "account_visible": false,
+    "connect_control_visible": true,
+    "wallet_account_changed": false,
+    "toast": "Revigate app session disconnected. Your wallet remains connected in Rabby."
+  },
+  "interpretation": "Revigate cleared its own wallet session and did not claim to revoke Rabby permissions. The wallet extension account remained connected, as expected for an app-level disconnect.",
+  "scope": "Local browser UX evidence only; no transaction or contract write was submitted."
+}

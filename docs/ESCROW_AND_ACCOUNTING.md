@@ -1,3 +1,5 @@
+> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+
 # Escrow Financial Specification — Non-Negotiable
 
 ## Economic identity and locked terms
@@ -14,15 +16,17 @@ Unknown or incomplete validator judgment: **no effect on held funds**; determini
 
 ## Funding two-phase safety
 1. A creates nonpayable offer with all parameters validated; it starts `OFFERED_UNFUNDED`.
-2. A calls exact-amount `fund_offer` to lock funds. Payable call must be specifically audited for the GenLayer failure mode documented in Vowmark: value may reach contract even when execution later errors. Preferred bounded approach is credit incoming value to sender's refundable credit **before risky user-input validation**, return a rejection marker rather than throw on ordinary bad funding conditions, then atomically move exact amount from refundable credit to offer held amount if valid. This is a hypothesis to validate live, not automatic guarantee of every kind of protocol failure.
+2. A calls exact-amount `fund_offer` to lock funds. In the current local Vault source, when custody is enabled, every nonzero value entering this supported payable method is first recorded as a refundable credit for `msg.sender`; ordinary invalid conditions return a rejection marker instead of throwing, and a valid exact payment moves that credit to the offer's held amount. Direct Mode checks wrong amount, wrong funder, unknown offer, duplicate funding, and funding expiry. A pre-accounting-patch probe Vault finalized one 1-wei unknown-offer payment with a fully backed caller credit. This proves one ordinary rejection path, not a full deposit or escrow lifecycle, and the accounting-patched source has not been live-tested.
 3. If funding tx is `UNDETERMINED` / errored, show **UNKNOWN FUNDING** until actual balance + ledger reconciliation proves where GEN went. Never auto-retry and never say 'refund complete' without evidence.
 4. Only when `FUNDED_UNACCEPTED` is canonically finalized may B accept.
 5. Unexpected extra GEN, repeated fund calls and wrong-funder value must never disappear into an unexplained surplus; add refundable source credit where feasible. Test unsolicited direct transfers and their behavior; do not promise recovery without proof.
 
+This ordering is a bounded mitigation for ordinary validation rejection. It does not recover protocol-level `ERROR`/`UNDETERMINED` results that roll back storage after value is credited, value sent without method calldata, or value attached to nonpayable methods. Live Studionet probes reproduced those unsafe routes on disposable clones. One successful withdrawal reached the EOA. The old ledger reported a one-wei shortfall because it incorrectly included the already-emitted transfer in the amount required to remain in the Vault; the observed held liabilities were zero and the recipient balance rose by one wei. The contract still records `UNKNOWN_DELIVERY`, so this observation does not establish a general on-chain delivery/recovery mechanism. The local candidate now separates Vault-backed liabilities from outgoing obligations. Custody remains disabled until the incoming failure routes and failed outgoing recovery have a safe, runtime-supported disposition. See [Studionet evidence](STUDIONET_EVIDENCE.md) and [custody failure analysis](CUSTODY_FAILURE_ANALYSIS.md).
+
 ## Accounting invariants (must hold per write)
 - A single offer's originally funded escrow can be assigned to beneficiaries at most once.
 - `original amount == held_remaining + A_allocated + B_allocated` before external claims, with monotonic paid/claimed breakdown and no double counting.
-- At global level, all recorded deposits are partitioned into held value, unclaimed beneficiary credits, pending outgoing value and amounts externally delivered or objectively observed; include retained surplus/refundable incoming credits. Never assert `contract balance = liabilities` without accounting for emitted in-flight external messages that may already debit the contract balance.
+- At global level, partition recorded deposits into value still held, unwithdrawn beneficiary credits, emitted outgoing value, unresolved delivery, verified delivery, proven non-delivery, and any retained unassigned surplus. Only held value and unwithdrawn credits require current Vault-balance backing. Outgoing transfers remain unresolved obligations until objectively classified; never count emitted value as native funds that must remain in the Vault.
 - Allocation only moves liabilities, never creates GEN.
 - A can never recover accepted held value unilaterally, except its deterministic share after B explicitly chooses original early exit or both approve mutual closure.
 - Every withdrawal authority equals `msg.sender`'s own credit. Explicitly test sender/origin and third-wallet EVM-forwarding behavior in the actual runtime. A relayer must not withdraw B's credit.
@@ -31,7 +35,7 @@ Unknown or incomplete validator judgment: **no effect on held funds**; determini
 - Partial withdrawals (if supported) respect exact denominations and never exceed available credits.
 
 ## One difficult issue: transfer delivery
-GenLayer external EOA transfers use finalized external messages. A contract can record an emission and an intended recipient, but that alone is not **objective evidence the receiver was credited**. Self-confirmation is only attestation. In V1, expose:
+GenLayer external EOA transfers use external messages. A contract can record an emission and intended recipient, but that alone is not **objective evidence the receiver was credited**. Self-confirmation is only attestation. The read-only GenLayerJS transaction API can query a parent and its triggered child IDs; the frontend validates child identity, sender, recipient, value and finality, but must also require an explicit execution result before reporting child execution success. Child finality is not proof of recipient credit. On the currently tested Studionet endpoint, that execution result was missing and the full receipt RPC returned `Method not found`, so the live observer correctly remained unknown. A separately observed balance delta is a distinct fact and does not automatically prove this child caused it. The observer does not alter `UNKNOWN_DELIVERY` in contract storage. In V1, expose:
 - `credit allocated` (ledger finalized),
 - `withdrawal requested` (tx hash recorded),
 - `parent finalized successfully` (receipt success checked),
