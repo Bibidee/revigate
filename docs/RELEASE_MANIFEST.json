@@ -55,5 +55,6 @@
     "fresh_ci": "OPEN",
     "merge_to_main": "NOT_REQUESTED"
   },
-  "verdict": "NOT_RELEASED"
+  "verdict": "NOT_RELEASED",
+  "source_commit": "dba18424f939a95acd36293ce7842d26e27311a1"
 }
