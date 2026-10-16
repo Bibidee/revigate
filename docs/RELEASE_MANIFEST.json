@@ -49,7 +49,7 @@
   "release_gates": {
     "production_custody": "NOT_APPROVED",
     "vercel_final_promotion": "READY_dpl_AswPntt31tSXGzDGzDNK8oLQhLMU_https://the-revigate.vercel.app",
-    "fresh_ci_for_final_commit": "GREEN_RUN_117_HEAD_85E0409",
+    "fresh_ci_for_final_commit": "GREEN_RUN_118_HEAD_85E0409; FINAL_DOCS_HEAD_PENDING_RUN",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
     "browser_wallet_extension_matrix": "OPEN",
