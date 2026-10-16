@@ -49,11 +49,12 @@
   "release_gates": {
     "production_custody": "NOT_APPROVED",
     "vercel_final_promotion": "READY_dpl_AswPntt31tSXGzDGzDNK8oLQhLMU_https://the-revigate.vercel.app",
-    "fresh_ci_for_final_commit": "OPEN",
+    "fresh_ci_for_final_commit": "GREEN_RUN_117_HEAD_85E0409",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
     "browser_wallet_extension_matrix": "OPEN",
-    "merge_to_main": "BLOCKED_UNTIL_GATES_PASS"
+    "merge_to_main": "BLOCKED_UNTIL_INDEPENDENT_REVIEW_AND_APPROVAL",
+    "pull_request": "https://github.com/Bibidee/revigate/pull/5"
   },
   "verdict": "PUBLIC_ENABLED_STUDIONET_TEST_DEMO_NOT_PRODUCTION_RELEASE"
 }
