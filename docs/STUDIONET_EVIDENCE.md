@@ -461,11 +461,13 @@ are historical evidence only. They do not define the current wallet identities.
 
 ### Release boundaries
 
-This is zero-value Studionet test evidence, not a production release. Escrow and
-custody are absent. Only zero-value Registry writes are available; no user funds were accepted;
-PR #1 remains a draft; the earlier frontend promotion is recorded separately;
-and no merge occurred. The 52-scenario matrix, independent security review,
-protected Vercel preview, extension-level wallet rejection/disconnect coverage,
-and genuine validator disagreement remain release gates. The GitHub-verified
-prompt-injection assessment itself is complete with an actual `NONMATERIAL`
-result.
+This is zero-value Studionet evidence for the merged V4 noncustodial release.
+Escrow and custody are absent. Only zero-value Registry writes are available;
+no user funds were accepted. PR #1 merged into `main` as
+`c38a61620a1a0625454e7b710272bea441ae4ecb`. Post-merge CI run 98 passed, and
+Vercel production deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` is READY and
+promoted at `https://the-revigate.vercel.app`. The 52-scenario matrix,
+independent security review, extension-level wallet rejection/disconnect
+coverage, and historical observer terminal-finality gap remain disclosed
+limitations. The GitHub-verified prompt-injection assessment itself is complete
+with an actual `NONMATERIAL` result.

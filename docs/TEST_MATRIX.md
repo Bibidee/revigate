@@ -16,4 +16,6 @@ The prior single-contract escrow evidence remains historical: failed payable exe
 
 ## Browser and release gates
 
-The public production page was visually checked after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent. Wallet rejection, network/account switching, pending/unknown finality, refresh recovery and mobile checks still need fresh evidence on the promoted build. Green CI for the production identity evidence commit is complete (run 96, head `4a9115fd2ef980a5ceb5077a15a1ad0da3e2fa6c`). Independent security review, second PR approval and merge into `main` remain open. Only zero-value Registry writes are available and no funds are accepted.
+The public production page was visually checked after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent. Wallet rejection, network/account switching, pending/unknown finality, refresh recovery and mobile checks still need fresh evidence on the promoted build. Post-merge CI run 98 passed on `main` at `c38a61620a1a0625454e7b710272bea441ae4ecb`. No independent external security audit has been obtained, and the historical observer probe still lacks confirmed terminal finality. Only zero-value Registry writes are available and no funds are accepted.
+
+The release is **SUBMISSION READY WITH DISCLOSED LIMITATIONS**. PR #1 is merged into `main`; this status does not claim an independent security certification or completed competition submission.

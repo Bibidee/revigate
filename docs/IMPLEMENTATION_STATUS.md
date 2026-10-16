@@ -1,6 +1,6 @@
 # Implementation status
 
-Recorded 2026-10-16 after removing native custody from the active release.
+Recorded 2026-10-16 after the V4 noncustodial release merged into `main`.
 
 ## Active architecture
 
@@ -27,25 +27,24 @@ The former Studionet escrow deployment `0xD86A6C0a3949D2452bB8964e076983254375b5
 
 The exact noncustodial source was deployed with zero value to Studionet at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Deployment transaction `0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6` finalized with majority agreement, successful execution and five `AGREE` votes. Deployed source SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064` matches `contracts/revigate.py` byte-for-byte. Canonical `get_config()` returned chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`.
 
-The local frontend is bound to this test Registry. Only zero-value Registry actions are available; no user funds are accepted, and the historical escrow deployment is not rebound to the new source.
+The production frontend is bound to this test Registry. Only zero-value Registry actions are available; no user funds are accepted, and the historical escrow deployment is not rebound to the new source.
 
 Wallet A / publisher: `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`.
 Wallet B / participant: `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`.
 Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
 
-## Remaining gates
+## Remaining limitations
 
-1. Complete browser wallet rejection, mobile, pending/unknown and refresh checks against the promoted build. Computer Use could not safely inspect the current Brave URL, so this remains unverified.
-2. Obtain a genuinely independent security review; the existing audit is self-audit.
-3. Obtain a second approved PR review.
-4. Obtain explicit approval before merging into `main`.
+1. Rabby rejection, mobile, pending/unknown and refresh recovery coverage remains incomplete.
+2. No genuinely independent external security audit has been obtained; the existing review is an adversarial self-audit.
+3. A historical disposable observer transaction still lacks confirmed terminal finality.
 
-The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review.
+The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review. PR #1 merged into `main` as `c38a61620a1a0625454e7b710272bea441ae4ecb`, and post-merge CI run 98 passed.
 
-The corrected frontend was promoted to `https://the-revigate.vercel.app` from commit `3f1c39595fd7556e595789914e4228835bb1fc2b`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. On 2026-10-16, the public production page was inspected after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent.
+The corrected frontend was promoted to `https://the-revigate.vercel.app` by production deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` from merged `main` commit `c38a61620a1a0625454e7b710272bea441ae4ecb`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. On 2026-10-16, the public production page was inspected after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent.
 
 Funded escrow scenarios are removed from the active product. They are not pending implementation work because the runtime evidence makes native custody unsafe.
 
 ## Release verdict
 
-**NOT RELEASED.** The custody blocker is addressed by removing native custody, and the replacement source is deployed, exactly attested and promoted. Independent review, second approval and the remaining wallet/browser scenarios remain open. No user funds are accepted.
+**SUBMISSION READY WITH DISCLOSED LIMITATIONS.** The custody blocker is addressed by removing native custody, and the V4 source is deployed, exactly attested, promoted and merged into `main`. The remaining browser coverage, independent audit and historical observer-finality limitation are disclosed above. No user funds are accepted, and this verdict does not claim an independent security certification or completed competition submission.

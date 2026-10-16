@@ -1,4 +1,4 @@
-# Registry V2 security and adversarial review
+# Registry V4 security and adversarial review
 
 ## Scope and review independence
 
@@ -14,7 +14,7 @@ This is an adversarial self-audit performed during implementation. It is not a g
 - Invalid, missing, conflicting, malformed, or unavailable evidence resolves to INCONCLUSIVE.
 - Semantic output must use the exact changed clause identifiers and a bounded rationale.
 - Repeated successful decisions cannot advance state again; inconclusive and expired attempts are capped.
-- Writes remain disabled until an on-chain Registry V2 identity readback succeeds.
+- Writes remain disabled until an on-chain Registry V4 identity readback succeeds.
 
 ## Adversarial cases exercised locally
 
@@ -29,11 +29,11 @@ The rulebook is quoted to the model as untrusted evidence. Model output is type 
 - Semantic materiality remains a judgment result and may disagree or remain undetermined.
 - Repository changes are invisible until the publisher submits a signed candidate.
 - Nonpayable entry points and zero value application writes do not prevent unsolicited native value at the network level.
-- The current V4 deployment `0x2E2065063b63F305512Ee66F0FEb305557c9143b` is byte-for-byte attested. Its signed zero-value lifecycle completed source verification, NONMATERIAL, MATERIAL and ambiguous assessments, acknowledgment and reaffirmation. The actual outcomes were `NONMATERIAL`, `MATERIAL` and `MATERIAL`, with canonical state at epoch 3. The corrected frontend was promoted publicly from commit `3f1c395`; the production identity evidence commit `4a9115f` passed CI run `38845397011` (run 96). External review remains unverified.
+- The current V4 deployment `0x2E2065063b63F305512Ee66F0FEb305557c9143b` is byte-for-byte attested. Its signed zero-value lifecycle completed source verification, NONMATERIAL, MATERIAL and ambiguous assessments, acknowledgment and reaffirmation. The actual outcomes were `NONMATERIAL`, `MATERIAL`, and `MATERIAL`, with canonical state at epoch 3. The production frontend is promoted by deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` from merged `main` commit `c38a616`; post-merge CI run `38848046925` (run 98) passed. External review remains unverified.
 - The corrected local build was exercised with Rabby from a non-Studionet state; the app requested chain 61999, read Program 3 and Wallet B history canonically, and submitted one zero-value probe. Studionet reported the probe as `ACCEPTED` with five `AGREE` votes and `value_credited=false` at capture. The UI kept it pending and did not retry; because a terminal receipt was not yet exposed, this probe does not count as finalized lifecycle evidence. On 2026-10-16, the public production page was also inspected after contract loading and visibly showed `Noncustodial Registry identity verified`.
 - A later read-only `eth_getTransactionByHash` call for that probe returned `-32001 Transaction not found`, while the known finalized Wallet B acknowledgment remained readable. The result is classified as an availability gap and does not establish success, failure, cancellation, rollback, or finality. No replay was attempted; the exact response is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`.
 - A genuine GitHub-verified prompt-injection fixture is published at commit `e097fb48f8f4576c6c50e9d83061c8c1ad965919` on `revigate-rulebook-wallet-a-web`. Wallet A submitted request `0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7` and assessment `0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427`. Review 6 finalized `NONMATERIAL`, with both source statuses `VERIFIED`, changed ID `__PREAMBLE__`, and rationale that no R-01–R-04 rule changed. The receipt was `MAJORITY_AGREE` with two validators idle after quorum; this is not a disagreement. Exact evidence is preserved in `evidence/github-access-diagnostic/2026-10-15-prompt-injection-signature.json`.
 
 ## Current verdict
 
-NOT RELEASED. Source authentication and the current signed Registry lifecycle pass, including the actual NONMATERIAL, MATERIAL and ambiguous outcomes. The corrected frontend is publicly promoted, but production writes stay locked. The reproduced Studionet payable rollback, no-calldata and wrong-method value failures are historical reasons native custody remains removed. Fresh Rabby rejection, mobile and runtime browser checks, independent security review and the required second PR approval remain open.
+SUBMISSION READY WITH DISCLOSED LIMITATIONS. Source authentication and the current signed Registry lifecycle pass, including the actual NONMATERIAL, MATERIAL and ambiguous outcomes. The corrected frontend is publicly promoted and PR #1 is merged into `main`; active writes remain zero-value and noncustodial. The reproduced Studionet payable rollback, no-calldata and wrong-method value failures are historical reasons native custody remains removed. Rabby rejection, mobile, pending/unknown finality and refresh recovery coverage remain incomplete, no independent external audit has been obtained, and the historical observer probe lacks confirmed terminal finality.

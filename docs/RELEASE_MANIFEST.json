@@ -2,11 +2,12 @@
   "manifest_type": "revigate_noncustodial_release",
   "recorded_at": "2026-10-16",
   "repository": "https://github.com/Bibidee/revigate",
-  "branch": "codex/revigate-remediation-2026-10-14",
+  "branch": "main",
   "pull_request": {
     "url": "https://github.com/Bibidee/revigate/pull/1",
-    "draft": true,
-    "merged": false
+    "draft": false,
+    "merged": true,
+    "merge_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb"
   },
   "network": {
     "name": "GenLayer Studionet",
@@ -14,7 +15,7 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "3f1c39595fd7556e595789914e4228835bb1fc2b",
+  "source_commit": "4d0f316e737d58180d9d9c98636ad8e2d4a841d0",
   "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
@@ -24,7 +25,7 @@
     "source_attestation": "EXACT_BYTE_MATCH",
     "config": {
       "protocol": "revigate-registry-v1",
-      "contract_version": 3,
+      "contract_version": 4,
       "custody": "NONE",
       "escrow": "NONE",
       "transfer_evidence": "NONE"
@@ -104,12 +105,12 @@
   },
   "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
   "production_status": "PROMOTED_NONCUSTODIAL_ZERO_VALUE_ONLY",
-  "release_verdict": "NOT_RELEASED_PENDING_BROWSER_INDEPENDENT_REVIEW_AND_SECOND_APPROVAL",
+  "release_verdict": "SUBMISSION_READY_WITH_DISCLOSED_LIMITATIONS",
   "ci": {
     "workflow": "CI",
-    "run_id": 38845397011,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38845397011",
-    "head_sha": "4a9115fd2ef980a5ceb5077a15a1ad0da3e2fa6c",
+    "run_id": 38848046925,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38848046925",
+    "head_sha": "c38a61620a1a0625454e7b710272bea441ae4ecb",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
@@ -118,6 +119,16 @@
     "state": "READY",
     "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_REMAINING_WALLET_SCENARIOS_OPEN",
     "production_promoted": true
+  },
+  "vercel_production": {
+    "deployment_id": "dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w",
+    "url": "https://the-revigate.vercel.app",
+    "target": "production",
+    "state": "READY",
+    "ready_substate": "PROMOTED",
+    "source_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb",
+    "git_ref": "main",
+    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_REMAINING_WALLET_SCENARIOS_OPEN"
   },
   "direct_transfer_probe": {
     "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",
