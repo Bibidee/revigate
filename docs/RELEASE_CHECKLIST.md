@@ -23,7 +23,7 @@
 - [ ] Complete the 52-scenario browser and wallet-extension matrix.
 - [ ] Independent security review.
 - [ ] Second approved PR review.
-- [ ] Fresh green CI for the final evidence commit.
+- [x] Fresh green CI for the current head `2c648e44e44db77632f0d604fd2132ce71c1497f` (run 108).
 - [ ] Explicit owner approval before production promotion or merge.
 
 The public application must remain locked until the custody-critical gates pass. Exact hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.

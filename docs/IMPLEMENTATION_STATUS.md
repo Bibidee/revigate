@@ -48,7 +48,7 @@ The supported payable route accounts value before validation and returns typed o
 
 1. Independent security review.
 2. Second approved PR review.
-3. Fresh green CI run 107 for evidence commit `6d54d3bd283bb2e8deae9c4b3effeba0936efb45`.
+3. Fresh green CI run 108 for the current head `2c648e44e44db77632f0d604fd2132ce71c1497f`.
 4. Complete hosted/browser matrix, including mobile wallet-extension, network/account switching, pending/unknown finality and refresh recovery.
 5. Owner authorization before any production promotion or merge.
 
