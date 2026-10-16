@@ -2,9 +2,10 @@
   "manifest_type": "revigate_single_contract_test_release",
   "recorded_at": "2026-10-16",
   "repository": "https://github.com/Bibidee/revigate",
-  "base_main": "5922d7c15d67479d9a9838f2b88bd38b9f753aef",
-  "branch": "feat/revigate-clausebid-standard-release",
-  "reviewed_source_commit": "0d9c80981f4657e2b3940ca01e68981cfc319b0f",
+  "base_main": "bf88d853926f33c409516cb479379b2bc6cf8d97",
+  "branch": "main",
+  "reviewed_source_commit": "e4a906005c7ceb0a6a414ecf44963c69286fd0e5",
+  "frontend_refinement_commit": "161259f5c9de7df52d3dc0190c6d4ed8f47b2bc3",
   "network": {
     "name": "GenLayer Studionet",
     "chain_id": 61999,
@@ -48,13 +49,13 @@
   },
   "release_gates": {
     "production_custody": "NOT_APPROVED",
-    "vercel_final_promotion": "READY_dpl_AswPntt31tSXGzDGzDNK8oLQhLMU_https://the-revigate.vercel.app",
-    "fresh_ci_for_final_commit": "GREEN_RUN_120_HEAD_2ACA3A1",
+    "vercel_final_promotion": "READY_dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb_https://the-revigate.vercel.app",
+    "fresh_ci_for_final_commit": "GREEN_RUN_127_HEAD_161259F5",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
     "browser_wallet_extension_matrix": "OPEN",
-    "merge_to_main": "MERGED_PR_5_2B5CECA67BC84D969084CC48E0CD9858AEDDC4AB",
-    "pull_request": "https://github.com/Bibidee/revigate/pull/5"
+    "merge_to_main": "MERGED_PR_8_E4A906005C7CEB0A6A414ECF44963C69286FD0E5",
+    "pull_request": "https://github.com/Bibidee/revigate/pull/8"
   },
   "verdict": "PUBLIC_ENABLED_STUDIONET_TEST_DEMO_NOT_PRODUCTION_RELEASE"
 }

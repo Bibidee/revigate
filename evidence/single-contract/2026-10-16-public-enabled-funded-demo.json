@@ -119,7 +119,7 @@
     "independent_security_review": "NOT AVAILABLE; existing review is adversarial self-audit"
   },
   "frontend_promotion": {
-    "deployment": "dpl_AswPntt31tSXGzDGzDNK8oLQhLMU",
+    "deployment": "dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb",
     "alias": "https://the-revigate.vercel.app",
     "routes_checked": ["/", "/agreements", "/about"],
     "http_status": 200,
