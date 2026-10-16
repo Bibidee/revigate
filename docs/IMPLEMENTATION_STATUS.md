@@ -40,7 +40,13 @@ Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc
 3. No genuinely independent external security audit has been obtained; the existing review is an adversarial self-audit.
 4. A historical disposable observer transaction still lacks confirmed terminal finality.
 
-The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review. PR #1 merged into `main` as `c38a61620a1a0625454e7b710272bea441ae4ecb`, and post-merge CI run 98 passed.
+The active V4 hosted lifecycle is now complete using the archived verified
+fixture. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous,
+acknowledgment and reaffirmation all finalized successfully with zero value.
+Final program state is VERIFIED at epoch 3 with no pending review. The separate
+Wallet A signed-fixture lifecycle was run on the prior Registry V2 deployment
+and is retained as historical fixture evidence. PR #1 merged into `main` as
+`c38a61620a1a0625454e7b710272bea441ae4ecb`, and post-merge CI run 98 passed.
 
 The corrected frontend was promoted to `https://the-revigate.vercel.app` by production deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` from merged `main` commit `c38a61620a1a0625454e7b710272bea441ae4ecb`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. On 2026-10-16, the public production page was inspected after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent.
 

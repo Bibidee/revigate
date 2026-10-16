@@ -1,4 +1,6 @@
 {
+  "status": "HISTORICAL_PRE_V4_BROWSER_PROBE",
+  "active_for_release": false,
   "recorded_at": "2026-10-15",
   "browser": "Brave Browser",
   "wallet_extension": "Rabby",

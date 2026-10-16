@@ -1,4 +1,6 @@
 {
+  "status": "HISTORICAL_PRIOR_REGISTRY_V2_FIXTURE_ASSESSMENT",
+  "authoritative_for_active_v4": false,
   "attempted_commit": "e097fb48f8f4576c6c50e9d83061c8c1ad965919",
   "signature_present_in_commit_object": true,
   "github_verification": {

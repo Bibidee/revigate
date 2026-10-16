@@ -33,6 +33,11 @@
     "status": "NONCUSTODIAL_STUDIONET_TEST"
   },
   "registry_v4_lifecycle": {
+    "status": "ACTIVE_V4_LIFECYCLE_ARCHIVED_FIXTURE",
+    "registry": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+    "fixture_branch": "revigate-rulebook-fixture-v2",
+    "publisher_wallet": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "authoritative_for_active_v4": true,
     "program_id": 1,
     "registration_transaction": "0xcb804849e1b6887da5ce777d77d1a0ad5843f2d88f0dd3ae84f5f289f5b20b3d",
     "verification_transaction": "0x21b7018b1073223f6b3968a4ed59772356993e6caed3510a983ac40d800472b4",
@@ -65,6 +70,12 @@
     "value_credited": false
   },
   "wallet_a_program_3_lifecycle": {
+    "status": "HISTORICAL_PRIOR_REGISTRY_V2",
+    "registry": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
+    "contract_version": 2,
+    "fixture_branch": "revigate-rulebook-wallet-a-web",
+    "publisher_wallet": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
+    "authoritative_for_active_v4": false,
     "registration_transaction": "0xd26927aecb3c4f48dbbc9a95e2b6688aa5b2738277f71023b741d016c848f4fa",
     "verification_transaction": "0x3e2b087cc0e993377e93f4ab59412ce0c0c45893a215879e3852840efb2db49c",
     "verification_result": "VERIFIED",

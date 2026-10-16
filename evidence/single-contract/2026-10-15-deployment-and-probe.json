@@ -1,4 +1,6 @@
 {
+  "status": "HISTORICAL_REMOVED_ESCROW_CANDIDATE",
+  "active_for_release": false,
   "recorded_at": "2026-10-15T10:00:00+01:00",
   "network": "GenLayer Studionet",
   "chain_id": 61999,

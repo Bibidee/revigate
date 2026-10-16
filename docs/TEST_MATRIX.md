@@ -10,7 +10,7 @@ The post-redesign JavaScript, Direct Mode, typecheck, lint and production build 
 
 ## Hosted checks
 
-The exact committed V4 source is deployed at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. The zero-value hosted lifecycle is complete: source verification `VERIFIED`, NONMATERIAL `NONMATERIAL`, MATERIAL `MATERIAL`, ambiguous actual result `MATERIAL`, acknowledgment finalized and reaffirmation finalized. Exact hashes and canonical readbacks are in `evidence/noncustodial/2026-10-15-registry-v4-lifecycle.json`.
+The exact committed V4 source is deployed at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Its zero-value hosted lifecycle is complete: source verification `VERIFIED`, NONMATERIAL `NONMATERIAL`, MATERIAL `MATERIAL`, ambiguous actual result `MATERIAL`, acknowledgment finalized and reaffirmation finalized. This active V4 record uses the archived `revigate-rulebook-fixture-v2` fixture. The separate Wallet A signed fixture lifecycle was run on the prior Registry V2 deployment and is not substituted for V4 evidence. Exact V4 hashes and canonical readbacks are in `evidence/noncustodial/2026-10-15-registry-v4-lifecycle.json`.
 
 The prior single-contract escrow evidence remains historical: failed payable execution retained value while storage rolled back, wrong-method/no-calldata value remained unassigned, and an outgoing child transfer was `UNKNOWN_DELIVERY`. No replay is authorized and no recipient credit is inferred from finality alone.
 
