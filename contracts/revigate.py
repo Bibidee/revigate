@@ -1168,7 +1168,7 @@ class Revigate(gl.Contract):
         if program.pending_review != 0:
             self._fail("New offers pause during a pending review")
         self._require_address(participant, "Participant")
-        participant = participant.lower()
+        participant = str(participant).lower()
         if participant in (sender, ZERO_ADDRESS) or amount <= u256(0):
             self._fail("Invalid designated participant or amount")
         if not (now < funding_deadline < acceptance_deadline < maturity
