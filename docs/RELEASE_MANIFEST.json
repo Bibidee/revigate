@@ -117,7 +117,7 @@
     "deployment_id": "dpl_CHuXE5cV6WN8AgZPVkANJk7j96LM",
     "url": "https://the-revigate-ildh3tdeh-bibidees-projects.vercel.app",
     "state": "READY",
-    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_REMAINING_WALLET_SCENARIOS_OPEN",
+    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_MOBILE_REFRESH_DISCONNECT_PASS_RABBY_REJECTION_NOT_REPRODUCED",
     "production_promoted": true
   },
   "vercel_production": {
@@ -128,7 +128,7 @@
     "ready_substate": "PROMOTED",
     "source_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb",
     "git_ref": "main",
-    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_REMAINING_WALLET_SCENARIOS_OPEN"
+    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_MOBILE_REFRESH_DISCONNECT_PASS_RABBY_REJECTION_NOT_REPRODUCED"
   },
   "direct_transfer_probe": {
     "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",

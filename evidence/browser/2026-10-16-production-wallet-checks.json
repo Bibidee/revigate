@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-10-16",
+  "environment": {
+    "url": "https://the-revigate.vercel.app/publish/",
+    "chain_id": 61999,
+    "registry": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+    "deployment": "dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w",
+    "wallet": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5"
+  },
+  "checks": {
+    "public_identity": "PASS",
+    "disconnect_reconnect": "PASS",
+    "refresh_recovery": "PASS",
+    "mobile_layout": {
+      "viewport": { "width": 390, "height": 844 },
+      "horizontal_overflow": false,
+      "identity_warning": false,
+      "result": "PASS"
+    },
+    "rabby_rejection": {
+      "result": "NOT_REPRODUCED",
+      "reason": "No observable Reject control was available in the Rabby prompt; the application received submitted hashes instead.",
+      "register_program_hash": "0xc048048a7dd5928befe8277d147973d1ed9ce3e026a9ec61157427d1adf04714",
+      "verify_program_hash": "0x307f21ce2658d8a556c84982b00944d554cbee1b62e13b09e2779882ad2b5043",
+      "finality": "FINALIZED",
+      "value_credited": false,
+      "program_id": 2,
+      "program_state": "VERIFIED",
+      "interpretation": "These are submitted zero-value test writes, not rejection evidence. No further live request was sent."
+    },
+    "network_switching": "NOT_TESTED",
+    "account_switching": "NOT_TESTED",
+    "pending_unknown_finality": "NOT_TESTED"
+  }
+}

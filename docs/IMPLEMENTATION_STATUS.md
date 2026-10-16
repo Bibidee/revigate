@@ -35,9 +35,10 @@ Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc
 
 ## Remaining limitations
 
-1. Rabby rejection, mobile, pending/unknown and refresh recovery coverage remains incomplete.
-2. No genuinely independent external security audit has been obtained; the existing review is an adversarial self-audit.
-3. A historical disposable observer transaction still lacks confirmed terminal finality.
+1. Rabby rejection was not reproduced because no observable Reject control was available; network switching, account switching and pending/unknown finality remain untested.
+2. Mobile layout, disconnect/reconnect and refresh recovery passed on the promoted build; this does not certify mobile wallet-extension behavior.
+3. No genuinely independent external security audit has been obtained; the existing review is an adversarial self-audit.
+4. A historical disposable observer transaction still lacks confirmed terminal finality.
 
 The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review. PR #1 merged into `main` as `c38a61620a1a0625454e7b710272bea441ae4ecb`, and post-merge CI run 98 passed.
 
