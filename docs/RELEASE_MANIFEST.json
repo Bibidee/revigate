@@ -52,7 +52,7 @@
     "vercel_promotion": "PREVIEW_ONLY_LATEST_GIT_BUILD_MISSING_BRANCH_ENV",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "GREEN_RUN_108_FOR_2C648E4",
+    "fresh_ci": "GREEN_FOR_PUSHED_IMPLEMENTATION_AND_DOCUMENTATION_HEAD",
     "merge_to_main": "NOT_REQUESTED"
   },
   "verdict": "NOT_RELEASED",
