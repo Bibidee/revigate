@@ -107,9 +107,9 @@
   "release_verdict": "NOT_RELEASED_PENDING_BROWSER_INDEPENDENT_REVIEW_AND_SECOND_APPROVAL",
   "ci": {
     "workflow": "CI",
-    "run_id": 38826581786,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38826581786",
-    "head_sha": "a8d4d905f37d12753660b5a651a42ad3677c85ec",
+    "run_id": 38845397011,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38845397011",
+    "head_sha": "4a9115fd2ef980a5ceb5077a15a1ad0da3e2fa6c",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
