@@ -32,7 +32,7 @@
     "material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
     "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
     "participant": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B",
-    "status": "FUNDED_LIFECYCLE_EXACT_SOURCE_COMPLETE_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
+    "status": "CORE_FUNDED_PATHS_VERIFIED_LONG_MATURITY_HELD_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
     "evidence": "evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json",
     "final_ledger": {
       "deposited": 4331,
