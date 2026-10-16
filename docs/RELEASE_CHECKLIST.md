@@ -35,7 +35,7 @@ demo. No user funds may be accepted.
 - [ ] Second approved PR review, if required by repository settings.
 - [x] Vercel production promotion completed as `dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
 - [ ] Explicit owner approval before any production custody decision.
-- [ ] Merge to `main` only after the preceding review and CI gates pass.
+- [x] PR #5 merged into `main` at `2b5ceca67bc84d969084cc48e0cd9858aeddc4ab` after the green CI gate. Independent review and browser verification remain disclosed limitations.
 
 The exact live hashes and canonical reads are in
 [2026-10-16 public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
