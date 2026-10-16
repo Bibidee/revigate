@@ -1,3 +1,31 @@
+# Studionet evidence
+
+## Current single-contract funded candidate — 2026-10-16
+
+The current branch deploys one source-attested contract on GenLayer Studionet 61999. This is a disposable custody test; it is not production and no user funds were accepted.
+
+| Item | Evidence |
+|---|---|
+| Contract | `0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99` |
+| Deployment | `0xe80bbd5229fa6c7f0c17cb39497e1a932e556f316d6f4c50fe16b4d4e9a4e54a` |
+| Source SHA-256 | `5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A` |
+| Config | chain 61999, version 5, custody enabled for test, public custody false |
+| Signed baseline | `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`, VERIFIED, epoch 1 |
+| MATERIAL candidate | `376e447065b8a7efd1d26a60c6c9ac476bd1e567`, actual MATERIAL, epoch 2 |
+| Funded offer | 1,000 wei accepted; material exit 800/200 |
+| Refund | 777 wei unaccepted refund |
+| Maturity | 555 wei allocated to participant |
+| Withdrawals | participant +755; publisher +2,577 observed balance deltas |
+| Final ledger | deposited 3,332; held 0; credits 0; dispatched 3,332; contract balance 0 |
+
+Both withdrawal parents finalized successfully and returned one child ID. Both child records were FINALIZED with NO_MAJORITY and no execution-result field. The independent recipient deltas are preserved, but the child execution result remains unclassified. The contract therefore keeps external settlement pending and does not authorize replay. The duplicate withdrawal transaction finalized with execution ERROR.
+
+Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
+
+## Release boundary
+
+Public custody remains locked. The older V4/noncustodial and archived Vault sections below are historical and must not be read as the current contract or as proof that exceptional value-transfer paths are safe.
+
 # Studionet Candidate Evidence
 
 ## Noncustodial Registry V4 deployment — 2026-10-15

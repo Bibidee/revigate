@@ -2,8 +2,8 @@ import { ContractUnavailable, PageIntro } from "@/components/content";
 
 export default function AgreementsPage() {
   return <div className="page-wrap">
-    <PageIntro eyebrow="AGREEMENTS" title="Financial agreements removed." intro="The active Revigate release is a noncustodial Registry. It records reviewed rulebooks and acknowledgments without accepting or distributing GEN." />
+    <PageIntro eyebrow="AGREEMENTS" title="Gated financial agreements." intro="The single Revigate contract contains the offer ledger, but agreement actions are enabled only after a source-attested custody-enabled deployment is verified." />
     <ContractUnavailable />
-    <p className="safety-copy">No offers, funding, refunds, exits, maturity payouts or withdrawals are available. Use <a href="/my-rules">My rules</a> for acknowledgments.</p>
+    <p className="safety-copy">The current public deployment remains locked. Do not send GEN to the Registry address. A disposable Studionet test has completed funded acceptance, material exit and refund evidence; maturity payout and independent transfer delivery proof remain open.</p>
   </div>;
 }

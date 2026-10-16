@@ -1,21 +1,19 @@
 # Revigate
 
-Revigate is a GenLayer application for authenticated rulebooks, participant acknowledgments and revision materiality in a noncustodial Registry. The active source is `contracts/revigate.py`; the former native-GEN escrow source is retained under `contracts/archive/` and historical evidence.
+Revigate is one GenLayer Studionet application and one source-attested Intelligent Contract. The contract combines authenticated GitHub rulebooks, GenLayer materiality consensus, participant acknowledgments, and a deploy-gated native GEN agreement ledger.
 
-## Current contract model
+## Current contract
 
-The active contract authenticates GitHub rulebook sources, verifies revisions and records wallet acknowledgments. It has no payable method, native-value ledger, offer state, wallet credit or withdrawal path. Writes always use zero native GEN. Unsolicited network transfers are outside the application accounting model and are not recoverable through Revigate.
+- Source: `contracts/revigate.py`
+- Network: GenLayer Studionet, chain `61999`
+- Protocol: `revigate-registry-v1`
+- Contract version: `5`
+- Financial mode: constructor-gated `SINGLE_CONTRACT_ESCROW`
+- Production mode: remains locked until the funded and exceptional-transfer gates pass
 
-The historical escrow candidate is not deployable for user funds because Studionet retained value across failed payable execution and unsupported transfer routes. Removing native custody is the release safety decision; the old deployment must never be used for deposits.
+A custody-enabled disposable Studionet deployment has now completed source verification, funded acceptance, MATERIAL exit allocation, unaccepted refund, and maturity setup. Its exact address, receipts and canonical readbacks are in [the funded lifecycle evidence](evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json). It is test-only and is not bound to production.
 
-## Active implementation
-
-- `contracts/revigate.py` — the only deployable contract.
-- `components/contract-workbench.tsx` and `lib/genlayer.ts` — wallet actions, native-value submission and canonical transaction recovery.
-- `tests/direct/` — source-authentication, revision and noncustodial Registry state tests.
-- `docs/IMPLEMENTATION_STATUS.md` — exact release state and evidence.
-
-Network: GenLayer Studionet, chain `61999`, RPC `https://studio.genlayer.com/api`. Never send funds to archived addresses.
+The supported payable route accounts the value before ordinary offer validation and returns typed refundable-credit outcomes for invalid offer, sender, deadline, amount and duplicate cases. Withdrawals consume credit once and create a pending external-settlement record. Recipient evidence is recorded as an assertion only; the contract does not infer an EOA balance delta or authorize retries. Unsolicited no-calldata transfers, value sent to nonpayable methods, and failed external delivery remain protocol-level hazards and keep public custody locked.
 
 ## Local checks
 

@@ -1,97 +1,29 @@
-> **ARCHIVED:** This document describes the removed escrow candidate and is retained only as historical security evidence. See [current status](IMPLEMENTATION_STATUS.md).
+# Revigate release checklist
 
-# Revigate V1 release checklist
+## Current verdict
 
-**Current verdict: NOT COMPLETE.** Studionet deployment evidence is preserved.
-The corrected Vault is deployed on a separate custody-disabled test address,
-but the main reciprocal pair still uses the earlier source. Custody failure
-recovery, a signed two-wallet lifecycle, complete browser acceptance,
-independent audit and branch protection remain open.
+**NOT RELEASED.** This branch contains the single-contract Registry plus gated financial mechanics. The production deployment remains locked.
 
-## Source and local verification
+## Completed engineering
 
-- [x] Revigate Registry/Vault implementation and `revigate` branding.
-- [x] Lockfiles and local dependencies present; clean install previously passed.
-- [x] Repository-local GenLayer CLI `0.39.1`; production network guard restricts
-  writes to Studionet chain `61999`.
-- [x] Current local `npm run preflight` with host permissions: network guard, TypeScript, lint, 32
-  JavaScript, 8 Python, 93 Direct Mode tests, and production build of all 10
-  routes passed. The sandboxed prerender worker fails `EPERM` creating `.next`
-  directories.
-- [x] GitHub Actions run 11 passed for candidate implementation commit
-  `8aa8f9674383c1df6d3c2a582e3b9883cdfd6b14`, including clean dependency
-  installation, full preflight, and production dependency audit.
-- [x] GitHub's Vercel check is green for the candidate implementation commit;
-  the Vercel details endpoint returned 403, so its exact preview URL/state was
-  not independently inspected. Production remains locked and unbound.
-- [x] Full `npm audit`: zero vulnerabilities with UUID `11.1.1` override;
-  GenLayer CLI `0.39.1` and Dockerode `4.0.12` retained.
-- [ ] Complete T01–T52 evidence matrix. Current counts: 27 PASS, 20 PARTIAL,
-  2 FAIL, 2 BLOCKED, 1 NOT EXECUTED.
-- [ ] Fresh independent hostile production audit.
+- [x] Historical `5fb3a6d` offer mechanics recovered into the current Registry source.
+- [x] Archived Vault accounting and transfer-observer semantics reviewed.
+- [x] ClauseBid accounting, claims and settlement used as a reference without treating its successful lifecycle as proof of exceptional transfer safety.
+- [x] Custody flags, typed payable outcomes, held/credit/dispatched ledger and no-retry transfer records implemented.
+- [x] Direct Mode regression and adversarial tests pass (46).
+- [x] Studionet DNS/HTTPS diagnosis completed: sandbox DNS isolation; approved host path reaches HTTP 405 on the RPC endpoint and read-only calls succeed.
+- [x] Fresh source-attested custody-enabled disposable deployment completed.
+- [x] Signed baseline verification, funded acceptance, MATERIAL exit, unaccepted refund, maturity payout and duplicate rejection completed.
+- [x] Parent child IDs were read from the correct withdrawal parent; recipient balance deltas were independently observed.
 
-## Studionet candidates and tests
+## Required before public custody or release
 
-- [x] Latest deployed source-exact pair (before the local accounting patch)
-  deployed and finalized on Studionet 61999:
-  Registry `0x5C09ffa32C1CDab36F3E1340CF94ac254eaED9bE`, Vault
-  `0xf390D8D77f21710679a72Fc11b84A5e85a318849`.
-- [x] Exact deployed source hashes, reciprocal config, custody-disabled state,
-  zero ledger, and address-encoded `get_wallet_credit` read verified.
-- [x] Fresh disposable emitter Registry paired with the previously
-  source-exact Vault:
-  authenticated child, duplicate no-op, stale nonce, spoof rejection, and
-  unrelated-wallet rebind rejection finalized with expected state.
-- [x] Isolated one-wei unknown-offer payable path returned to a balanced caller
-  credit; one withdrawal child finalized and recipient EOA balance increased
-  by one wei. The reported one-wei shortfall was a false positive, not missing
-  GEN, because the old calculation counted emitted value as still Vault-backed.
-- [x] Deploy the corrected Vault source to a separate custody-disabled test
-  address and attest exact source SHA256, finalized transaction, config, and
-  zero initial ledger readback. The contract is not paired or app-bound.
-- [ ] Exercise the corrected backing formula against nonzero live liabilities.
-  The pinned CLI `write` command hardcodes `value: 0n`, so no payable test was
-  submitted. Read-only RPC is reachable from the approved host path.
-- [ ] Resolve failed payable execution and no-calldata value retention; a
-  nonpayable-value route remains unsafe as well.
-- [ ] Recover failed outgoing transfers and reconcile delivery from objective
-  evidence without resending an unknown transfer.
-- [ ] Run signed-source live program verification and full Wallet A/B/C
-  lifecycle with funding, acceptance, revision, refund, material exit, maturity
-  payout, and recipient balances.
-- [ ] Prove the actual source Registry emits authenticated notifications from a
-  verified signed program; the current hosted emitter is a test harness.
-- [ ] No critical custody risk remains.
+- [ ] Resolve child `NO_MAJORITY`/missing execution-result classification with a supported runtime proof or keep custody disabled.
+- [ ] Classify unsolicited no-calldata and wrong-method value behavior for this exact source without repeating a destructive probe without a new hypothesis.
+- [ ] Complete the 52-scenario browser and wallet-extension matrix.
+- [ ] Independent security review.
+- [ ] Second approved PR review.
+- [ ] Fresh green CI for the final evidence commit.
+- [ ] Explicit owner approval before production promotion or merge.
 
-## Frontend and release controls
-
-- [x] Production `https://the-revigate.vercel.app/publish/` browser check shows
-  no pair configured and all contract actions locked.
-- [x] Current commit preview `dpl_9PkMxvVokGXKEJDeSB6YCDqoBwBo` is READY.
-- [PARTIAL] Offline fake-wallet coverage now exercises account/network races,
-  rejection, finality classes, pre-hash rejection, persisted hash recovery,
-  and address-scoped storage. Actual browser-wallet extension interaction,
-  visual route checks, and refresh in a real browser remain outstanding.
-- [ ] Production contract binding to an approved final pair; keep addresses
-  unset and all writes locked.
-- [x] Remediation commit `4a22602982b902713afde101397362698e4389d5` pushed to
-  the existing branch. PR #1 remains open as a draft. Exact-head GitHub Actions
-  run 13 passed; the Vercel check is green.
-- [ ] Signed source commit. GitHub API reports baseline object
-  `3986cbdb35e55e0cffc1457190605787680f1170` as `verified=false` with reason
-  `unsigned`; it was not added to the branch. No signed rulebook manifest/source
-  has been published or verified, and no local signing key/configuration exists.
-- [ ] Main branch protection and required status checks. Branch-protection API
-  returned 403; repository rulesets list was empty.
-
-Keep the production address unset and contract mutations locked until all
-critical custody, message, source and lifecycle gates pass. A deploy, build,
-pairing transaction, or isolated one-wei result does not clear those gates.
-
-Status definitions:
-- COMPLETE requires all critical custody, source, lifecycle, frontend and
-  release requirements to be proven.
-- COMPLETE WITH MANUAL ACTION is only for a safe verified release with a
-  specific noncritical external action remaining.
-- NOT COMPLETE applies while custody, source identity, lifecycle, audit, or
-  another critical requirement is missing.
+The public application must remain locked until the custody-critical gates pass. Exact hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.

@@ -1,0 +1,511 @@
+{
+  "network": "GenLayer Studionet",
+  "chain_id": 61999,
+  "contract": "0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99",
+  "wallets": {
+    "A": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "B": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B"
+  },
+  "tx": {
+    "accept_offer_2": {
+      "hash": "0x2995e89506318551790a1795c74e8d3e05a3e58dac9b66557ec5e6a0e09bbb9a",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xd541dc7d8b43069c0f507da298034d372b41fd60c5dc0ecc7b89dcfd46fd194a",
+      "triggered_transactions": []
+    },
+    "request_material": {
+      "hash": "0xe665441d3922653827aaaf3a2a44dffc2871011ef48ef8367a88995c1eb2d692",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x9c3f2b7db09189d03b3e498c7c8b35d97ecd6cb0a72dc6b32232ef3f25c8bda3",
+      "triggered_transactions": []
+    },
+    "assess_material": {
+      "hash": "0x1a63ed0a845ac8d45315fda4cfbdd607be064215750ba9e01775b6c6210b7c48",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x17d2b70b682c121c6ca3d95c1054077d434b0ff734ce71d5038c441fbbeb6453",
+      "triggered_transactions": []
+    },
+    "exercise_material_exit": {
+      "hash": "0x197fd39b9f04af202d92790d7ed13f055067a820278875b75e4f3c00549a41c0",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xdbda8b916e1fc773892921cf8ae10115e09e71ebc32c1993182d473cf2836bb8",
+      "triggered_transactions": []
+    },
+    "create_refund_offer": {
+      "hash": "0x0129ce79b553da9b41113306459063c6a2118cb28458d1efa19ca15b648f8828",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x9c3f2b7db09189d03b3e498c7c8b35d97ecd6cb0a72dc6b32232ef3f25c8bda3",
+      "triggered_transactions": []
+    },
+    "fund_refund_offer": {
+      "hash": "0x23562e293914941cc13a39263d2c59e29f30cb57709ece80e2923d163037cdb8",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xdd4de7884418079fe770fa695d9c20221a6aff41b4190df958c25ebdd569376d",
+      "triggered_transactions": []
+    },
+    "refund_unaccepted": {
+      "hash": "0x2c5a4caae3cc520caf2377110c8f8ef2d07864563d9eb0ff5d6677dc6813157b",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x83e40352512e65cd2e06274bf225770c6fad6c3ffb8a7fd1a3fc059cef8b5261",
+      "triggered_transactions": []
+    },
+    "create_maturity_offer": {
+      "hash": "0x79cb850f8fc05b18962739f5b53462ae188c9ad1e8c312df05213c0fdd35f624",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xd26d31d2d5a9d103421f6ee22fc58b41379a777c8ef376ffcabc43a53a80a76b",
+      "triggered_transactions": []
+    },
+    "fund_maturity_offer": {
+      "hash": "0x3b5c9aac27f756364ad8feeaa6440d00ee59a3a3ec3897462b04727d682416e7",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x269896d20c12e894814e9f46c5a062b0b871c4bebb9b8fc1fb25f9011f24f62e",
+      "triggered_transactions": []
+    },
+    "accept_maturity_offer": {
+      "hash": "0xb3a328ef81f6a7c545292025eedd0b8578bd996b62bb66f08c12204d89c63e51",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x41ab71867a63e10d23916ea1ca4d9607ef270681fa5976496d80a03e77811529",
+      "triggered_transactions": []
+    },
+    "allocate_maturity": {
+      "hash": "0xb738bd37dbb99c0d7ac0f68d58befa5bb398c75e588fbf04bf6c74e02e41d53d",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0x5a28e18a8bcf3cd86544c429d780d781886ec4aa44c5b2ee56e16e3aa40de866",
+      "triggered_transactions": []
+    },
+    "withdraw_b": {
+      "hash": "0xa06af5b5786f66118bb58784a48ea01812c61c7261df5812066ac039f2b64215",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xa2f5ec8983763d6b4bea082d10b5f7ddd879c250a5a479cb34a17bafd906deb3",
+      "triggered_transactions": [
+        "0x6ee075362bb32fc5deb4f47b210ca3a319cb6aa8ef0f5010205332d507e5d9e3"
+      ]
+    },
+    "record_b_delivery_evidence": {
+      "hash": "0x53d1f8374a70dac6658d79483bbe764a23cd826908a60b3d1766316f9aa297a6",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xda6c11698f2d61734986230d5c527480726ab5c9ed5ca2f2224d38bdc7d28f78",
+      "triggered_transactions": []
+    },
+    "duplicate_withdraw_b": {
+      "hash": "0x57669d0a0d69a1a5738271e154b7115131219c95c92e777c370bba654439f005",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "ERROR",
+      "tx_execution_hash": "0x8b6e24bbc46e60a03a14cd47778fecf5bc7afc2696eb813e7d0707f70199f2a9",
+      "triggered_transactions": []
+    },
+    "withdraw_a": {
+      "hash": "0xa059bc047dbe2a66174e04d2c942accc75bc02300609ce41fbe049f88806c50d",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xdbda8b916e1fc773892921cf8ae10115e09e71ebc32c1993182d473cf2836bb8",
+      "triggered_transactions": [
+        "0x6c6627ba83450242db71824e8c6236457cf3a938da93fd29a5dbea62d8c9aba6"
+      ]
+    },
+    "register": {
+      "hash": "0x81b51863d64b816425cfe1562146c3efccf53c14737664c66f614c84a9ae95d4",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS"
+    },
+    "verify": {
+      "hash": "0xa68911725239d2a7c33400831511235fc014033a255793d2f51dc240295a0e36",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "result": "VERIFIED"
+    },
+    "fund_offer_2": {
+      "hash": "0xa251fec34d1a2babc4194b93a9ef615477f5dabc0c4e00d6d5e7ad8dd508e661",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS"
+    }
+  },
+  "readbacks": {
+    "offer_2_before_accept": {
+      "acceptance_deadline": 1792132445,
+      "ack_epoch": 1,
+      "allocated_a": 0,
+      "allocated_b": 0,
+      "amount": 1000,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170",
+      "epoch": 1,
+      "exit_bps": 2000,
+      "exit_deadline": 0,
+      "exit_trigger_epoch": 0,
+      "exit_window": 3600,
+      "funding_deadline": 1792131845,
+      "held": 1000,
+      "id": 2,
+      "maturity": 1792134545,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+      "state": "FUNDED_UNACCEPTED",
+      "terms_digest": "799cd0549b916afde27995eb6c437ea08e0e89f05cd4de2fe349d8095ba18c07"
+    },
+    "offer_2_after_accept": {
+      "acceptance_deadline": 1792132445,
+      "ack_epoch": 1,
+      "allocated_a": 0,
+      "allocated_b": 0,
+      "amount": 1000,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170",
+      "epoch": 1,
+      "exit_bps": 2000,
+      "exit_deadline": 0,
+      "exit_trigger_epoch": 0,
+      "exit_window": 3600,
+      "funding_deadline": 1792131845,
+      "held": 1000,
+      "id": 2,
+      "maturity": 1792134545,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+      "state": "ACCEPTED_LOCKED",
+      "terms_digest": "799cd0549b916afde27995eb6c437ea08e0e89f05cd4de2fe349d8095ba18c07"
+    },
+    "program_after_material": {
+      "active_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+      "baseline_sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+      "branch": "revigate-rulebook-fixture-v2",
+      "document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+      "epoch": 2,
+      "first_material_at": 1792131598,
+      "id": 1,
+      "manifest_path": ".revigate/publisher.json",
+      "material_event_count": 1,
+      "pending_review": 0,
+      "provider_retry_at": 0,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "repo": "bibidee/revigate",
+      "rulebook_path": "rules/revigate-v2.md",
+      "status": "VERIFIED",
+      "verified_at": 1792130064
+    },
+    "offer_2_after_material_exit": {
+      "acceptance_deadline": 1792132445,
+      "ack_epoch": 1,
+      "allocated_a": 800,
+      "allocated_b": 200,
+      "amount": 1000,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170",
+      "epoch": 1,
+      "exit_bps": 2000,
+      "exit_deadline": 1792134545,
+      "exit_trigger_epoch": 2,
+      "exit_window": 3600,
+      "funding_deadline": 1792131845,
+      "held": 0,
+      "id": 2,
+      "maturity": 1792134545,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+      "state": "MATERIAL_EXIT_ALLOCATED",
+      "terms_digest": "799cd0549b916afde27995eb6c437ea08e0e89f05cd4de2fe349d8095ba18c07"
+    },
+    "ledger_after_material_exit": {
+      "accounted": 2000,
+      "credits": 2000,
+      "custody_enabled": true,
+      "deposited": 2000,
+      "dispatched": 0,
+      "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED",
+      "held": 0
+    },
+    "offer_3_after_refund": {
+      "acceptance_deadline": 1792133185,
+      "ack_epoch": 2,
+      "allocated_a": 777,
+      "allocated_b": 0,
+      "amount": 777,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+      "epoch": 2,
+      "exit_bps": 0,
+      "exit_deadline": 0,
+      "exit_trigger_epoch": 0,
+      "exit_window": 3600,
+      "funding_deadline": 1792132585,
+      "held": 0,
+      "id": 3,
+      "maturity": 1792135285,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+      "state": "REFUND_ALLOCATED",
+      "terms_digest": "8afa437a62f16ea31136547bcc4902edaadec5787f339ca8c9b53a7dd248c3d0"
+    },
+    "ledger_after_refund": {
+      "accounted": 2777,
+      "credits": 2777,
+      "custody_enabled": true,
+      "deposited": 2777,
+      "dispatched": 0,
+      "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED",
+      "held": 0
+    },
+    "offer_4_before_funding": {
+      "acceptance_deadline": 1792132103,
+      "ack_epoch": 2,
+      "allocated_a": 0,
+      "allocated_b": 0,
+      "amount": 555,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+      "epoch": 2,
+      "exit_bps": 0,
+      "exit_deadline": 0,
+      "exit_trigger_epoch": 0,
+      "exit_window": 3600,
+      "funding_deadline": 1792131983,
+      "held": 0,
+      "id": 4,
+      "maturity": 1792132403,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+      "state": "OFFERED_UNFUNDED",
+      "terms_digest": "1932d515ef2da80661e17e1f70c2291061ccb2d4e4b4a124645a9ee73212dadd"
+    },
+    "offer_4_after_accept": {
+      "acceptance_deadline": 1792132103,
+      "ack_epoch": 2,
+      "allocated_a": 0,
+      "allocated_b": 0,
+      "amount": 555,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+      "epoch": 2,
+      "exit_bps": 0,
+      "exit_deadline": 0,
+      "exit_trigger_epoch": 0,
+      "exit_window": 3600,
+      "funding_deadline": 1792131983,
+      "held": 555,
+      "id": 4,
+      "maturity": 1792132403,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+      "state": "ACCEPTED_LOCKED",
+      "terms_digest": "1932d515ef2da80661e17e1f70c2291061ccb2d4e4b4a124645a9ee73212dadd"
+    },
+    "ledger_before_maturity": {
+      "accounted": 3332,
+      "credits": 2777,
+      "custody_enabled": true,
+      "deposited": 3332,
+      "dispatched": 0,
+      "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED",
+      "held": 555
+    },
+    "offer_4_after_maturity": {
+      "acceptance_deadline": 1792132103,
+      "ack_epoch": 2,
+      "allocated_a": 0,
+      "allocated_b": 555,
+      "amount": 555,
+      "closure": null,
+      "closure_nonce": 0,
+      "document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+      "epoch": 2,
+      "exit_bps": 0,
+      "exit_deadline": 0,
+      "exit_trigger_epoch": 0,
+      "exit_window": 3600,
+      "funding_deadline": 1792131983,
+      "held": 0,
+      "id": 4,
+      "maturity": 1792132403,
+      "participant": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "program_id": 1,
+      "publisher": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+      "state": "MATURED_ALLOCATED",
+      "terms_digest": "1932d515ef2da80661e17e1f70c2291061ccb2d4e4b4a124645a9ee73212dadd"
+    },
+    "ledger_after_maturity": {
+      "accounted": 3332,
+      "credits": 3332,
+      "custody_enabled": true,
+      "deposited": 3332,
+      "dispatched": 0,
+      "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED",
+      "held": 0
+    },
+    "wallet_b_credit_before_withdraw": 755,
+    "wallet_a_credit_before_withdraw": 2577,
+    "transfer_b": {
+      "amount": 755,
+      "at": 1792132509,
+      "evidence": "",
+      "id": 1,
+      "recipient": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "reconciled_at": 0,
+      "status": "DISPATCHED_PENDING_EXTERNAL_SETTLEMENT"
+    },
+    "transfer_b_after_evidence": {
+      "amount": 755,
+      "at": 1792132509,
+      "evidence": "balance delta 755",
+      "id": 1,
+      "recipient": "0x7c65ce913f5665c11f1219048112c84cd6cb2a4b",
+      "reconciled_at": 1792132553,
+      "status": "RECIPIENT_ASSERTED_DELIVERED"
+    },
+    "transfer_a": {
+      "amount": 2577,
+      "at": 1792132627,
+      "evidence": "",
+      "id": 2,
+      "recipient": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5",
+      "reconciled_at": 0,
+      "status": "DISPATCHED_PENDING_EXTERNAL_SETTLEMENT"
+    },
+    "final_ledger": {
+      "accounted": 3332,
+      "credits": 0,
+      "custody_enabled": true,
+      "deposited": 3332,
+      "dispatched": 3332,
+      "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED",
+      "held": 0
+    }
+  },
+  "errors": [],
+  "maturity": "1792132403",
+  "balances": {
+    "contract_before_maturity": "3332",
+    "recipient_b_before": "699702000000000000000",
+    "recipient_a_before": "297999999999999996664",
+    "recipient_b_after": "699702000000000000755",
+    "recipient_a_after": "297999999999999999241",
+    "contract_after": "0"
+  },
+  "transfer_observer": {
+    "parent_b": "0xa06af5b5786f66118bb58784a48ea01812c61c7261df5812066ac039f2b64215",
+    "parent_b_transaction": {
+      "hash": "0xa06af5b5786f66118bb58784a48ea01812c61c7261df5812066ac039f2b64215",
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "tx_execution_hash": "0xa2f5ec8983763d6b4bea082d10b5f7ddd879c250a5a479cb34a17bafd906deb3",
+      "triggered_transactions": [
+        "0x6ee075362bb32fc5deb4f47b210ca3a319cb6aa8ef0f5010205332d507e5d9e3"
+      ]
+    },
+    "child_ids_b": [
+      "0x6ee075362bb32fc5deb4f47b210ca3a319cb6aa8ef0f5010205332d507e5d9e3"
+    ],
+    "child_transactions_b": [
+      {
+        "id": "0x6ee075362bb32fc5deb4f47b210ca3a319cb6aa8ef0f5010205332d507e5d9e3",
+        "hash": "0x6ee075362bb32fc5deb4f47b210ca3a319cb6aa8ef0f5010205332d507e5d9e3",
+        "status": "FINALIZED",
+        "consensus": "NO_MAJORITY",
+        "execution": null,
+        "tx_execution_hash": null,
+        "triggered_transactions": [],
+        "sender": "0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99",
+        "recipient": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B",
+        "amount": "755",
+        "value_credited": true,
+        "execution_result": null,
+        "finality": "FINALIZED"
+      }
+    ],
+    "recipient_b_delta": "755",
+    "parent_a": "0xa059bc047dbe2a66174e04d2c942accc75bc02300609ce41fbe049f88806c50d",
+    "child_ids_a": [
+      "0x6c6627ba83450242db71824e8c6236457cf3a938da93fd29a5dbea62d8c9aba6"
+    ],
+    "child_transactions_a": [
+      {
+        "id": "0x6c6627ba83450242db71824e8c6236457cf3a938da93fd29a5dbea62d8c9aba6",
+        "hash": "0x6c6627ba83450242db71824e8c6236457cf3a938da93fd29a5dbea62d8c9aba6",
+        "status": "FINALIZED",
+        "consensus": "NO_MAJORITY",
+        "execution": null,
+        "tx_execution_hash": null,
+        "triggered_transactions": [],
+        "sender": "0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99",
+        "recipient": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+        "amount": "2577",
+        "value_credited": true,
+        "execution_result": null,
+        "finality": "FINALIZED"
+      }
+    ],
+    "recipient_a_delta": "2577",
+    "delivery_classification": "UNKNOWN_EXECUTION_WITH_INDEPENDENT_BALANCE_DELTAS"
+  },
+  "lifecycle_status": "FUNDED_LIFECYCLE_COMPLETE_WITH_EXTERNAL_SETTLEMENT_EVIDENCE_REVIEW_OPEN",
+  "deployment": {
+    "address": "0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99",
+    "transaction": "0xe80bbd5229fa6c7f0c17cb39497e1a932e556f316d6f4c50fe16b4d4e9a4e54a",
+    "source_sha256": "5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A",
+    "source_attestation": "EXACT_BYTE_MATCH",
+    "config": {
+      "chain_id": 61999,
+      "contract_version": 5,
+      "custody": "SINGLE_CONTRACT_ESCROW",
+      "custody_enabled": true,
+      "public_custody": false,
+      "transfer_evidence": "PENDING_EXTERNAL_SETTLEMENT"
+    }
+  },
+  "custody_interpretation": {
+    "supported_payable_route": "FUNDED_AND_ACCOUNTED",
+    "invalid_supported_paths": "TYPED_REFUNDABLE_CREDIT",
+    "external_child_delivery": "UNKNOWN_EXECUTION_RESULT_WITH_INDEPENDENT_BALANCE_DELTAS",
+    "public_custody": "LOCKED"
+  }
+}

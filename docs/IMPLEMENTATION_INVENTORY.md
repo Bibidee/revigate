@@ -2,14 +2,16 @@
 
 ## Active product
 
-`contracts/revigate.py` is the only active deployable Intelligent Contract. It authenticates GitHub rulebook sources, verifies revisions and records wallet acknowledgments. It is explicitly noncustodial: no payable method, native GEN accounting, offers, credits, refunds, payouts or withdrawals exist. The former escrow source and its evidence are archived under `contracts/archive/` and must not receive funds.
+`contracts/revigate.py` is the single active Intelligent Contract. It authenticates GitHub rulebook sources, runs GenLayer materiality consensus, records acknowledgments and stores the gated offer/credit/settlement ledger. The old two-contract Vault is archived reference material; it is not an active deployment target.
 
-The frontend uses injected EIP-1193 wallets for zero-value Registry writes. It persists transaction hashes with chain/address/wallet scope and distinguishes pending, unknown, failed and finalized states. It never treats transaction finality as proof of a balance change.
+The frontend uses injected EIP-1193 wallets and source-attestation checks. It scopes pending hashes by chain, contract and wallet and distinguishes pending, unknown, failed and finalized states. It never treats transaction finality alone as proof of an EOA balance change.
 
-## Verification state
+## Current candidate
 
-The V4 source redesign is complete and merged into `main`. The exact active source is attested on Studionet 61999 at Registry `0x2E2065063b63F305512Ee66F0FEb305557c9143b` with SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064`. Local JavaScript, Direct Mode, typecheck, lint and build checks pass, and post-merge CI run 98 is green.
+Branch: `feat/revigate-funded-registry`
+
+Fresh disposable Studionet candidate: `0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99`, source SHA-256 `5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A`, config version 5, custody enabled for test only, public custody false. Its hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.
 
 ## Release boundary
 
-The approved noncustodial test address is `0x2E2065063b63F305512Ee66F0FEb305557c9143b` on Studionet 61999, and the corrected frontend is promoted publicly at `https://the-revigate.vercel.app` from merged `main`. Only zero-value Registry actions are available; native custody writes do not exist. The previous escrow deployment is historical and cannot be used as the address for the noncustodial source. The custody decision is a defensive product change, not an independent security review.
+Production remains bound to the prior locked/noncustodial deployment until this candidate passes maturity, transfer delivery and review gates. No user funds are accepted. The historical V4 address and all earlier Vault addresses must not receive funds.

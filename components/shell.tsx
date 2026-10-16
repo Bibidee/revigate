@@ -38,7 +38,10 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     catch (error) { queueMicrotask(() => setContractStatus(error instanceof Error ? error.message : "Invalid Registry configuration.")); return; }
     if (!registry) return;
     verifyRevigateDeployment()
-      .then(() => setContractStatus("Noncustodial Registry identity verified."))
+      .then(({ registryConfig }) => setContractStatus(
+        registryConfig.public_custody
+          ? "Revigate Registry and custody identity verified."
+          : "Revigate Registry identity verified; custody remains locked."))
       .catch(() => setContractStatus("The configured contract could not be verified."));
   }, []);
   async function connect() {

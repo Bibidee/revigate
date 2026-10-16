@@ -1,180 +1,59 @@
 {
-  "manifest_type": "revigate_noncustodial_release",
+  "manifest_type": "revigate_single_contract_candidate",
   "recorded_at": "2026-10-16",
   "repository": "https://github.com/Bibidee/revigate",
-  "branch": "main",
-  "pull_request": {
-    "url": "https://github.com/Bibidee/revigate/pull/1",
-    "draft": false,
-    "merged": true,
-    "merge_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb"
-  },
+  "base_main": "febfafa057488f6d67648d3869b9f0b3c726fde0",
+  "branch": "feat/revigate-funded-registry",
   "network": {
     "name": "GenLayer Studionet",
     "chain_id": 61999,
     "rpc": "https://studio.genlayer.com/api"
   },
-  "active_contract": "contracts/revigate.py",
-  "source_commit": "4d0f316e737d58180d9d9c98636ad8e2d4a841d0",
-  "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
+  "contract_source": "contracts/revigate.py",
+  "contract_version": 5,
+  "source_sha256": "5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A",
   "deployment": {
-    "environment": "DISPOSABLE_STUDIONET_TEST",
-    "address": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
-    "transaction": "0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6",
-    "receipt": "FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS_ZERO_VALUE",
+    "environment": "DISPOSABLE_STUDIONET_CUSTODY_TEST",
+    "address": "0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99",
+    "transaction": "0xe80bbd5229fa6c7f0c17cb39497e1a932e556f316d6f4c50fe16b4d4e9a4e54a",
     "source_attestation": "EXACT_BYTE_MATCH",
     "config": {
       "protocol": "revigate-registry-v1",
-      "contract_version": 4,
-      "custody": "NONE",
-      "escrow": "NONE",
-      "transfer_evidence": "NONE"
-    },
-    "status": "NONCUSTODIAL_STUDIONET_TEST"
+      "custody": "SINGLE_CONTRACT_ESCROW",
+      "custody_enabled": true,
+      "public_custody": false,
+      "transfer_evidence": "PENDING_EXTERNAL_SETTLEMENT"
+    }
   },
-  "registry_v4_lifecycle": {
-    "status": "ACTIVE_V4_LIFECYCLE_ARCHIVED_FIXTURE",
-    "registry": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
+  "hosted_lifecycle": {
     "fixture_branch": "revigate-rulebook-fixture-v2",
-    "publisher_wallet": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
-    "authoritative_for_active_v4": true,
-    "program_id": 1,
-    "registration_transaction": "0xcb804849e1b6887da5ce777d77d1a0ad5843f2d88f0dd3ae84f5f289f5b20b3d",
-    "verification_transaction": "0x21b7018b1073223f6b3968a4ed59772356993e6caed3510a983ac40d800472b4",
-    "verification_result": "VERIFIED",
-    "nonmaterial_assessment": "0xb87b66fc63234ae3620d5838e3096a42fa8248210d54387853578067b50dbb42",
-    "nonmaterial_result": "NONMATERIAL",
-    "material_assessment": "0xf1b2be8dbb138680056f83003d33e2bfaa3aebd85975541ab50f0380c75a0b69",
-    "material_result": "MATERIAL",
-    "ambiguous_assessment": "0x23635a0e7ce84e60eb9ea907dc2542dff2e6bc3b79f7241048d7136caac74ae9",
-    "ambiguous_result": "MATERIAL",
-    "acknowledgment_transaction": "0x310be3f7ef26f28bba656fb4960a636b62fdd8afcd989da8e200b8464cfdb844",
-    "reaffirmation_transaction": "0x21d8e5fb2adc4d62a9584849f68ed5a9405bf907903eac8d80c7ca547f2b79ee",
-    "final_epoch": 3,
-    "final_active_sha": "14401f20f2d3eeeac537746966646809e5c01b8c",
-    "final_digest": "3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631",
-    "value_sent_wei": 0
-  },
-  "historical_hosted_probe": {
-    "registration_transaction": "0xc347a08ea1967993dd5ae855bfaa3819edbf690ba9e92ffcd392cc4bfa9a750a",
-    "program_id": 1,
-    "verification_transaction": "0xdec8f4cf8c0373223fcba3b28ed557a719e55d638591dbed3f8855fa416008ce",
-    "verification_result": "INCONCLUSIVE",
-    "verification_reason": "manifest wallet does not nominate publisher",
-    "post_state": {
-      "status": "PROPOSED",
-      "epoch": 0,
-      "active_sha": "",
-      "document_digest": ""
-    },
-    "value_credited": false
-  },
-  "wallet_a_program_3_lifecycle": {
-    "status": "HISTORICAL_PRIOR_REGISTRY_V2",
-    "registry": "0xFe59b3F7a867B4Aca632b0F40060aACfF8DC36B3",
-    "contract_version": 2,
-    "fixture_branch": "revigate-rulebook-wallet-a-web",
-    "publisher_wallet": "0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5",
-    "authoritative_for_active_v4": false,
-    "registration_transaction": "0xd26927aecb3c4f48dbbc9a95e2b6688aa5b2738277f71023b741d016c848f4fa",
-    "verification_transaction": "0x3e2b087cc0e993377e93f4ab59412ce0c0c45893a215879e3852840efb2db49c",
-    "verification_result": "VERIFIED",
-    "nonmaterial_assessment": "0x9356e29b69c5ffed1d96b03d1e104d69a69fab9f93505636e74cf464a3d4d296",
-    "nonmaterial_result": "NONMATERIAL_WITH_ONE_VALIDATOR_DISAGREE",
-    "material_assessment": "0x9cb332734cb483ea2ae72bec1c38efe57e530e5697dc0b62dc322f93f1b43d44",
-    "material_result": "MATERIAL",
-    "ambiguous_assessment": "0x5514cf142fe14a041138c55c85da8fd2849591d5ac9de8109b46abb78b61fff2",
-    "ambiguous_result": "MATERIAL",
-    "final_epoch": 3,
-    "final_active_sha": "d35d438d0e45e58e3227f95135fa3a2abc523aed",
-    "value_sent_wei": 0
-  },
-  "wallet_b_rabby_probe": {
-    "method": "acknowledge_rules",
-    "user_reported_action": "REJECTED",
-    "transaction": "0x20d4871e7fe584d12dd044c103c9f2e70994461bf484d1a7bf18fa99627a639a",
-    "execution_hash": "0x5a28e18a8bcf3cd86544c429d780d781886ec4aa44c5b2ee56e16e3aa40de866",
-    "status": "FINALIZED",
-    "result": "MAJORITY_AGREE",
-    "validator_votes": [
-      "AGREE",
-      "AGREE",
-      "AGREE",
-      "AGREE",
-      "AGREE"
-    ],
-    "value_credited": false,
-    "classification": "REJECTION_NOT_PROVEN_TRANSACTION_FINALIZED",
-    "evidence": "evidence/local-browser/2026-10-15-rabby-rejection-probe.json"
-  },
-  "local_checks": {
-    "javascript": "23 PASS",
-    "direct_mode": "43 PASS",
-    "typecheck": "PASS",
-    "lint": "PASS",
-    "build": "PASS"
-  },
-  "custody_status": "REMOVED_FROM_ACTIVE_PRODUCT_HISTORICAL_ESCROW_BLOCKER",
-  "production_status": "PROMOTED_NONCUSTODIAL_ZERO_VALUE_ONLY",
-  "release_verdict": "SUBMISSION_READY_WITH_DISCLOSED_LIMITATIONS",
-  "ci": {
-    "workflow": "CI",
-    "run_id": 38848046925,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38848046925",
-    "head_sha": "c38a61620a1a0625454e7b710272bea441ae4ecb",
-    "conclusion": "SUCCESS"
-  },
-  "vercel_preview": {
-    "deployment_id": "dpl_CHuXE5cV6WN8AgZPVkANJk7j96LM",
-    "url": "https://the-revigate-ildh3tdeh-bibidees-projects.vercel.app",
-    "state": "READY",
-    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_MOBILE_REFRESH_DISCONNECT_RABBY_REJECTION_PASS",
-    "production_promoted": true
-  },
-  "vercel_production": {
-    "deployment_id": "dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w",
-    "url": "https://the-revigate.vercel.app",
-    "target": "production",
-    "state": "READY",
-    "ready_substate": "PROMOTED",
-    "source_commit": "c38a61620a1a0625454e7b710272bea441ae4ecb",
-    "git_ref": "main",
-    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_MOBILE_REFRESH_DISCONNECT_RABBY_REJECTION_PASS"
-  },
-  "direct_transfer_probe": {
-    "transaction": "0xb964999e75a7f726f849204703f5a39eac4e571f6a72bccfe311b8c68a2b2a42",
-    "amount_wei": 1,
-    "ledger_after": {
-      "deposited": 0,
+    "baseline_sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+    "material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+    "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "participant": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B",
+    "status": "FUNDED_LIFECYCLE_COMPLETE_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
+    "evidence": "evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json",
+    "final_ledger": {
+      "deposited": 3332,
       "held": 0,
       "credits": 0,
-      "dispatched": 0,
-      "accounted": 0
+      "dispatched": 3332,
+      "contract_balance_before": 3332,
+      "contract_balance_after": 0
     },
-    "contract_balance_hex": "0x1",
-    "interpretation": "UNSOLICITED_SURPLUS_UNASSIGNED"
+    "recipient_balance_deltas": {
+      "participant_b": 755,
+      "publisher_a": 2577
+    },
+    "child_status": "FINALIZED_NO_MAJORITY_NO_EXECUTION_RESULT"
   },
-  "active_architecture": "noncustodial-rulebook-registry",
-  "current_candidate": {
-    "source": "contracts/revigate.py",
-    "contract_version": 4,
-    "custody": "NONE",
-    "escrow": "NONE",
-    "transfer_evidence": "NONE",
-    "deployment": "FINALIZED_STUDIONET_TEST",
-    "address": "0x2E2065063b63F305512Ee66F0FEb305557c9143b",
-    "transaction": "0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6",
-    "receipt": "FINALIZED_MAJORITY_AGREE_EXECUTION_SUCCESS",
-    "validator_votes": [
-      "AGREE",
-      "AGREE",
-      "AGREE",
-      "AGREE",
-      "AGREE"
-    ],
-    "source_attestation": "EXACT_BYTE_MATCH",
-    "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
-    "value_sent_wei": 0,
-    "evidence": "evidence/noncustodial/2026-10-15-registry-v4-deployment.json"
-  }
+  "release_gates": {
+    "production_custody": "LOCKED",
+    "vercel_promotion": "NOT_REQUESTED",
+    "independent_security_review": "OPEN",
+    "second_pr_review": "OPEN",
+    "fresh_ci": "OPEN",
+    "merge_to_main": "NOT_REQUESTED"
+  },
+  "verdict": "NOT_RELEASED"
 }
