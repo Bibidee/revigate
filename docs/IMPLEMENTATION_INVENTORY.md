@@ -15,7 +15,7 @@ Fresh disposable Studionet candidate: `0x377509f00e0731df34673501C9cfE57e2FAEA84
 ## Release boundary
 
 Production frontend is now bound to the candidate address through Vercel deployment
-`dpl_D3raXV8ajYNZxk3TgfYWxvAForQ3`, but contract writes and public custody remain
-locked until maturity, transfer-delivery and review gates pass. No user funds are
-accepted. The historical V4 address and all earlier Vault addresses must not
-receive funds.
+`dpl_D3raXV8ajYNZxk3TgfYWxvAForQ3`, but public financial writes remain locked. The
+Offer 3 maturity-allocation transaction was accepted by five validators; its
+post-state readback is pending RPC recovery. No user funds are accepted. The
+historical V4 address and all earlier Vault addresses must not receive funds.

@@ -11,6 +11,7 @@ import {
   submitRevigateWrite,
   verifyRevigateDeployment,
 } from "@/lib/genlayer";
+import { REVIGATE_WALLET_SESSION_EVENT } from "@/lib/wallet-session.mjs";
 import type { Eip1193Provider, Hash, PendingTransaction, RevigateConfig } from "@/lib/genlayer";
 
 const contractConfigured = Boolean(process.env.NEXT_PUBLIC_REVIGATE_CONTRACT || process.env.NEXT_PUBLIC_REVIGATE_REGISTRY);
@@ -40,6 +41,7 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   const [programId, setProgramId] = useState(initialProgramId);
   const [reviewId, setReviewId] = useState(initialReviewId);
   const [programDetails, setProgramDetails] = useState<RecordValue | null>(null);
+  const [offerDetails, setOfferDetails] = useState<RecordValue | null>(null);
   const [pending, setPending] = useState<PendingTransaction[]>([]);
   const [lastHash, setLastHash] = useState<Hash | "">("");
   const [lastAccount, setLastAccount] = useState("");
@@ -56,12 +58,15 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
     const wallet = typeof window === "undefined" ? undefined : window.ethereum;
     if (!wallet) return;
     queueMicrotask(() => setProvider(wallet));
-    const refresh = (value: unknown) => setAccount(Array.isArray(value) && typeof value[0] === "string" ? value[0] : "");
-    const refreshChain = (value: unknown) => setChainId(typeof value === "string" ? value : "");
-    wallet.request({ method: "eth_accounts" }).then(refresh).catch(() => setAccount(""));
-    wallet.request({ method: "eth_chainId" }).then(refreshChain).catch(() => setChainId(""));
-    wallet.on?.("accountsChanged", refresh); wallet.on?.("chainChanged", refreshChain);
-    return () => { wallet.removeListener?.("accountsChanged", refresh); wallet.removeListener?.("chainChanged", refreshChain); };
+    const applySession = (detail: unknown) => {
+      const state = detail && typeof detail === "object" ? detail as { account?: unknown; chainId?: unknown } : {};
+      setAccount(typeof state.account === "string" ? state.account : "");
+      setChainId(typeof state.chainId === "string" ? state.chainId : "");
+    };
+    applySession(window.__revigateWalletSession);
+    const onSession = (event: Event) => applySession((event as CustomEvent).detail);
+    window.addEventListener(REVIGATE_WALLET_SESSION_EVENT, onSession);
+    return () => window.removeEventListener(REVIGATE_WALLET_SESSION_EVENT, onSession);
   }, []);
 
   useEffect(() => {
@@ -121,7 +126,19 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   async function loadOfferSafely() {
     if (!form.offerId.trim()) { setOutput("Enter an offer ID."); return; }
     setBusy(true); try {
-      setOutput(pretty(await readRevigate("get_offer", [asInteger(form.offerId, "Offer ID")])))
+      const record = asRecord(await readRevigate("get_offer", [asInteger(form.offerId, "Offer ID")]));
+      setOfferDetails(record && Object.keys(record).length ? record : null);
+      if (!record || !Object.keys(record).length) { setOutput("No offer exists with this ID."); return; }
+      setForm((current) => ({ ...current,
+        offerId: String(record.id ?? current.offerId),
+        participant: String(record.participant ?? current.participant),
+        amount: String(record.amount ?? current.amount),
+        termsDigest: String(record.terms_digest ?? current.termsDigest),
+        expectedEpoch: String(record.epoch ?? current.expectedEpoch),
+        expectedSha: String(record.sha ?? current.expectedSha),
+      }));
+      if (record.program_id !== undefined) setProgramId(String(record.program_id));
+      setOutput(pretty(record));
     } catch (error) { setOutput(error instanceof Error ? error.message : "Offer read failed."); }
     finally { setBusy(false); }
   }
@@ -144,7 +161,7 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   return <section className="contract-workbench">
     <div className="workbench-heading"><div><span className="panel-number">STUDIONET · {mode === "publisher" ? "PUBLISHER" : "PARTICIPANT"}</span><h2>Registry actions</h2></div><span className="wallet-context">{account ? `${account.slice(0, 6)}…${account.slice(-4)}` : "Wallet not connected"}</span></div>
     <p className="workbench-copy">Revigate combines authenticated rulebooks, materiality consensus and a gated funded agreement ledger in one source-attested Intelligent Contract.</p>
-    <p className="safety-copy"><strong>Custody is deployment-gated.</strong> A deployment must report source-attested custody enabled and public custody before funding controls unlock. Unsolicited native transfers, no-calldata transfers and failed external delivery are never treated as application credit.</p>
+    <p className="safety-copy"><strong>Custody is deployment-gated.</strong> The contract enforces <code>custody_enabled</code> for its supported funding route. <code>public_custody</code> is a frontend availability flag, not an onchain shield against unsolicited native transfers. Unsolicited value, no-calldata transfers and failed external delivery are never treated as application credit.</p>
     {!contractConfigured && <p className="safety-copy">Actions are locked because no verified deployment address is configured.</p>}
     {contractConfigured && !verified && <p className="safety-copy">Actions are locked until the configured source-attested deployment is verified.</p>}
     <fieldset className="workbench-actions" disabled={!contractConfigured || !verified}>
@@ -180,6 +197,7 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
           <label>Withdraw amount (wei)<input inputMode="numeric" value={form.withdrawAmount} onChange={(event) => update("withdrawAmount", event.target.value)} /></label>
           <label>Transfer ID<input inputMode="numeric" value={form.transferId} onChange={(event) => update("transferId", event.target.value)} /></label>
         </div>
+        {offerDetails && <div className="offer-summary" aria-live="polite"><b>Offer {String(offerDetails.id)} · {String(offerDetails.state)}</b><span>Frozen terms: epoch {String(offerDetails.epoch)} · SHA {String(offerDetails.sha)}</span><span>Terms digest: {String(offerDetails.terms_digest)}</span><span>Held: {String(offerDetails.held)} wei · maturity: {String(offerDetails.maturity)}</span></div>}
         <div className="action-buttons">
           <button disabled={busy || !programId || !form.participant || !form.amount} onClick={() => runAction(async () => { const times = offerTimes(); await write("create_offer", [asInteger(programId, "Program ID"), form.participant, asInteger(form.amount, "Principal"), times.funding, times.acceptance, times.maturity, asInteger(form.exitBps, "Exit share"), asInteger(form.exitWindow, "Exit window")]); })}>Create offer</button>
           <button disabled={busy || !form.offerId} onClick={() => runAction(loadOfferSafely)}>Read offer</button>

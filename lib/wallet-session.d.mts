@@ -1,4 +1,5 @@
 export type WalletSessionState = { account: string; chainId: string };
+export const REVIGATE_WALLET_SESSION_EVENT: string;
 export type WalletProvider = {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;
   on?(event: string, callback: (...args: unknown[]) => void): void;

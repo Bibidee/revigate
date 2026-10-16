@@ -13,6 +13,8 @@ Recorded 2026-10-16 on branch `feat/revigate-funded-registry`, based on merged `
 - TypeScript: passing.
 - ESLint: passing.
 - Production build: passing.
+- Focused agreement UI: canonical offer-page, ledger, wallet-credit and frozen-term reads are implemented; the workbench now consumes canonical offer terms after an offer read.
+- Wallet session: header and workbench share the same application session event, so disconnect, reconnect, account changes and chain changes clear or update write authority together.
 
 ## Hosted source and funded evidence
 
@@ -29,7 +31,7 @@ The signed baseline `313dfb0ac2b20f32954dd0ffb08fa60214ae34da` verified at epoch
 - Offer 1: 1,000 wei funded and accepted; MATERIAL exit allocated 200 to A and 800 to B.
 - Offer 2: 777 wei funded and refunded while unaccepted.
 - Offer 4: 444 wei funded, accepted, matured and allocated to B.
-- An additional 555 wei offer remains accepted and held until its longer maturity; it is not counted as settled.
+- Offer 3's 555 wei maturity allocation was submitted by the controlled publisher signer after maturity. Transaction `0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624` reached protocol `ACCEPTED` with five `AGREE` votes; the post-state readback is pending because the RPC later returned `ENOTFOUND`.
 - A withdrawals: 1,200 wei plus 1,332 wei; observed combined balance delta +2,532.
 - B withdrawal: 1,244 wei; observed balance delta +1,244 from the pre-candidate baseline.
 - Duplicate B withdrawal: execution ERROR; no second credit was dispatched.
@@ -57,9 +59,9 @@ The supported payable route accounts value before validation and returns typed o
 
 1. Independent security review.
 2. Second approved PR review.
-3. Fresh green CI for the pushed implementation and documentation head; the exact run and commit are recorded in PR #4 and the final release report.
-4. Complete hosted/browser matrix, including mobile wallet-extension, network/account switching, pending/unknown finality and refresh recovery.
-5. Owner authorization before public custody or merge.
+3. Fresh green CI for the final pushed implementation and documentation head.
+4. Focused browser/wallet checks for the corrected agreement route, including mobile layout, wallet rejection, app disconnect, account/network changes and pending/unknown recovery.
+5. Owner authorization remains required before enabling public custody; merging repository code is a separate release decision.
 
 The corrected frontend promotion is complete; no merge or public-custody
 promotion is claimed from this branch.

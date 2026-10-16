@@ -32,7 +32,7 @@
     "material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
     "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
     "participant": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B",
-    "status": "CORE_FUNDED_PATHS_VERIFIED_LONG_MATURITY_HELD_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
+    "status": "CORE_FUNDED_PATHS_VERIFIED_OFFER_3_CLAIM_ACCEPTED_POST_STATE_READBACK_PENDING_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
     "evidence": "evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json",
     "final_ledger": {
       "deposited": 4331,
@@ -45,7 +45,13 @@
       "publisher_a": 2532,
       "participant_b": 1244
     },
-    "child_status": "PARENT_LOOKUP_UNAVAILABLE_NO_CHILD_EXECUTION_READBACK"
+    "child_status": "PARENT_LOOKUP_UNAVAILABLE_NO_CHILD_EXECUTION_READBACK",
+    "offer_3_maturity_claim": {
+      "transaction": "0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624",
+      "protocol_status": "ACCEPTED",
+      "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+      "post_state": "PENDING_RPC_RECHECK"
+    }
   },
   "release_gates": {
     "production_custody": "LOCKED",
@@ -53,7 +59,7 @@
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
     "fresh_ci": "GREEN_FOR_PUSHED_IMPLEMENTATION_AND_DOCUMENTATION_HEAD",
-    "merge_to_main": "NOT_REQUESTED"
+    "merge_to_main": "AUTHORIZED_PENDING_FINAL_CI_AND_PR_UPDATE"
   },
   "verdict": "NOT_RELEASED",
   "source_commit": "4357b6125d63f24927d03bcc97f09b4798aa5ec4"

@@ -15,16 +15,18 @@
 - [x] Fresh source-attested custody-enabled disposable deployment completed.
 - [x] Signed baseline verification, funded acceptance, MATERIAL exit, unaccepted refund, maturity payout and duplicate rejection completed.
 - [x] Parent child IDs were read from the correct withdrawal parent; recipient balance deltas were independently observed.
-- [x] Corrected frontend promoted to `https://the-revigate.vercel.app` with the candidate address; production writes remain locked.
+- [x] Corrected frontend promoted to `https://the-revigate.vercel.app` with the candidate address; production financial writes remain locked.
+- [x] `/agreements` now reads canonical offers, frozen terms, deadlines, ledger totals and wallet credit; the workbench adopts canonical offer terms after a read.
+- [x] Offer 3 maturity allocation was accepted by five validators; post-state readback remains pending while the RPC is unavailable.
 
 ## Required before public custody or release
 
 - [ ] Resolve child `NO_MAJORITY`/missing execution-result classification with a supported runtime proof or keep custody disabled.
 - [ ] Classify unsolicited no-calldata and wrong-method value behavior for this exact source without repeating a destructive probe without a new hypothesis.
-- [ ] Complete the 52-scenario browser and wallet-extension matrix.
-- [ ] Independent security review.
-- [ ] Second approved PR review.
-- [x] Fresh green CI for the current head `2c648e44e44db77632f0d604fd2132ce71c1497f` (run 108).
-- [ ] Explicit owner approval before public custody or merge.
+- [ ] Complete focused browser and wallet-extension checks for `/agreements`, wallet rejection/disconnect, account/network changes and pending/unknown recovery.
+- [ ] Independent security review remains outside this focused repository release pass.
+- [ ] Second approved PR review, if repository protection requires it.
+- [ ] Fresh green CI for the final pushed head.
+- [x] Owner authorized this release pass to mark PR #4 ready and merge repository code; public custody remains separately locked.
 
 The public application must remain locked until the custody-critical gates pass. Exact hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.

@@ -14,11 +14,11 @@ The current branch deploys one source-attested contract on GenLayer Studionet 61
 | MATERIAL candidate | `376e447065b8a7efd1d26a60c6c9ac476bd1e567`, actual MATERIAL, epoch 2 |
 | Funded offer | 1,000 wei accepted; material exit 200/800 |
 | Refund | 777 wei unaccepted refund |
-| Maturity | 444 wei allocated to participant; a separate 555 wei offer remains held until its longer maturity |
+| Maturity | 444 wei allocated to participant; Offer 3's 555 wei maturity allocation was later accepted by five validators, with post-state readback pending RPC recovery |
 | Withdrawals | participant +1,244; publisher +2,532 observed balance deltas |
 | Final ledger | deposited 4,331; held 555; credits 0; dispatched 3,776; contract balance 555 |
 
-The corrected source also handled a 1,000 wei unknown-offer payment as `REFUNDABLE_CREDIT_UNKNOWN_OFFER`, and that credit was later withdrawn. Withdrawal transfer records are canonical, but the RPC returned not-found/unavailable for the parent hashes during child lookup. No child execution result is claimed. The independent recipient deltas are preserved as balance observations only, and no replay is authorized. The duplicate withdrawal transaction returned execution ERROR.
+The corrected source also handled a 1,000 wei unknown-offer payment as `REFUNDABLE_CREDIT_UNKNOWN_OFFER`, and that credit was later withdrawn. Offer 3's mature claim transaction `0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624` was accepted with five `AGREE` votes; a subsequent read-only RPC attempt returned `ENOTFOUND`, so no post-state transition is inferred. Withdrawal transfer records are canonical, but the RPC returned not-found/unavailable for the parent hashes during child lookup. No child execution result is claimed. The independent recipient deltas are preserved as balance observations only, and no replay is authorized. The duplicate withdrawal transaction returned execution ERROR.
 
 Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 

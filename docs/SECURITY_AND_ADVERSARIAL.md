@@ -16,7 +16,7 @@ This document is an adversarial self-audit. It is not an independent security re
 
 ## Hosted evidence
 
-The disposable custody-enabled deployment `0x377509f00e0731df34673501C9cfE57e2FAEA843` matched source SHA `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`. It verified the signed baseline, executed a 1,000 wei funded acceptance, recorded a real MATERIAL epoch, allocated the 200/800 exit, refunded a 777 wei unaccepted offer, matured a 444 wei offer, and dispatched 3,776 wei across the publisher and participant credits. A separate 555 wei offer remains held until its longer maturity. The exact transaction hashes, canonical readbacks and balance deltas are in the evidence JSON.
+The disposable custody-enabled deployment `0x377509f00e0731df34673501C9cfE57e2FAEA843` matched source SHA `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`. It verified the signed baseline, executed a 1,000 wei funded acceptance, recorded a real MATERIAL epoch, allocated the 200/800 exit, refunded a 777 wei unaccepted offer, matured a 444 wei offer, and dispatched 3,776 wei across the publisher and participant credits. Offer 3's later 555 wei maturity allocation was accepted by five validators, but its post-state readback is pending RPC recovery. The exact transaction hashes, canonical readbacks and balance deltas are in the evidence JSON.
 
 ## Transfer finding
 
@@ -29,7 +29,7 @@ GenLayer's documented failed child-transfer behavior means a finalized parent or
 ## Open review gates
 
 - Obtain a runtime-supported child execution/finality proof or keep public custody disabled.
-- Complete the 52-scenario browser matrix.
+- Complete the focused browser checks for the corrected `/agreements` route, wallet rejection/disconnect, account/network changes and pending/unknown recovery.
 - Obtain an independent security review.
 - Obtain a second approved PR review.
 - Run fresh CI for the final evidence commit.
