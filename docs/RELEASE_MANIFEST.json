@@ -116,7 +116,7 @@
     "deployment_id": "dpl_CHuXE5cV6WN8AgZPVkANJk7j96LM",
     "url": "https://the-revigate-ildh3tdeh-bibidees-projects.vercel.app",
     "state": "READY",
-    "browser_check": "PUBLIC_HTTP_200_BROWSER_RUNTIME_UNVERIFIED",
+    "browser_check": "PUBLIC_PRODUCTION_IDENTITY_VERIFIED_2026-10-16_REMAINING_WALLET_SCENARIOS_OPEN",
     "production_promoted": true
   },
   "direct_transfer_probe": {
