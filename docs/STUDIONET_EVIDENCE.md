@@ -22,6 +22,12 @@ The corrected source also handled a 1,000 wei unknown-offer payment as `REFUNDAB
 
 Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
+The corrected frontend was promoted separately to Vercel production as
+`dpl_D3raXV8ajYNZxk3TgfYWxvAForQ3`, aliased at
+`https://the-revigate.vercel.app`. The public bundle contains the candidate
+address and returns HTTP 200. This is a frontend promotion only: the candidate
+reports `public_custody=false`, and no user funds are accepted.
+
 ## Release boundary
 
 Public custody remains locked. The older V4/noncustodial and archived Vault sections below are historical and must not be read as the current contract or as proof that exceptional value-transfer paths are safe.
