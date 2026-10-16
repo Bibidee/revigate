@@ -11,13 +11,14 @@
   },
   "contract_source": "contracts/revigate.py",
   "contract_version": 5,
-  "source_sha256": "5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A",
+  "source_sha256": "A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2",
   "deployment": {
-    "environment": "DISPOSABLE_STUDIONET_CUSTODY_TEST",
-    "address": "0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99",
-    "transaction": "0xe80bbd5229fa6c7f0c17cb39497e1a932e556f316d6f4c50fe16b4d4e9a4e54a",
-    "source_attestation": "EXACT_BYTE_MATCH",
+    "environment": "DISPOSABLE_STUDIONET_EXACT_COMMITTED_SOURCE",
+    "address": "0x377509f00e0731df34673501C9cfE57e2FAEA843",
+    "transaction": "0xa0cab84c1348c7a04be60e2a7b5dae6e7d4d402ecf81da4bb155da94e1758047",
+    "source_attestation": "EXACT_BYTE_MATCH_TO_COMMITTED_SOURCE",
     "config": {
+      "chain_id": 61999,
       "protocol": "revigate-registry-v1",
       "custody": "SINGLE_CONTRACT_ESCROW",
       "custody_enabled": true,
@@ -31,30 +32,29 @@
     "material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
     "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
     "participant": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B",
-    "status": "FUNDED_LIFECYCLE_COMPLETE_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
+    "status": "FUNDED_LIFECYCLE_EXACT_SOURCE_COMPLETE_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
     "evidence": "evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json",
     "final_ledger": {
-      "deposited": 3332,
-      "held": 0,
+      "deposited": 4331,
+      "held": 555,
       "credits": 0,
-      "dispatched": 3332,
-      "contract_balance_before": 3332,
-      "contract_balance_after": 0
+      "dispatched": 3776,
+      "contract_balance_after": 555
     },
     "recipient_balance_deltas": {
-      "participant_b": 755,
-      "publisher_a": 2577
+      "publisher_a": 2532,
+      "participant_b": 1244
     },
-    "child_status": "FINALIZED_NO_MAJORITY_NO_EXECUTION_RESULT"
+    "child_status": "PARENT_LOOKUP_UNAVAILABLE_NO_CHILD_EXECUTION_READBACK"
   },
   "release_gates": {
     "production_custody": "LOCKED",
-    "vercel_promotion": "NOT_REQUESTED",
+    "vercel_promotion": "BRANCH_PREVIEW_ONLY",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "OPEN",
+    "fresh_ci": "GREEN_FOR_D1E519D_AND_PENDING_FOR_LATEST_FIX",
     "merge_to_main": "NOT_REQUESTED"
   },
   "verdict": "NOT_RELEASED",
-  "source_commit": "dba18424f939a95acd36293ce7842d26e27311a1"
+  "source_commit": "4357b6125d63f24927d03bcc97f09b4798aa5ec4"
 }

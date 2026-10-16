@@ -16,11 +16,11 @@ This document is an adversarial self-audit. It is not an independent security re
 
 ## Hosted evidence
 
-The disposable custody-enabled deployment `0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99` matched source SHA `5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A`. It verified the signed baseline, executed a 1,000 wei funded acceptance, recorded a real MATERIAL epoch, allocated the 80/20 exit, refunded a 777 wei unaccepted offer, matured a 555 wei offer, and dispatched both wallet credits once. The exact parent hashes, child IDs, canonical readbacks and balance deltas are in the evidence JSON.
+The disposable custody-enabled deployment `0x377509f00e0731df34673501C9cfE57e2FAEA843` matched source SHA `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`. It verified the signed baseline, executed a 1,000 wei funded acceptance, recorded a real MATERIAL epoch, allocated the 200/800 exit, refunded a 777 wei unaccepted offer, matured a 444 wei offer, and dispatched 3,776 wei across the publisher and participant credits. A separate 555 wei offer remains held until its longer maturity. The exact transaction hashes, canonical readbacks and balance deltas are in the evidence JSON.
 
 ## Transfer finding
 
-Each withdrawal parent finalized with successful execution and produced one child ID. Each child was readable as FINALIZED/NO_MAJORITY, with no execution-result field. Wallet B and A balance deltas were +755 and +2,577 respectively. The balances are useful evidence of observed credit, but they do not replace the missing child execution classification. The contract leaves both transfers in pending external settlement semantics; no replay is authorized.
+The withdrawal parent hashes were submitted and canonical transfer records were created, but the RPC returned not-found/unavailable when those parent hashes were read back for child inspection. Wallet B and A balance deltas were +1,244 and +2,532 respectively. The balances are useful evidence of observed credit, but they do not replace the missing child execution classification. The contract leaves transfers in pending external settlement semantics; no replay is authorized.
 
 ## Protocol-level limitations
 

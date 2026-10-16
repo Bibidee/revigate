@@ -10,7 +10,7 @@ The frontend uses injected EIP-1193 wallets and source-attestation checks. It sc
 
 Branch: `feat/revigate-funded-registry`
 
-Fresh disposable Studionet candidate: `0xedfE5a6354a518Fbb46111cBa9D3216DA5869b99`, source SHA-256 `5F49DDBA7C88DA98B584F02F28075B1B1DA54305F0C68105344108522F4C833A`, config version 5, custody enabled for test only, public custody false. Its hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.
+Fresh disposable Studionet candidate: `0x377509f00e0731df34673501C9cfE57e2FAEA843`, source SHA-256 `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`, config version 5, custody enabled for test only, public custody false. Its hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.
 
 ## Release boundary
 
