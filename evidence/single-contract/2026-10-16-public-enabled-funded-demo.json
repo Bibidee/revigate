@@ -1,0 +1,122 @@
+{
+  "recorded_at": "2026-10-16",
+  "purpose": "Disposable public-enabled Studionet funded demo; not a production custody certification",
+  "network": {
+    "name": "GenLayer Studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "source": {
+    "path": "contracts/revigate.py",
+    "sha256": "A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2",
+    "attestation": "EXACT_BYTE_MATCH_TO_LOCAL_SOURCE"
+  },
+  "deployment": {
+    "address": "0xb875126Ab537327d9E7E87488C89668C071d2997",
+    "transaction": "0xc446c989dd4da9954d9e9aedb4eacf999d8462fa4681dcc0c17dba50a54b84fe",
+    "protocol_status": "ACCEPTED",
+    "result": 6,
+    "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+    "config": {
+      "contract_version": 5,
+      "custody": "SINGLE_CONTRACT_ESCROW",
+      "custody_enabled": true,
+      "public_custody": true,
+      "transfer_evidence": "PENDING_EXTERNAL_SETTLEMENT"
+    }
+  },
+  "controlled_wallets": {
+    "publisher_a": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "participant_b": "0x7AFc209aD72153f6c8Ae7B8055bfbA6E7f4d5EfC"
+  },
+  "rulebook": {
+    "repository": "Bibidee/revigate",
+    "branch": "revigate-rulebook-fixture-v2",
+    "baseline_sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+    "material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+    "baseline_document_digest": "ca32895d80580ab3a3ddc771e1836da0a8a1e4d3fa2d3ebe85fb047ba7883170",
+    "material_document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+    "publisher_manifest_wallet": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5"
+  },
+  "transactions": {
+    "register_program": "0x5c3a5779f80eeb9f59b34d45b04bf40e4a2405a7933525dc16197d9452920668",
+    "verify_program": "0x07344c70da3fd80206b742dd7f1e04541f9fc371ef5f2e0190e3a6ddfe132d9e",
+    "create_offer": "0x0fa5ce945bc6eaf960e92965a0c46a2ae31e37aeea358b1c51cd0ccd5ab7b49f",
+    "fund_offer": "0x040498b73c65973c472b113aa0c79e8aed9213fc0a50d9c986f99f72a7a415b6",
+    "invalid_acceptance_digest_negative_test": "0xfe50bd3b1ea82217c12bc06e552e624b9b465972f7a3e552ad7ffdbc1773c75a",
+    "accept_offer": "0x95fb8948428e4e5566ec1b674ec2b787afae9e1f484283fd2ddc33223c0dd3da",
+    "request_material_review": "0x75ddaba3aed8bb55a31cd536cdd335f89f404f630e636d0ea4fd40917ffb2fda",
+    "assess_material": "0xb30a2cacb29e03d766932546e9264bb30f8323db9cead0084c6fcca34a0ca9e5",
+    "reaffirm_offer_rules": "0x0da24164d5098ad035ebc76c74c90b4613f1fb267821608eb980d89266623bc5",
+    "exercise_material_exit": "0xa322aeca95448eb2701055e66e5f9d343ec20ed335318f5c4af3cf664ce3a0b1",
+    "withdraw_publisher": "0x8ae3b5c584940d795253ab06d8f2a6feba8d4724c6cb96e82d25e960cc1cf921",
+    "withdraw_participant": "0x7a2ffba074ff6f1da4b94dee57e46efb796421d36565cbc33dddb1d8cef32a89"
+  },
+  "actual_outcomes": {
+    "register": "ACCEPTED",
+    "verify": "VERIFIED_EPOCH_1",
+    "fund": "FUNDED_VALUE_CREDITED",
+    "invalid_acceptance_digest": "ACCEPTED_TRANSACTION_WITH_CONTRACT_ERROR_AND_NO_STATE_CHANGE",
+    "accept": "ACCEPTED_LOCKED",
+    "material_assessment": "MATERIAL",
+    "reaffirmation": "TRUE",
+    "material_exit": "MATERIAL_EXIT_ALLOCATED",
+    "allocation_wei": {"publisher_a": 800000000000, "participant_b": 200000000000},
+    "withdrawals": "Both accepted and dispatched; wallet credits reduced to zero"
+  },
+  "canonical_readbacks": {
+    "program_after_material": {
+      "id": 1,
+      "status": "VERIFIED",
+      "epoch": 2,
+      "active_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+      "document_digest": "ead36a46c1ee297061343c1883f34d3af1aa2f68cf82aeb619a93e95b7b22967",
+      "material_event_count": 1
+    },
+    "offer_after_exit": {
+      "id": 1,
+      "state": "MATERIAL_EXIT_ALLOCATED",
+      "held": 0,
+      "allocated_a": 800000000000,
+      "allocated_b": 200000000000,
+      "exit_trigger_epoch": 2
+    },
+    "ledger_after_withdrawals": {
+      "deposited": 1000000000000,
+      "held": 0,
+      "credits": 0,
+      "dispatched": 1000000000000,
+      "accounted": 1000000000000,
+      "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED"
+    },
+    "transfers": [
+      {"id": 1, "recipient": "0x527da5f7022f14f7105e5f06cec1a8eff53556b5", "amount": 800000000000, "status": "DISPATCHED_PENDING_EXTERNAL_SETTLEMENT"},
+      {"id": 2, "recipient": "0x7afc209ad72153f6c8ae7b8055bfba6e7f4d5efc", "amount": 200000000000, "status": "DISPATCHED_PENDING_EXTERNAL_SETTLEMENT"}
+    ]
+  },
+  "observed_balances": {
+    "before_withdrawals": {
+      "publisher_a": "297999998999999997442",
+      "participant_b": "999000000000000000",
+      "contract": "1000000000000"
+    },
+    "after_withdrawals": {
+      "publisher_a": "297999999799999997442",
+      "participant_b": "999000200000000000",
+      "contract": "0"
+    },
+    "observed_deltas": {"publisher_a": 800000000000, "participant_b": 200000000000}
+  },
+  "transfer_proof_boundary": {
+    "child_transaction_identity": "UNAVAILABLE",
+    "child_finality": "UNAVAILABLE",
+    "recipient_deltas": "OBSERVED_ONLY",
+    "replay": "NOT AUTHORIZED",
+    "interpretation": "The parent receipts and balance deltas show the observed economic result, but the runtime did not expose a separately verifiable child transaction identity and finality record. This is not a certification of every exceptional transfer path."
+  },
+  "browser_and_independent_review": {
+    "real_wallet_extension_run": "NOT EXECUTED_IN_THIS_AUTOMATION_PASS",
+    "independent_security_review": "NOT AVAILABLE; existing review is adversarial self-audit"
+  },
+  "release_boundary": "PUBLIC-ENABLED STUDIONET TEST DEMO ONLY; DO NOT ACCEPT USER FUNDS OR CALL THIS PRODUCTION-SAFE"
+}

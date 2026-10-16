@@ -1,13 +1,13 @@
 # Custody Failure Analysis
 
-**Verdict: NOT COMPLETE. Custody stays disabled.** The active implementation is
+**Verdict: TESTNET DEMO ONLY. Production custody is not approved.** The active implementation is
 the single `contracts/revigate.py` contract. The former two-contract Vault is
 historical reference material only. This record separates behavior observed on
 disposable Studionet contracts from the current source. No public user funds
 were accepted.
 
 The current exact-source disposable candidate is
-`0x377509f00e0731df34673501C9cfE57e2FAEA843`, source SHA-256
+`0xb875126Ab537327d9E7E87488C89668C071d2997`, source SHA-256
 `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`.
 
 ## Studionet behavior by route
@@ -70,11 +70,11 @@ and `reconciliation_delta` checks that against recorded incoming value.
 The accounting correction passed Direct Mode regression tests and is included
 in the exact-source single-contract deployment above. The hosted ledger
 readback was `deposited=4,331`, `held=555`, `credits=0`, `dispatched=3,776`,
-with native balance `555`, matching the still-held offer. This proves the
-current ledger formula for the exercised state. It does not recover value
-retained after a runtime rollback, no-calldata incoming transfer, or value
-attached to a nonpayable method. Such retained value is unassigned surplus and
-remains a custody blocker.
+with native balance `555`, matching the still-held offer. The newer public-enabled
+demo is recorded separately in `evidence/single-contract/2026-10-16-public-enabled-funded-demo.json`.
+The formula does not recover value retained after a runtime rollback, no-calldata
+incoming transfer, or value attached to a nonpayable method. Such retained value
+is unassigned surplus and remains a production custody blocker.
 
 The frontend now has a separate read-only observer status. It validates the
 parent-listed child hash against the returned child identity and checks sender,

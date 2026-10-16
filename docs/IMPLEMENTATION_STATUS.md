@@ -1,68 +1,62 @@
 # Implementation status
 
-Recorded 2026-10-16 on branch `feat/revigate-funded-registry`, based on merged `main` `febfafa057488f6d67648d3869b9f0b3c726fde0`.
+Recorded 2026-10-16 on `feat/revigate-clausebid-standard-release`, based on
+`origin/main` `5922d7c15d67479d9a9838f2b88bd38b9f753aef`.
 
-## Active architecture
+## Current architecture
 
-`contracts/revigate.py` is the single contract. It retains authenticated GitHub source verification and GenLayer materiality consensus while restoring the historical offer mechanics as a gated ledger. `custody_enabled` and `public_custody` are constructor flags. The public frontend now points at the source-attested candidate, while production writes and public custody remain locked.
+`contracts/revigate.py` is the single Intelligent Contract. It retains signed
+GitHub source authentication, GenLayer materiality consensus, acknowledgments,
+and the historical agreement ledger. The current deployment is a disposable
+Studionet test deployment with `custody_enabled=true` and `public_custody=true`.
+That flag enables the controlled test only; it is not a production-safety claim.
 
 ## Local verification
 
 - JavaScript tests: 23 passing.
 - Direct Mode: 46 passing.
-- TypeScript: passing.
-- ESLint: passing.
-- Production build: passing.
-- Focused agreement UI: canonical offer-page, ledger, wallet-credit and frozen-term reads are implemented; the workbench now consumes canonical offer terms after an offer read.
-- Wallet session: header and workbench share the same application session event, so disconnect, reconnect, account changes and chain changes clear or update write authority together.
+- TypeScript, ESLint and production build: passing.
+- Source uses repository-local GenLayer CLI `0.39.1` only.
+- The frontend accepts human GEN amounts and dates, gates actions from canonical
+  offer state, records pending hashes, observes finality, and never replays a
+  transfer automatically.
 
-## Hosted source and funded evidence
+## Exact deployed source
 
-Fresh disposable deployment:
+- Network: GenLayer Studionet, chain 61999.
+- Address: `0xb875126Ab537327d9E7E87488C89668C071d2997`.
+- Deployment transaction: `0xc446c989dd4da9954d9e9aedb4eacf999d8462fa4681dcc0c17dba50a54b84fe`.
+- Source SHA-256: `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`.
+- Attestation: exact local source match.
 
-- Contract: `0x377509f00e0731df34673501C9cfE57e2FAEA843`
-- Deployment transaction: `0xa0cab84c1348c7a04be60e2a7b5dae6e7d4d402ecf81da4bb155da94e1758047`
-- Source SHA-256: `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`
-- Source attestation: exact local match; reviewed source commit `4357b6125d63f24927d03bcc97f09b4798aa5ec4`
-- Config: chain 61999, version 5, custody enabled for test, public custody false
+## Hosted funded demonstration
 
-The signed baseline `313dfb0ac2b20f32954dd0ffb08fa60214ae34da` verified at epoch 1 from `rules/revigate-v2.md`; the MATERIAL candidate `376e447065b8a7efd1d26a60c6c9ac476bd1e567` advanced epoch 2. Disposable unlocked accounts A `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` and B `0x7C65cE913F5665c11f1219048112C84CD6cb2a4B` completed the corrected-source funded paths:
+The signed baseline was registered and verified at epoch 1. A 0.000001 GEN
+offer was funded, accepted by the nominated participant, and bound to the
+exact baseline terms. The material candidate produced an actual `MATERIAL`
+consensus and advanced the program to epoch 2. The participant reaffirmed the
+new rules, material exit allocated 0.0008 GEN to publisher A and 0.0002 GEN to
+participant B, and both controlled wallets submitted one withdrawal.
 
-- Offer 1: 1,000 wei funded and accepted; MATERIAL exit allocated 200 to A and 800 to B.
-- Offer 2: 777 wei funded and refunded while unaccepted.
-- Offer 4: 444 wei funded, accepted, matured and allocated to B.
-- Offer 3's 555 wei maturity allocation was submitted by the controlled publisher signer after maturity. Transaction `0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624` reached protocol `ACCEPTED` with five `AGREE` votes; the post-state readback is pending because the RPC later returned `ENOTFOUND`.
-- A withdrawals: 1,200 wei plus 1,332 wei; observed combined balance delta +2,532.
-- B withdrawal: 1,244 wei; observed balance delta +1,244 from the pre-candidate baseline.
-- Duplicate B withdrawal: execution ERROR; no second credit was dispatched.
-- An unknown-offer 1,000 wei funding attempt returned `REFUNDABLE_CREDIT_UNKNOWN_OFFER` and was later included in the publisher's withdrawals.
-- Ledger: deposited 4,331, held 555, credits 0, dispatched 3,776, accounted 4,331; the native contract balance is 555 wei, matching the still-held offer.
+Canonical post-state is `MATERIAL_EXIT_ALLOCATED`, held `0`, credits `0`,
+dispatched `1000000000000`, and accounted `1000000000000` wei. The observed
+recipient balance deltas exactly match the two allocations and the contract
+balance read `0`. The runtime still does not expose a separately verifiable
+child transaction identity/finality record; transfer records therefore remain
+`DISPATCHED_PENDING_EXTERNAL_SETTLEMENT`. Recipient deltas are observations,
+not a certification of every exceptional transfer path.
 
-The withdrawal parent hashes were submitted and canonical transfer records exist, but the RPC returned not-found/unavailable for those parent hashes during the child lookup. No child execution result is claimed and no replay is authorized. The observed wallet deltas are evidence of balance movement only; external settlement remains `PENDING_UNTIL_INDEPENDENTLY_VERIFIED`.
+Exact hashes and readbacks are in
+[the public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
 
-Exact transaction hashes, parent/child IDs, balance readbacks and canonical state are in [funded lifecycle evidence](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
+## Release boundary
 
-## Production frontend
+This is a public-enabled **Studionet test demo**, not a production custody
+release. Do not accept user funds. Unsolicited native value, value attached to
+unsupported methods, failed payable execution, and unavailable child execution
+proof remain protocol-level limitations. No automatic transfer replay is
+authorized. A real browser wallet-extension run and independent security review
+were not completed in this automation pass.
 
-Vercel production deployment `dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7` is READY and
-aliased at [the-revigate.vercel.app](https://the-revigate.vercel.app). The
-production bundle contains the candidate address and the pages return HTTP 200.
-The contract remains `public_custody=false`, so this promotion does not accept
-user funds. Visual wallet-extension testing was not certified because Computer
-Use could not safely identify the current Windows browser URL.
-
-## Custody decision
-
-The supported payable route accounts value before validation and returns typed outcomes for invalid offer, sender, deadline, amount and duplicate cases. This does not solve unsolicited no-calldata value, nonpayable value retention or a child transfer with no execution result. The historical GenLayer probes remain protocol-level evidence. Public custody is not enabled, and no user funds are accepted.
-
-## Release gates still open
-
-1. Focused visual wallet-extension checks for the corrected agreement route remain un-certified because Computer Use could not safely identify the current Windows browser URL; automated wallet/session coverage passes.
-2. Owner authorization remains required before enabling public custody; this is separate from merging repository code.
-
-GitHub Actions CI run 114 passed for head `55ee535a04552f69f9bb2267da8d63c43157a0de`.
-
-The corrected frontend promotion is complete. The implementation branch is ready to
-mark PR #4 ready and merge; public-custody promotion
-is not claimed.
-
+The previous V4/Vault deployments and older funded evidence remain historical;
+their addresses must not be substituted for the exact deployment above.

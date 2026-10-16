@@ -9,11 +9,11 @@ Revigate is one GenLayer Studionet application and one source-attested Intellige
 - Protocol: `revigate-registry-v1`
 - Contract version: `5`
 - Financial mode: constructor-gated `SINGLE_CONTRACT_ESCROW`
-- Production mode: public financial writes remain locked; `public_custody` is a frontend availability flag and does not prevent unsolicited network transfers
+- Current test mode: a disposable source-attested Studionet deployment has `public_custody=true`; this is not production approval and does not prevent unsolicited network transfers
 
-A custody-enabled disposable Studionet deployment has completed source verification, funded acceptance, MATERIAL exit allocation, unaccepted refund, and the 444 wei maturity payout. Offer 3's separate 555 wei maturity-allocation transaction was accepted by five validators; its post-transaction canonical readback is recorded as pending while the RPC is unavailable. The exact address, receipts and canonical readbacks are in [the funded lifecycle evidence](evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json) and [the Offer 3 claim evidence](evidence/single-contract/2026-10-16-offer-3-maturity-claim.json). The public frontend points at this candidate, but public financial writes remain locked and no user funds are accepted.
+A fresh public-enabled Studionet test deployment completed signed source verification, funded acceptance, an actual MATERIAL revision, participant reaffirmation, material exit allocation and one withdrawal per controlled wallet. The exact address, receipts and canonical readbacks are in [the public-enabled funded demo evidence](evidence/single-contract/2026-10-16-public-enabled-funded-demo.json). No user funds are accepted.
 
-The supported payable route accounts the value before ordinary offer validation and returns typed refundable-credit outcomes for invalid offer, sender, deadline, amount and duplicate cases. Withdrawals consume credit once and create a pending external-settlement record. Recipient evidence is recorded as an assertion only; the contract does not infer an EOA balance delta or authorize retries. Unsolicited no-calldata transfers, value sent to nonpayable methods, and failed external delivery remain protocol-level hazards and keep public custody locked.
+The supported payable route accounts value before validation and returns typed outcomes for invalid offer, sender, deadline, amount and duplicate cases. Withdrawals consume credit once and create a pending external-settlement record. The demo observed exact recipient balance deltas, but the runtime did not expose a separately verifiable child transaction identity/finality record. Unsolicited no-calldata transfers, value sent to unsupported methods and failed external delivery remain protocol-level hazards.
 
 ## Local checks
 

@@ -8,15 +8,13 @@ The frontend uses injected EIP-1193 wallets and source-attestation checks. It sc
 
 ## Current candidate
 
-Branch: `feat/revigate-funded-registry`
+Branch: `feat/revigate-clausebid-standard-release`
 
-Fresh disposable Studionet candidate: `0x377509f00e0731df34673501C9cfE57e2FAEA843`, source SHA-256 `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`, config version 5, custody enabled for test only, public custody false. Its hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.
+Fresh disposable Studionet candidate: `0xb875126Ab537327d9E7E87488C89668C071d2997`, source SHA-256 `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`, config version 5, custody and public-custody flags enabled for this controlled test only. Its hosted evidence is in `evidence/single-contract/2026-10-16-public-enabled-funded-demo.json`.
 
 ## Release boundary
 
-Production frontend is now bound to the candidate address through Vercel deployment
-`dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7`, built from frontend commit
-`dcc8db1ec991a6bdaf487dda8194d52acefcf608`, but public financial writes remain locked. The
-Offer 3 maturity-allocation transaction was accepted by five validators; its
-post-state readback is pending RPC recovery. No user funds are accepted. The
+The final frontend is configured for the candidate address and will be promoted
+to `https://the-revigate.vercel.app` after the final evidence commit. The public
+flag is limited to this Studionet demo; no user funds are accepted. The
 historical V4 address and all earlier Vault addresses must not receive funds.

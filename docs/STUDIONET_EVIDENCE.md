@@ -1,37 +1,42 @@
 # Studionet evidence
 
-## Current single-contract funded candidate — 2026-10-16
+## Current one-contract public-enabled test demo — 2026-10-16
 
-The current branch deploys one source-attested contract on GenLayer Studionet 61999. This is a disposable custody test; it is not production and no user funds were accepted.
+The current branch deploys one source-attested contract on GenLayer Studionet
+61999. This is a disposable funded test; it is not production and no user
+funds were accepted.
 
 | Item | Evidence |
 |---|---|
-| Contract | `0x377509f00e0731df34673501C9cfE57e2FAEA843` |
-| Deployment | `0xa0cab84c1348c7a04be60e2a7b5dae6e7d4d402ecf81da4bb155da94e1758047` |
+| Contract | `0xb875126Ab537327d9E7E87488C89668C071d2997` |
+| Deployment | `0xc446c989dd4da9954d9e9aedb4eacf999d8462fa4681dcc0c17dba50a54b84fe` |
 | Source SHA-256 | `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2` |
-| Config | chain 61999, version 5, custody enabled for test, public custody false |
+| Config | chain 61999, version 5, custody enabled for test, public custody true |
 | Signed baseline | `313dfb0ac2b20f32954dd0ffb08fa60214ae34da`, VERIFIED, epoch 1 |
 | MATERIAL candidate | `376e447065b8a7efd1d26a60c6c9ac476bd1e567`, actual MATERIAL, epoch 2 |
-| Funded offer | 1,000 wei accepted; material exit 200/800 |
-| Refund | 777 wei unaccepted refund |
-| Maturity | 444 wei allocated to participant; Offer 3's 555 wei maturity allocation was later accepted by five validators, with post-state readback pending RPC recovery |
-| Withdrawals | participant +1,244; publisher +2,532 observed balance deltas |
-| Final ledger | deposited 4,331; held 555; credits 0; dispatched 3,776; contract balance 555 |
+| Funded offer | 1,000,000,000,000 wei accepted; material exit allocated 800,000,000,000 / 200,000,000,000 |
+| Withdrawals | publisher +800,000,000,000 and participant +200,000,000,000 observed balance deltas |
+| Final ledger | deposited 1,000,000,000,000; held 0; credits 0; dispatched 1,000,000,000,000; contract balance 0 |
 
-The corrected source also handled a 1,000 wei unknown-offer payment as `REFUNDABLE_CREDIT_UNKNOWN_OFFER`, and that credit was later withdrawn. Offer 3's mature claim transaction `0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624` was accepted with five `AGREE` votes; a subsequent read-only RPC attempt returned `ENOTFOUND`, so no post-state transition is inferred. Withdrawal transfer records are canonical, but the RPC returned not-found/unavailable for the parent hashes during child lookup. No child execution result is claimed. The independent recipient deltas are preserved as balance observations only, and no replay is authorized. The duplicate withdrawal transaction returned execution ERROR.
+The material-exit demo includes a negative acceptance-digest test, exact signed
+source verification and canonical program/offer/ledger readbacks. Withdrawal
+records are canonical and the two recipient deltas were observed, but the
+runtime did not expose a separately verifiable child transaction identity or
+child finality record. No child execution result is claimed and no replay is
+authorized.
 
 Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
-The corrected frontend was promoted separately to Vercel production as
-`dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7` from frontend commit
-`dcc8db1ec991a6bdaf487dda8194d52acefcf608`, aliased at
-`https://the-revigate.vercel.app`. The public bundle contains the candidate
-address and returns HTTP 200. This is a frontend promotion only: the candidate
-reports `public_custody=false`, and no user funds are accepted.
+The corrected frontend is targeted for Vercel alias
+`https://the-revigate.vercel.app`; the final promotion and public-bundle check
+remain release gates for this branch.
 
 ## Release boundary
 
-Public custody remains locked. The older V4/noncustodial and archived Vault sections below are historical and must not be read as the current contract or as proof that exceptional value-transfer paths are safe.
+The current public flag is limited to this disposable Studionet test. The older
+V4/noncustodial and archived Vault sections below are historical and must not be
+read as the current contract or as proof that exceptional value-transfer paths
+are safe.
 
 # Studionet Candidate Evidence
 

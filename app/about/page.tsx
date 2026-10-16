@@ -11,8 +11,8 @@ export default function AboutPage() {
       <h2>Trust boundaries</h2>
       <p>GitHub signatures authenticate the published commit and manifest nomination. Wallet signatures authenticate actions. Materiality is a consensus result and may be inconclusive. The publisher submits revisions explicitly; branch changes are not monitored automatically.</p>
       <h2>Custody gate</h2>
-      <p>The same source contains deterministic offer, credit and settlement mechanics, but production custody is locked. A test deployment must prove funded transitions and independently verified external delivery before public custody is enabled.</p>
-      <Notice>Never send funds to an unverified or locked deployment. Unsolicited transfers and value sent through unsupported routes are not application credit.</Notice>
+      <p>The same source contains deterministic offer, credit and settlement mechanics. The current public-enabled address is a disposable Studionet test deployment that completed one controlled funded demo. It is not a production custody approval: child execution proof and exceptional native-value recovery remain unresolved.</p>
+      <Notice>Do not send user funds. Use disposable Studionet GEN only. Unsolicited transfers and value sent through unsupported routes are not application credit.</Notice>
     </div>
   </div>;
 }
