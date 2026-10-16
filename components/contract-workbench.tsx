@@ -228,7 +228,7 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
   return <section className="contract-workbench">
     <div className="workbench-heading"><div><span className="panel-number">STUDIONET · {mode === "publisher" ? "PUBLISHER" : "PARTICIPANT"}</span><h2>Registry actions</h2></div><span className="wallet-context">{account ? `${account.slice(0, 6)}…${account.slice(-4)}` : "Wallet not connected"}</span></div>
     <p className="workbench-copy">Revigate combines authenticated rulebooks, materiality consensus and a gated funded agreement ledger in one source-attested Intelligent Contract.</p>
-    <p className="safety-copy"><strong>Studionet testnet notice.</strong> Native GEN escrow and external settlement are experimental. Use only disposable testnet funds. The supported funding route records a claim before ordinary validation, but unsolicited value, no-calldata transfers and failed external delivery are never treated as application credit.</p>
+    <p className="safety-copy"><strong>Studionet testnet.</strong> Use test GEN. Settlement is experimental. <a href="/about">About the risks</a></p>
     {!contractConfigured && <p className="safety-copy">Actions are locked because no verified deployment address is configured.</p>}
     {contractConfigured && !verified && <p className="safety-copy">Actions are locked until the configured source-attested deployment is verified.</p>}
     <fieldset className="workbench-actions" disabled={!contractConfigured || !verified}>
@@ -246,8 +246,8 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
     </fieldset>
     <section className="action-group financial-actions" aria-label="Funded agreement controls">
       <h3>Funded agreement ledger</h3>
-      {!custodyEnabled && <p className="safety-copy">Funding is unavailable because this verified deployment has custody disabled.</p>}
-      {custodyEnabled && !publicCustody && <p className="safety-copy">This deployment can exercise custody for testing, but public financial controls are disabled.</p>}
+      {!custodyEnabled && <p className="safety-copy">Funding is unavailable for this deployment.</p>}
+      {custodyEnabled && !publicCustody && <p className="safety-copy">Funding is unavailable on this public page.</p>}
       <fieldset disabled={!contractConfigured || !verified || !custodyEnabled || !publicCustody} className="workbench-actions">
         <div className="action-grid">
           <label>Participant wallet<input value={form.participant} onChange={(event) => update("participant", event.target.value)} placeholder="0x…" /></label>
@@ -276,11 +276,10 @@ export function ContractWorkbench({ mode, initialProgramId = "", initialReviewId
           <button disabled={busy || !canMaterialExit} onClick={() => runAction(() => write("exercise_material_exit", [asInteger(form.offerId, "Offer ID")]))}>Material exit</button>
           <button disabled={busy || !canMature} onClick={() => runAction(() => write("allocate_matured_claim", [asInteger(form.offerId, "Offer ID")]))}>Maturity payout</button>
           <button disabled={busy || !canWithdraw} onClick={() => runAction(() => write("withdraw_credit", [withdrawWei]))}>Withdraw credit</button>
-          <button disabled={busy || !form.transferId} onClick={() => runAction(() => write("record_transfer_delivery_claim", [asInteger(form.transferId, "Transfer ID"), "recipient balance-delta evidence"] ))}>Record delivery evidence</button>
           <button disabled={busy} onClick={() => runAction(loadCreditSafely)}>Read my credit</button><button disabled={busy} onClick={() => runAction(loadLedgerSafely)}>Read ledger</button>
         </div>
       </fieldset>
     </section>
-    <div className="action-group transaction-group"><h3>Transaction status</h3>{lastHash && <button disabled={busy} onClick={() => void checkTransaction(lastHash, lastAccount)}>Check current hash</button>}{pending.map((item) => <button className="pending-hash" key={item.hash} disabled={busy} onClick={() => void checkTransaction(item.hash, item.account)}>{item.method} · {item.hash.slice(0, 12)}… · resume status</button>)}<pre className="result-console" aria-live="polite">{output || "Registry reads and zero-value transaction evidence will appear here."}</pre></div>
+    <div className="action-group transaction-group"><h3>Transaction status</h3>{lastHash && <button disabled={busy} onClick={() => void checkTransaction(lastHash, lastAccount)}>Check current hash</button>}{pending.map((item) => <button className="pending-hash" key={item.hash} disabled={busy} onClick={() => void checkTransaction(item.hash, item.account)}>{item.method} · {item.hash.slice(0, 12)}… · resume status</button>)}<details className="technical-details"><summary>Technical transaction details</summary><pre className="result-console" aria-live="polite">{output || "Registry reads and transaction evidence will appear here."}</pre></details></div>
   </section>;
 }
