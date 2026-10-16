@@ -59,8 +59,8 @@
     "vercel_promotion": "READY_DPL_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7_ALIAS_THE_REVIGATE_VERCEL_APP",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "PENDING_PUSHED_HEAD_DCC8DB1",
-    "merge_to_main": "AUTHORIZED_PENDING_GREEN_CI"
+    "fresh_ci": "GREEN_RUN_114_FOR_HEAD_55EE535",
+    "merge_to_main": "AUTHORIZED_READY_AFTER_GREEN_CI"
   },
   "verdict": "NOT_RELEASED",
   "source_commit": "4357b6125d63f24927d03bcc97f09b4798aa5ec4"

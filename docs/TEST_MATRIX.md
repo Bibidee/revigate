@@ -11,6 +11,7 @@ Recorded 2026-10-16 for the single-contract implementation branch.
 | Typecheck | PASS |
 | Lint | PASS |
 | Production build | PASS |
+| GitHub Actions CI | PASS, run 114 for head `55ee535a04552f69f9bb2267da8d63c43157a0de` |
 | Hosted source attestation | PASS, exact SHA match |
 | Hosted baseline verification | PASS, VERIFIED epoch 1 |
 | Hosted MATERIAL review | PASS, actual MATERIAL epoch 2 |

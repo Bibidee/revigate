@@ -26,7 +26,7 @@
 - [ ] Complete focused browser and wallet-extension checks for `/agreements`, wallet rejection/disconnect, account/network changes and pending/unknown recovery.
 - [ ] Independent security review remains outside this focused repository release pass.
 - [ ] Second approved PR review, if repository protection requires it.
-- [ ] Fresh green CI for the final pushed head.
+- [x] Fresh green CI run 114 for pushed head `55ee535a04552f69f9bb2267da8d63c43157a0de`.
 - [x] Owner authorized this release pass to mark PR #4 ready and merge repository code; public custody remains separately locked.
 
 The public application must remain locked until the custody-critical gates pass. Exact hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.

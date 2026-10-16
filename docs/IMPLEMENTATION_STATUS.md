@@ -57,11 +57,12 @@ The supported payable route accounts value before validation and returns typed o
 
 ## Release gates still open
 
-1. Fresh green CI for the final pushed implementation and documentation head.
-2. Focused visual wallet-extension checks for the corrected agreement route remain un-certified because Computer Use could not safely identify the current Windows browser URL; automated wallet/session coverage passes.
-3. Owner authorization remains required before enabling public custody; this is separate from merging repository code.
+1. Focused visual wallet-extension checks for the corrected agreement route remain un-certified because Computer Use could not safely identify the current Windows browser URL; automated wallet/session coverage passes.
+2. Owner authorization remains required before enabling public custody; this is separate from merging repository code.
+
+GitHub Actions CI run 114 passed for head `55ee535a04552f69f9bb2267da8d63c43157a0de`.
 
 The corrected frontend promotion is complete. The implementation branch is ready to
-mark PR #4 ready and merge after the final pushed CI result; public-custody promotion
+mark PR #4 ready and merge; public-custody promotion
 is not claimed.
 
