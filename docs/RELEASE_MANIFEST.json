@@ -52,7 +52,7 @@
     "vercel_promotion": "PREVIEW_ONLY_LATEST_GIT_BUILD_MISSING_BRANCH_ENV",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "GREEN_RUN_106_FOR_AF262CF",
+    "fresh_ci": "GREEN_RUN_107_FOR_6D54D3B",
     "merge_to_main": "NOT_REQUESTED"
   },
   "verdict": "NOT_RELEASED",
