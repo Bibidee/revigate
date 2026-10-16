@@ -1,57 +1,68 @@
 # Implementation status
 
-Recorded 2026-10-16 after the V4 noncustodial release merged into `main`.
+Recorded 2026-10-16 on branch `feat/revigate-funded-registry`, based on merged `main` `febfafa057488f6d67648d3869b9f0b3c726fde0`.
 
 ## Active architecture
 
-`contracts/revigate.py` is the noncustodial Revigate Registry. It authenticates GitHub rulebooks, records wallet acknowledgments and runs revision materiality assessment. It has no payable entry point, offer state, native-value ledger, wallet credit or withdrawal method. `contracts/archive/` retains the former escrow sources only as historical evidence.
-
-`get_config()` reports protocol `revigate-registry-v1`, chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`. The frontend rejects any other identity and every active write sends zero native GEN.
+`contracts/revigate.py` is the single contract. It retains authenticated GitHub source verification and GenLayer materiality consensus while restoring the historical offer mechanics as a gated ledger. `custody_enabled` and `public_custody` are constructor flags. The public frontend now points at the source-attested candidate, while production writes and public custody remain locked.
 
 ## Local verification
 
-- JavaScript: 23 passing.
-- Direct Mode: **43 passing** after the custody redesign.
-- TypeScript: **passing**.
-- ESLint: **passing**.
-- Production build: **passing**.
-- The new Direct Mode checks assert the noncustodial config, absence of payable and escrow methods, authenticated rulebook writes and acknowledgment state.
+- JavaScript tests: 23 passing.
+- Direct Mode: 46 passing.
+- TypeScript: passing.
+- ESLint: passing.
+- Production build: passing.
+- Focused agreement UI: canonical offer-page, ledger, wallet-credit and frozen-term reads are implemented; the workbench now consumes canonical offer terms after an offer read.
+- Wallet session: header and workbench share the same application session event, so disconnect, reconnect, account changes and chain changes clear or update write authority together.
 
-These checks do not prove hosted consensus. They do prove that the active source no longer exposes the unsafe custody surface.
+## Hosted source and funded evidence
 
-## Historical custody evidence
+Fresh disposable deployment:
 
-The former Studionet escrow deployment `0xD86A6C0a3949D2452bB8964e076983254375b5fE` and its probes remain historical only. Studionet retained attached value when payable execution failed and also retained value on unsupported incoming routes. Its outgoing child transfer could not be objectively classified from the available RPC. Do not send funds to that address or any Registry address.
+- Contract: `0x377509f00e0731df34673501C9cfE57e2FAEA843`
+- Deployment transaction: `0xa0cab84c1348c7a04be60e2a7b5dae6e7d4d402ecf81da4bb155da94e1758047`
+- Source SHA-256: `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`
+- Source attestation: exact local match; reviewed source commit `4357b6125d63f24927d03bcc97f09b4798aa5ec4`
+- Config: chain 61999, version 5, custody enabled for test, public custody false
 
-## Deployment state
+The signed baseline `313dfb0ac2b20f32954dd0ffb08fa60214ae34da` verified at epoch 1 from `rules/revigate-v2.md`; the MATERIAL candidate `376e447065b8a7efd1d26a60c6c9ac476bd1e567` advanced epoch 2. Disposable unlocked accounts A `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5` and B `0x7C65cE913F5665c11f1219048112C84CD6cb2a4B` completed the corrected-source funded paths:
 
-The exact noncustodial source was deployed with zero value to Studionet at `0x2E2065063b63F305512Ee66F0FEb305557c9143b`. Deployment transaction `0x89a3c601c97d936b5a068f3d62a5d623057f5d8349ca983fe871df9c300c94a6` finalized with majority agreement, successful execution and five `AGREE` votes. Deployed source SHA-256 `99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064` matches `contracts/revigate.py` byte-for-byte. Canonical `get_config()` returned chain `61999`, version `4`, custody `NONE`, escrow `NONE`, and transfer evidence `NONE`.
+- Offer 1: 1,000 wei funded and accepted; MATERIAL exit allocated 200 to A and 800 to B.
+- Offer 2: 777 wei funded and refunded while unaccepted.
+- Offer 4: 444 wei funded, accepted, matured and allocated to B.
+- Offer 3's 555 wei maturity allocation was submitted by the controlled publisher signer after maturity. Transaction `0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624` reached protocol `ACCEPTED` with five `AGREE` votes; the post-state readback is pending because the RPC later returned `ENOTFOUND`.
+- A withdrawals: 1,200 wei plus 1,332 wei; observed combined balance delta +2,532.
+- B withdrawal: 1,244 wei; observed balance delta +1,244 from the pre-candidate baseline.
+- Duplicate B withdrawal: execution ERROR; no second credit was dispatched.
+- An unknown-offer 1,000 wei funding attempt returned `REFUNDABLE_CREDIT_UNKNOWN_OFFER` and was later included in the publisher's withdrawals.
+- Ledger: deposited 4,331, held 555, credits 0, dispatched 3,776, accounted 4,331; the native contract balance is 555 wei, matching the still-held offer.
 
-The production frontend is bound to this test Registry. Only zero-value Registry actions are available; no user funds are accepted, and the historical escrow deployment is not rebound to the new source.
+The withdrawal parent hashes were submitted and canonical transfer records exist, but the RPC returned not-found/unavailable for those parent hashes during the child lookup. No child execution result is claimed and no replay is authorized. The observed wallet deltas are evidence of balance movement only; external settlement remains `PENDING_UNTIL_INDEPENDENTLY_VERIFIED`.
 
-Wallet A / publisher: `0x4A7D76b8C4668a3426d6d54eC24b41Fa87b532f5`.
-Wallet B / participant: `0xFf203Bb65942F50CB81A8AF98c5F5bd9d8a79b54`.
-Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5`.
+Exact transaction hashes, parent/child IDs, balance readbacks and canonical state are in [funded lifecycle evidence](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
-## Remaining limitations
+## Production frontend
 
-1. Rabby rejection passed on the public build for a zero-value `verify_program` request; the app displayed `User rejected the request`, created no hash and left Program 2 unchanged. Network switching, account switching and pending/unknown finality remain untested.
-2. Mobile layout, disconnect/reconnect and refresh recovery passed on the promoted build; this does not certify mobile wallet-extension behavior.
-3. No genuinely independent external security audit has been obtained; the existing review is an adversarial self-audit.
-4. A historical disposable observer transaction still lacks confirmed terminal finality.
+Vercel production deployment `dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7` is READY and
+aliased at [the-revigate.vercel.app](https://the-revigate.vercel.app). The
+production bundle contains the candidate address and the pages return HTTP 200.
+The contract remains `public_custody=false`, so this promotion does not accept
+user funds. Visual wallet-extension testing was not certified because Computer
+Use could not safely identify the current Windows browser URL.
 
-The active V4 hosted lifecycle is now complete using the archived verified
-fixture. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous,
-acknowledgment and reaffirmation all finalized successfully with zero value.
-Final program state is VERIFIED at epoch 3 with no pending review. The separate
-Wallet A signed-fixture lifecycle was run on the prior Registry V2 deployment
-and is retained as historical fixture evidence. PR #1 merged into `main` as
-`c38a61620a1a0625454e7b710272bea441ae4ecb`, and post-merge CI run 98 passed.
+## Custody decision
 
-The corrected frontend was promoted to `https://the-revigate.vercel.app` by production deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` from merged `main` commit `c38a61620a1a0625454e7b710272bea441ae4ecb`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. On 2026-10-16, the public production page was inspected after contract loading and displayed `Noncustodial Registry identity verified`; the identity warning was absent.
+The supported payable route accounts value before validation and returns typed outcomes for invalid offer, sender, deadline, amount and duplicate cases. This does not solve unsolicited no-calldata value, nonpayable value retention or a child transfer with no execution result. The historical GenLayer probes remain protocol-level evidence. Public custody is not enabled, and no user funds are accepted.
 
-Funded escrow scenarios are removed from the active product. They are not pending implementation work because the runtime evidence makes native custody unsafe.
+## Release gates still open
 
-## Release verdict
+1. Focused visual wallet-extension checks for the corrected agreement route remain un-certified because Computer Use could not safely identify the current Windows browser URL; automated wallet/session coverage passes.
+2. Owner authorization remains required before enabling public custody; this is separate from merging repository code.
 
-**SUBMISSION READY WITH DISCLOSED LIMITATIONS.** The custody blocker is addressed by removing native custody, and the V4 source is deployed, exactly attested, promoted and merged into `main`. The remaining browser coverage, independent audit and historical observer-finality limitation are disclosed above. No user funds are accepted, and this verdict does not claim an independent security certification or completed competition submission.
+GitHub Actions CI run 114 passed for head `55ee535a04552f69f9bb2267da8d63c43157a0de`.
+
+The corrected frontend promotion is complete. The implementation branch is ready to
+mark PR #4 ready and merge; public-custody promotion
+is not claimed.
+

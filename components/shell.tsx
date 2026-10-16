@@ -4,10 +4,17 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { getConfiguredRegistryAddress, verifyRevigateDeployment } from "@/lib/genlayer";
-import { disconnectWallet, requestWalletConnection, watchWallet } from "@/lib/wallet-session.mjs";
+import { disconnectWallet, requestWalletConnection, REVIGATE_WALLET_SESSION_EVENT, watchWallet } from "@/lib/wallet-session.mjs";
 
 type Provider = { request(args: { method: string; params?: unknown[] }): Promise<unknown>; on?(event: string, cb: (...args: unknown[]) => void): void; removeListener?(event: string, cb: (...args: unknown[]) => void): void };
-declare global { interface Window { ethereum?: Provider } }
+type WalletSessionState = { account: string; chainId: string; connected: boolean };
+declare global { interface Window { ethereum?: Provider; __revigateWalletSession?: WalletSessionState } }
+
+function publishWalletSession(state: { account: string; chainId: string }) {
+  const detail = { ...state, connected: Boolean(state.account) };
+  window.__revigateWalletSession = detail;
+  window.dispatchEvent(new CustomEvent(REVIGATE_WALLET_SESSION_EVENT, { detail }));
+}
 
 export function Shell({ children }: Readonly<{ children: ReactNode }>) {
   const [account, setAccount] = useState("");
@@ -22,11 +29,13 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     const session = watchWallet(provider, (next) => {
       if (appDisconnected.current) return;
       setAccount(next.account); setChain(next.chainId);
+      publishWalletSession(next);
     });
     walletSession.current = session;
     return session;
   }
   useEffect(() => {
+    publishWalletSession({ account: "", chainId: "" });
     const provider = window.ethereum;
     if (!provider) return;
     const session = attachWalletSession(provider);
@@ -38,7 +47,10 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
     catch (error) { queueMicrotask(() => setContractStatus(error instanceof Error ? error.message : "Invalid Registry configuration.")); return; }
     if (!registry) return;
     verifyRevigateDeployment()
-      .then(() => setContractStatus("Noncustodial Registry identity verified."))
+      .then(({ registryConfig }) => setContractStatus(
+        registryConfig.public_custody
+          ? "Revigate Registry identity verified; frontend financial controls available."
+          : "Revigate Registry identity verified; frontend financial controls remain locked."))
       .catch(() => setContractStatus("The configured contract could not be verified."));
   }, []);
   async function connect() {
@@ -49,6 +61,7 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
       const state = await requestWalletConnection(provider, session);
       appDisconnected.current = false;
       setAccount(state.account); setChain(state.chainId);
+      publishWalletSession(state);
       window.dispatchEvent(new Event("revigate:wallet-connect"));
       setMessage(state.chainId && Number.parseInt(state.chainId, 16) !== 61999 ? "Switch your wallet to GenLayer Studionet (chain 61999) before signing." : "");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Wallet connection was rejected."); }
@@ -63,6 +76,7 @@ export function Shell({ children }: Readonly<{ children: ReactNode }>) {
       if (walletSession.current === session) walletSession.current = undefined;
     }
     setAccount(""); setChain("");
+    publishWalletSession({ account: "", chainId: "" });
     window.dispatchEvent(new Event("revigate:wallet-disconnect"));
     setMessage("Revigate app session disconnected. Your wallet remains connected in Rabby.");
   }

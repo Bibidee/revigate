@@ -1,39 +1,37 @@
-# Registry V4 security and adversarial review
+# Revigate V5 security and adversarial review
 
-## Scope and review independence
+## Scope
 
-This is an adversarial self-audit performed during implementation. It is not a genuinely independent security review. The checked CI workflow does not make independent review a formal gate; an external review remains recommended assurance.
+This document is an adversarial self-audit. It is not an independent security review.
 
-## Protected properties
+## Implemented controls
 
-- Only the program publisher can verify its proposal or request a revision.
-- A verified source must be an exact, signed, branch member commit in the declared repository.
-- The fixed Git tree blob bytes must match the fetched rulebook and publisher manifest.
-- The manifest must nominate the actual publisher wallet on chain 61999.
-- A candidate must descend from the active commit, and the stored base digest must still match.
-- Invalid, missing, conflicting, malformed, or unavailable evidence resolves to INCONCLUSIVE.
-- Semantic output must use the exact changed clause identifiers and a bounded rationale.
-- Repeated successful decisions cannot advance state again; inconclusive and expired attempts are capped.
-- Writes remain disabled until an on-chain Registry V4 identity readback succeeds.
+- Signed GitHub commit, branch membership, Git tree blobs and publisher-manifest nomination are authenticated before a program becomes VERIFIED.
+- MATERIAL, NONMATERIAL and INCONCLUSIVE outcomes are distinct; only verified materiality changes advance the epoch.
+- Offer terms bind the program epoch, source SHA and document digest.
+- The supported payable route records every nonzero value as sender credit before ordinary validation and returns typed outcomes for unknown offer, wrong sender, duplicate, late and wrong amount.
+- Allocations conserve held value exactly. Credits are consumed before dispatch. Transfers are immutable pending claims with no automatic replay.
+- Recipient evidence is stored as an assertion and cannot restore credit or trigger a second transfer.
+- Production custody remains constructor-locked.
 
-## Adversarial cases exercised locally
+## Hosted evidence
 
-Unsigned or incomplete signature metadata, wrong repository identity, wrong branch ancestry, sibling commits, truncated and oversized provider data, rate limits and access denials, wrong blob bytes, duplicate clauses, malformed documents, unsafe paths, stale acknowledgments, unauthorized callers, same epoch source changes, deadline boundaries, replay, retry exhaustion, pagination pressure, wallet account or chain races, rejected signatures, missing finality evidence, browser refresh recovery, duplicate pending writes, and nonzero transaction value persistence are covered by automated fixtures. The latest local source correction adds transaction-specific pre-state reconciliation, distinct RPC-unavailable and canonical-unverified states, unique-record/state-transition checks, source program binding, mandatory decided candidate digests, and explicit unverified INCONCLUSIVE candidate handling.
+The disposable custody-enabled deployment `0x377509f00e0731df34673501C9cfE57e2FAEA843` matched source SHA `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`. It verified the signed baseline, executed a 1,000 wei funded acceptance, recorded a real MATERIAL epoch, allocated the 200/800 exit, refunded a 777 wei unaccepted offer, matured a 444 wei offer, and dispatched 3,776 wei across the publisher and participant credits. Offer 3's later 555 wei maturity allocation was accepted by five validators, but its post-state readback is pending RPC recovery. The exact transaction hashes, canonical readbacks and balance deltas are in the evidence JSON.
 
-The rulebook is quoted to the model as untrusted evidence. Model output is type checked and validators compare outcome, commit identities, digests, and changed IDs. The live GitHub-verified prompt-injection fixture now has a finalized hosted result; genuine validator disagreement remains unobserved.
+## Transfer finding
 
-## Residual risks
+The withdrawal parent hashes were submitted and canonical transfer records were created, but the RPC returned not-found/unavailable when those parent hashes were read back for child inspection. Wallet B and A balance deltas were +1,244 and +2,532 respectively. The balances are useful evidence of observed credit, but they do not replace the missing child execution classification. The contract leaves transfers in pending external settlement semantics; no replay is authorized.
 
-- GitHub availability, API behavior, signature policy, and validator web access can cause INCONCLUSIVE results. The deployed source later produced actual signed NONMATERIAL and MATERIAL outcomes, including the ambiguous MATERIAL review, so the earlier HTTP 403 was historical and its root cause remains unknown. A later source-exact disposable probe reached the same public commit endpoint and GitHub rate-limit endpoint with HTTP 200 and 42 of 60 core requests remaining. The new provider diagnostics and backoff are covered locally; no contract redeployment is needed for this frontend-only pass.
-- A GitHub verified signature proves GitHub's verification result; it does not prove legal authority over an organization.
-- Semantic materiality remains a judgment result and may disagree or remain undetermined.
-- Repository changes are invisible until the publisher submits a signed candidate.
-- Nonpayable entry points and zero value application writes do not prevent unsolicited native value at the network level.
-- The current V4 deployment `0x2E2065063b63F305512Ee66F0FEb305557c9143b` is byte-for-byte attested. Its signed zero-value lifecycle, using the archived verified fixture, completed source verification, NONMATERIAL, MATERIAL and ambiguous assessments, acknowledgment and reaffirmation. The actual outcomes were `NONMATERIAL`, `MATERIAL`, and `MATERIAL`, with canonical state at epoch 3. The separate Wallet A signed-fixture lifecycle was run on the prior Registry V2 deployment and is not V4 evidence. The production frontend is promoted by deployment `dpl_5rEFtXczB3meKeHNW46MUNMCCQ1w` from merged `main` commit `c38a616`; post-merge CI run `38848046925` (run 98) passed. External review remains unverified.
-- The corrected public build was exercised with Rabby on 2026-10-16. A zero-value `verify_program` request was explicitly rejected; the app displayed `User rejected the request`, created no transaction hash and left Program 2 unchanged. The earlier successful register and verify probes remain separate historical writes. On 2026-10-16, the public production page was also inspected after contract loading and visibly showed `Noncustodial Registry identity verified`.
-- A later read-only `eth_getTransactionByHash` call for that probe returned `-32001 Transaction not found`, while the known finalized Wallet B acknowledgment remained readable. The result is classified as an availability gap and does not establish success, failure, cancellation, rollback, or finality. No replay was attempted; the exact response is preserved in `evidence/local-observer-probe/2026-10-15-rpc-poll.json`.
-- A genuine GitHub-verified prompt-injection fixture is published at commit `e097fb48f8f4576c6c50e9d83061c8c1ad965919` on `revigate-rulebook-wallet-a-web`. Wallet A submitted request `0x401839a7a5636320447d38b74222aa682ad42820535679a430a3be539d837be7` and assessment `0x5b9a69827fde20433650f92545802424b69a6fb371a1c7b0b954d394f31c9427`. Review 6 finalized `NONMATERIAL`, with both source statuses `VERIFIED`, changed ID `__PREAMBLE__`, and rationale that no R-01–R-04 rule changed. The receipt was `MAJORITY_AGREE` with two validators idle after quorum; this is not a disagreement. Exact evidence is preserved in `evidence/github-access-diagnostic/2026-10-15-prompt-injection-signature.json`.
+## Protocol-level limitations
 
-## Current verdict
+GenLayer's documented failed child-transfer behavior means a finalized parent or child is not, by itself, proof of recipient credit. Unsolicited no-calldata transfers and value sent to nonpayable methods are outside the supported payable route and remain unassigned hazards. The known historical probes are retained; no automatic retry or fabricated recovery mechanism is claimed.
 
-SUBMISSION READY WITH DISCLOSED LIMITATIONS. Source authentication and the current signed Registry lifecycle pass, including the actual NONMATERIAL, MATERIAL and ambiguous outcomes. The corrected frontend is publicly promoted and PR #1 is merged into `main`; active writes remain zero-value and noncustodial. The reproduced Studionet payable rollback, no-calldata and wrong-method value failures are historical reasons native custody remains removed. Mobile layout, disconnect/reconnect, refresh recovery and the repeated zero-value Rabby rejection test passed on the promoted build. Network/account switching and pending/unknown finality remain untested. No independent external audit has been obtained, and the historical observer probe lacks confirmed terminal finality.
+## Open review gates
+
+- Obtain a runtime-supported child execution/finality proof or keep public custody disabled.
+- Complete the focused browser checks for the corrected `/agreements` route, wallet rejection/disconnect, account/network changes and pending/unknown recovery.
+- Obtain an independent security review.
+- Obtain a second approved PR review.
+- Run fresh CI for the final evidence commit.
+
+Release verdict remains NOT RELEASED until these gates are closed.

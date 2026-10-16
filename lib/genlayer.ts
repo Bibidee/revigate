@@ -18,6 +18,16 @@ export type Eip1193Provider = {
 export type PendingCanonicalState = Record<string, unknown>;
 export type PendingTransaction = { hash: Hash; account: string; method: string; args?: (string | number | boolean)[];
   value: string; submittedAt: number; contractAddress: string; chainId: number; preState?: PendingCanonicalState };
+export type RevigateConfig = {
+  chain_id?: number | string;
+  protocol?: string;
+  contract_version?: number | string;
+  custody?: string;
+  escrow?: string;
+  transfer_evidence?: string;
+  custody_enabled?: boolean;
+  public_custody?: boolean;
+};
 
 export function getConfiguredRegistryAddress(): Address | undefined {
   const value = (process.env.NEXT_PUBLIC_REVIGATE_CONTRACT || process.env.NEXT_PUBLIC_REVIGATE_REGISTRY)?.trim();
@@ -33,12 +43,13 @@ export async function verifyRevigateDeployment() {
   if (!registryAddress) throw new Error("A verified Revigate Registry address must be configured.");
   const registryConfig = await getReadClient().readContract({
     address: registryAddress, functionName: "get_config", args: [], jsonSafeReturn: true,
-  }) as { chain_id?: number | string; protocol?: string; contract_version?: number | string; custody?: string };
+  }) as RevigateConfig;
   if (Number(registryConfig.chain_id) !== STUDIONET_CHAIN_ID
       || registryConfig.protocol !== "revigate-registry-v1"
-      || Number(registryConfig.contract_version) !== 4
-      || registryConfig.custody !== "NONE") {
-    throw new Error("The configured contract is not the source-attested Revigate noncustodial Registry.");
+      || Number(registryConfig.contract_version) !== 5
+      || !["DISABLED", "SINGLE_CONTRACT_ESCROW"].includes(registryConfig.custody ?? "")
+      || registryConfig.custody_enabled !== (registryConfig.custody === "SINGLE_CONTRACT_ESCROW")) {
+    throw new Error("The configured contract is not the source-attested Revigate Registry V5.");
   }
   return { registryAddress, registryConfig };
 }

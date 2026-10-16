@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-10-16",
+  "deployment_id": "dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7",
+  "deployment_url": "https://the-revigate-8rgapj5t8-bibidees-projects.vercel.app",
+  "alias": "https://the-revigate.vercel.app",
+  "target": "production",
+  "ready_state": "READY",
+  "frontend_commit": "dcc8db1ec991a6bdaf487dda8194d52acefcf608",
+  "contract_address_embedded": "0x377509f00e0731df34673501C9cfE57e2FAEA843",
+  "checks": {
+    "homepage_http_status": 200,
+    "agreements_http_status": 200,
+    "homepage_uses_locked_financial_copy": true,
+    "agreements_uses_canonical_registry_ui": true,
+    "old_contract_not_deployed_copy_absent": true,
+    "candidate_address_found_in_production_bundle": true
+  },
+  "custody": {
+    "public_custody": false,
+    "production_financial_writes": "LOCKED",
+    "user_funds_accepted": false
+  },
+  "visual_wallet_extension_check": "UNAVAILABLE_COMPUTER_USE_COULD_NOT_SAFELY_IDENTIFY_BROWSER_URL",
+  "source": "npx vercel deploy --prod --yes from the committed release tree"
+}

@@ -1,8 +1,14 @@
 # Custody Failure Analysis
 
-**Verdict: NOT COMPLETE. Custody stays disabled.** This record separates the
-behavior observed on disposable Studionet contracts from the current local
-source changes. No GEN was sent to the deployed two-contract candidate pair.
+**Verdict: NOT COMPLETE. Custody stays disabled.** The active implementation is
+the single `contracts/revigate.py` contract. The former two-contract Vault is
+historical reference material only. This record separates behavior observed on
+disposable Studionet contracts from the current source. No public user funds
+were accepted.
+
+The current exact-source disposable candidate is
+`0x377509f00e0731df34673501C9cfE57e2FAEA843`, source SHA-256
+`A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`.
 
 ## Studionet behavior by route
 
@@ -17,19 +23,19 @@ Network: GenLayer Studionet, chain `61999`, RPC
 | Value attached to nonpayable `create_offer` | The transaction finalized with execution error but credited 1 wei to the disposable clone; the offer and ledger stayed unchanged. | Unsupported through the application, but still a reachable public-contract transaction route. | Keeping the UI call nonpayable does not protect a public address from manual callers. The probe demonstrates that wrong-method value can strand and cannot be safely recovered by the current contract. |
 | `withdraw_credit` to an ordinary EOA | One historical 1 wei child transaction was returned by the parent ID query with matching child hash, finalized status, Vault sender, EOA recipient and value. The separate historical EOA balance reading showed +1 wei. The current GenLayerJS read omitted the execution result and the RPC returned `Method not found` for `gen_getTransactionReceipt`. The contract record stayed `UNKNOWN_DELIVERY`. | One historically observed balance increase; current observer cannot prove execution success or attribute a balance delta generally. | Keep the observer at UNKNOWN unless exact execution evidence exists. Do not resend unknown transfers. Failed-child recovery, other recipient types, and a general objective receipt query remain unproven. |
 
-The three failure probes left three wei unaccounted in a disposable clone; none
-used the current Registry/Vault pair. Exact transactions and post-state reads
-are preserved in [Studionet evidence](STUDIONET_EVIDENCE.md).
+The three failure probes left three wei unaccounted in disposable historical
+clones; none used the current single-contract candidate. Exact transactions and
+post-state reads are preserved in [Studionet evidence](STUDIONET_EVIDENCE.md).
 
-## Local Vault mitigation
+## Current single-contract mitigation
 
-The current local Vault change handles ordinary rejection on the supported
-payable route. With custody enabled, `fund_offer` first records nonzero
+The current single-contract change handles ordinary rejection on the supported
+payable route. With custody enabled for a disposable test, `fund_offer` first records nonzero
 `gl.message.value` as a refundable credit belonging to the caller. Unknown
 offers, wrong funders, duplicate funding, expired funding, and wrong amounts
 return a specific marker without raising after value has entered the method.
 Only a valid exact-amount payment moves that credit into the offer's held
-balance. `get_wallet_credit(Address)` now exposes the Vault credit view required
+balance. `get_wallet_credit(Address)` exposes the wallet credit view required
 by the frontend, and its address argument is encoded as a GenLayer
 `CalldataAddress`.
 
@@ -50,7 +56,7 @@ had already debited the Vault, and the recipient balance rose by exactly one
 wei. No retry was sent. The isolated probe is not a paired candidate or release
 deployment.
 
-The current local candidate corrects the balance comparison in `get_ledger()`. Its
+The current single-contract candidate corrects the balance comparison in `get_ledger()`. Its
 `backing_liabilities` and compatibility field `accounted_liabilities` are
 `held + claimable`; `liability_shortfall` is the positive difference between
 that amount and the observed Vault balance. `unassigned_surplus` is balance in
@@ -61,23 +67,14 @@ remain zero because the contract has no authenticated transition for either
 state. `reconciled_total` includes held backing plus unresolved outgoing value,
 and `reconciliation_delta` checks that against recorded incoming value.
 
-The accounting correction has passed Direct Mode regression tests and was
-deployed byte-for-byte to an isolated custody-disabled test Vault at
-`0xcd13bfa0f323a806020790949D7454F26544daE7` (deployment transaction
-`0x314423da5145348606dd0519c5832b7f1e41affef457aabb87eebca261c35071`). Its
-deployed SHA256 is `C7DF6C4F18D276CFB0D52BA863CA960FC0982163BEAE4E2FCCF91F24866A6F55`;
-the prior Vault source is `0EF791B517CAA3898A1AC578AF3656B9584FBEDF6075514A3162315E3C20263F`.
-The new test address is not paired reciprocally or bound to the frontend, has
-custody disabled, and has received no attached GEN. Its initial `get_ledger`
-readback is zero across all fields. This proves deployment identity and the
-zero-state read, but does not exercise the corrected formula on live nonzero
-liabilities. The main custody-disabled pair and earlier isolated probe still
-run the prior formula; the one-wei discrepancy above is historical evidence for
-the accounting bug. This change does not recover the one wei
-stranded after a payable execution rollback, no-calldata incoming transfers,
-or value attached to a nonpayable method. Such retained value is unassigned
-surplus, not a shortfall in correctly backed held claims, and remains a custody
-blocker until recovery is proved.
+The accounting correction passed Direct Mode regression tests and is included
+in the exact-source single-contract deployment above. The hosted ledger
+readback was `deposited=4,331`, `held=555`, `credits=0`, `dispatched=3,776`,
+with native balance `555`, matching the still-held offer. This proves the
+current ledger formula for the exercised state. It does not recover value
+retained after a runtime rollback, no-calldata incoming transfer, or value
+attached to a nonpayable method. Such retained value is unassigned surplus and
+remains a custody blocker.
 
 The frontend now has a separate read-only observer status. It validates the
 parent-listed child hash against the returned child identity and checks sender,

@@ -1,9 +1,11 @@
-import { ContractUnavailable, PageIntro } from "@/components/content";
+import { PageIntro } from "@/components/content";
+import { AgreementsBrowser } from "@/components/agreements-browser";
+import { ContractWorkbench } from "@/components/contract-workbench";
 
 export default function AgreementsPage() {
   return <div className="page-wrap">
-    <PageIntro eyebrow="AGREEMENTS" title="Financial agreements removed." intro="The active Revigate release is a noncustodial Registry. It records reviewed rulebooks and acknowledgments without accepting or distributing GEN." />
-    <ContractUnavailable />
-    <p className="safety-copy">No offers, funding, refunds, exits, maturity payouts or withdrawals are available. Use <a href="/my-rules">My rules</a> for acknowledgments.</p>
+    <PageIntro eyebrow="AGREEMENTS" title="Canonical agreement records." intro="Read offers, frozen terms, deadlines, balances and claimable credits directly from the source-attested Registry. Writes remain gated by the deployment configuration and wallet session." />
+    <AgreementsBrowser />
+    <ContractWorkbench mode="participant" />
   </div>;
 }

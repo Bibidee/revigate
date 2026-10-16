@@ -1,0 +1,32 @@
+{
+  "network": "GenLayer Studionet",
+  "chain_id": 61999,
+  "contract": "0x377509f00e0731df34673501C9cfE57e2FAEA843",
+  "offer_id": 3,
+  "pre_state": {
+    "state": "ACCEPTED_LOCKED",
+    "held": 555,
+    "maturity": 1792136590,
+    "maturity_utc": "2026-10-16T07:43:10Z"
+  },
+  "transaction": {
+    "hash": "0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624",
+    "method": "allocate_matured_claim(3)",
+    "sender": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "value": 0,
+    "protocol_status": "ACCEPTED",
+    "result_name": "MAJORITY_AGREE",
+    "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+    "source": "user-provided terminal capture"
+  },
+  "post_state_readback": {
+    "status": "PENDING_RPC_RECHECK",
+    "error": "ENOTFOUND studio.genlayer.com",
+    "claim_state_not_inferred": true
+  },
+  "safety": {
+    "withdrawal_submitted": false,
+    "transfer_replay_submitted": false,
+    "public_custody": false
+  }
+}
