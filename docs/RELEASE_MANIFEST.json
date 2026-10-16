@@ -1,10 +1,10 @@
 {
-  "manifest_type": "revigate_single_contract_candidate",
+  "manifest_type": "revigate_single_contract_test_release",
   "recorded_at": "2026-10-16",
   "repository": "https://github.com/Bibidee/revigate",
-  "base_main": "febfafa057488f6d67648d3869b9f0b3c726fde0",
-  "branch": "feat/revigate-funded-registry",
-  "frontend_commit": "dcc8db1ec991a6bdaf487dda8194d52acefcf608",
+  "base_main": "5922d7c15d67479d9a9838f2b88bd38b9f753aef",
+  "branch": "feat/revigate-clausebid-standard-release",
+  "reviewed_source_commit": "0d9c80981f4657e2b3940ca01e68981cfc319b0f",
   "network": {
     "name": "GenLayer Studionet",
     "chain_id": 61999,
@@ -14,54 +14,47 @@
   "contract_version": 5,
   "source_sha256": "A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2",
   "deployment": {
-    "environment": "DISPOSABLE_STUDIONET_EXACT_COMMITTED_SOURCE",
-    "address": "0x377509f00e0731df34673501C9cfE57e2FAEA843",
-    "transaction": "0xa0cab84c1348c7a04be60e2a7b5dae6e7d4d402ecf81da4bb155da94e1758047",
-    "source_attestation": "EXACT_BYTE_MATCH_TO_COMMITTED_SOURCE",
+    "environment": "DISPOSABLE_STUDIONET_PUBLIC_ENABLED_EXACT_SOURCE",
+    "address": "0xb875126Ab537327d9E7E87488C89668C071d2997",
+    "transaction": "0xc446c989dd4da9954d9e9aedb4eacf999d8462fa4681dcc0c17dba50a54b84fe",
+    "source_attestation": "EXACT_BYTE_MATCH_TO_LOCAL_SOURCE",
     "config": {
       "chain_id": 61999,
       "protocol": "revigate-registry-v1",
       "custody": "SINGLE_CONTRACT_ESCROW",
       "custody_enabled": true,
-      "public_custody": false,
+      "public_custody": true,
       "transfer_evidence": "PENDING_EXTERNAL_SETTLEMENT"
     }
   },
-  "hosted_lifecycle": {
-    "fixture_branch": "revigate-rulebook-fixture-v2",
+  "hosted_demo": {
+    "evidence": "evidence/single-contract/2026-10-16-public-enabled-funded-demo.json",
     "baseline_sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
     "material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
-    "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
-    "participant": "0x7C65cE913F5665c11f1219048112C84CD6cb2a4B",
-    "status": "CORE_FUNDED_PATHS_VERIFIED_OFFER_3_CLAIM_ACCEPTED_POST_STATE_READBACK_PENDING_EXTERNAL_CHILD_EXECUTION_UNCLASSIFIED",
-    "evidence": "evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json",
-    "final_ledger": {
-      "deposited": 4331,
-      "held": 555,
-      "credits": 0,
-      "dispatched": 3776,
-      "contract_balance_after": 555
-    },
-    "recipient_balance_deltas": {
-      "publisher_a": 2532,
-      "participant_b": 1244
-    },
-    "child_status": "PARENT_LOOKUP_UNAVAILABLE_NO_CHILD_EXECUTION_READBACK",
-    "offer_3_maturity_claim": {
-      "transaction": "0xfe41b774cfe041d9e910c61d125b0305bb1e5b8f8bab1760e5cec3bebd83d624",
-      "protocol_status": "ACCEPTED",
-      "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
-      "post_state": "PENDING_RPC_RECHECK"
-    }
+    "publisher_a": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "participant_b": "0x7AFc209aD72153f6c8Ae7B8055bfbA6E7f4d5EfC",
+    "material_assessment": "MATERIAL",
+    "allocation_wei": {"publisher_a": 800000000000, "participant_b": 200000000000},
+    "ledger": {"deposited": 1000000000000, "held": 0, "credits": 0, "dispatched": 1000000000000, "accounted": 1000000000000, "contract_balance": 0},
+    "recipient_deltas": {"publisher_a": 800000000000, "participant_b": 200000000000},
+    "child_proof": "UNAVAILABLE; recipient deltas are observations only"
+  },
+  "local_checks": {
+    "javascript_tests": 23,
+    "direct_mode_tests": 46,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS"
   },
   "release_gates": {
-    "production_custody": "LOCKED",
-    "vercel_promotion": "READY_DPL_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7_ALIAS_THE_REVIGATE_VERCEL_APP",
+    "production_custody": "NOT_APPROVED",
+    "vercel_final_promotion": "READY_dpl_AswPntt31tSXGzDGzDNK8oLQhLMU_https://the-revigate.vercel.app",
+    "fresh_ci_for_final_commit": "GREEN_RUN_120_HEAD_2ACA3A1",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",
-    "fresh_ci": "GREEN_RUN_114_FOR_HEAD_55EE535",
-    "merge_to_main": "AUTHORIZED_READY_AFTER_GREEN_CI"
+    "browser_wallet_extension_matrix": "OPEN",
+    "merge_to_main": "BLOCKED_UNTIL_INDEPENDENT_REVIEW_AND_APPROVAL",
+    "pull_request": "https://github.com/Bibidee/revigate/pull/5"
   },
-  "verdict": "NOT_RELEASED",
-  "source_commit": "4357b6125d63f24927d03bcc97f09b4798aa5ec4"
+  "verdict": "PUBLIC_ENABLED_STUDIONET_TEST_DEMO_NOT_PRODUCTION_RELEASE"
 }

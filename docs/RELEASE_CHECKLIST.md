@@ -2,31 +2,40 @@
 
 ## Current verdict
 
-**NOT RELEASED.** This branch contains the single-contract Registry plus gated financial mechanics. The production deployment remains locked.
+**PUBLIC-ENABLED STUDIONET TEST DEMO — NOT A PRODUCTION RELEASE.**
 
-## Completed engineering
+The current one-contract source is deployed at
+`0xb875126Ab537327d9E7E87488C89668C071d2997` on chain 61999 with exact source
+attestation. The public flag was enabled only to exercise a disposable funded
+demo. No user funds may be accepted.
 
-- [x] Historical `5fb3a6d` offer mechanics recovered into the current Registry source.
-- [x] Archived Vault accounting and transfer-observer semantics reviewed.
-- [x] ClauseBid accounting, claims and settlement used as a reference without treating its successful lifecycle as proof of exceptional transfer safety.
-- [x] Custody flags, typed payable outcomes, held/credit/dispatched ledger and no-retry transfer records implemented.
-- [x] Direct Mode regression and adversarial tests pass (46).
-- [x] Studionet DNS/HTTPS diagnosis completed: sandbox DNS isolation; approved host path reaches HTTP 405 on the RPC endpoint and read-only calls succeed.
-- [x] Fresh source-attested custody-enabled disposable deployment completed.
-- [x] Signed baseline verification, funded acceptance, MATERIAL exit, unaccepted refund, maturity payout and duplicate rejection completed.
-- [x] Parent child IDs were read from the correct withdrawal parent; recipient balance deltas were independently observed.
-- [x] Corrected frontend promoted to `https://the-revigate.vercel.app` with the candidate address; production financial writes remain locked.
-- [x] `/agreements` now reads canonical offers, frozen terms, deadlines, ledger totals and wallet credit; the workbench adopts canonical offer terms after a read.
-- [x] Offer 3 maturity allocation was accepted by five validators; post-state readback remains pending while the RPC is unavailable.
+## Completed
 
-## Required before public custody or release
+- [x] Registry authentication, signed publisher manifest and GenLayer materiality consensus retained.
+- [x] Historical agreement mechanics integrated into the same contract.
+- [x] Local CLI pinned to GenLayer `0.39.1`; typecheck, lint, 23 JavaScript tests, 46 Direct Mode tests and build pass.
+- [x] Fresh source-attested Studionet deployment completed.
+- [x] Baseline registration and verification completed at epoch 1.
+- [x] Actual funded offer, acceptance, invalid-digest negative test and material revision completed.
+- [x] Participant reaffirmation and MATERIAL exit allocation completed.
+- [x] Both allocations were withdrawn once; ledger reconciled and observed recipient balance deltas matched.
+- [x] Frontend uses human GEN/date inputs, canonical state gates, pending/finality handling and no automatic replay.
 
-- [ ] Resolve child `NO_MAJORITY`/missing execution-result classification with a supported runtime proof or keep custody disabled.
-- [ ] Classify unsolicited no-calldata and wrong-method value behavior for this exact source without repeating a destructive probe without a new hypothesis.
-- [ ] Complete focused browser and wallet-extension checks for `/agreements`, wallet rejection/disconnect, account/network changes and pending/unknown recovery.
-- [ ] Independent security review remains outside this focused repository release pass.
-- [ ] Second approved PR review, if repository protection requires it.
-- [x] Fresh green CI run 114 for pushed head `55ee535a04552f69f9bb2267da8d63c43157a0de`.
-- [x] Owner authorized this release pass to mark PR #4 ready and merge repository code; public custody remains separately locked.
+## Evidence boundary
 
-The public application must remain locked until the custody-critical gates pass. Exact hosted evidence is in `evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json`.
+- [ ] Child transaction identity and independent child finality are not exposed by the current Studionet read path. Transfer records remain `DISPATCHED_PENDING_EXTERNAL_SETTLEMENT`.
+- [ ] Failed payable calls, unsolicited native transfers, no-calldata transfers and wrong-method value recovery remain runtime-level limitations.
+- [ ] Recipient balance deltas are observations and do not certify every exceptional delivery path.
+- [ ] Full 52-scenario hosted/browser coverage, mobile and wallet-extension rejection/disconnect checks were not run in this automation pass.
+- [ ] Independent security review is not available; existing work is adversarial self-audit.
+
+## Repository and deployment gates
+
+- [x] Fresh CI run 120 passed for the final release tree at head `2aca3a1d2ee4202404331d0aa4b9ae133b580057`.
+- [ ] Second approved PR review, if required by repository settings.
+- [x] Vercel production promotion completed as `dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
+- [ ] Explicit owner approval before any production custody decision.
+- [ ] Merge to `main` only after the preceding review and CI gates pass.
+
+The exact live hashes and canonical reads are in
+[2026-10-16 public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).

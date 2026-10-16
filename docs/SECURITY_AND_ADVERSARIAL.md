@@ -1,37 +1,49 @@
-# Revigate V5 security and adversarial review
+# Revigate security and adversarial review
 
 ## Scope
 
-This document is an adversarial self-audit. It is not an independent security review.
+This is an adversarial self-audit. It is not an independent security review.
 
 ## Implemented controls
 
-- Signed GitHub commit, branch membership, Git tree blobs and publisher-manifest nomination are authenticated before a program becomes VERIFIED.
-- MATERIAL, NONMATERIAL and INCONCLUSIVE outcomes are distinct; only verified materiality changes advance the epoch.
-- Offer terms bind the program epoch, source SHA and document digest.
-- The supported payable route records every nonzero value as sender credit before ordinary validation and returns typed outcomes for unknown offer, wrong sender, duplicate, late and wrong amount.
-- Allocations conserve held value exactly. Credits are consumed before dispatch. Transfers are immutable pending claims with no automatic replay.
-- Recipient evidence is stored as an assertion and cannot restore credit or trigger a second transfer.
-- Production custody remains constructor-locked.
+- Signed GitHub source and nominated publisher are authenticated before a
+  program becomes verified.
+- MATERIAL, NONMATERIAL and INCONCLUSIVE outcomes are separate states.
+- Offer terms bind the source SHA, document digest and program epoch.
+- The supported payable route records value before ordinary validation and
+  exposes typed refundable-credit outcomes.
+- Allocations conserve held value; credits are consumed before dispatch; no
+  automatic transfer replay is possible from observer results.
+- Frontend action availability is derived from canonical offer state and wallet
+  role, with pending and unknown transaction states kept distinct.
 
-## Hosted evidence
+## Live evidence
 
-The disposable custody-enabled deployment `0x377509f00e0731df34673501C9cfE57e2FAEA843` matched source SHA `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`. It verified the signed baseline, executed a 1,000 wei funded acceptance, recorded a real MATERIAL epoch, allocated the 200/800 exit, refunded a 777 wei unaccepted offer, matured a 444 wei offer, and dispatched 3,776 wei across the publisher and participant credits. Offer 3's later 555 wei maturity allocation was accepted by five validators, but its post-state readback is pending RPC recovery. The exact transaction hashes, canonical readbacks and balance deltas are in the evidence JSON.
+The exact source-attested address is
+`0xb875126Ab537327d9E7E87488C89668C071d2997`. The hosted demo registered and
+verified the signed baseline, funded and accepted an offer, produced an actual
+MATERIAL revision, reaffirmed the participant, allocated an 80/20 exit and
+submitted both withdrawals. The ledger reconciled to zero held value and the
+observed wallet deltas matched the allocations.
 
-## Transfer finding
+The evidence file records every transaction hash and readback:
+[2026-10-16 public-enabled funded demo](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
 
-The withdrawal parent hashes were submitted and canonical transfer records were created, but the RPC returned not-found/unavailable when those parent hashes were read back for child inspection. Wallet B and A balance deltas were +1,244 and +2,532 respectively. The balances are useful evidence of observed credit, but they do not replace the missing child execution classification. The contract leaves transfers in pending external settlement semantics; no replay is authorized.
+## Unresolved protocol limits
 
-## Protocol-level limitations
+GenLayer's failed child-transfer behavior means parent or child finality alone
+does not prove recipient credit. The current endpoint exposes neither a
+separately verifiable child identity nor a child finality record for these
+transfers. No-calldata transfers, wrong-method value and failed payable
+execution remain unsupported recovery paths. The live balance deltas are
+observations only; they do not prove all exceptional paths safe.
 
-GenLayer's documented failed child-transfer behavior means a finalized parent or child is not, by itself, proof of recipient credit. Unsolicited no-calldata transfers and value sent to nonpayable methods are outside the supported payable route and remain unassigned hazards. The known historical probes are retained; no automatic retry or fabricated recovery mechanism is claimed.
+## Open release gates
 
-## Open review gates
+- Full browser and wallet-extension rejection/disconnect/mobile coverage.
+- Independent security review.
+- Second approved PR review and fresh CI for the final evidence commit.
+- Final Vercel promotion and explicit owner approval before any production
+  custody decision.
 
-- Obtain a runtime-supported child execution/finality proof or keep public custody disabled.
-- Complete the focused browser checks for the corrected `/agreements` route, wallet rejection/disconnect, account/network changes and pending/unknown recovery.
-- Obtain an independent security review.
-- Obtain a second approved PR review.
-- Run fresh CI for the final evidence commit.
-
-Release verdict remains NOT RELEASED until these gates are closed.
+The verdict is a public-enabled Studionet test demo, not a production release.

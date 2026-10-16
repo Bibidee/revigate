@@ -1,24 +1,22 @@
 # Revigate risk register
 
-This register describes the active single-contract candidate on branch
-`feat/revigate-funded-registry`. Historical Registry/Vault probes remain linked
-as evidence, but they are not the current application architecture.
+This register covers the current one-contract Studionet test deployment. It is
+not a production custody approval.
 
-| Risk | Severity | Current evidence and mitigation | Residual release risk |
+| Risk | Severity | Evidence and mitigation | Residual risk |
 |---|---|---|---|
-| Incoming value can arrive through an unsupported route | Critical | The supported `fund_offer` route credits the sender before ordinary validation and returns typed outcomes for unknown, wrong-funder, duplicate, expired and wrong-amount cases. Historical Studionet probes still show that a payable runtime error, no-calldata transfer and value attached to a nonpayable method can retain native value while rolling back or bypassing accounting. | Runtime-supported recovery for unsolicited or failed-entry value is unproven. Keep public custody disabled and do not call unassigned value user credit. |
-| Outgoing child delivery is not objectively classifiable | Critical | The contract debits credits once, records a canonical transfer and never authorizes replay. The frontend validates the parent-listed child identity, sender, recipient, value and finality. The current Studionet endpoint returned no execution result and `gen_getTransactionReceipt` returned `Method not found`; recipient deltas are separate observations. | Child execution success, non-delivery recovery and independent recipient attribution remain open. No automatic retry is permitted. |
-| Ledger backing is misstated after a payout | High | The single-contract ledger separates held/claimable backing from emitted pending transfers. Exact-source hosted readback reconciled deposited 4,331, held 555, credits 0, dispatched 3,776 and native balance 555. Offer 3's later maturity allocation was accepted by five validators, but post-state readback is pending RPC recovery. | Do not infer the post-claim ledger until canonical state is read back; public custody is not enabled. |
-| Registry source or publisher identity is false or stale | High | Exact GitHub-signed baseline verification succeeded at epoch 1 and the MATERIAL candidate advanced epoch 2 on the exact source-attested deployment. The contract binds source, manifest and nominated publisher. | A fresh signed NONMATERIAL/ambiguous lifecycle on this funded candidate and independent review remain release gates. |
-| Materiality result is unsafe or disputed | High | GenLayer consensus produced an actual MATERIAL result for the hosted candidate. Direct Mode covers MATERIAL, NONMATERIAL and INCONCLUSIVE transitions. | Prompt-injection/disagreement coverage and independent security review remain open; never manufacture a validator outcome. |
-| Offer state or payout can be replayed | High | Direct Mode covers one-time funding, acceptance, refund, material allocation, maturity allocation, credit consumption and duplicate withdrawal rejection. Hosted duplicate withdrawal finalized with execution error and did not dispatch a second credit. | Full hosted multi-wallet/browser matrix and long-maturity closeout remain open. |
-| Frontend can point to an unapproved contract | High | Frontend configuration checks chain 61999, protocol `revigate-registry-v1`, version 5, custody flags and source attestation before writes. Production deployment `dpl_Fw6DHiUt5Kaq9YmxEpf52GvZLrd7` contains the candidate address and remains write-locked. | Public custody still requires maturity, transfer-delivery and owner authorization gates. |
-| GitHub release controls are incomplete | High | Current branch is pushed to PR #4; the focused implementation is committed and signed. Main protection still depends on the final CI result and repository settings. | Merge remains pending the final CI result; public custody is a separate locked decision. |
-| Dependency or source drift invalidates evidence | Medium | Local CLI is pinned to 0.39.1; `npm ci`, typecheck, lint, 23 JS tests, 46 Direct Mode tests and production build pass. Source attestation hashes the exact deployed `contracts/revigate.py`. | A later source or frontend change requires a new attestation, CI run and review; do not reuse this candidate evidence for another source. |
+| Unsupported incoming value | Critical | The supported `fund_offer` route accounts value before validation and returns typed outcomes. Historical probes show that no-calldata, wrong-method and failed payable routes can retain value outside application accounting. | Runtime recovery is unproven. Do not treat unassigned value as user credit. |
+| Outgoing child delivery | Critical | Each withdrawal debits credit once and records an immutable pending transfer. Both live demo recipient balances increased by the exact allocations. | The runtime did not expose a separately verifiable child identity/finality record. No replay is authorized. |
+| Ledger backing | High | Live post-withdrawal readback: deposited 1,000,000,000,000; held 0; credits 0; dispatched 1,000,000,000,000; accounted 1,000,000,000,000; contract balance 0. | The accounting snapshot does not prove exceptional transfer recovery. |
+| Source or publisher identity | High | Exact source SHA and signed baseline were attested on the deployed address; material candidate advanced the program to epoch 2. | A future source change requires a new attestation and lifecycle. |
+| Materiality result | High | Hosted validators returned an actual `MATERIAL` result with five agreeing votes. | Disagreement, prompt-injection and inconclusive outcomes still require independent review coverage. |
+| Replay or duplicate payout | High | Credit is consumed before dispatch and transfer records are immutable; frontend never retries automatically. | Full hosted/browser matrix remains incomplete. |
+| Frontend misconfiguration | High | Frontend validates chain, protocol, version and custody flags before writes and targets the exact current address. | Production promotion of the final commit is still a release gate. |
+| Review and governance | High | Local adversarial audit and automated checks are documented. | No independent security review or second PR approval is available yet. |
 
 ## Release posture
 
-Keep `public_custody=false`, keep production contract writes locked, and do not
-accept user funds. The implementation and disposable funded evidence are real,
-but the protocol-level exceptional transfer paths, full hosted/browser coverage,
-independent review and merge gates are still unresolved.
+Keep this address and the public flag limited to disposable Studionet testing.
+Do not accept user funds or call the live balance observations a custody
+certification. The older V4/Vault records are historical and do not supersede
+the current evidence.
