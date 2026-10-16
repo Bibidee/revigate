@@ -48,7 +48,7 @@
   },
   "release_gates": {
     "production_custody": "NOT_APPROVED",
-    "vercel_final_promotion": "OPEN",
+    "vercel_final_promotion": "READY_dpl_AswPntt31tSXGzDGzDNK8oLQhLMU_https://the-revigate.vercel.app",
     "fresh_ci_for_final_commit": "OPEN",
     "independent_security_review": "OPEN",
     "second_pr_review": "OPEN",

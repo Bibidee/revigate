@@ -33,7 +33,7 @@ demo. No user funds may be accepted.
 
 - [ ] Fresh CI for the final evidence commit.
 - [ ] Second approved PR review, if required by repository settings.
-- [ ] Vercel production promotion of the final frontend commit.
+- [x] Vercel production promotion completed as `dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
 - [ ] Explicit owner approval before any production custody decision.
 - [ ] Merge to `main` only after the preceding review and CI gates pass.
 

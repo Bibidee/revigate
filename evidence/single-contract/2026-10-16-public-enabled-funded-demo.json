@@ -118,5 +118,12 @@
     "real_wallet_extension_run": "NOT EXECUTED_IN_THIS_AUTOMATION_PASS",
     "independent_security_review": "NOT AVAILABLE; existing review is adversarial self-audit"
   },
+  "frontend_promotion": {
+    "deployment": "dpl_AswPntt31tSXGzDGzDNK8oLQhLMU",
+    "alias": "https://the-revigate.vercel.app",
+    "routes_checked": ["/", "/agreements", "/about"],
+    "http_status": 200,
+    "current_address_in_bundle": true
+  },
   "release_boundary": "PUBLIC-ENABLED STUDIONET TEST DEMO ONLY; DO NOT ACCEPT USER FUNDS OR CALL THIS PRODUCTION-SAFE"
 }

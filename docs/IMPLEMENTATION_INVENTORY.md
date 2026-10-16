@@ -14,7 +14,8 @@ Fresh disposable Studionet candidate: `0xb875126Ab537327d9E7E87488C89668C071d299
 
 ## Release boundary
 
-The final frontend is configured for the candidate address and will be promoted
-to `https://the-revigate.vercel.app` after the final evidence commit. The public
-flag is limited to this Studionet demo; no user funds are accepted. The
+The final frontend was promoted to `https://the-revigate.vercel.app` as
+`dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`; the root, `/agreements` and `/about` routes
+returned HTTP 200 and the current address was found in the deployed bundle. The
+public flag is limited to this Studionet demo; no user funds are accepted. The
 historical V4 address and all earlier Vault addresses must not receive funds.

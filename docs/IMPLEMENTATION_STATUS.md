@@ -49,6 +49,12 @@ not a certification of every exceptional transfer path.
 Exact hashes and readbacks are in
 [the public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
 
+The corrected frontend was promoted to Vercel production as deployment
+`dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`, aliased at
+`https://the-revigate.vercel.app`. The root, `/agreements` and `/about` routes
+returned HTTP 200, and the current contract address was found in the deployed
+JavaScript bundle.
+
 ## Release boundary
 
 This is a public-enabled **Studionet test demo**, not a production custody
