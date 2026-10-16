@@ -27,9 +27,12 @@ authorized.
 
 Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
-The corrected frontend is targeted for Vercel alias
-`https://the-revigate.vercel.app`; the final promotion and public-bundle check
-remain release gates for this branch.
+The refined frontend is live at Vercel alias `https://the-revigate.vercel.app`
+as deployment `dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb`. The root, `/agreements` and
+`/about` routes returned HTTP 200, and the production bundle contains the
+current Registry address. A read-only Studionet `get_config` read returned
+chain 61999, contract version 5, `custody_enabled=true` and
+`public_custody=true` for this disposable test deployment.
 
 ## Release boundary
 

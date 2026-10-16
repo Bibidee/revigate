@@ -31,11 +31,11 @@ demo. No user funds may be accepted.
 
 ## Repository and deployment gates
 
-- [x] Fresh CI run 120 passed for the final release tree at head `2aca3a1d2ee4202404331d0aa4b9ae133b580057`.
+- [x] Fresh CI run 127 passed for the UI refinement head `161259f5c9de7df52d3dc0190c6d4ed8f47b2bc3`.
 - [ ] Second approved PR review, if required by repository settings.
-- [x] Vercel production promotion completed as `dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
+- [x] Vercel production promotion completed as `dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
 - [ ] Explicit owner approval before any production custody decision.
-- [x] PR #5 merged into `main` at `2b5ceca67bc84d969084cc48e0cd9858aeddc4ab` after the green CI gate. Independent review and browser verification remain disclosed limitations.
+- [x] PR #8 merged into `main` at `e4a906005c7ceb0a6a414ecf44963c69286fd0e5` after the green CI gate. Independent review and browser verification remain disclosed limitations.
 
 The exact live hashes and canonical reads are in
 [2026-10-16 public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).

@@ -1,7 +1,8 @@
 # Implementation status
 
-Recorded 2026-10-16 on `feat/revigate-clausebid-standard-release`, based on
-`origin/main` `5922d7c15d67479d9a9838f2b88bd38b9f753aef`.
+Recorded 2026-10-16 on `main` at
+`e4a906005c7ceb0a6a414ecf44963c69286fd0e5` after the agreement workspace
+refinement merged through PR #8.
 
 ## Current architecture
 
@@ -49,8 +50,8 @@ not a certification of every exceptional transfer path.
 Exact hashes and readbacks are in
 [the public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
 
-The corrected frontend was promoted to Vercel production as deployment
-`dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`, aliased at
+The refined frontend was promoted to Vercel production as deployment
+`dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb`, aliased at
 `https://the-revigate.vercel.app`. The root, `/agreements` and `/about` routes
 returned HTTP 200, and the current contract address was found in the deployed
 JavaScript bundle.
@@ -67,6 +68,6 @@ were not completed in this automation pass.
 The previous V4/Vault deployments and older funded evidence remain historical;
 their addresses must not be substituted for the exact deployment above.
 
-GitHub Actions CI run 120 passed for the final release tree at head `2aca3a1d2ee4202404331d0aa4b9ae133b580057`.
-PR #5 was merged into `main` at merge commit
-`2b5ceca67bc84d969084cc48e0cd9858aeddc4ab`.
+GitHub Actions CI run 127 passed for the UI refinement head
+`161259f5c9de7df52d3dc0190c6d4ed8f47b2bc3`. PR #8 was merged into `main` at
+merge commit `e4a906005c7ceb0a6a414ecf44963c69286fd0e5`.
