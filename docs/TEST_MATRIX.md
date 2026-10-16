@@ -16,4 +16,4 @@ The prior single-contract escrow evidence remains historical: failed payable exe
 
 ## Browser and release gates
 
-Wallet connection, disconnection, network/account switching, rejection, pending/unknown finality, refresh recovery and mobile checks still need fresh evidence on the promoted build. The current browser safety check could not inspect the active Brave URL. Independent security review, second PR approval, green CI for the final evidence commit and merge into `main` remain open. Only zero-value Registry writes are available and no funds are accepted.
+Wallet connection, disconnection, network/account switching, rejection, pending/unknown finality, refresh recovery and mobile checks still need fresh evidence on the promoted build. The current browser safety check could not inspect the active Brave URL. Green CI for the latest evidence commit is complete (run 94, head `a8d4d905f37d12753660b5a651a42ad3677c85ec`). Independent security review, second PR approval and merge into `main` remain open. Only zero-value Registry writes are available and no funds are accepted.

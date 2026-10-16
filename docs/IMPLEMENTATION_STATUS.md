@@ -1,6 +1,6 @@
 # Implementation status
 
-Recorded 2026-10-15 after removing native custody from the active release.
+Recorded 2026-10-16 after removing native custody from the active release.
 
 ## Active architecture
 
@@ -42,7 +42,7 @@ Unlocked deployer used for disposable tests only: `0x527dA5f7022f14f7105E5f06cEc
 
 The V4 hosted lifecycle is now complete. Registration, source verification, NONMATERIAL, MATERIAL, ambiguous, acknowledgment and reaffirmation all finalized successfully with zero value. Final program state is VERIFIED at epoch 3 with no pending review.
 
-The corrected frontend was promoted to `https://the-revigate.vercel.app` from commit `d73c78f37ba7240fbadea06d435b7a3550e36e38`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. Runtime browser disappearance of the identity warning remains unverified because the browser safety check stopped before reading the live tab.
+The corrected frontend was promoted to `https://the-revigate.vercel.app` from commit `3f1c39595fd7556e595789914e4228835bb1fc2b`; the Vercel build passed `npm ci`, TypeScript and the production build. A public HTTP read returned 200 and the deployed JavaScript bundle contains the V4 Registry address. Runtime browser disappearance of the identity warning remains unverified because the browser safety check stopped before reading the live tab.
 
 Funded escrow scenarios are removed from the active product. They are not pending implementation work because the runtime evidence makes native custody unsafe.
 

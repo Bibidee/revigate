@@ -1,6 +1,6 @@
 {
   "manifest_type": "revigate_noncustodial_release",
-  "recorded_at": "2026-10-15",
+  "recorded_at": "2026-10-16",
   "repository": "https://github.com/Bibidee/revigate",
   "branch": "codex/revigate-remediation-2026-10-14",
   "pull_request": {
@@ -14,7 +14,7 @@
     "rpc": "https://studio.genlayer.com/api"
   },
   "active_contract": "contracts/revigate.py",
-  "source_commit": "d73c78f37ba7240fbadea06d435b7a3550e36e38",
+  "source_commit": "3f1c39595fd7556e595789914e4228835bb1fc2b",
   "source_sha256": "99DB611FC5552F26F22DC3DECC9F7A7676C0A676AD587D593D62792EDEE73064",
   "deployment": {
     "environment": "DISPOSABLE_STUDIONET_TEST",
@@ -107,9 +107,9 @@
   "release_verdict": "NOT_RELEASED_PENDING_BROWSER_INDEPENDENT_REVIEW_AND_SECOND_APPROVAL",
   "ci": {
     "workflow": "CI",
-    "run_id": 38826218983,
-    "url": "https://github.com/Bibidee/revigate/actions/runs/38826218983",
-    "head_sha": "c302d23b9c9601d6008f43c37c59e7b4753a4750",
+    "run_id": 38826581786,
+    "url": "https://github.com/Bibidee/revigate/actions/runs/38826581786",
+    "head_sha": "a8d4d905f37d12753660b5a651a42ad3677c85ec",
     "conclusion": "SUCCESS"
   },
   "vercel_preview": {
