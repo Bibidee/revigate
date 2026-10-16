@@ -31,7 +31,7 @@ demo. No user funds may be accepted.
 
 ## Repository and deployment gates
 
-- [x] Fresh CI run 119 passed for final docs head `3e07c22c2bf44b4993d472132bd77ba8bc8d70ab`.
+- [x] Fresh CI run 120 passed for the final release tree at head `2aca3a1d2ee4202404331d0aa4b9ae133b580057`.
 - [ ] Second approved PR review, if required by repository settings.
 - [x] Vercel production promotion completed as `dpl_AswPntt31tSXGzDGzDNK8oLQhLMU`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
 - [ ] Explicit owner approval before any production custody decision.
