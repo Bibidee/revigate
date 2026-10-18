@@ -1122,8 +1122,10 @@ class Revigate(gl.Contract):
         return hashlib.sha256("|".join(fields).encode("utf-8")).hexdigest()
 
     def _first_material_after(self, program: Program, epoch: u64):
-        if program.first_material_at > u64(0) and program.epoch > epoch:
-            return MaterialEvent(epoch=program.epoch, at=program.first_material_at)
+        # ``first_material_at`` is a program-level historical summary.  It is
+        # intentionally not used to reconstruct a later event: an offer that
+        # acknowledged epoch N must receive the timestamp of the first event
+        # after N, rather than the timestamp of the program's first event.
         count = int(program.material_event_count)
         for index in range(1, count + 1):
             event = self.material_events.get(str(program.id) + ":" + str(index))
@@ -1545,3 +1547,4 @@ class Revigate(gl.Contract):
                 if offer is not None:
                     items.append(self._offer_view(offer))
         return {"items": items, "next_cursor": cursor if cursor > 1 else u256(0)}
+
