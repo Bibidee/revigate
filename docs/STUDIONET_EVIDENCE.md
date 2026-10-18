@@ -1,8 +1,29 @@
 # Studionet evidence
 
-## Current one-contract public-enabled test demo — 2026-10-16
+## Current V5 source-attested deployment — 2026-10-18
 
-The current branch deploys one source-attested contract on GenLayer Studionet
+The current deployment is the exact source-attested V5 Intelligent Contract on GenLayer Studionet 61999. Its public custody flag remains false; controlled contract methods are not a production custody approval.
+
+| Item | Evidence |
+|---|---|
+| Contract | `0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684` |
+| Deployment | `0x710d4a88bdf535754daff67fbba4a394e4ddc9ef18d11e0acec666ec0072ed68` |
+| Source SHA-256 | `ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88` |
+| Config | chain 61999, version 5, custody enabled for controlled testing, public custody false |
+| Constructor args | `[true, false]` |
+| Merge commit | `44121ab5f07f4a9048f73268cdfda1daf14f6562` (PR #10) |
+| CI | run 131 passed for PR #10 head `af449658e4e051200d2d11e62a1abb40d3ba8fef` |
+
+The signed baseline and NONMATERIAL review finalized, then the first signed MATERIAL review finalized as `MATERIAL` and advanced Program 1 to epoch 2. Offer 1 was funded with exactly 555 wei by the registered publisher and accepted by the controlled participant. After the first event's 3,600-second window expired on real Studionet time, the second signed candidate finalized as `MATERIAL` and advanced the program to epoch 3. The participant's material exit finalized successfully.
+
+The later event timestamp was used for the exit window: event 1 was at `1792307579` and its window expired at `1792311179`; event 2 was at `1792311710`, and the canonical offer exit deadline was `1792315310` (`event 2 + 3600`). Final offer state is `MATERIAL_EXIT_ALLOCATED`, with publisher credit 444 wei and participant credit 111 wei. The ledger reconciles `deposited=555` with `held=0`, `credits=555`, `dispatched=0`, and `accounted=555`; the contract native balance read back as 555 wei. No withdrawal was submitted, so no child-transfer delivery is claimed.
+
+Machine-readable evidence: [2026-10-18 V5 two-material funded regression](../evidence/single-contract/2026-10-18-v5-two-material-funded-regression.json).
+
+The earlier public-enabled demo below is historical and must not be read as the current configuration or as production custody certification.
+## Historical public-enabled one-contract test demo — 2026-10-16
+
+The historical branch deployed one source-attested contract on GenLayer Studionet
 61999. This is a disposable funded test; it is not production and no user
 funds were accepted.
 
@@ -27,12 +48,12 @@ authorized.
 
 Machine-readable evidence: [2026-10-16 funded lifecycle](../evidence/single-contract/2026-10-16-funded-studionet-lifecycle.json).
 
-The refined frontend is live at Vercel alias `https://the-revigate.vercel.app`
+The refined frontend was live at Vercel alias `https://the-revigate.vercel.app`
 as deployment `dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb`. The root, `/agreements` and
 `/about` routes returned HTTP 200, and the production bundle contains the
 current Registry address. A read-only Studionet `get_config` read returned
 chain 61999, contract version 5, `custody_enabled=true` and
-`public_custody=true` for this disposable test deployment.
+`public_custody=true` for that historical disposable test deployment.
 
 ## Release boundary
 

@@ -1,73 +1,66 @@
 # Implementation status
 
-Recorded 2026-10-16 on `main` at
-`e4a906005c7ceb0a6a414ecf44963c69286fd0e5` after the agreement workspace
-refinement merged through PR #8.
+Recorded 2026-10-18 after PR #10 merged into `main` at
+`44121ab5f07f4a9048f73268cdfda1daf14f6562`.
 
 ## Current architecture
 
 `contracts/revigate.py` is the single Intelligent Contract. It retains signed
-GitHub source authentication, GenLayer materiality consensus, acknowledgments,
-and the historical agreement ledger. The current deployment is a disposable
-Studionet test deployment with `custody_enabled=true` and `public_custody=true`.
-That flag enables the controlled test only; it is not a production-safety claim.
+GitHub source authentication, GenLayer materiality consensus, participant
+acknowledgments and the native GEN agreement ledger. The archived two-contract
+Vault is historical reference material and is not the active deployment target.
+
+The current V5 Studionet deployment is disposable and source-attested. Its
+constructor is `custody_enabled=true`, `public_custody=false`: the contract's
+controlled financial methods are enabled for an authorized test, while the
+frontend's public financial controls remain locked. This distinction is not a
+production custody approval and does not prevent unsolicited network transfers.
 
 ## Local verification
 
 - JavaScript tests: 23 passing.
-- Direct Mode: 46 passing.
+- Direct Mode: 47 passing, including the later-material-event regression.
 - TypeScript, ESLint and production build: passing.
-- Source uses repository-local GenLayer CLI `0.39.1` only.
-- The frontend accepts human GEN amounts and dates, gates actions from canonical
-  offer state, records pending hashes, observes finality, and never replays a
-  transfer automatically.
+- Source uses the repository-local GenLayer CLI `0.39.1` only.
+- The frontend keeps pending, unknown, failed and finalized transaction states
+  distinct and never replays an external transfer automatically.
 
 ## Exact deployed source
 
 - Network: GenLayer Studionet, chain 61999.
-- Address: `0xb875126Ab537327d9E7E87488C89668C071d2997`.
-- Deployment transaction: `0xc446c989dd4da9954d9e9aedb4eacf999d8462fa4681dcc0c17dba50a54b84fe`.
-- Source SHA-256: `A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`.
+- Address: `0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684`.
+- Deployment transaction: `0x710d4a88bdf535754daff67fbba4a394e4ddc9ef18d11e0acec666ec0072ed68`.
+- Source SHA-256: `ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88`.
 - Attestation: exact local source match.
+- Constructor: `[true, false]` (`custody_enabled=true`, `public_custody=false`).
 
-## Hosted funded demonstration
+## Current hosted regression
 
-The signed baseline was registered and verified at epoch 1. A 0.000001 GEN
-offer was funded, accepted by the nominated participant, and bound to the
-exact baseline terms. The material candidate produced an actual `MATERIAL`
-consensus and advanced the program to epoch 2. The participant reaffirmed the
-new rules, material exit allocated 0.0008 GEN to publisher A and 0.0002 GEN to
-participant B, and both controlled wallets submitted one withdrawal.
+The signed baseline was verified at epoch 1. The first signed MATERIAL review
+was finalized as `MATERIAL` and advanced Program 1 to epoch 2. Offer 1 was then
+funded with 555 wei and accepted by the controlled participant. After the real
+first-event window expired, the second signed candidate finalized as `MATERIAL`
+and advanced the program to epoch 3. The participant material exit finalized
+with the later event's timestamp as its exit-window anchor.
 
-Canonical post-state is `MATERIAL_EXIT_ALLOCATED`, held `0`, credits `0`,
-dispatched `1000000000000`, and accounted `1000000000000` wei. The observed
-recipient balance deltas exactly match the two allocations and the contract
-balance read `0`. The runtime still does not expose a separately verifiable
-child transaction identity/finality record; transfer records therefore remain
-`DISPATCHED_PENDING_EXTERNAL_SETTLEMENT`. Recipient deltas are observations,
-not a certification of every exceptional transfer path.
-
-Exact hashes and readbacks are in
-[the public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
-
-The refined frontend was promoted to Vercel production as deployment
-`dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb`, aliased at
-`https://the-revigate.vercel.app`. The root, `/agreements` and `/about` routes
-returned HTTP 200, and the current contract address was found in the deployed
-JavaScript bundle.
+Canonical final state is `MATERIAL_EXIT_ALLOCATED`: held 0, publisher credit
+444, participant credit 111. The ledger reconciles deposited 555 with credits
+555 and accounted 555; dispatched remains 0 and the contract native balance is
+555. No withdrawal was submitted, so no child-transfer delivery is claimed.
 
 ## Release boundary
 
-This is a public-enabled **Studionet test demo**, not a production custody
-release. Do not accept user funds. Unsolicited native value, value attached to
-unsupported methods, failed payable execution, and unavailable child execution
-proof remain protocol-level limitations. No automatic transfer replay is
-authorized. A real browser wallet-extension run and independent security review
-were not completed in this automation pass.
+This is a disposable **Studionet test deployment**, not a production custody
+release. Do not accept user funds. Unsupported incoming native-value recovery,
+failed payable execution recovery, no-calldata and wrong-method value handling,
+missing independently verifiable child-transfer identity/finality, and
+unconfirmed recipient attribution remain protocol-level limitations. A normal
+funded lifecycle would not clear those limitations. No independent external
+security review or complete browser/mobile wallet-extension matrix is claimed.
 
-The previous V4/Vault deployments and older funded evidence remain historical;
-their addresses must not be substituted for the exact deployment above.
+The earlier public-enabled deployment and archived V4/Vault evidence remain
+historical and must not be substituted for the current V5 address above.
 
-GitHub Actions CI run 127 passed for the UI refinement head
-`161259f5c9de7df52d3dc0190c6d4ed8f47b2bc3`. PR #8 was merged into `main` at
-merge commit `e4a906005c7ceb0a6a414ecf44963c69286fd0e5`.
+GitHub Actions CI run 131 passed for PR #10 head
+`af449658e4e051200d2d11e62a1abb40d3ba8fef`; the merged commit is
+`44121ab5f07f4a9048f73268cdfda1daf14f6562`.

@@ -2,40 +2,59 @@
 
 ## Current verdict
 
-**PUBLIC-ENABLED STUDIONET TEST DEMO — NOT A PRODUCTION RELEASE.**
+**DISPOSABLE STUDIONET TEST — CONTROLLED HOSTED FUNDED REGRESSION PASSED; NOT A PRODUCTION RELEASE.**
 
-The current one-contract source is deployed at
-`0xb875126Ab537327d9E7E87488C89668C071d2997` on chain 61999 with exact source
-attestation. The public flag was enabled only to exercise a disposable funded
-demo. No user funds may be accepted.
+The current V5 source-attested contract is
+`0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684` on chain 61999 with source
+SHA-256 `ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88`.
+Its constructor is `custody_enabled=true`, `public_custody=false`. The
+frontend public financial controls remain locked and no user funds may be
+accepted.
 
-## Completed
+## Completed on the current V5 deployment
 
-- [x] Registry authentication, signed publisher manifest and GenLayer materiality consensus retained.
-- [x] Historical agreement mechanics integrated into the same contract.
-- [x] Local CLI pinned to GenLayer `0.39.1`; typecheck, lint, 23 JavaScript tests, 46 Direct Mode tests and build pass.
-- [x] Fresh source-attested Studionet deployment completed.
-- [x] Baseline registration and verification completed at epoch 1.
-- [x] Actual funded offer, acceptance, invalid-digest negative test and material revision completed.
-- [x] Participant reaffirmation and MATERIAL exit allocation completed.
-- [x] Both allocations were withdrawn once; ledger reconciled and observed recipient balance deltas matched.
-- [x] Frontend uses human GEN/date inputs, canonical state gates, pending/finality handling and no automatic replay.
+- [x] Signed baseline registration and verification completed at epoch 1.
+- [x] Signed NONMATERIAL assessment finalized with the epoch unchanged.
+- [x] First signed MATERIAL assessment finalized as `MATERIAL`, advancing the
+      program to epoch 2.
+- [x] Offer 1 funded with 555 wei and accepted by the designated participant at
+      epoch 2; final state was `MATERIAL_EXIT_ALLOCATED`.
+- [x] Second signed MATERIAL assessment finalized at epoch 3 after the real
+      first-event exit window expired.
+- [x] Participant material exit used the second event timestamp: event 2 at
+      `1792311710`, exit deadline `1792315310`.
+- [x] Final ledger reconciled deposited 555 = held 0 + credits 555 + dispatched
+      0; publisher credit 444, participant credit 111, contract balance 555.
+- [x] Machine-readable hosted evidence recorded in
+      `evidence/single-contract/2026-10-18-v5-two-material-funded-regression.json`.
+- [x] Source attestation matched the exact local contract source.
+- [x] 23 JavaScript tests, 47 Direct Mode tests, typecheck, lint and build pass.
+- [x] CI run 131 passed for PR #10 head; PR #10 merged into `main` at
+      `44121ab5f07f4a9048f73268cdfda1daf14f6562`.
 
-## Evidence boundary
+## Hosted regression status
 
-- [ ] Child transaction identity and independent child finality are not exposed by the current Studionet read path. Transfer records remain `DISPATCHED_PENDING_EXTERNAL_SETTLEMENT`.
-- [ ] Failed payable calls, unsolicited native transfers, no-calldata transfers and wrong-method value recovery remain runtime-level limitations.
-- [ ] Recipient balance deltas are observations and do not certify every exceptional delivery path.
-- [ ] Full 52-scenario hosted/browser coverage, mobile and wallet-extension rejection/disconnect checks were not run in this automation pass.
-- [ ] Independent security review is not available; existing work is adversarial self-audit.
+The controlled two-material-revision regression is complete on the exact
+source-attested Studionet deployment. It is test evidence only; it does not
+clear the runtime custody limitations below.
 
-## Repository and deployment gates
+## Evidence boundary that remains open
 
-- [x] Fresh CI run 127 passed for the UI refinement head `161259f5c9de7df52d3dc0190c6d4ed8f47b2bc3`.
-- [ ] Second approved PR review, if required by repository settings.
-- [x] Vercel production promotion completed as `dpl_2QUku9WvRd7akyxGhQCaV2Ym6bJb`; root, `/agreements` and `/about` returned HTTP 200 and the bundle contains the current address.
+- [ ] Failed payable, unsolicited native-value, no-calldata and wrong-method
+      recovery remain runtime-level limitations.
+- [ ] Studionet does not expose independently verifiable child identity/finality
+      for outgoing transfers; recipient deltas are observations only.
+- [ ] Full browser/mobile and wallet-extension rejection/disconnect coverage.
+- [ ] Independent external security review.
+
+## Release gates
+
+- [x] Current source-attested deployment recorded with `public_custody=false`.
+- [x] Latest merged source identity and CI recorded.
+- [ ] Documentation/evidence-only PR opened after hosted evidence is complete.
 - [ ] Explicit owner approval before any production custody decision.
-- [x] PR #8 merged into `main` at `e4a906005c7ceb0a6a414ecf44963c69286fd0e5` after the green CI gate. Independent review and browser verification remain disclosed limitations.
+- [ ] Production custody certification. This checklist does not grant it.
 
-The exact live hashes and canonical reads are in
-[2026-10-16 public-enabled funded demo evidence](../evidence/single-contract/2026-10-16-public-enabled-funded-demo.json).
+The earlier public-enabled demo, V4 Registry and archived Vault deployments are
+historical evidence only. Their addresses and results must not be substituted
+for the current V5 deployment.

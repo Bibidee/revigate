@@ -7,8 +7,11 @@ disposable Studionet contracts from the current source. No public user funds
 were accepted.
 
 The current exact-source disposable candidate is
-`0xb875126Ab537327d9E7E87488C89668C071d2997`, source SHA-256
-`A7859429ACAEAEA10C5E376E5A3B851920C0BC5DB9C2C0FAF72D7EE793C5C0C2`.
+`0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684`, source SHA-256
+`ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88`.
+The constructor is `custody_enabled=true`, `public_custody=false`. A controlled
+555 wei test funding and material-exit regression has completed on this address;
+no production or user funds were accepted and no withdrawal was submitted.
 
 ## Studionet behavior by route
 
@@ -68,10 +71,16 @@ state. `reconciled_total` includes held backing plus unresolved outgoing value,
 and `reconciliation_delta` checks that against recorded incoming value.
 
 The accounting correction passed Direct Mode regression tests and is included
-in the exact-source single-contract deployment above. The hosted ledger
-readback was `deposited=4,331`, `held=555`, `credits=0`, `dispatched=3,776`,
-with native balance `555`, matching the still-held offer. The newer public-enabled
-demo is recorded separately in `evidence/single-contract/2026-10-16-public-enabled-funded-demo.json`.
+in the exact-source single-contract deployment above. The current V5 hosted
+readback now records Program 1 at epoch 3 and Offer 1 as
+`MATERIAL_EXIT_ALLOCATED`: deposited 555, held 0, credits 555, dispatched 0,
+accounted 555, publisher credit 444, participant credit 111, and native
+contract balance 555. The later material event at `1792311710` produced exit
+deadline `1792315310`, after the first event's deadline `1792311179` had
+expired. The older `deposited=4,331`, `held=555`, `credits=0`,
+`dispatched=3,776` readback belongs to an earlier disposable candidate and is
+historical evidence. The earlier public-enabled demo is recorded separately in
+`evidence/single-contract/2026-10-16-public-enabled-funded-demo.json`.
 The formula does not recover value retained after a runtime rollback, no-calldata
 incoming transfer, or value attached to a nonpayable method. Such retained value
 is unassigned surplus and remains a production custody blocker.

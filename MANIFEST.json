@@ -1,10 +1,18 @@
 {
   "project": "revigate",
-  "architecture": "noncustodial-rulebook-registry",
+  "architecture": "single-contract-registry-and-controlled-escrow",
   "network": "GenLayer Studionet",
   "chain_id": 61999,
   "rpc": "https://studio.genlayer.com/api",
   "active_contract": "contracts/revigate.py",
-  "custody": "NONE",
-  "production_writes": "NONCUSTODIAL_ZERO_VALUE_ONLY"
+  "deployment": {
+    "address": "0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684",
+    "source_sha256": "ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88",
+    "contract_version": 5,
+    "custody_enabled": true,
+    "public_custody": false
+  },
+  "custody": "SINGLE_CONTRACT_ESCROW_CONTROLLED_TEST_ONLY",
+  "production_writes": "LOCKED_NONCUSTODIAL",
+  "release_boundary": "No user funds; no production custody approval"
 }
