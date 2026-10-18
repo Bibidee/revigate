@@ -122,6 +122,7 @@ def test_material_exit_allocates_floor_and_remainder_once(direct_deploy, direct_
     program = contract.programs[1]
     program.epoch = 2
     program.first_material_at = NOW_TS + 100
+    contract._append_material_event(program, 2, NOW_TS + 100)
     contract.programs[1] = program
     direct_vm.warp("2026-01-01T00:05:00Z")
     direct_vm.sender = PARTICIPANT
@@ -129,6 +130,47 @@ def test_material_exit_allocates_floor_and_remainder_once(direct_deploy, direct_
     assert contract.get_wallet_credit(PARTICIPANT) == 20
     assert contract.get_wallet_credit(PUBLISHER) == 81
     assert contract.get_offer(offer_id)["held"] == 0
+
+
+def test_material_exit_uses_later_event_timestamp_after_acknowledged_epoch(
+        direct_deploy, direct_vm):
+    """A later material revision gets its own usable exit window.
+
+    The first event is deliberately old enough that its window has expired by
+    the time the second event is assessed.  Reconstructing a later event from
+    ``program.first_material_at`` would therefore reject this valid exit.
+    """
+    contract = make_contract(direct_deploy, direct_vm)
+
+    # Revision 1 -> 2 happened before the offer was created and acknowledged.
+    program = contract.programs[1]
+    program.epoch = 2
+    program.first_material_at = NOW_TS + 100
+    contract._append_material_event(program, 2, NOW_TS + 100)
+    contract.programs[1] = program
+
+    offer_id = make_offer(contract, amount=AMOUNT, exit_bps=2_000)
+    fund(contract, direct_vm, offer_id)
+    accept(contract, direct_vm, offer_id)
+
+    # Revision 2 -> 3 is the first material event after the offer's
+    # acknowledged epoch.  Its timestamp must start the usable exit window.
+    program = contract.programs[1]
+    program.epoch = 3
+    contract._append_material_event(program, 3, NOW_TS + 7_200)
+    contract.programs[1] = program
+
+    # This is after the first event's one-hour window but inside the second
+    # event's one-hour window.
+    direct_vm.warp("2026-01-01T02:30:00Z")
+    direct_vm.sender = PARTICIPANT
+    assert contract.exercise_material_exit(offer_id) is True
+
+    offer = contract.get_offer(offer_id)
+    assert offer["exit_trigger_epoch"] == 3
+    assert offer["exit_deadline"] == NOW_TS + 7_200 + 3_600
+    assert contract.get_wallet_credit(PARTICIPANT) == 20
+    assert contract.get_wallet_credit(PUBLISHER) == 81
 
 
 def test_maturity_payout_and_duplicate_rejection(direct_deploy, direct_vm):
@@ -211,3 +253,4 @@ def test_supported_invalid_payments_return_without_post_credit_revert(direct_dep
     contract = make_contract(direct_deploy, direct_vm)
     assert fund(contract, direct_vm, 999999, amount=7) == "REFUNDABLE_CREDIT_UNKNOWN_OFFER"
     assert contract.get_wallet_credit(PUBLISHER) == 7
+

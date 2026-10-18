@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-10-18",
+  "purpose": "Source-attested redeployment of the later material-exit timestamp fix; public custody remains locked",
+  "network": {
+    "name": "GenLayer Studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "source": {
+    "path": "contracts/revigate.py",
+    "commit": "213af8f446ab5552050d4696417249526955022d",
+    "sha256": "ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88",
+    "attestation": "EXACT_BYTE_MATCH_TO_LOCAL_SOURCE"
+  },
+  "deployment": {
+    "address": "0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684",
+    "transaction": "0x710d4a88bdf535754daff67fbba4a394e4ddc9ef18d11e0acec666ec0072ed68",
+    "receipt_status": "ACCEPTED",
+    "execution_result": "SUCCESS",
+    "consensus": "MAJORITY_AGREE",
+    "validator_votes": ["AGREE", "AGREE", "AGREE", "AGREE", "AGREE"],
+    "deployer": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "constructor_args": [true, false],
+    "config": {
+      "contract_version": 5,
+      "protocol": "revigate-registry-v1",
+      "custody": "SINGLE_CONTRACT_ESCROW",
+      "custody_enabled": true,
+      "public_custody": false,
+      "escrow": "NATIVE_GEN",
+      "transfer_evidence": "PENDING_EXTERNAL_SETTLEMENT"
+    }
+  },
+  "verification": {
+    "source_attestation": "PASS",
+    "direct_mode_tests": "47 PASS",
+    "funded_lifecycle_on_this_address": "NOT_RUN",
+    "public_writes": "LOCKED",
+    "user_funds": "NONE"
+  },
+  "release_boundary": "DISPOSABLE STUDIONET TEST DEPLOYMENT ONLY; DO NOT ACCEPT USER FUNDS"
+}
+
