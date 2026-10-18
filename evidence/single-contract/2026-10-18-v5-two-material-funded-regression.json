@@ -1,0 +1,120 @@
+{
+  "recorded_at": "2026-10-18",
+  "purpose": "Hosted two-material-revision funded regression proving the later event timestamp is used for the participant exit window",
+  "network": {
+    "name": "GenLayer Studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "contract": {
+    "address": "0xb77DF392fFE9bFc93Ab9Fd79D7a26400dB3c3684",
+    "source_commit": "213af8f446ab5552050d4696417249526955022d",
+    "source_sha256": "ED52C6BC82B9A4990DB2A0FC9C6D2C531C0CAEF76BD013124D18CBD0705C6A88",
+    "constructor_args": [true, false],
+    "custody_enabled": true,
+    "public_custody": false
+  },
+  "signers": {
+    "publisher": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+    "participant": "0x7AFc209aD72153f6c8Ae7B8055bfbA6E7f4d5EfC"
+  },
+  "program": {
+    "id": 1,
+    "baseline_sha": "313dfb0ac2b20f32954dd0ffb08fa60214ae34da",
+    "first_material_sha": "376e447065b8a7efd1d26a60c6c9ac476bd1e567",
+    "second_material_sha": "14401f20f2d3eeeac537746966646809e5c01b8c",
+    "second_material_digest": "3a95f7e76cedba0bce0db531b97c17a0c0d842b967278d0768c2320ba1769631",
+    "final_epoch": 3,
+    "material_event_count": 2,
+    "material_events": [
+      {"index": 1, "epoch": 2, "at": 1792307579},
+      {"index": 2, "epoch": 3, "at": 1792311710}
+    ],
+    "final_status": "VERIFIED"
+  },
+  "offer": {
+    "id": 1,
+    "amount_wei": 555,
+    "ack_epoch": 2,
+    "initial_state": "ACCEPTED_LOCKED",
+    "initial_held_wei": 555,
+    "exit_bps": 2000,
+    "exit_window_seconds": 3600,
+    "first_event_window_expired_at": 1792311179,
+    "later_event_exit_deadline": 1792315310,
+    "final_state": "MATERIAL_EXIT_ALLOCATED",
+    "final_held_wei": 0,
+    "allocated_publisher_wei": 444,
+    "allocated_participant_wei": 111,
+    "exit_trigger_epoch": 3
+  },
+  "transactions": {
+    "fund_offer": {
+      "hash": "0xbcaee2528003301469262f070a5e7e9222758894316ff1045f88a5374af24375",
+      "method": "fund_offer(1)",
+      "signer": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+      "value_wei": 555,
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "value_credited": true
+    },
+    "accept_offer": {
+      "hash": "0xb684349159f5c694391d771e3d92568185b015d8945003b11d9bc49d4f40ce03",
+      "method": "accept_offer(1)",
+      "signer": "0x7AFc209aD72153f6c8Ae7B8055bfbA6E7f4d5EfC",
+      "value_wei": 0,
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS"
+    },
+    "request_second_material": {
+      "hash": "0x67c08421f1ca2f71a902ca0a7b314dd22d72c58d92ebbe6c867f0610141e4861",
+      "method": "request_revision(1, 14401f20f2d3eeeac537746966646809e5c01b8c)",
+      "signer": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+      "review_id": 3,
+      "value_wei": 0,
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS"
+    },
+    "assess_second_material": {
+      "hash": "0x3cf33c069c720825cf40454c0451a2712fd8d2aab2ecf2a4ff055fb03c31bb8e",
+      "method": "assess_revision(3)",
+      "signer": "0x527dA5f7022f14f7105E5f06cEc1a8EFf53556b5",
+      "value_wei": 0,
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "outcome": "MATERIAL"
+    },
+    "exercise_material_exit": {
+      "hash": "0x6f285a9ad5a729a30d07c9f7000694b39caec7c3ed70bbdcd2cd61c74ebc49d1",
+      "method": "exercise_material_exit(1)",
+      "signer": "0x7AFc209aD72153f6c8Ae7B8055bfbA6E7f4d5EfC",
+      "value_wei": 0,
+      "status": "FINALIZED",
+      "consensus": "MAJORITY_AGREE",
+      "execution": "SUCCESS",
+      "result": true
+    }
+  },
+  "ledger_after_exit": {
+    "deposited": 555,
+    "held": 0,
+    "credits": 555,
+    "dispatched": 0,
+    "accounted": 555,
+    "publisher_credit": 444,
+    "participant_credit": 111,
+    "contract_native_balance": 555,
+    "external_settlement": "PENDING_UNTIL_INDEPENDENTLY_VERIFIED"
+  },
+  "reconciliation": {
+    "formula": "held + credits + dispatched = accounted = deposited",
+    "result": "PASS",
+    "withdrawals_submitted": false,
+    "child_transfer_proof": "NOT_APPLICABLE_TO_THIS_RUN"
+  },
+  "release_boundary": "Controlled disposable Studionet regression only; public custody remains false and no production user funds are approved."
+}
